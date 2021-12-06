@@ -1,0 +1,28 @@
+
+// Variables
+@import "variables";
+@import 'fonts';
+
+body,
+a,
+h1,h2,h3,h4,h5,h6,
+input,
+select{
+    font-family: 'Source Sans Pro','IRANSans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.rtl .navbar-left {
+    left: auto;
+    right: 0;
+}
+.rtl .toggle-aside-nav[data-v-36ed1904] {
+    position: absolute;
+    top: 50px;
+    right: auto;
+    left: -12px;
+}
+.rtl .content-container .content-wrapper{
+    padding: 25px 25px 25px 25px;
+    margin-left: 0;
+    margin-right: 280px;
+}
