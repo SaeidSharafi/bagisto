@@ -601,3 +601,31 @@ img.cover {
 .VueCarousel-dot[data-v-438fd353]:focus {
     outline: none !important;
 }
+
+/**
+ * teacher carousel
+ */
+
+.teacher-card {
+    margin: 10px;
+    border-radius: 2rem;
+    overflow: hidden;
+
+    .teacher-image img {
+        object-fit: cover;
+    }
+
+    .teahcer-info {
+        min-height: 80px;
+        color: white;
+        display: flex;
+        flex-flow: column;
+        padding: 10px;
+        font-size: 1rem;
+        background-color: $purple-dark;
+
+        span.teacher-honorific {
+            margin-bottom: 5px;
+        }
+    }
+}

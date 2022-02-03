@@ -94,6 +94,7 @@ Vue.component('velocity-overlay-loader', () => import('@Components/overlay-loade
 Vue.component('slick-carousel', () => import('vue-slick-carousel'));
 Vue.component('sms-timer', () => import('@Components/sms-timer'));
 Vue.component('category-carousel', () => import('@Components/category-carousel'));
+Vue.component('teacher-collections', () => import('@Components/teacher-collections'));
 Vue.component('vnode-injector', {
     functional: true,
     props: ['nodes'],
