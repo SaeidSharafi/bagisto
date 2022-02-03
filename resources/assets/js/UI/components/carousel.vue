@@ -10,6 +10,8 @@
         :autoplay="autoplay == 'true' ? true : false"
         :autoplayTimeout="timeout ? parseInt(timeout) : 2000"
         :autoplayDirection="'forward'"
+        paginationColor="#a9b2cb"
+        paginationActiveColor="#59096a"
         :class="[
             localeDirection,
             (navigationEnabled == 'hide') ? 'navigation-hide' : '',
