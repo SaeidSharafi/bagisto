@@ -289,12 +289,24 @@ return [
         Webkul\Marketing\Providers\MarketingServiceProvider::class,
 
 
+        //Overrding Bagisto CheckoutServiceProvider
+        \App\Providers\CheckoutServiceProvider::class,
 
         App\Providers\ProductServiceProvider::class,
 
         //App Route provider
         App\Providers\RouteServiceProvider::class,
 
+        //Payments
+        PayIr\Providers\PayIrServiceProvider::class,
+
+
+        //Media Manager
+        Ridhima\MediaManager\Providers\MediaManagerServiceProvider::class,
+        Barryvdh\Elfinder\ElfinderServiceProvider::class,
+
+        //SMS provider
+        Kuro\LaravelSms\Providers\SmsServiceProvider::class
 
 
     ],
@@ -357,7 +369,7 @@ return [
          * Place your aliases in alphabetical order.
          */
         'Captcha' => Webkul\Customer\Facades\Captcha::class,
-        'Cart' => Webkul\Checkout\Facades\Cart::class,
+        'Cart' => App\Shop\Facades\Cart::class,
         'Concord' => Konekt\Concord\Facades\Concord::class,
         'Core' => Webkul\Core\Facades\Core::class,
         'Datagrid' => Webkul\Ui\DataGrid\Facades\DataGrid::class,
@@ -371,5 +383,11 @@ return [
         'ProductImage' => \App\Shop\Facades\ProductImage::class,
         'ProductGrid' => Webkul\Ui\DataGrid\Facades\ProductGrid::class,
         'ProductVideo' => Webkul\Product\Facades\ProductVideo::class,
+
+        /**
+         *
+         * Kuro
+         */
+        'Sms' => Kuro\LaravelSms\Facade\Sms::class,
     ],
 ];

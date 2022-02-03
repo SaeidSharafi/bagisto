@@ -130,10 +130,10 @@ class ProductFlatRepository extends Repository
             $allFilterableAttributes = array_filter(array_unique(array_intersect($categoryFilterableAttributes, $productCategoryArrributes['attributes'])));
 
             $attributes = app('Webkul\Attribute\Repositories\AttributeRepository')->getModel()::with(['options' => function($query) use ($productCategoryArrributes) {
-                    return $query->whereIn('id', $productCategoryArrributes['attributeOptions'])
+                    return $query->with('translations')->whereIn('id', $productCategoryArrributes['attributeOptions'])
                                 ->orderBy('sort_order');
                 }
-            ])->whereIn('id', $allFilterableAttributes)->get();
+            ,'translations'])->whereIn('id', $allFilterableAttributes)->get();
 
             return $loadedCategoryAttributes[$category->id] = $attributes;
         } else {

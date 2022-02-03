@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Shop\API\JeduCustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,3 +12,24 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::group(['middleware' => ['locale', 'theme', 'currency']], function () {
+
+    Route::get('customer/{phone}',
+        [JeduCustomerController::class, 'getCustmerRemainingTime'])
+        ->defaults('_config', [
+            'repository'             => 'Webkul\Customer\Repositories\CustomerRepository',
+            'resource'               => 'App\Http\Resources\JeduCustomer',
+            'authorization_required' => true
+        ]);
+    Route::get('customer-sms-remaining/{phone}',
+        [JeduCustomerController::class, 'getCustmerRemainingTime'])
+        ->defaults('_config', [
+            'repository' => 'Webkul\Customer\Repositories\CustomerRepository',
+            'resource'   => 'App\Http\Resources\JeduCustomerSMSRemaining'
+        ]);
+    Route::post('resend-sms', [JeduCustomerController::class, 'resendSms'])
+        ->defaults('_config', [
+            'repository' => 'Webkul\Customer\Repositories\CustomerRepository',
+            'resource'   => 'App\Http\Resources\JeduCustomerSMSRemaining'
+        ]);
+});

@@ -16,7 +16,6 @@ return [
         'route' => 'admin.dashboard.index',
         'sort'  => 1,
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Sales
@@ -227,6 +226,11 @@ return [
         'sort'  => 4,
     ], [
         'key'   => 'customers.customers',
+        'name'  => 'admin::app.acl.customers',
+        'route' => 'admin.customer.index',
+        'sort'  => 1,
+    ], [
+        'key'   => 'customers.customers.view',
         'name'  => 'admin::app.acl.customers',
         'route' => 'admin.customer.index',
         'sort'  => 1,

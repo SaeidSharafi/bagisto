@@ -358,7 +358,8 @@ class ProductRepository extends Repository
      */
     public function findBySlug($slug)
     {
-        return app(ProductFlatRepository::class)->findOneWhere([
+
+        return app(ProductFlatRepository::class)->with('images')->findOneWhere([
             'url_key' => $slug,
             'locale'  => app()->getLocale(),
             'channel' => core()->getCurrentChannelCode(),

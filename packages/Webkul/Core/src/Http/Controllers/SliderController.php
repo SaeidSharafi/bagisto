@@ -123,7 +123,7 @@ class SliderController extends Controller
         ]);
 
         $data = request()->all();
-        
+
         $data['expired_at'] = $data['expired_at'] ?: null;
 
         if (isset($data['locale'])) {

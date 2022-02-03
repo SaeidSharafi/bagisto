@@ -55,7 +55,7 @@ class Install extends Command
 
         // running `php artisan vendor:publish --all`
         $this->warn('Step: Publishing assets and configurations...');
-        $result = $this->call('vendor:publish', ['--all' => true, '--force' => true]);
+        $result = $this->call('vendor:publish', ['--all' => true, '--force' => false]);
         $this->info($result);
 
         // running `php artisan storage:link`

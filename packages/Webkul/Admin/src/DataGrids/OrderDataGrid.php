@@ -2,6 +2,7 @@
 
 namespace Webkul\Admin\DataGrids;
 
+use Carbon\Carbon;
 use Webkul\Ui\DataGrid\DataGrid;
 use Illuminate\Support\Facades\DB;
 use Webkul\Sales\Models\OrderAddress;
@@ -90,10 +91,15 @@ class OrderDataGrid extends DataGrid
         $this->addColumn([
             'index'      => 'created_at',
             'label'      => trans('admin::app.datagrid.order-date'),
-            'type'       => 'datetime',
+            'type'       => 'string',
             'sortable'   => true,
             'searchable' => false,
             'filterable' => true,
+            'closure' => function ($value) {
+
+                return Carbon::createFromFormat('Y-m-d H:i:s',  $value->created_at)
+                    ->jdate('j F Y H:i:s');
+            }
         ]);
 
         $this->addColumn([

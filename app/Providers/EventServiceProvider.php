@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Listeners\Order;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -14,11 +15,11 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    // protected $listen = [
-    //     Registered::class => [
-    //         SendEmailVerificationNotification::class,
-    //     ],
-    // ];
+     protected $listen = [
+         'sales.order.comment.create.after' => [
+             [Order::class,'sendOrderCommentSms']
+         ],
+     ];
 
     /**
      * Register any events for your application.

@@ -29,7 +29,7 @@ class PaypalServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerConfig();
+        //$this->registerConfig();
     }
 
     /**

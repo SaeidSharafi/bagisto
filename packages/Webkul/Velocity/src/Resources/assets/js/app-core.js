@@ -76,7 +76,7 @@ $(function() {
 
                 loadDynamicScript(`${baseUrl}/${velocityJSPath}`, () => {
                     window.scrollTo(0, 0);
-                    
+
                     document.body.style.overflow = '';
 
                     this.removeEventListener('touchstart', dynamicScript);

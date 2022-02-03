@@ -96,7 +96,7 @@ class SliderDataGrid extends DataGrid
         $this->addFilter('locale', 'sl.locale');
         $this->addFilter('channel_name', 'ct.name');
         $this->addFilter('code', 'ch.code');
-
+        //$queryBuilder->dd();
         $this->setQueryBuilder($queryBuilder);
     }
 

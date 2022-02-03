@@ -94,7 +94,6 @@ class ProductDataGrid extends DataGrid
             $this->channel = Channel::query()->find($this->channel);
             $this->channel = $this->channel ? $this->channel->code : 'all';
         }
-
         $this->productRepository = $productRepository;
 
         $this->inventorySourceRepository = $inventorySourceRepository;
@@ -329,7 +328,7 @@ class ProductDataGrid extends DataGrid
         $inventorySources = $this->inventorySourceRepository->findWhere(['status' => 1]);
 
         $totalQuantity = $row->quantity;
-
+        //dd($product);
         return view('admin::catalog.products.datagrid.quantity', compact('product', 'inventorySources', 'totalQuantity'))->render();
     }
 }

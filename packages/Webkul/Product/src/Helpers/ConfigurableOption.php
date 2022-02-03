@@ -2,7 +2,8 @@
 
 namespace Webkul\Product\Helpers;
 
-use Webkul\Product\Facades\ProductImage;
+
+use App\Shop\Facades\ProductImage;
 use Webkul\Product\Facades\ProductVideo;
 
 class ConfigurableOption extends AbstractProduct
@@ -41,6 +42,7 @@ class ConfigurableOption extends AbstractProduct
         $options = $this->getOptions($product, $this->getAllowedProducts($product));
 
         $config = [
+            'parent'         => $product->product_id,
             'attributes'     => $this->getAttributesData($product, $options),
             'index'          => isset($options['index']) ? $options['index'] : [],
             'variant_prices' => $this->getVariantPrices($product),
@@ -195,6 +197,7 @@ class ConfigurableOption extends AbstractProduct
     {
         $images = [];
 
+        $images[$product->product_id] = ProductImage::getGalleryImages($product);
         foreach ($this->getAllowedProducts($product) as $variant) {
             if ($variant instanceof \Webkul\Product\Models\ProductFlat) {
                 $variantId = $variant->product_id;
@@ -217,7 +220,7 @@ class ConfigurableOption extends AbstractProduct
     protected function getVariantVideos($product)
     {
         $videos = [];
-
+        $videos[$product->product_id] = ProductVideo::getVideos($product);
         foreach ($this->getAllowedProducts($product) as $variant) {
             if ($variant instanceof \Webkul\Product\Models\ProductFlat) {
                 $variantId = $variant->product_id;
@@ -226,6 +229,9 @@ class ConfigurableOption extends AbstractProduct
             }
 
             $videos[$variantId] = ProductVideo::getVideos($variant);
+            if (!$videos[$variantId]){
+                $videos[$variantId] = ProductVideo::getVideos($product);
+            }
         }
 
         return $videos;

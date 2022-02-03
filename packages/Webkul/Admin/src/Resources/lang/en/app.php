@@ -48,6 +48,7 @@ return [
         'logout'             => 'Logout',
         'visit-shop'         => 'Visit Shop',
         'dashboard'          => 'Dashboard',
+        'ims'          => 'IMS',
         'sales'              => 'Sales',
         'orders'             => 'Orders',
         'shipments'          => 'Shipments',

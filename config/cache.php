@@ -37,7 +37,9 @@ return [
         'array' => [
             'driver' => 'array',
         ],
-
+        'none' => [
+            'driver' => 'null',
+        ],
         'database' => [
             'driver' => 'database',
             'table' => 'cache',
@@ -72,7 +74,7 @@ return [
             'driver' => 'redis',
             'connection' => env('CACHE_CONNECTION', 'cache'),
         ],
-        
+
     ],
 
     /*

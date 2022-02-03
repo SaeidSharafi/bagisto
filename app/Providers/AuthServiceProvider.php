@@ -24,5 +24,8 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+        \Illuminate\Support\Facades\Auth::provider('JeduUserProvider', function($app, array $config) {
+            return new JeduEloquentUserProvider($app['hash'], $config['model']);
+        });
     }
 }

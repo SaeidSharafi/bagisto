@@ -3,6 +3,7 @@
 namespace Webkul\Product\Http\Controllers;
 
 use Exception;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 use Webkul\Attribute\Repositories\AttributeFamilyRepository;
@@ -182,7 +183,8 @@ class ProductController extends Controller
             'attribute_family_id' => 'required',
             'sku'                 => ['required', 'unique:products,sku', new Slug],
         ]);
-
+        Cache::forget('featured_products');
+        Cache::forget('new_products');
         $product = $this->productRepository->create(request()->all());
 
         session()->flash('success', trans('admin::app.response.create-success', ['name' => 'Product']));
@@ -217,7 +219,8 @@ class ProductController extends Controller
     public function update(ProductForm $request, $id)
     {
         $data = request()->all();
-
+        Cache::forget('featured_products');
+        Cache::forget('new_products');
         $multiselectAttributeCodes = array();
 
         $productAttributes = $this->productRepository->findOrFail($id);

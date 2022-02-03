@@ -1,0 +1,24 @@
+{
+    "name": "kuro/bagisto-pay-ir",
+    "authors": [
+        {
+            "name": "Saeid Sharafi",
+            "email": "saeed_sharafi12@yahoo.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "PayIr\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "PayIr\\src\\Providers\\PayIrServiceProvider"
+            ],
+            "aliases": {}
+        }
+    },
+    "minimum-stability": "dev"
+}

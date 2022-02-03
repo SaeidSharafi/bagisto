@@ -35,7 +35,7 @@ return [
 
     'providers' => [
         'customers' => [
-            'driver' => 'eloquent',
+            'driver' => 'JeduUserProvider',
             'model' => Webkul\Customer\Models\Customer::class,
         ],
 
