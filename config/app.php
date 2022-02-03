@@ -90,7 +90,7 @@ return [
     |
     */
 
-    'locale' => env('APP_LOCALE', 'en'),
+    'locale' => env('APP_LOCALE', 'fa'),
 
     /*
     |--------------------------------------------------------------------------
@@ -118,7 +118,7 @@ return [
     | (use capital letters!)
     */
 
-    'default_country' => null,
+    'default_country' => 'IR',
 
     /*
     |--------------------------------------------------------------------------
@@ -129,7 +129,7 @@ return [
     |
     */
 
-    'currency' => env('APP_CURRENCY', 'USD'),
+    'currency' => env('APP_CURRENCY', 'IRR'),
 
     /*
     |--------------------------------------------------------------------------
@@ -225,6 +225,9 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+        // Laravel IDE helper
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+
         /*
          * Package Service Providers...
          */
@@ -238,7 +241,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
+
 
         //Laravel Intervention
         Intervention\Image\ImageServiceProvider::class,
@@ -252,6 +255,8 @@ return [
         Flynsarmy\DbBladeCompiler\DbBladeCompilerServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+
+        App\Providers\ShopCoreServiceProvider::class,
 
         //Webkul packages
         Webkul\Theme\Providers\ThemeServiceProvider::class,
@@ -282,6 +287,16 @@ return [
         Webkul\SocialLogin\Providers\SocialLoginServiceProvider::class,
         Webkul\DebugBar\Providers\DebugBarServiceProvider::class,
         Webkul\Marketing\Providers\MarketingServiceProvider::class,
+
+
+
+        App\Providers\ProductServiceProvider::class,
+
+        //App Route provider
+        App\Providers\RouteServiceProvider::class,
+
+
+
     ],
 
     /*
@@ -351,8 +366,9 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Helper'  => Konekt\Concord\Facades\Helper::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'JeduCore' => \App\Shop\Facades\JeduCoreFacade::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
-        'ProductImage' => Webkul\Product\Facades\ProductImage::class,
+        'ProductImage' => \App\Shop\Facades\ProductImage::class,
         'ProductGrid' => Webkul\Ui\DataGrid\Facades\ProductGrid::class,
         'ProductVideo' => Webkul\Product\Facades\ProductVideo::class,
     ],
