@@ -95,17 +95,28 @@
                             @endforeach
                         </span>
                     </div>
-
                     <div class="control-group">
-                        <label for="content">{{ __('admin::app.settings.sliders.content') }}</label>
+                        <label for="status">{{ __('dmin::app.settings.sliders.show_content') }}</label>
+                        <input type="hidden" id="show_content" name="show_content" value="0">
 
+                        <label class="switch">
+                            <input type="checkbox" id="show_content" name="show_content" value="{{ $slider->show_content }}" {{ $slider->show_content ? 'checked' : '' }}>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="control-group">
+                        <label for="content">{{ __('admin::app.settings.sliders.description') }}</label>
                         <div class="panel-body">
-                            <textarea id="tiny" class="control" id="add_content" name="content" rows="5">{{ $slider->content ? : old('content') }}</textarea>
+                            <textarea class="control" name="description" rows="5">{{ $slider->description ? : old('description') }}</textarea>
                         </div>
 
-                        <span class="control-error" v-if="errors.has('content')">@{{ errors.first('content') }}</span>
+                        <span class="control-error" v-if="errors.has('description')">@{{ errors.first('description') }}</span>
                     </div>
-
+                    <div class="control-group">
+                        <label for="sort_order">{{ __('admin::app.settings.sliders.button') }}</label>
+                        <input type="text" class="control" id="button" name="button" value="{{ $slider->button ?? old('button') }}"/>
+                        <span class="control-error" v-if="errors.has('button')">@{{ errors.first('button') }}</span>
+                    </div>
                     {!! view_render_event('bagisto.admin.settings.slider.edit.after', ['slider' => $slider]) !!}
                 </div>
             </div>
@@ -117,21 +128,31 @@
     @include('admin::layouts.tinymce')
 
     <script>
-        $(document).ready(function () {
-            tinyMCEHelper.initTinyMCE({
-                selector: 'textarea#tiny',
-                height: 200,
-                width: "100%",
-                plugins: 'image imagetools media wordcount save fullscreen code table lists link hr',
-                toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor link hr | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat | code | table',
-                image_advtab: true,
-                templates: [
-                    { title: 'Test template 1', content: 'Test 1' },
-                    { title: 'Test template 2', content: 'Test 2' }
-                ],
-                uploadRoute: '{{ route('admin.tinymce.upload') }}',
-                csrfToken: '{{ csrf_token() }}',
-            });
-        });
+        {{--$(document).ready(function () {--}}
+
+        {{--    tinyMCEHelper.initTinyMCE({--}}
+        {{--        selector: 'textarea#tiny',--}}
+        {{--        height: 200,--}}
+        {{--        width: "100%",--}}
+        {{--        cleanup_on_startup: false,--}}
+        {{--        trim_span_elements: false,--}}
+        {{--        verify_html: false,--}}
+        {{--        cleanup: false,--}}
+        {{--        convert_urls: false,--}}
+        {{--        valid_children: '+a[div]',--}}
+        {{--        forced_root_block : "",--}}
+        {{--        extended_valid_elements : '*[*]',--}}
+        {{--        plugins: 'image imagetools media wordcount save fullscreen code table lists link hr',--}}
+        {{--        toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor link hr | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat | code | table',--}}
+        {{--        image_advtab: true,--}}
+        {{--        templates: [--}}
+        {{--            { title: 'Test template 1', content: 'Test 1' },--}}
+        {{--            { title: 'Test template 2', content: 'Test 2' }--}}
+        {{--        ],--}}
+        {{--        uploadRoute: '{{ route('admin.tinymce.upload') }}',--}}
+        {{--        csrfToken: '{{ csrf_token() }}',--}}
+
+        {{--    });--}}
+        {{--});--}}
     </script>
 @endpush
