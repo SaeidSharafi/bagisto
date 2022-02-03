@@ -1,0 +1,27 @@
+{
+    "name": "kuro/laravel-sms",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Saeid Sharafi",
+            "email": "saeid_sharafi12@yahoo.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Kuro\\LaravelSms\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Kuro\\LaravelSms\\Providers\\SmsServiceProvider"
+            ],
+            "aliases": {
+                "Sms": "Kuro\\LaravelSms\\Facade\\Sms"
+            }
+        }
+    },
+    "minimum-stability": "dev"
+}
