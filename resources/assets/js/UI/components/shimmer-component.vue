@@ -1,27 +1,20 @@
 <template>
     <div class="shimmer-card-container">
-        <carousel-component
-            id="shimmer-carousel"
-            navigation-enabled="hide"
-            pagination-enabled="hide"
-            :slides-count="shimmerCountInt + 1"
-            :slides-per-page="shimmerCountInt">
-
-                <slide
-                    :key="count"
-                    :slot="`slide-${count}`"
-                    v-for="count in shimmerCountInt">
-
-                    <div class="shimmer-card">
-                        <div class="shimmer-wrapper">
-                            <div class="shimmer-product-image animate"></div>
-                            <div class="comment animate"></div>
-                            <div class="comment animate"></div>
-                            <div class="comment animate"></div>
-                        </div>
+        <slick-carousel
+            v-bind="sliderSetting">
+            <div
+                :id="`slide-${index}`"
+                v-for="index in shimmerCountInt">
+                <div class="shimmer-card">
+                    <div class="shimmer-wrapper">
+                        <div class="shimmer-product-image animate"></div>
+                        <div class="comment animate"></div>
+                        <div class="comment animate"></div>
+                        <div class="comment animate"></div>
                     </div>
-                </slide>
-        </carousel-component>
+                </div>
+            </div>
+        </slick-carousel>
     </div>
 </template>
 
@@ -31,11 +24,59 @@
             'shimmerCount': {
                 default: 6,
             },
+            localeDirection: {
+                String,
+                default: 'rtl'
+            }
         },
 
         data: function () {
             return {
                 shimmerCountInt: parseInt(this.shimmerCount),
+                sliderSetting: {}
+            }
+        },
+        mounted: function () {
+            this.sliderSetting = {
+                "dots": false,
+                "arrows": false,
+                "autoplay": false,
+                "speed": 1000,
+                "rtl":(this.localeDirection === 'rtl'),
+                "slidesToShow": 5,
+                "slidesToScroll": 1,
+                "responsive": [
+                    {
+                        "breakpoint": 1200,
+                        "settings": {
+                            "slidesToShow": 5
+                        }
+                    },
+                    {
+                        "breakpoint": 992,
+                        "settings": {
+                            "slidesToShow": 4
+                        }
+                    },
+                    {
+                        "breakpoint": 768,
+                        "settings": {
+                            "slidesToShow": 3
+                        }
+                    },
+                    {
+                        "breakpoint": 600,
+                        "settings": {
+                            "slidesToShow": 2
+                        }
+                    },
+                    {
+                        "breakpoint": 480,
+                        "settings": {
+                            "slidesToShow": 1
+                        }
+                    }
+                ]
             }
         }
     }
@@ -47,7 +88,8 @@
     }
 
     .shimmer-card {
-        margin: 0px 10px 50px 10px;
+        width: 100%;
+        margin: 10px;
         padding: 30px 40px;
         border: 2px solid #fff;
         box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);

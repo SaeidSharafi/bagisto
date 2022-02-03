@@ -1,9 +1,6 @@
 <template>
     <div class="w-100">
-        <shimmer-component v-if="isLoading"></shimmer-component>
-
-        <template v-else-if="productCollections.length > 0">
-
+        <template v-if="hasProduct">
             <div class="row no-gutters carousel-products">
                 <div class="col-md-3 col-lg-2 d-none d-md-block">
                     <div class="category-header"
@@ -21,6 +18,7 @@
 
                 </div>
                 <div class="col-12 col-md-9 col-lg-10">
+                    <shimmer-component v-if="isLoading"></shimmer-component>
                     <div class="w-100 " :class="localeDirection">
                         <slick-carousel
 
@@ -73,6 +71,7 @@ export default {
 
     data: function () {
         return {
+            hasProduct: true,
             list: false,
             isLoading: true,
             isCategory: false,
@@ -159,7 +158,9 @@ export default {
                     } else {
                         this.productCollections = 0;
                     }
-
+                    if (this.productCollections.length <= 0){
+                        this.hasProduct =false;
+                    }
                     this.isLoading = false;
                 })
                 .catch(error => {
