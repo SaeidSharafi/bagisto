@@ -49,7 +49,10 @@ nav#top {
     margin-left: 0;
     margin-right: 280px;
 }
-
+.ignore-padding{
+    margin-right: -15px;
+    margin-left: -15px;
+}
 nav .logo {
     height: 50px;
     padding-left: 10px;
@@ -629,5 +632,11 @@ img.cover {
         span.teacher-honorific {
             margin-bottom: 5px;
         }
+    }
+}
+.contracts-carousel{
+    .contract-image {
+        margin: 10px auto;
+        max-width: 150px;
     }
 }

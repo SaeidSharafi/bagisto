@@ -4,7 +4,7 @@
             v-bind="sliderSetting">
             <div
                 :id="`slide-${index}`"
-                v-for="index in 10">
+                v-for="index in 12">
                 <div class="contract-image">
                     <img src="images/contr-1.png" class="w-100">
                 </div>
@@ -47,37 +47,37 @@ export default {
             "autoplay": true,
             "speed": 1000,
             "rtl":(this.localeDirection === 'rtl'),
-            "slidesToShow": 5,
+            "slidesToShow": 10,
             "slidesToScroll": 1,
             "responsive": [
                 {
                     "breakpoint": 1200,
                     "settings": {
-                        "slidesToShow": 5
+                        "slidesToShow": 10
                     }
                 },
                 {
                     "breakpoint": 992,
                     "settings": {
-                        "slidesToShow": 4
+                        "slidesToShow": 8
                     }
                 },
                 {
                     "breakpoint": 768,
                     "settings": {
-                        "slidesToShow": 3
+                        "slidesToShow": 7
                     }
                 },
                 {
                     "breakpoint": 600,
                     "settings": {
-                        "slidesToShow": 2
+                        "slidesToShow": 4
                     }
                 },
                 {
                     "breakpoint": 480,
                     "settings": {
-                        "slidesToShow": 1
+                        "slidesToShow": 3
                     }
                 }
             ]
