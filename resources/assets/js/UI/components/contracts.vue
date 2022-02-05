@@ -6,7 +6,7 @@
                 :id="`slide-${index}`"
                 v-for="index in 12">
                 <div class="contract-image">
-                    <img src="images/contr-1.png" class="w-100">
+                    <img :src="`images/shop/contracts/cont${Math.floor(Math.random() *4) +1}.png`" class="w-100">
                 </div>
             </div>
         </slick-carousel>

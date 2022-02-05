@@ -102,6 +102,6 @@
     </div>
     @include('shop.quotes')
     @include('shop.teachers')
-    @include('shop.contratcs')
+    @include('shop.contracts')
 @endsection
 
