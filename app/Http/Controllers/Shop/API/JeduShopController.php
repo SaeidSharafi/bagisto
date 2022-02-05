@@ -41,12 +41,15 @@ class JeduShopController
         switch ($slug) {
             case 'new-products':
             case 'featured-products':
+            case 'free-products':
                 $count = request()->get('count');
 
                 if ($slug == "new-products") {
                     $products = $this->velocityProductRepository->getNewProducts($count);
                 } else if ($slug == "featured-products") {
                     $products = $this->velocityProductRepository->getFeaturedProducts($count);
+                }else if ($slug == "free-products") {
+                    $products = $this->velocityProductRepository->getFreeProducts($count);
                 }
 
                 $response = [

@@ -185,6 +185,7 @@ class ProductController extends Controller
         ]);
         Cache::forget('featured_products');
         Cache::forget('new_products');
+        Cache::forget('free_products');
         $product = $this->productRepository->create(request()->all());
 
         session()->flash('success', trans('admin::app.response.create-success', ['name' => 'Product']));
@@ -221,6 +222,7 @@ class ProductController extends Controller
         $data = request()->all();
         Cache::forget('featured_products');
         Cache::forget('new_products');
+        Cache::forget('free_products');
         $multiselectAttributeCodes = array();
 
         $productAttributes = $this->productRepository->findOrFail($id);
