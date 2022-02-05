@@ -1,6 +1,3 @@
-@php
-    $direction = core()->getCurrentLocale()->direction == 'rtl' ? 'rtl' : 'ltr';
-@endphp
 <div class="qoutes">
     <h4>
         درباره ما چه میگویند
