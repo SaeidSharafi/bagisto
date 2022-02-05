@@ -1,12 +1,9 @@
 <div class="footer">
     <div class="footer-content">
+        @include('shop.footer.maps')
 
-        @include('shop::layouts.footer.newsletter-subscription')
-        @include('shop::layouts.footer.footer-links')
+        @include('shop.footer.main')
 
-        {{-- @if ($categories)
-            @include('shop::layouts.footer.top-brands')
-        @endif --}}
 
         @if (core()->getConfigData('general.content.footer.footer_toggle'))
             @include('shop::layouts.footer.copy-right')

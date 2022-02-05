@@ -23,7 +23,9 @@ select {
 body {
     background: $main-bg;
 }
-
+a{
+    transition: color 150ms ease-in;
+}
 a:hover {
     text-decoration: none !important;
 }
@@ -638,5 +640,34 @@ img.cover {
     .contract-image {
         margin: 10px auto;
         max-width: 150px;
+    }
+}
+.footer {
+    .footer-content{
+        >.map-container{
+            background-color: #f4f4f4;
+            padding: 50px;
+        }
+        >.footer-statics{
+            background-color: #222;
+            color: #999;
+            padding: 1rem 1rem;
+            a{
+                color: #999;
+                &:hover{
+                    color: #ffffff;
+                }
+            }
+            .info-line {
+                display: flex;
+                align-items: baseline;
+                i {
+                    padding: 0 5px;
+                }
+            }
+            ul.contact-info{
+                list-style: none;
+            }
+        }
     }
 }
