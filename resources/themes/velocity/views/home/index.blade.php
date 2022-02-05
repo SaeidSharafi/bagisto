@@ -85,7 +85,7 @@
 
     @include('shop::home.about-us')
     @include('shop::home.category-carousel')
-    <div class="full-content-wrapper">
+    <div class="full-content-wrapper py-3">
         {!! view_render_event('bagisto.shop.home.content.before') !!}
 
             @if ($velocityMetaData)

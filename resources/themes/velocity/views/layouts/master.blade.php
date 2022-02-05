@@ -35,7 +35,7 @@
 
     <body @if (core()->getCurrentLocale() && core()->getCurrentLocale()->direction == 'rtl') class="rtl" @endif>
         {!! view_render_event('bagisto.shop.layout.body.before') !!}
-
+        <div id="wrapper">
         {{-- main app --}}
         <div id="app">
             <product-quick-view v-if="$root.quickView"></product-quick-view>
@@ -112,7 +112,7 @@
 
         {{-- alert container --}}
         <div id="alert-container"></div>
-
+        </div>
         {{-- all scripts --}}
         @include('shop::layouts.scripts')
 {{--        {!! view_render_event('bagisto.shop.layout.body.after') !!}--}}
