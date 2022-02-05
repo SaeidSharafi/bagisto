@@ -96,6 +96,7 @@ Vue.component('sms-timer', () => import('@Components/sms-timer'));
 Vue.component('category-carousel', () => import('@Components/category-carousel'));
 Vue.component('teacher-collections', () => import('@Components/teacher-collections'));
 Vue.component('qoutes', () => import('@Components/qoutes'));
+Vue.component('contracts', () => import('@Components/contracts'));
 Vue.component('vnode-injector', {
     functional: true,
     props: ['nodes'],

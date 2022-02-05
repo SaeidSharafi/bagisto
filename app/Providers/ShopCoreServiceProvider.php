@@ -37,5 +37,6 @@ class ShopCoreServiceProvider extends ServiceProvider
     public function boot()
     {
         include __DIR__ . '/../Http/helper.php';
+        view()->share('direction', core()->getCurrentLocale()->direction);
     }
 }
