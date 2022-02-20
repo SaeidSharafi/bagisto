@@ -8,11 +8,11 @@
             <div
                 :id="`slide-${index}`"
                 v-for="(category, index) in slicedCategories">
-                <div class="category-item"  v-if="category.image">
+                <div class="category-item"  v-if="category.category_icon_path">
                     <a
                         :href="`${$root.baseUrl}/${category.slug}`"
                         class="category"
-                    :style="{'background-image': 'url('+ `${$root.baseUrl}/storage/${category.image}` + ')'}">
+                    :style="{'background-image': 'url('+ `${$root.baseUrl}/storage/${category.category_icon_path}` + ')'}">
                         {{category.name}}
                     </a>
                 </div>
@@ -115,6 +115,7 @@
 
             formatCategories: function (categories) {
                 let slicedCategories = categories;
+                console.log(slicedCategories);
                 let categoryCount = this.categoryCount ? this.categoryCount : 9;
 
                 if (

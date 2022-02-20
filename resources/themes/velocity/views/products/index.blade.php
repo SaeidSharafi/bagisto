@@ -49,10 +49,34 @@
             'products_and_description'
         ]
     );
+    $style = '';
+    if ($category->image_url){
+        $style = "background-image: url('$category->image_url')";
+    }
+
 @endphp
 
 @section('content-wrapper')
+
+    <div class="w-100 category-banner position-relative">
+        <div class="w-100 banner-image"
+        style="{{$style}}">
+        </div>
+        <div class="banner-detail">
+            <h2 class="fw6 mb10">{{ $category->name }}</h2>
+
+            @if ($isDescriptionDisplayMode)
+                @if ($category->description)
+                    <div class="category-description">
+                        {!! $category->description !!}
+                    </div>
+                @endif
+            @endif
+        </div>
+        <div class="{{$category->image_url ? 'filter dark': ''}}"></div>
+    </div>
     <category-component></category-component>
+
 @stop
 
 @push('scripts')
@@ -65,27 +89,6 @@
             @endif
 
             <div class="category-container right">
-                <div class="row remove-padding-margin">
-                    <div class="pl0 col-12">
-                        <h2 class="fw6 mb10">{{ $category->name }}</h2>
-
-                        @if ($isDescriptionDisplayMode)
-                            @if ($category->description)
-                                <div class="category-description">
-                                    {!! $category->description !!}
-                                </div>
-                            @endif
-                        @endif
-                    </div>
-
-                    <div class="col-12 no-padding">
-                        <div class="hero-image">
-                            @if (!is_null($category->image))
-                                <img class="logo" src="{{ $category->image_url }}" alt="" width="20" height="20"/>
-                            @endif
-                        </div>
-                    </div>
-                </div>
 
                 @if ($isProductsDisplayMode)
                     <div class="filters-container">

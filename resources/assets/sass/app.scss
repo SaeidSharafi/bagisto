@@ -3,6 +3,7 @@
 @import 'fonts';
 @import 'ui';
 @import 'slide';
+@import 'util';
 @import "node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
 @import "~@fortawesome/fontawesome-free/scss/regular";
 @import "~@fortawesome/fontawesome-free/scss/solid";
@@ -263,9 +264,30 @@ img.cover {
         }
     }
 }
-
+.category-banner{
+    height: 200px;
+    color: #ffff;
+    .banner-image{
+        background: $purple-grad no-repeat center center;
+        background-size: cover;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: -1;
+        img{
+            object-fit: cover;
+        }
+    }
+    .banner-detail{
+        padding: 1rem;
+    }
+}
 .category-carousel {
-
+    &.sticky-header{
+        top: 50px;
+        background-color:#000000 ;
+    }
     .category-item {
         padding: 0.5rem 0.9rem;
 
@@ -279,6 +301,9 @@ img.cover {
             justify-content: center;
             font-size: 2rem;
             color: transparent;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center center;
             transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
 
             &:hover,
