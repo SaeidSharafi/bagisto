@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Listeners\Category;
 use App\Listeners\Order;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
@@ -15,11 +16,12 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-     protected $listen = [
-         'sales.order.comment.create.after' => [
-             [Order::class,'sendOrderCommentSms']
-         ],
-     ];
+    protected $listen
+        = [
+            'sales.order.comment.create.after' => [
+                [Order::class, 'sendOrderCommentSms']
+            ],
+        ];
 
     /**
      * Register any events for your application.
@@ -29,5 +31,18 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
+        Event::listen([
+            'bagisto.admin.catalog.category.edit_form_accordian.description_images.controls.after',
+            'bagisto.admin.catalog.category.create_form_accordian.description_images.controls.after',
+        ], function ($viewRenderEventManager) {
+            $viewRenderEventManager->addTemplate(
+                'velocity::admin.catelog.categories.category-banner'
+            );
+        }
+        );
+        Event::listen([
+            'catalog.category.create.after',
+            'catalog.category.update.after',
+        ], [Category::class, 'storeCategoryBanner']);
     }
 }

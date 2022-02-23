@@ -2,47 +2,57 @@
 
 
     <div class="right searchbar">
-            <div class="row m-0">
-                <div class="col-lg-7 col-md-12">
-                    <div class="main-nav">
-                        <ul type="none" class="no-margin">
-                            <li class="top-level"><a href="/" target="_self">صفحه اصلی</a> </li>
-                                <li class="top-level"><a href="{{route("customer.auth.create")}}" target="_self">لیست دوره‌ها</a></li>
-                                <li class="top-level"><a href="{{route("customer.auth.create")}}" target="_self">درباره ما</a></li>
-                                <li class="top-level"><a href="{{route("customer.auth.create")}}" target="_self">گواهی نامه</a></li>
-                                <li class="top-level login"><a href="{{route("customer.auth.create")}}" target="_self">ورود</a></li>
+        <div class="row m-0">
+            <div class="col-lg-7 col-md-12">
+                <div class="main-nav">
+                    <ul type="none" class="no-margin">
+                        <li class="top-level">
+                            <sidebar-header heading="{{ __('shop.header.categories') }}">
 
-                        </ul>
-                    </div>
+                                {{-- this is default content if js is not loaded --}}
+                                <div class="main-category fs16 unselectable fw6 left">
+                                    <i class="rango-view-list text-down-4 align-vertical-top fs18"></i>
+
+                                    <span class="pr5">{{ __('shop.header.categories') }}</span>
+                                </div>
+
+                            </sidebar-header>
+                        </li>
+                        <li class="top-level"><a href="{{route("customer.auth.create")}}" target="_self">درباره ما</a></li>
+                        <li class="top-level"><a href="{{route("customer.auth.create")}}" target="_self">گواهی نامه</a></li>
+                        <li class="top-level login"><a href="{{route("customer.auth.create")}}" target="_self">ورود</a></li>
+
+                    </ul>
                 </div>
-                <div class="col-lg-4 col-md-12">
-                    @include('velocity::layouts.particals.search-bar')
-                </div>
+            </div>
+            <div class="col-lg-4 col-md-12">
+                @include('velocity::layouts.particals.search-bar')
+            </div>
 
-                <div class="col-lg-1 col-md-1 vc-full-screen">
-                    <div class="left-wrapper">
+            <div class="col-lg-1 col-md-1 vc-full-screen">
+                <div class="left-wrapper">
 
-                        {!! view_render_event('bagisto.shop.layout.header.wishlist.before') !!}
+                    {!! view_render_event('bagisto.shop.layout.header.wishlist.before') !!}
 
-                            @include('velocity::layouts.particals.wishlist', ['isText' => false])
+                    @include('velocity::layouts.particals.wishlist', ['isText' => false])
 
-                        {!! view_render_event('bagisto.shop.layout.header.wishlist.after') !!}
+                    {!! view_render_event('bagisto.shop.layout.header.wishlist.after') !!}
 
-                        {!! view_render_event('bagisto.shop.layout.header.compare.before') !!}
+                    {!! view_render_event('bagisto.shop.layout.header.compare.before') !!}
 
-                            @include('velocity::layouts.particals.compare', ['isText' => false])
+                    @include('velocity::layouts.particals.compare', ['isText' => false])
 
-                        {!! view_render_event('bagisto.shop.layout.header.compare.after') !!}
+                    {!! view_render_event('bagisto.shop.layout.header.compare.after') !!}
 
-                        {!! view_render_event('bagisto.shop.layout.header.cart-item.before') !!}
+                    {!! view_render_event('bagisto.shop.layout.header.cart-item.before') !!}
 
-                            @include('shop::checkout.cart.mini-cart', ['isText' => false])
+                    @include('shop::checkout.cart.mini-cart', ['isText' => false])
 
-                        {!! view_render_event('bagisto.shop.layout.header.cart-item.after') !!}
-                    </div>
+                    {!! view_render_event('bagisto.shop.layout.header.cart-item.after') !!}
                 </div>
             </div>
         </div>
+    </div>
 
 </header>
 

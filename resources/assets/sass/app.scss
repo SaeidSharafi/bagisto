@@ -100,7 +100,7 @@ nav .logo {
 
 .main-container-wrapper .sticky-header {
     background: $main-bg;
-    height: auto;
+    height: 55px;
 }
 
 header {
@@ -109,7 +109,7 @@ header {
 
         ul {
             width: 100%;
-            height: 100%;
+            height: 55px;
             white-space: nowrap;
             display: -webkit-inline-box;
             display: -ms-inline-flexbox;
@@ -119,7 +119,28 @@ header {
 
         li {
             vertical-align: middle;
+            height: 55px;
+            display: flex;
+            align-items: center;
 
+            #main-category{
+                height: 55px;
+                line-height: 55px;
+                display: flex;
+                align-items: baseline;
+                transition: all 0.3s;
+                cursor: pointer;
+                font-size: 15px;
+                font-weight: 600;
+                letter-spacing: 0;
+                position: relative;
+                color: #222;
+                text-decoration: none;
+                padding: 0 15px;
+                &:hover {
+                    color: #9b26af;
+                }
+            }
             a {
                 transition: all 0.3s;
                 display: block;
@@ -131,7 +152,7 @@ header {
                 position: relative;
                 color: #222;
                 text-decoration: none;
-                line-height: initial;
+                line-height: 55px;
 
                 &:hover {
                     color: #9b26af;
@@ -152,9 +173,13 @@ header {
             color: #fff;
             margin: 0 8px;
             text-align: center;
+            height: 35px;
+            display: flex;
+            align-items: center;
 
             a {
                 color: #ffffff;
+                line-height: initial;
             }
 
             &:hover a {
@@ -694,6 +719,22 @@ img.cover {
         max-width: 150px;
     }
 }
+
+.product-banner{
+    background: url("images/shop/product-banner.jpg") top center no-repeat transparent;
+    background-size: cover;
+
+}
+
+
+
+
+
+
+
+
+
+
 .footer {
     .footer-content{
         >.map-container{

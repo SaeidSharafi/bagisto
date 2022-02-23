@@ -53,7 +53,7 @@
 
                     {!! view_render_event('bagisto.shop.layout.header.after') !!}
 
-                    <div class="main-content-wrapper col-12 no-padding">
+                    <div class="main-content-wrapper col-12 no-padding d-block">
 
                         {{-- secondary header --}}
                         <header class="row velocity-divide-page vc-header header-shadow active">
@@ -66,23 +66,32 @@
 
                         </header>
 
-                        <div class="">
-                            <div class="row col-12 remove-padding-margin">
+                        <div >
+                            <div class="w-100 remove-padding-margin">
+                                <sidebar-component
+                                    main-sidebar=true
+                                    id="sidebar-level-0"
+                                    url="{{ url()->to('/') }}"
+                                    category-count="{{ $velocityMetaData ? $velocityMetaData->sidebar_category_count : 10 }}"
+                                    add-class="category-list-container pt10">
+                                </sidebar-component>
+                            </div>
+                            <div class="w-100">
+                                @yield('full-width-content')
+                            </div>
+                            <div class="col-12 no-padding content" id="home-right-bar-container">
+                                <div class="container-right row no-margin col-12 no-padding">
+                                    {!! view_render_event('bagisto.shop.layout.content.before') !!}
 
+                                    @yield('content-wrapper')
 
-                                <div class="col-12 no-padding content" id="home-right-bar-container">
-                                    <div class="container-right row no-margin col-12 no-padding">
-                                        {!! view_render_event('bagisto.shop.layout.content.before') !!}
-
-                                            @yield('content-wrapper')
-
-                                        {!! view_render_event('bagisto.shop.layout.content.after') !!}
-                                    </div>
+                                    {!! view_render_event('bagisto.shop.layout.content.after') !!}
                                 </div>
                             </div>
                         </div>
                     </div>
                 @show
+
                 <div class="container-fluid">
                     @yield('full-content-wrapper-fluid')
                 </div>

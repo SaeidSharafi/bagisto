@@ -50,10 +50,9 @@
         ]
     );
     $style = '';
-    if ($category->image_url){
-        $style = "background-image: url('$category->image_url')";
+    if ($category->category_banner){
+        $style = "background-image: url('$category->category_banner')";
     }
-
 @endphp
 
 @section('content-wrapper')
@@ -73,7 +72,7 @@
                 @endif
             @endif
         </div>
-        <div class="{{$category->image_url ? 'filter dark': ''}}"></div>
+        <div class="{{$category->category_banner ? 'filter dark': ''}}"></div>
     </div>
     <category-component></category-component>
 
