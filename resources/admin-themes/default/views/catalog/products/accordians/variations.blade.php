@@ -59,7 +59,6 @@
 </modal>
 
 @push('scripts')
-    @parent
 
     <script type="text/x-template" id="variant-form-template">
         <form method="POST" action="{{ route('admin.catalog.products.store') }}"

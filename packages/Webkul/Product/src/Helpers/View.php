@@ -26,7 +26,7 @@ class View extends AbstractProduct
             }
 
             if ($attribute->type == 'boolean') {
-                $value = $value ? 'Yes' : 'No';
+                $value = $value ? trans('shop.general.yes') : trans('shop.general.no');
             } elseif($value) {
                 if ($attribute->type == 'select') {
                     $attributeOption = $attributeOptionReposotory->find($value);
@@ -60,6 +60,7 @@ class View extends AbstractProduct
                 'value'      => $value,
                 'admin_name' => $attribute->admin_name,
                 'type'       => $attribute->type,
+                'group'       => $attribute->group_name,
             ];
         }
 

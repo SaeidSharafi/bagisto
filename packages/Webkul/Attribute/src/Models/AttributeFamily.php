@@ -17,11 +17,12 @@ class AttributeFamily extends Model implements AttributeFamilyContract
      */
     public function custom_attributes()
     {
+
         return (AttributeProxy::modelClass())::join('attribute_group_mappings', 'attributes.id', '=', 'attribute_group_mappings.attribute_id')
             ->join('attribute_groups', 'attribute_group_mappings.attribute_group_id', '=', 'attribute_groups.id')
             ->join('attribute_families', 'attribute_groups.attribute_family_id', '=', 'attribute_families.id')
             ->where('attribute_families.id', $this->id)
-            ->select('attributes.*');
+            ->select('attributes.*','attribute_groups.code as group_code');
     }
 
 

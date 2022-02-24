@@ -2,6 +2,7 @@
 
 @inject ('reviewHelper', 'Webkul\Product\Helpers\Review')
 @inject ('customHelper', 'Webkul\Velocity\Helpers\Helper')
+@inject ('productViewHelper', 'Webkul\Product\Helpers\View')
 
 @php
     $total = $reviewHelper->getTotalReviews($product);
@@ -15,6 +16,17 @@
     foreach ($images as $key => $image) {
         array_push($productImages, $image['medium_image_url']);
     }
+    $style = '';
+
+    if ($product->banner){
+        $url = Storage::url($product->banner);
+        $style = "background-image: url('$url')";
+    }
+     $customAttributeValues = $productViewHelper->getAdditionalData($product);
+$teacher = collect($customAttributeValues)->first( function ($value,$key){
+    return $value['code'] =="teacher";
+})['value'];
+
 @endphp
 
 @section('page_title')
@@ -22,7 +34,8 @@
 @stop
 
 @section('seo')
-    <meta name="description" content="{{ trim($product->meta_description) != "" ? $product->meta_description : \Illuminate\Support\Str::limit(strip_tags($product->description), 120, '') }}"/>
+    <meta name="description"
+          content="{{ trim($product->meta_description) != "" ? $product->meta_description : \Illuminate\Support\Str::limit(strip_tags($product->description), 120, '') }}"/>
 
     <meta name="keywords" content="{{ $product->meta_keywords }}"/>
 
@@ -34,29 +47,29 @@
 
     <?php $productBaseImage = productimage()->getProductBaseImage($product, $images); ?>
 
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:card" content="summary_large_image"/>
 
-    <meta name="twitter:title" content="{{ $product->name }}" />
+    <meta name="twitter:title" content="{{ $product->name }}"/>
 
-    <meta name="twitter:description" content="{{ $product->description }}" />
+    <meta name="twitter:description" content="{{ $product->description }}"/>
 
-    <meta name="twitter:image:alt" content="" />
+    <meta name="twitter:image:alt" content=""/>
 
-    <meta name="twitter:image" content="{{ $productBaseImage['medium_image_url'] }}" />
+    <meta name="twitter:image" content="{{ $productBaseImage['medium_image_url'] }}"/>
 
-    <meta property="og:type" content="og:product" />
+    <meta property="og:type" content="og:product"/>
 
-    <meta property="og:title" content="{{ $product->name }}" />
+    <meta property="og:title" content="{{ $product->name }}"/>
 
-    <meta property="og:image" content="{{ $productBaseImage['medium_image_url'] }}" />
+    <meta property="og:image" content="{{ $productBaseImage['medium_image_url'] }}"/>
 
-    <meta property="og:description" content="{{ $product->description }}" />
+    <meta property="og:description" content="{{ $product->description }}"/>
 
-    <meta property="og:url" content="{{ route('shop.productOrCategory.index', $product->url_key) }}" />
+    <meta property="og:url" content="{{ route('shop.productOrCategory.index', $product->url_key) }}"/>
 @stop
 
 @push('css')
-    <style type="text/css">
+    <style>
         .related-products {
             width: 100%;
         }
@@ -79,139 +92,156 @@
         }
     </style>
 @endpush
+@section('full-width-content')
+    <div class="product-banner w-100 position-relative">
+        <div class="banner-image w-100" style="{{$style}}"></div>
+        <div class="d-flex flex-wrap align-items-center h-100 banner-detail">
+            <div class="px-4 font-weight-bold">
+                <span class="course-label"> {{__('shop.course')}}</span>
+                <span class="course-name">{{$product->name}}</span>
+            </div>
+            <div class="px-4">
+                <span class="teacher-label"> {{__('shop.teacher')}}</span>
+                <span class="teacher-name">{{$teacher}}</span>
+            </div>
+        </div>
 
+        <div class="filter dark"></div>
+    </div>
+@endsection
 @section('full-content-wrapper')
     {!! view_render_event('bagisto.shop.products.view.before', ['product' => $product]) !!}
-        <div class="row no-margin">
-            <section class="col-12 product-detail">
-                <div class="layouter">
-                    <product-view>
-                        <div class="form-container">
-                            @csrf()
+    <div class="row no-margin">
+        <section class="col-12 product-detail">
+            <div class="layouter">
+                <product-view>
+                    <div class="form-container">
+                        @csrf()
 
-                            <input type="hidden" name="product_id" value="{{ $product->product_id }}">
+                        <input type="hidden" name="product_id" value="{{ $product->product_id }}">
 
-                            <div class="row">
-                                {{-- product-gallery --}}
-                                <div class="left col-lg-5 col-md-6">
-                                    @include ('shop::products.view.gallery')
-                                </div>
+                        <div class="row">
+                            {{-- product-gallery --}}
+                            <div class="left col-lg-5 col-md-6">
+                                @include ('shop::products.view.gallery')
+                            </div>
 
-                                {{-- right-section --}}
-                                <div class="right col-lg-7 col-md-6">
-                                    {{-- product-info-section --}}
-                                    <div class="row info">
-                                        <h2 class="col-12">{{ $product->name }}</h2>
+                            {{-- right-section --}}
+                            <div class="right col-lg-7 col-md-6">
+                                {{-- product-info-section --}}
+                                <div class="row info">
+                                    <h2 class="col-12">{{ $product->name }}</h2>
 
-                                        @if ($total)
-                                            <div class="reviews col-lg-12">
-                                                <star-ratings
-                                                    push-class="mr5"
-                                                    :ratings="{{ $avgStarRating }}"
-                                                ></star-ratings>
+                                    @if ($total)
+                                        <div class="reviews col-lg-12">
+                                            <star-ratings
+                                                push-class="mr5"
+                                                :ratings="{{ $avgStarRating }}"
+                                            ></star-ratings>
 
-                                                <div class="reviews">
+                                            <div class="reviews">
                                                     <span>
                                                         {{ __('shop::app.reviews.ratingreviews', [
                                                             'rating' => $avgRatings,
                                                             'review' => $total])
                                                         }}
                                                     </span>
-                                                </div>
                                             </div>
-                                        @endif
+                                        </div>
+                                    @endif
 
-                                        @include ('shop::products.view.stock', ['product' => $product])
+                                    @include ('shop::products.view.stock', ['product' => $product])
 
-                                        <div class="col-12 price">
-                                            @include ('shop::products.price', ['product' => $product])
+                                    <div class="col-12 price">
+                                        @include ('shop::products.price', ['product' => $product])
 
-                                            @if (Webkul\Tax\Helpers\Tax::isTaxInclusive() && $product->getTypeInstance()->getTaxCategory())
-                                                <span>
+                                        @if (Webkul\Tax\Helpers\Tax::isTaxInclusive() && $product->getTypeInstance()->getTaxCategory())
+                                            <span>
                                                     {{ __('velocity::app.products.tax-inclusive') }}
                                                 </span>
-                                            @endif
-                                        </div>
-
-                                        @if (count($product->getTypeInstance()->getCustomerGroupPricingOffers()) > 0)
-                                            <div class="col-12">
-                                                @foreach ($product->getTypeInstance()->getCustomerGroupPricingOffers() as $offers)
-                                                    {{ $offers }} </br>
-                                                @endforeach
-                                            </div>
                                         @endif
-
-                                        <div class="product-actions">
-                                            @if (core()->getConfigData('catalog.products.storefront.buy_now_button_display'))
-                                                @include ('shop::products.buy-now', [
-                                                    'product' => $product,
-                                                ])
-                                            @endif
-
-                                            @include ('shop::products.add-to-cart', [
-                                                'form' => false,
-                                                'product' => $product,
-                                                'showCartIcon' => false,
-                                                'showCompare' => core()->getConfigData('general.content.shop.compare_option') == "1"
-                                                                ? true : false,
-                                            ])
-                                        </div>
                                     </div>
 
-                                    {!! view_render_event('bagisto.shop.products.view.short_description.before', ['product' => $product]) !!}
-
-                                    @if ($product->short_description)
-                                        <div class="description">
-                                            <h3 class="col-lg-12">{{ __('velocity::app.products.short-description') }}</h3>
-
-                                            {!! $product->short_description !!}
+                                    @if (count($product->getTypeInstance()->getCustomerGroupPricingOffers()) > 0)
+                                        <div class="col-12">
+                                            @foreach ($product->getTypeInstance()->getCustomerGroupPricingOffers() as $offers)
+                                            {{ $offers }} </br>
+                                            @endforeach
                                         </div>
                                     @endif
 
-                                    {!! view_render_event('bagisto.shop.products.view.short_description.after', ['product' => $product]) !!}
+                                    <div class="product-actions">
+                                        @if (core()->getConfigData('catalog.products.storefront.buy_now_button_display'))
+                                            @include ('shop::products.buy-now', [
+                                                'product' => $product,
+                                            ])
+                                        @endif
 
-
-                                    {!! view_render_event('bagisto.shop.products.view.quantity.before', ['product' => $product]) !!}
-
-                                    @if ($product->getTypeInstance()->showQuantityBox() && false)
-                                        <div>
-                                            <quantity-changer quantity-text="{{ __('shop::app.products.quantity') }}"></quantity-changer>
-                                        </div>
-                                    @else
-                                        <input type="hidden" name="quantity" value="1">
-                                    @endif
-
-                                    {!! view_render_event('bagisto.shop.products.view.quantity.after', ['product' => $product]) !!}
-
-                                    @include ('shop::products.view.configurable-options')
-
-                                    @include ('shop::products.view.downloadable')
-
-                                    @include ('shop::products.view.grouped-products')
-
-                                    @include ('shop::products.view.bundle-options')
-
-                                    @include ('shop::products.view.attributes', [
-                                        'active' => true
-                                    ])
-
-                                    {{-- product long description --}}
-                                    @include ('shop::products.view.description')
-
-                                    {{-- reviews count --}}
-                                    @include ('shop::products.view.reviews', ['accordian' => true])
+                                        @include ('shop::products.add-to-cart', [
+                                            'form' => false,
+                                            'product' => $product,
+                                            'showCartIcon' => false,
+                                            'showCompare' => core()->getConfigData('general.content.shop.compare_option') == "1"
+                                                            ? true : false,
+                                        ])
+                                    </div>
                                 </div>
+
+                                {!! view_render_event('bagisto.shop.products.view.short_description.before', ['product' => $product]) !!}
+
+                                @if ($product->short_description)
+                                    <div class="description">
+                                        <h3 class="col-lg-12">{{ __('velocity::app.products.short-description') }}</h3>
+
+                                        {!! $product->short_description !!}
+                                    </div>
+                                @endif
+
+                                {!! view_render_event('bagisto.shop.products.view.short_description.after', ['product' => $product]) !!}
+
+
+                                {!! view_render_event('bagisto.shop.products.view.quantity.before', ['product' => $product]) !!}
+
+                                @if ($product->getTypeInstance()->showQuantityBox() && false)
+                                    <div>
+                                        <quantity-changer quantity-text="{{ __('shop::app.products.quantity') }}"></quantity-changer>
+                                    </div>
+                                @else
+                                    <input type="hidden" name="quantity" value="1">
+                                @endif
+
+                                {!! view_render_event('bagisto.shop.products.view.quantity.after', ['product' => $product]) !!}
+
+                                @include ('shop::products.view.configurable-options')
+
+                                @include ('shop::products.view.downloadable')
+
+                                @include ('shop::products.view.grouped-products')
+
+                                @include ('shop::products.view.bundle-options')
+
+                                @include ('shop::products.view.attributes', [
+                                    'active' => true,
+                                    'customAttributeValues'=>$customAttributeValues
+                                ])
+
+                                {{-- product long description --}}
+                                @include ('shop::products.view.description')
+
+                                {{-- reviews count --}}
+                                @include ('shop::products.view.reviews', ['accordian' => true])
                             </div>
                         </div>
-                    </product-view>
-                </div>
-            </section>
-
-            <div class="related-products">
-                @include('shop::products.view.related-products')
-                @include('shop::products.view.up-sells')
+                    </div>
+                </product-view>
             </div>
+        </section>
+
+        <div class="related-products">
+            @include('shop::products.view.related-products')
+            @include('shop::products.view.up-sells')
         </div>
+    </div>
     {!! view_render_event('bagisto.shop.products.view.after', ['product' => $product]) !!}
 @endsection
 
@@ -255,7 +285,7 @@
                 let currentProductId = '{{ $product->url_key }}';
                 let existingViewed = window.localStorage.getItem('recentlyViewed');
 
-                if (! existingViewed) {
+                if (!existingViewed) {
                     existingViewed = [];
                 } else {
                     existingViewed = JSON.parse(existingViewed);
@@ -271,7 +301,7 @@
                 } else {
                     var uniqueNames = [];
 
-                    $.each(existingViewed, function(i, el){
+                    $.each(existingViewed, function (i, el) {
                         if ($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
                     });
 
@@ -284,7 +314,7 @@
             },
 
             methods: {
-                onSubmit: function(event) {
+                onSubmit: function (event) {
                     if (event.target.getAttribute('type') != 'submit')
                         return;
 
@@ -294,7 +324,7 @@
                         if (result) {
                             this.is_buy_now = event.target.classList.contains('buynow') ? 1 : 0;
 
-                            setTimeout(function() {
+                            setTimeout(function () {
                                 document.getElementById('product-form').submit();
                             }, 0);
                         }
@@ -303,35 +333,35 @@
             }
         });
 
-        window.onload = function() {
+        window.onload = function () {
             var thumbList = document.getElementsByClassName('thumb-list')[0];
             var thumbFrame = document.getElementsByClassName('thumb-frame');
             var productHeroImage = document.getElementsByClassName('product-hero-image')[0];
 
             if (thumbList && productHeroImage) {
-                for (let i=0; i < thumbFrame.length ; i++) {
-                    thumbFrame[i].style.height = (productHeroImage.offsetHeight/4) + "px";
-                    thumbFrame[i].style.width = (productHeroImage.offsetHeight/4)+ "px";
+                for (let i = 0; i < thumbFrame.length; i++) {
+                    thumbFrame[i].style.height = (productHeroImage.offsetHeight / 4) + "px";
+                    thumbFrame[i].style.width = (productHeroImage.offsetHeight / 4) + "px";
                 }
 
                 if (screen.width > 720) {
-                    thumbList.style.width = (productHeroImage.offsetHeight/4) + "px";
-                    thumbList.style.minWidth = (productHeroImage.offsetHeight/4) + "px";
+                    thumbList.style.width = (productHeroImage.offsetHeight / 4) + "px";
+                    thumbList.style.minWidth = (productHeroImage.offsetHeight / 4) + "px";
                     thumbList.style.height = productHeroImage.offsetHeight + "px";
                 }
             }
 
-            window.onresize = function() {
+            window.onresize = function () {
                 if (thumbList && productHeroImage) {
 
-                    for(let i=0; i < thumbFrame.length; i++) {
-                        thumbFrame[i].style.height = (productHeroImage.offsetHeight/4) + "px";
-                        thumbFrame[i].style.width = (productHeroImage.offsetHeight/4)+ "px";
+                    for (let i = 0; i < thumbFrame.length; i++) {
+                        thumbFrame[i].style.height = (productHeroImage.offsetHeight / 4) + "px";
+                        thumbFrame[i].style.width = (productHeroImage.offsetHeight / 4) + "px";
                     }
 
                     if (screen.width > 720) {
-                        thumbList.style.width = (productHeroImage.offsetHeight/4) + "px";
-                        thumbList.style.minWidth = (productHeroImage.offsetHeight/4) + "px";
+                        thumbList.style.width = (productHeroImage.offsetHeight / 4) + "px";
+                        thumbList.style.minWidth = (productHeroImage.offsetHeight / 4) + "px";
                         thumbList.style.height = productHeroImage.offsetHeight + "px";
                     }
                 }

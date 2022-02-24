@@ -50,8 +50,10 @@
         ]
     );
     $style = '';
+
     if ($category->category_banner){
-        $style = "background-image: url('$category->category_banner')";
+        $url = Storage::url($category->category_banner);
+        $style = "background-image: url('$url')";
     }
 @endphp
 

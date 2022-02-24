@@ -30,6 +30,9 @@ class Category extends JsonResource
             'category_icon_path' => $this->category_icon_path
                 ? Storage::url($this->category_icon_path)
                 : null,
+            'category_banner' => $this->category_banner
+                ? Storage::url($this->category_banner)
+                : null,
             'additional'         => is_array($this->resource->additional)
                 ? $this->resource->additional
                 : json_decode($this->resource->additional, true),

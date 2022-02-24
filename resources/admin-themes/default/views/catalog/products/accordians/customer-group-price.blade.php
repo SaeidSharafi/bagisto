@@ -23,7 +23,6 @@
 {!! view_render_event('bagisto.admin.catalog.product.edit_form_accordian.customer_group_prices.after', ['product' => $product]) !!}
 
 @push('scripts')
-    @parent
 
     <script type="text/x-template" id="customer-group-price-list-template">
         <div>

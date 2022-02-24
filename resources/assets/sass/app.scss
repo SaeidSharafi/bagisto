@@ -308,6 +308,28 @@ img.cover {
         padding: 1rem;
     }
 }
+.product-banner{
+    height: 100px;
+    color: #ffff;
+    .banner-image{
+        background: $purple-grad no-repeat center center;
+        background-size: cover;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: -1;
+        img{
+            object-fit: cover;
+        }
+    }
+    .banner-detail{
+        padding: 1rem;
+        line-height: initial;
+        font-size: 1.5rem;
+    }
+}
+
 .category-carousel {
     &.sticky-header{
         top: 50px;
@@ -719,20 +741,6 @@ img.cover {
         max-width: 150px;
     }
 }
-
-.product-banner{
-    background: url("images/shop/product-banner.jpg") top center no-repeat transparent;
-    background-size: cover;
-
-}
-
-
-
-
-
-
-
-
 
 
 .footer {

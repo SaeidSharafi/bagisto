@@ -100,6 +100,12 @@
                 <div class="form-container">
                     @csrf()
 
+                    <div class="control-group" :class="[errors.has('add-group-form.groupCode') ? 'has-error' : '']">
+                        <label for="groupCode" class="required">{{ __('admin::app.catalog.families.code') }}</label>
+                        <input type="text" v-validate="'required'" v-model="group.groupCode" class="control" id="groupCode" name="groupCode" data-vv-as="&quot;{{ __('admin::app.catalog.families.name') }}&quot;"/>
+                        <span class="control-error" v-if="errors.has('add-group-form.groupCode')">@{{ errors.first('add-group-form.groupCode') }}</span>
+                    </div>
+
                     <div class="control-group" :class="[errors.has('add-group-form.groupName') ? 'has-error' : '']">
                         <label for="groupName" class="required">{{ __('admin::app.catalog.families.name') }}</label>
                         <input type="text" v-validate="'required'" v-model="group.groupName" class="control" id="groupName" name="groupName" data-vv-as="&quot;{{ __('admin::app.catalog.families.name') }}&quot;"/>
@@ -137,6 +143,7 @@
             </div>
 
             <div slot="body">
+                <input type="hidden" :name="[groupInputName + '[code]']" :value="group.code ? group.code : group.groupCode"/>
                 <input type="hidden" :name="[groupInputName + '[name]']" :value="group.name ? group.name : group.groupName"/>
                 <input type="hidden":name="[groupInputName + '[position]']" :value="group.position"/>
 
@@ -205,6 +212,7 @@
             data: function() {
                 return {
                     group: {
+                        'groupCode': '',
                         'groupName': '',
                         'position': '',
                         'custom_attributes': []
@@ -217,21 +225,20 @@
             methods: {
                 addGroup: function (formScope) {
                     var this_this = this;
-
                     this.$validator.validateAll(formScope).then(function (result) {
                         if (result) {
 
                             var filteredGroups = groups.filter(function(group) {
-                                return this_this.group.groupName.trim() === (group.name ? group.name.trim() : group.groupName.trim())
+                                return this_this.group.groupCode.trim() === (group.code ? group.code.trim() : group.groupCode.trim())
                             })
 
                             if (filteredGroups.length) {
-                                const field = this.$validator.fields.find({ name: 'groupName', scope: 'add-group-form' });
+                                const field = this_this.$validator.fields.find({ name: 'groupCode', scope: 'add-group-form' });
 
                                 if (field) {
-                                    this.$validator.errors.add({
+                                    this_this.$validator.errors.add({
                                         id: field.id,
-                                        field: 'groupName',
+                                        field: 'groupCode',
                                         msg: "{{ __('admin::app.catalog.families.group-exist-error') }}",
                                         scope: 'add-group-form',
                                     });
@@ -241,7 +248,7 @@
 
                                 groups = this_this.sortGroups();
 
-                                this.group = {'groupName': '', 'position': '', 'is_user_defined': 1, 'custom_attributes': []};
+                                this.group = {'groupCode': '','groupName': '', 'position': '', 'is_user_defined': 1, 'custom_attributes': []};
 
                                 this_this.$parent.closeModal();
                             }

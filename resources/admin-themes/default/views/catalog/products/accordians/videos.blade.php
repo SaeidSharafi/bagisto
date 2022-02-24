@@ -26,7 +26,7 @@
 {!! view_render_event('bagisto.admin.catalog.product.edit_form_accordian.videos.after', ['product' => $product]) !!}
 
 @push('scripts')
-    @parent
+
 
     <script type="text/x-template" id="product-video-template">
         <div>
@@ -67,7 +67,7 @@
         Vue.component('product-video', {
 
             template: '#product-video-template',
-            
+
             data: function() {
                 return {
                     videos: @json($product->videos),

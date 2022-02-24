@@ -1,12 +1,8 @@
-@inject ('productViewHelper', 'Webkul\Product\Helpers\View')
-
 {!! view_render_event('bagisto.shop.products.view.attributes.before', ['product' => $product]) !!}
-    @php
-        $customAttributeValues = $productViewHelper->getAdditionalData($product);
-    @endphp
+
 
     @if ($customAttributeValues)
-        <accordian :title="'{{ __('shop::app.products.specification') }}'" :active="'{{ $active }}' == true ? true : false">
+
             <div slot="header">
                 <h3 class="no-margin display-inbl">
                     {{ __('velocity::app.products.more-infomation') }}
@@ -16,7 +12,6 @@
 
             <div slot="body">
                 <table class="full-specifications">
-
                     @foreach ($customAttributeValues as $attribute)
                         <tr>
                             @if ($attribute['label'])
@@ -44,7 +39,6 @@
                     @endforeach
                 </table>
             </div>
-        </accordian>
     @endif
 
 {!! view_render_event('bagisto.shop.products.view.attributes.after', ['product' => $product]) !!}

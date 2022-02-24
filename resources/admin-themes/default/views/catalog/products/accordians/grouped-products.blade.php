@@ -33,7 +33,6 @@
 {!! view_render_event('bagisto.admin.catalog.product.edit_form_accordian.grouped_products.after', ['product' => $product]) !!}
 
 @push('scripts')
-    @parent
 
     <script type="text/x-template" id="grouped-product-list-template">
         <div>
@@ -58,7 +57,7 @@
                     </ul>
                 </div>
             </div>
-            
+
             <div class="table" style="margin-top: 20px; overflow-x: unset;">
                 <table>
 
@@ -140,7 +139,7 @@
             methods: {
                 addGroupedProduct: function(item, key) {
                     var alreadyAdded = false;
-                    
+
                     this.grouped_products.forEach(function(groupProduct) {
                         if (item.id == groupProduct.associated_product.id) {
                             alreadyAdded = true;
@@ -178,7 +177,7 @@
                     }
 
                     var this_this = this;
-                    
+
                     this.$http.get ("{{ route('admin.catalog.products.search_simple_product') }}", {params: {query: this.search_term}})
                         .then (function(response) {
                             this_this.searched_results = response.data;

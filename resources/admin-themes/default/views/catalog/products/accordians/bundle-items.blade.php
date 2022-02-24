@@ -13,7 +13,7 @@
 </accordian>
 
 @push('scripts')
-    @parent
+
 
     <script type="text/x-template" id="bundle-option-list-template">
         <div class="">
@@ -21,7 +21,7 @@
                 {{ __('admin::app.catalog.products.add-option-btn-title') }}
             </button>
 
-            <bundle-option-item 
+            <bundle-option-item
                 v-for='(option, index) in options'
                 :option="option"
                 :key="index"
@@ -45,7 +45,7 @@
                     <label class="required">{{ __('admin::app.catalog.products.option-title') }}</label>
 
                     <input type="text" v-validate="'required'" :name="titleInputName + '[label]'" v-model="option.label" class="control" data-vv-as="&quot;{{ __('admin::app.catalog.products.option-title') }}&quot;"/>
-                    
+
                     <span class="control-error" v-if="errors.has(titleInputName + '[label]')">@{{ errors.first(titleInputName + '[label]') }}</span>
                 </div>
 
@@ -58,7 +58,7 @@
                         <option value="checkbox">{{ __('admin::app.catalog.products.checkbox') }}</option>
                         <option value="multiselect">{{ __('admin::app.catalog.products.multiselect') }}</option>
                     </select>
-                    
+
                     <span class="control-error" v-if="errors.has(inputName + '[type]')">@{{ errors.first(inputName + '[type]') }}</span>
                 </div>
 
@@ -69,7 +69,7 @@
                         <option value="1">{{ __('admin::app.catalog.products.yes') }}</option>
                         <option value="0">{{ __('admin::app.catalog.products.no') }}</option>
                     </select>
-                    
+
                     <span class="control-error" v-if="errors.has(inputName + '[is_required]')">@{{ errors.first(inputName + '[is_required]') }}</span>
                 </div>
 
@@ -77,7 +77,7 @@
                     <label class="required">{{ __('admin::app.catalog.products.sort-order') }}</label>
 
                     <input type="text" v-validate="'required|numeric|min_value:0'" :name="inputName + '[sort_order]'" v-model="option.sort_order" class="control" data-vv-as="&quot;{{ __('admin::app.catalog.products.sort-order') }}&quot;"/>
-                    
+
                     <span class="control-error" v-if="errors.has(inputName + '[sort_order]')">@{{ errors.first(inputName + '[sort_order]') }}</span>
                 </div>
 
@@ -85,7 +85,7 @@
                     <div class="secton-title">
                         <span>Products</span>
                     </div>
-                    
+
                     <div class="section-content">
                         <bundle-product-list
                             :bundle-option-products="option.bundle_option_products"
@@ -121,7 +121,7 @@
                     </ul>
                 </div>
             </div>
-            
+
             <div class="table" style="margin-top: 20px; overflow-x: unset;">
                 <table>
 
@@ -224,7 +224,7 @@
                         bundle_option_products: []
                     });
                 },
-                
+
                 removeOption: function(option) {
                     let index = this.options.indexOf(option)
 
@@ -293,7 +293,7 @@
             methods: {
                 addProduct: function(item, key) {
                     var alreadyAdded = false;
-                    
+
                     this.bundle_option_products.forEach(function(optionProduct) {
                         if (item.id == optionProduct.product.id) {
                             alreadyAdded = true;
@@ -332,7 +332,7 @@
                     }
 
                     var this_this = this;
-                    
+
                     this.$http.get ("{{ route('admin.catalog.products.search_simple_product') }}", {params: {query: this.search_term}})
                         .then (function(response) {
                             this_this.searched_results = response.data;

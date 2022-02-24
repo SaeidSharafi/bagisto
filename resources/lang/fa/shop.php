@@ -1,5 +1,9 @@
 <?php
 return [
+    'general' => [
+        'no' => 'خیر',
+        'yes' => 'بله',
+    ],
     'home' =>
     [
         'free-products' => 'دوره های رایگان'
@@ -8,7 +12,7 @@ return [
         [
             'categories' => 'دسته بندی دوره ها'
         ],
-    'course' => 'دوره',
-    'teacher' => 'استاد',
+    'course' => 'دوره:',
+    'teacher' => 'استاد:',
 
 ];

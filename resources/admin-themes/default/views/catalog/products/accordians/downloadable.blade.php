@@ -37,7 +37,6 @@
 {!! view_render_event('bagisto.admin.catalog.product.edit_form_accordian.downloadable.after', ['product' => $product]) !!}
 
 @push('scripts')
-    @parent
 
     <script type="text/x-template" id="downloadable-link-list-template">
         <div class="table" style="overflow-x: unset;">

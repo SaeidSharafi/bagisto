@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Listeners\Category;
 use App\Listeners\Order;
+use App\Listeners\Product;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -38,11 +39,23 @@ class EventServiceProvider extends ServiceProvider
             $viewRenderEventManager->addTemplate(
                 'velocity::admin.catelog.categories.category-banner'
             );
-        }
-        );
+        });
+
+        Event::listen([
+            'bagisto.admin.catalog.product.edit_form_accordian.images.after',
+        ], function ($viewRenderEventManager) {
+            $viewRenderEventManager->addTemplate(
+                'velocity::admin.catelog.product.product-banner'
+            );
+        });
+
         Event::listen([
             'catalog.category.create.after',
             'catalog.category.update.after',
         ], [Category::class, 'storeCategoryBanner']);
+
+        Event::listen([
+            'catalog.product.update.after',
+        ], [Product::class, 'storeProductBanner']);
     }
 }
