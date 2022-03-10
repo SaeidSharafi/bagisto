@@ -117,12 +117,12 @@
             {!! view_render_event('bagisto.shop.customers.account.profile.edit.date_of_birth.after', ['customer' => $customer]) !!}
 
             <div class="row">
-                <label class="col-12 mandatory">
+                <label class="col-12">
                     {{ __('shop::app.customer.account.profile.email') }}
                 </label>
 
                 <div class="col-12">
-                    <input value="{{ $customer->email }}" name="email" type="text" v-validate="'required'" />
+                    <input value="{{ $customer->email }}" name="email" type="text" />
                     <span class="control-error" v-if="errors.has('email')" v-text="errors.first('email')"></span>
                 </div>
             </div>
@@ -130,12 +130,12 @@
             {!! view_render_event('bagisto.shop.customers.account.profile.edit.email.after', ['customer' => $customer]) !!}
 
             <div class="row">
-                <label class="col-12">
+                <label class="col-12 mandatory">
                     {{ __('shop::app.customer.account.profile.phone') }}
                 </label>
 
                 <div class="col-12">
-                    <input value="{{ old('phone') ?? $customer->phone }}" name="phone" type="text"/>
+                    <input value="{{ old('phone') ?? $customer->phone }}" name="phone" type="text" v-validate="'required'"/>
                     <span class="control-error" v-if="errors.has('phone')" v-text="errors.first('phone')"></span>
                 </div>
             </div>

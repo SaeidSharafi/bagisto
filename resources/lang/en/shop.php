@@ -6,5 +6,7 @@ return [
         ],
     'course' => 'Course',
     'teacher' => 'Teacher',
-
+    'reviews' =>[
+        'empty' =>'You Have Not Reviewed Any Of Product Yet'
+    ]
 ];

@@ -84,7 +84,7 @@
             {{-- <load-more-btn></load-more-btn> --}}
         @else
             <div class="fs16">
-                {{ __('customer::app.reviews.empty') }}
+                {{ __('shop.reviews.empty') }}
             </div>
         @endif
 
