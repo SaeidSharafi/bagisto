@@ -48,7 +48,7 @@
                                     data-vv-as="&quot;{{ __('shop::app.customer.login-form.password') }}&quot;"/>
 
                                 <span class="control-error" v-if="errors.has('password')" v-text="errors.first('password')"></span>
-                                <a href="{{route('customer.session.index',['token'=>request()->input('token'),'type' => 'login_by_otp'])}}">
+                                <a class="d-block" href="{{route('customer.session.index',['token'=>request()->input('token'),'type' => 'login_by_otp'])}}">
                                     {{__('shop::app.customer.login-form.otp')}}
                                 </a>
                                 <a href="{{ route('customer.forgot-password.create') }}" >

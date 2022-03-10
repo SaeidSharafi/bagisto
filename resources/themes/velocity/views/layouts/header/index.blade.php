@@ -25,12 +25,9 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-12">
-                @include('velocity::layouts.particals.search-bar')
-            </div>
-
-            <div class="col-lg-1 col-md-1 vc-full-screen">
-                <div class="left-wrapper">
+            <div class="col-lg-2 col-md-1 vc-full-screen">
+                <div class="left-wrapper d-flex">
+                    @include('velocity::layouts.top-nav.login-section')
 
                     {!! view_render_event('bagisto.shop.layout.header.wishlist.before') !!}
 
@@ -51,6 +48,10 @@
                     {!! view_render_event('bagisto.shop.layout.header.cart-item.after') !!}
                 </div>
             </div>
+            <div class="col-lg-3 col-md-12">
+                @include('velocity::layouts.particals.search-bar')
+            </div>
+
         </div>
     </div>
 

@@ -13,17 +13,6 @@
     font-family: 'Source Sans Pro', 'IRANSans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-//html{
-//    width: 100vw;
-//    height: 100vh;
-//    overflow: hidden !important;
-//}
-//#wrapper{
-//    height: 100vh;
-//    overflow-x: hidden;
-//    overflow-y: auto;
-//    perspective: 1px;
-//}
 body,
 a,
 h1, h2, h3, h4, h5, h6,
@@ -388,7 +377,47 @@ img.cover {
 .btn {
     line-height: initial;
 }
+header{
+    .account-menu{
+        display: flex;
+        align-items: center;
+        height: 55px;
+        cursor: pointer;
+        padding: 0 5px;
 
+        .welcome-content{
+            width: 100%;
+            font-size: 1.2rem;
+            display: flex;
+            line-height: inherit;
+        }
+    }
+    #account-modal{
+        .customer-options{
+            position: absolute;
+            left: 0;
+            top: 55px;
+        }
+    }
+    .mini-cart-container{
+        height: auto;
+        padding: 0 5px;
+
+        &>.dropdown{
+            display: flex;
+            align-items: center;
+            height: 55px;
+
+            #mini-cart{
+                padding: 0;
+            }
+        }
+    }
+}
+.layered-filter-wrapper{
+    position: sticky;
+    top: 20px;
+}
 .about-us {
     .about-us-img {
         overflow: hidden;
@@ -409,10 +438,12 @@ img.cover {
     }
 }
 
-.velocity-divide-page .left{
-    position: sticky;
-    height: auto;
-    top: 55px;
+.velocity-divide-page{
+    .customer-sidebar {
+        position: sticky;
+        height: auto;
+        top: 55px;
+    }
 }
 section.product-detail {
     background-color: #fff;

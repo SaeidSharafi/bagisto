@@ -1,22 +1,13 @@
 {!! view_render_event('bagisto.shop.layout.header.account-item.before') !!}
 
     <div class="dropdown">
-        <div id="account">
+        <div id="account" class="account-menu d-flex align-items-center">
+            @auth('customer')
             <div class="d-inline-block welcome-content" @click="togglePopup">
-                <i class="material-icons align-vertical-top">perm_identity</i>
-
-                <span class="text-center">
-                    @guest('customer')
-                        {{ __('velocity::app.header.welcome-message', ['customer_name' => trans('velocity::app.header.guest')]) }}!
-                    @endguest
-
-                    @auth('customer')
-                        {{ __('velocity::app.header.welcome-message', ['customer_name' => auth()->guard('customer')->user()->first_name]) }}
-                    @endauth
-                </span>
-
-                <span class="select-icon rango-arrow-down"></span>
+                <i class="fa-user far px-2"></i>
+                <i class="fa fa-caret-down"></i>
             </div>
+            @endauth
         </div>
 
         <div id="account-modal" class="account-modal sensitive-modal hide mt5">

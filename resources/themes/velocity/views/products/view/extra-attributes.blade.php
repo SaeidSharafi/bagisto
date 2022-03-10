@@ -37,11 +37,14 @@
                         $images = json_decode($attribute['value'])
                     @endphp
                     <div class="row portfolio-gallery">
-                        @foreach($images as $image)
-                            <div class="col-md-3 col-6">
-                                <img src="{{$image->url}}" class="w-100">
-                            </div>
-                        @endforeach
+                        @if ($images)
+                            @foreach($images as $image)
+                                <div class="col-md-3 col-6">
+                                    <img src="{{$image->url}}" class="w-100">
+                                </div>
+                            @endforeach
+                        @endif
+
                     </div>
                 @else
                     {!! nl2br($attribute['value'])!!}
