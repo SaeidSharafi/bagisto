@@ -24,11 +24,6 @@
             {{ __('shop::app.customer.account.profile.index.title') }}
         </span>
 
-        <span class="account-action">
-            <a href="{{ route('customer.profile.edit') }}" class="theme-btn light unset float-right">
-                {{ __('shop::app.customer.account.profile.index.edit') }}
-            </a>
-        </span>
     </div>
 
     {!! view_render_event('bagisto.shop.customers.account.profile.view.before', ['customer' => $customer]) !!}
@@ -79,37 +74,13 @@
                     !!}
                 </tbody>
             </table>
+            <span class="account-action">
+            <a href="{{ route('customer.profile.edit') }}" class="theme-btn light unset float-right">
+                {{ __('shop::app.customer.account.profile.index.edit') }}
+            </a>
+        </span>
         </div>
 
-        <button
-            type="submit"
-            class="theme-btn mb20" @click="showModal('deleteProfile')" >
-            {{ __('shop::app.customer.account.address.index.delete') }}
-        </button>
-
-        <form method="POST" action="{{ route('customer.profile.destroy') }}" @submit.prevent="onSubmit">
-            @csrf
-
-            <modal id="deleteProfile" :is-open="modalIds.deleteProfile">
-                <h3 slot="header">{{ __('shop::app.customer.account.address.index.enter-password') }}
-                </h3>
-                <i class="rango-close"></i>
-
-                <div slot="body">
-                    <div class="control-group" :class="[errors.has('password') ? 'has-error' : '']">
-                        <label for="password" class="required">{{ __('admin::app.users.users.password') }}</label>
-                        <input type="password" v-validate="'required|min:6|max:18'" class="control" id="password" name="password" data-vv-as="&quot;{{ __('admin::app.users.users.password') }}&quot;"/>
-                        <span class="control-error" v-if="errors.has('password')" v-text="errors.first('password')"></span>
-                    </div>
-
-                    <div class="page-action">
-                        <button type="submit"  class="theme-btn mb20">
-                        {{ __('shop::app.customer.account.address.index.delete') }}
-                        </button>
-                    </div>
-                </div>
-            </modal>
-        </form>
     </div>
 
     {!! view_render_event('bagisto.shop.customers.account.profile.view.after', ['customer' => $customer]) !!}

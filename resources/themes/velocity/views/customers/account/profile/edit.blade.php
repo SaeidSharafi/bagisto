@@ -18,7 +18,7 @@
         @submit.prevent="onSubmit"
         action="{{ route('customer.profile.store') }}">
 
-        <div class="account-table-content">
+        <div class="account-table-content edit-account">
             @csrf
 
             {!! view_render_event('bagisto.shop.customers.account.profile.edit_form_controls.before', ['customer' => $customer]) !!}

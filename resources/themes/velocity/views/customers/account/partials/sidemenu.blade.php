@@ -63,12 +63,3 @@
         </ul>
     @endforeach
 </div>
-
-@push('css')
-    <style type="text/css">
-        .main-content-wrapper {
-            margin-bottom: 0px;
-            min-height: 100vh;
-        }
-    </style>
-@endpush

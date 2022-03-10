@@ -26,6 +26,20 @@ body {
     background: $main-bg;
 }
 
+.account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container .bottom-toolbar .pagination .quantity button.page-item,
+.account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container .bottom-toolbar .pagination button.btn.page-item,
+.account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container .quantity button.light,
+.account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container button.light.btn,
+.account-content .account-layout .bottom-toolbar .pagination .account-table-content #datagrid-filters .dropdown-filters .dropdown-container button.btn.page-item,
+.account-content .account-layout .bottom-toolbar .pagination .page-item,
+.account-content .account-layout .bottom-toolbar .pagination .quantity .account-table-content #datagrid-filters .dropdown-filters .dropdown-container button.page-item,
+.cart-details .light.continue-shopping-btn, .quantity .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container .bottom-toolbar .pagination button.page-item,
+.quantity .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container button.light,
+.quantity .account-content .account-layout .bottom-toolbar .pagination .account-table-content #datagrid-filters .dropdown-filters .dropdown-container button.page-item,
+.theme-btn.light {
+color: $purple !important;
+}
+
 a {
     transition: color 150ms ease-in;
 }
@@ -338,7 +352,11 @@ img.cover {
         font-size: 1.5rem;
     }
 }
-
+.account-content {
+    .account-table-content.edit-account {
+        max-width: 500px;
+    }
+}
 .category-carousel {
     &.sticky-header {
         top: 50px;
@@ -377,47 +395,52 @@ img.cover {
 .btn {
     line-height: initial;
 }
-header{
-    .account-menu{
+
+header {
+    .account-menu {
         display: flex;
         align-items: center;
         height: 55px;
         cursor: pointer;
         padding: 0 5px;
 
-        .welcome-content{
+        .welcome-content {
             width: 100%;
             font-size: 1.2rem;
             display: flex;
             line-height: inherit;
         }
     }
-    #account-modal{
-        .customer-options{
+
+    #account-modal {
+        .customer-options {
             position: absolute;
             left: 0;
             top: 55px;
         }
     }
-    .mini-cart-container{
+
+    .mini-cart-container {
         height: auto;
         padding: 0 5px;
 
-        &>.dropdown{
+        & > .dropdown {
             display: flex;
             align-items: center;
             height: 55px;
 
-            #mini-cart{
+            #mini-cart {
                 padding: 0;
             }
         }
     }
 }
-.layered-filter-wrapper{
+
+.layered-filter-wrapper {
     position: sticky;
     top: 20px;
 }
+
 .about-us {
     .about-us-img {
         overflow: hidden;
@@ -438,13 +461,18 @@ header{
     }
 }
 
-.velocity-divide-page{
+.customer-name {
+    background: $purple;
+}
+
+.velocity-divide-page {
     .customer-sidebar {
         position: sticky;
         height: auto;
         top: 55px;
     }
 }
+
 section.product-detail {
     background-color: #fff;
     padding: 10px;
@@ -480,13 +508,15 @@ section.product-extra-detail {
 
         .nav-item {
             margin: auto 6px;
-            a{
+
+            a {
                 color: $blue-gray;
                 font-size: 1rem;
                 font-weight: 600;
                 line-height: initial;
                 border-bottom: 2px solid;
             }
+
             &.active {
                 a {
                     color: $purple;
@@ -500,6 +530,7 @@ section.product-extra-detail {
             font-size: 0.9rem;
             font-weight: 500;
             line-height: initial;
+
             .portfolio-gallery img {
                 max-height: 120px;
                 object-fit: cover;
@@ -545,13 +576,16 @@ section.product-extra-detail {
         }
     }
 }
-section.product-footer{
-    margin-top:40px;
-    .teacher-image img{
+
+section.product-footer {
+    margin-top: 40px;
+
+    .teacher-image img {
         aspect-ratio: 1/1;
         object-fit: cover;
     }
 }
+
 .product-price {
     height: auto;
     display: flex;
