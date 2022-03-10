@@ -3,25 +3,27 @@
 
     @if ($customAttributeValues)
 
-            <div slot="header">
-                <h3 class="no-margin display-inbl">
-                    {{ __('velocity::app.products.more-infomation') }}
-                </h3>
-                <i class="rango-arrow"></i>
+            <div slot="header" class="mb-3">
+                <h6 class="no-margin display-inbl fw7">
+                    {{ __('shop.attributes.course_details') }}
+                </h5>
             </div>
 
             <div slot="body">
                 <table class="full-specifications">
                     @foreach ($customAttributeValues as $attribute)
+                        @if ($attribute['code'] == "teacher")
+                            @continue
+                        @endif
                         <tr>
                             @if ($attribute['label'])
-                                <td class='fw6'>{{ $attribute['label'] }}</td>
+                                <td class='fw6'>{{ $attribute['label'] }}:</td>
                             @else
                                 <td>{{ $attribute['admin_name'] }}</td>
                             @endif
 
                             @if ($attribute['type'] == 'file' && $attribute['value'])
-                                <td>
+                                <td class="fw6">
                                     <a  href="{{ route('shop.product.file.download', [$product->product_id, $attribute['id']])}}" style="color:black;">
                                         <i class="icon rango-download-1"></i>
                                     </a>
@@ -33,7 +35,7 @@
                                     </a>
                                 </td>
                             @else
-                                <td>{{ $attribute['value'] }}</td>
+                                <td  class="fw6">{{ $attribute['value'] }}</td>
                             @endif
                         </tr>
                     @endforeach

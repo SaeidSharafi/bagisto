@@ -2,6 +2,7 @@
 
 namespace Webkul\Product\Type;
 
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Webkul\Attribute\Repositories\AttributeRepository;
 use Webkul\Checkout\Facades\Cart;
@@ -219,7 +220,7 @@ abstract class AbstractType
     public function update(array $data, $id, $attribute = "id")
     {
         $product = $this->productRepository->find($id);
-
+        //dd($data);
         $product->update($data);
 
         foreach ($product->attribute_family->custom_attributes as $attribute) {
@@ -245,10 +246,42 @@ abstract class AbstractType
                 $data[$attribute->code] = implode(",", $data[$attribute->code]);
             }
 
+            //TODO : add gallery type
             if ($attribute->type === 'image' || $attribute->type === 'file') {
                 $data[$attribute->code] = gettype($data[$attribute->code]) === 'object'
                     ? request()->file($attribute->code)->store('product/' . $product->id)
                     : null;
+            }
+
+            if ($attribute->type === "gallery") {
+                $images = [];
+                $pathes =[];
+                if (is_array($data[$attribute->code])){
+                    $counter = 1;
+                    if (count($data[$attribute->code])) {
+                        foreach ($data[$attribute->code] as $imagefile) {
+                            $image = new \stdClass();
+                            $image->id = $counter;
+                            $image->product_id = $id;
+                            if ($imagefile instanceof UploadedFile) {
+                                $image->path = $imagefile->store('product/'.$product->id.'/portfolio');
+                                $image->url = "/storage/".$image->path;
+                            }else{
+                                $image->path = $imagefile;
+                                $image->url = "/storage/".$imagefile;
+                            }
+                            $pathes[] =$image->path;
+                            $images[] = $image;
+                            $counter++;
+
+                        }
+                    }
+                }
+
+                $files = Storage::disk('public')->allFiles('product/'.$id.'/portfolio');
+                $to_delete = array_diff($files,$pathes);
+                Storage::disk('public')->delete($to_delete);
+                $data[$attribute->code] = json_encode($images, JSON_THROW_ON_ERROR);
             }
 
             $attributeValue = $this->attributeValueRepository->findOneWhere([

@@ -232,7 +232,7 @@ class ProductController extends Controller
 
             if (count($customAttributes)) {
                 foreach ($customAttributes as $attribute) {
-                    if ($attribute->type == 'multiselect') {
+                    if ($attribute->type == 'multiselect' || $attribute->type == 'gallery') {
                         array_push($multiselectAttributeCodes, $attribute->code);
                     }
                 }

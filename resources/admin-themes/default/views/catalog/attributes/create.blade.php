@@ -55,6 +55,7 @@
                                     <option value="image">{{ __('admin::app.catalog.attributes.image') }}</option>
                                     <option value="file">{{ __('admin::app.catalog.attributes.file') }}</option>
                                     <option value="checkbox">{{ __('admin::app.catalog.attributes.checkbox') }}</option>
+                                    <option value="gallery">{{ __('admin::app.catalog.attributes.gallery') }}</option>
                                 </select>
                             </div>
 

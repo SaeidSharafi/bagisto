@@ -28,7 +28,33 @@ class JeduSimple extends Simple
                 .'</span>';
 
         }
-        return '<span>'
+        return '<span class="final-price">'
+            .core()->currency($this->evaluatePrice($this->product->price))
+            .'</span>';
+
+    }
+
+    public function getProductPriceHtml()
+    {
+
+        if ($this->haveSpecialPrice()) {
+            $amount = "";
+            if ($this->product->action_type === "by_percent") {
+                $amount = '<span class="discount-amount">'
+                    .core()->formatPercent($this->product->discount_amount)
+                    .'</span>';
+            }
+            return '<div class="discount"><span class="regular-price">'
+                .core()->currencyNoSymbole($this->evaluatePrice($this->product->price))
+                .'</span>'
+                .$amount
+                .'</div>'
+                .'<span class="final-price">'
+                .core()->currency($this->evaluatePrice($this->product->special_price))
+                .'</span>';
+
+        }
+        return '<span  class="final-price">'
             .core()->currency($this->evaluatePrice($this->product->price))
             .'</span>';
 

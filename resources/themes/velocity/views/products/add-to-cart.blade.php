@@ -34,7 +34,7 @@
                         <i class="material-icons text-down-3">shopping_cart</i>
                     @endif
 
-                    {{ ($product->type == 'booking') ?  __('shop::app.products.book-now') :  __('shop::app.products.add-to-cart') }}
+                    {{ ($product->type == 'booking') ?  __('shop::app.products.book-now') :  __('shop.general.register_course') }}
                 </button>
             @elseif(isset($addToCartForm) && !$addToCartForm)
                 <form

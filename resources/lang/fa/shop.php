@@ -1,18 +1,26 @@
 <?php
 return [
-    'general' => [
-        'no' => 'خیر',
+    'general'    => [
+        'no'  => 'خیر',
         'yes' => 'بله',
+        'register_course' => 'ثبت‌نام دوره'
     ],
-    'home' =>
-    [
-        'free-products' => 'دوره های رایگان'
+    'attributes' => [
+        'course_details' => 'مشخصات دوره'
     ],
-    'header' =>
+    'home'       =>
+        [
+            'free-products' => 'دوره های رایگان'
+        ],
+    'header'     =>
         [
             'categories' => 'دسته بندی دوره ها'
         ],
-    'course' => 'دوره:',
-    'teacher' => 'استاد:',
+    'product' => [
+        'out-of-stock' => 'تکمیل شده',
+        'details' => 'توضیحات',
+    ],
+    'course'     => 'دوره:',
+    'teacher'    => 'استاد:',
 
 ];

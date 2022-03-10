@@ -20,10 +20,6 @@
 
 @push('css')
     <style type="text/css">
-        .product-price span:first-child, .product-price span:last-child {
-            font-size: 18px;
-            font-weight: 600;
-        }
 
         @media only screen and (max-width: 992px) {
             .main-content-wrapper .vc-header {
@@ -82,14 +78,16 @@
 
 @push('scripts')
     <script type="text/x-template" id="category-template">
-        <section class="row col-12 velocity-divide-page category-page-wrapper">
+        <section class="row velocity-divide-page category-page-wrapper">
             {!! view_render_event('bagisto.shop.productOrCategory.index.before', ['category' => $category]) !!}
 
             @if (in_array($category->display_mode, [null, 'products_only', 'products_and_description']))
+                <div class="col-md-3 col-lg-2">
                 @include ('shop::products.list.layered-navigation')
+                </div>
             @endif
-
-            <div class="category-container right">
+            <div class="col-12 {{in_array($category->display_mode, [null, 'products_only', 'products_and_description']) ? 'col-md-9 col-lg-10' : ''}}">
+            <div class="category-container">
 
                 @if ($isProductsDisplayMode)
                     <div class="filters-container">
@@ -109,7 +107,7 @@
                         <template v-else-if="products.length > 0">
                             @if ($toolbarHelper->getCurrentMode() == 'grid')
                                 <div class="row remove-padding-margin">
-                                    <div class="col-md-4 col-lg-3 col-xl-2"
+                                    <div class="col-md-4 col-lg-3 col-xl-2 px-1 mb-2"
                                          v-for="(product, index) in products">
                                         <product-card
                                             :key="index"
@@ -143,7 +141,7 @@
                     </div>
                 @endif
             </div>
-
+            </div>
             {!! view_render_event('bagisto.shop.productOrCategory.index.after', ['category' => $category]) !!}
         </section>
     </script>

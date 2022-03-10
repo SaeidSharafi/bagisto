@@ -27,6 +27,12 @@ $teacher = collect($customAttributeValues)->first( function ($value,$key){
     return $value['code'] =="teacher";
 })['value'];
 
+$course_details = collect($customAttributeValues)->filter( function ($value,$key){
+    return $value['group'] == "course_detail";
+});
+$course_extra = collect($customAttributeValues)->filter( function ($value,$key){
+    return $value['group'] == "course_desc";
+});
 @endphp
 
 @section('page_title')
@@ -94,7 +100,7 @@ $teacher = collect($customAttributeValues)->first( function ($value,$key){
 @endpush
 @section('full-width-content')
     <div class="product-banner w-100 position-relative">
-        <div class="banner-image w-100" style="{{$style}}"></div>
+        <div class="banner-image" style="{{$style}}"></div>
         <div class="d-flex flex-wrap align-items-center h-100 banner-detail">
             <div class="px-4 font-weight-bold">
                 <span class="course-label"> {{__('shop.course')}}</span>
@@ -105,14 +111,15 @@ $teacher = collect($customAttributeValues)->first( function ($value,$key){
                 <span class="teacher-name">{{$teacher}}</span>
             </div>
         </div>
-
-        <div class="filter dark"></div>
+        @if($product->banner)
+            <div class="filter grad"></div>
+        @endif
     </div>
 @endsection
 @section('full-content-wrapper')
     {!! view_render_event('bagisto.shop.products.view.before', ['product' => $product]) !!}
-    <div class="row no-margin">
-        <section class="col-12 product-detail">
+    <div class="no-margin">
+        <section class="product-detail card-box simple-shadow">
             <div class="layouter">
                 <product-view>
                     <div class="form-container">
@@ -120,39 +127,22 @@ $teacher = collect($customAttributeValues)->first( function ($value,$key){
 
                         <input type="hidden" name="product_id" value="{{ $product->product_id }}">
 
-                        <div class="row">
+                        <div class="row align-items-center">
                             {{-- product-gallery --}}
-                            <div class="left col-lg-5 col-md-6">
+                            <div class="col-md-6">
                                 @include ('shop::products.view.gallery')
                             </div>
 
                             {{-- right-section --}}
-                            <div class="right col-lg-7 col-md-6">
+                            <div class="product-info col-md-6">
                                 {{-- product-info-section --}}
-                                <div class="row info">
-                                    <h2 class="col-12">{{ $product->name }}</h2>
-
-                                    @if ($total)
-                                        <div class="reviews col-lg-12">
-                                            <star-ratings
-                                                push-class="mr5"
-                                                :ratings="{{ $avgStarRating }}"
-                                            ></star-ratings>
-
-                                            <div class="reviews">
-                                                    <span>
-                                                        {{ __('shop::app.reviews.ratingreviews', [
-                                                            'rating' => $avgRatings,
-                                                            'review' => $total])
-                                                        }}
-                                                    </span>
-                                            </div>
-                                        </div>
-                                    @endif
-
+                                <div class="attributes">
+                                    @include ('shop::products.view.attributes',['active' => true,'customAttributeValues'=>$course_details])
                                     @include ('shop::products.view.stock', ['product' => $product])
+                                </div>
+                                <div class="row info align-items-end pt-4">
 
-                                    <div class="col-12 price">
+                                    <div class="col-md-6 col-12 price">
                                         @include ('shop::products.price', ['product' => $product])
 
                                         @if (Webkul\Tax\Helpers\Tax::isTaxInclusive() && $product->getTypeInstance()->getTaxCategory())
@@ -170,7 +160,7 @@ $teacher = collect($customAttributeValues)->first( function ($value,$key){
                                         </div>
                                     @endif
 
-                                    <div class="product-actions">
+                                    <div class="col-md-6 product-actions">
                                         @if (core()->getConfigData('catalog.products.storefront.buy_now_button_display'))
                                             @include ('shop::products.buy-now', [
                                                 'product' => $product,
@@ -189,13 +179,6 @@ $teacher = collect($customAttributeValues)->first( function ($value,$key){
 
                                 {!! view_render_event('bagisto.shop.products.view.short_description.before', ['product' => $product]) !!}
 
-                                @if ($product->short_description)
-                                    <div class="description">
-                                        <h3 class="col-lg-12">{{ __('velocity::app.products.short-description') }}</h3>
-
-                                        {!! $product->short_description !!}
-                                    </div>
-                                @endif
 
                                 {!! view_render_event('bagisto.shop.products.view.short_description.after', ['product' => $product]) !!}
 
@@ -220,27 +203,73 @@ $teacher = collect($customAttributeValues)->first( function ($value,$key){
 
                                 @include ('shop::products.view.bundle-options')
 
-                                @include ('shop::products.view.attributes', [
-                                    'active' => true,
-                                    'customAttributeValues'=>$customAttributeValues
-                                ])
-
-                                {{-- product long description --}}
-                                @include ('shop::products.view.description')
-
-                                {{-- reviews count --}}
-                                @include ('shop::products.view.reviews', ['accordian' => true])
                             </div>
                         </div>
                     </div>
                 </product-view>
             </div>
         </section>
+        <section class="product-description-section card-box simple-shadow">
+            <div class="product-description w-100">
+                {{-- product long description --}}
+                @include ('shop::products.view.description')
+            </div>
+        </section>
+        <section class="product-extra-detail w-100">
+            <div class="row align-items-stretch">
+                <div class="col-md-9 ">
+                    <div class="extra-attributes card-box simple-shadow h-100">
+                        @include ('shop::products.view.extra-attributes',['active' => true,'customAttributeValues'=>$course_extra])
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="related-products card-box simple-shadow h-100">
+                        @include('shop::products.view.related-products')
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="product-footer w-100">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="teacher-info px-2 h-100 card-box simple-shadow">
+                        <div class="row h-100 align-items-center">
+                            <div class="col-md-2 col-12">
+                                <div class="teacher-image rounded-circle overflow-hidden">
+                                    <img src="/images/teacher-sample.jpg" class="w-100">
+                                </div>
+                            </div>
+                            <div class="col-md-10 col-12">
+                                <div class="w-100">
+                                    <h6 class="fw6">
+                                        استاد گرامی
+                                    </h6>
+                                    <p>
+                                        دعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی
+                                        علی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی دعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
+                                        هدف بهبود
+                                        ابزارهای کاربردی می باشد، کتابهای زیادی دعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربر
+                                    </p>
+                                </div>
+                            </div>
 
-        <div class="related-products">
-            @include('shop::products.view.related-products')
-            @include('shop::products.view.up-sells')
-        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="course-cert card-box simple-shadow">
+                        <h6 class="py-2 text-center fw6">
+                            نمونه گواهی دوره
+                        </h6>
+                        <div class="w-100 p-3">
+                        <img src="/images/sample-cert.jpg" class="w-100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
     </div>
     {!! view_render_event('bagisto.shop.products.view.after', ['product' => $product]) !!}
 @endsection

@@ -60,7 +60,7 @@ class View extends AbstractProduct
                 'value'      => $value,
                 'admin_name' => $attribute->admin_name,
                 'type'       => $attribute->type,
-                'group'       => $attribute->group_name,
+                'group'       => $attribute->group_code,
             ];
         }
 

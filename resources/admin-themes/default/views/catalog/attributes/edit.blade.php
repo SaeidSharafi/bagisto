@@ -88,6 +88,9 @@
                                     <option value="checkbox" {{ $selectedOption == 'checkbox' ? 'selected' : '' }}>
                                         {{ __('admin::app.catalog.attributes.checkbox') }}
                                     </option>
+                                    <option value="gallery" {{ $selectedOption == 'gallery' ? 'selected' : '' }}>
+                                        {{ __('admin::app.catalog.attributes.gallery') }}
+                                    </option>
                                 </select>
 
                                 <input type="hidden" name="type" value="{{ $attribute->type }}"/>

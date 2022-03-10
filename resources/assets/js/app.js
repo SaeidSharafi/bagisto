@@ -97,6 +97,8 @@ Vue.component('category-carousel', () => import('@Components/category-carousel')
 Vue.component('teacher-collections', () => import('@Components/teacher-collections'));
 Vue.component('qoutes', () => import('@Components/qoutes'));
 Vue.component('contracts', () => import('@Components/contracts'));
+Vue.component('product-collections-slot', () => import('@Components/product-collections-slot'));
+
 Vue.component('vnode-injector', {
     functional: true,
     props: ['nodes'],
