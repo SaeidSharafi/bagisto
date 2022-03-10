@@ -3,11 +3,11 @@
         {{-- Previous Page Link --}}
         @if ($paginator->onFirstPage())
             <a class="page-item previous">
-                <i class="icon angle-left-icon"></i>
+                <i class="icon {{$direction == "rtl" ? 'angle-right-icon' : 'angle-left-icon'}}"></i>
             </a>
         @else
             <a data-page="{{ urldecode($paginator->previousPageUrl()) }}" href="{{ urldecode($paginator->previousPageUrl()) }}" id="previous" class="page-item previous">
-                <i class="icon angle-left-icon"></i>
+                <i class="icon {{$direction == "rtl" ? 'angle-right-icon' : 'angle-left-icon'}}"></i>
             </a>
         @endif
 
@@ -39,11 +39,11 @@
         {{-- Next Page Link --}}
         @if ($paginator->hasMorePages())
             <a href="{{ urldecode($paginator->nextPageUrl()) }}" data-page="{{ urldecode($paginator->nextPageUrl()) }}" id="next" class="page-item next">
-                <i class="icon angle-right-icon"></i>
+                <i class="icon {{$direction == "rtl" ? 'angle-left-icon' : 'angle-rigth-icon'}}"></i>
             </a>
         @else
             <a class="page-item next">
-                <i class="icon angle-right-icon"></i>
+                <i class="icon {{$direction == "rtl" ? 'angle-left-icon' : 'angle-rigth-icon'}}"></i>
             </a>
         @endif
     </div>

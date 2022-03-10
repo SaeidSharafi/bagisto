@@ -121,7 +121,7 @@
                             </div>
                         </div>
 
-                        <div class="dropdown-filters">
+                        <div class="dropdown-filters  filters-extra">
                             <div class="dropdown-toggle">
                                 <div class="grid-dropdown-header">
                                     <span class="name">{{ __('ui::app.datagrid.filter') }}</span>
