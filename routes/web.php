@@ -24,9 +24,13 @@ use App\Http\Controllers\Shop\API\JeduShopController;
 use App\Http\Controllers\Shop\Customer\JeduCustomerController;
 use App\Http\Controllers\Shop\Customer\JeduLoginRegistrationController;
 use App\Http\Controllers\Shop\Customer\JeduSessionController;
+use Webkul\Shop\Http\Controllers\OnepageController;
 
 Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
     function () {
+
+        Route::get('/checkout/get-pyaments', [OnepageController::class, 'getPaymentMethods'])
+            ->name('shop.checkout.get-pyaments');
 
         Route::group(['middleware' => ['cart.merger']], function () {
             /**

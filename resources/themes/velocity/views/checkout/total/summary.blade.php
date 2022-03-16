@@ -1,4 +1,4 @@
-<div class="order-summary fs16">
+<div class="order-summary fs16 card">
     <h3 class="fw6">{{ __('velocity::app.checkout.cart.cart-summary') }}</h3>
 
     <div class="row">
@@ -6,14 +6,14 @@
         <span class="col-4 text-right">{{ core()->currency($cart->base_sub_total) }}</span>
     </div>
 
-    @if ($cart->selected_shipping_rate)
+    @if ($cart->selected_shipping_rate && false)
         <div class="row">
             <span class="col-8">{{ __('shop::app.checkout.total.delivery-charges') }}</span>
             <span class="col-4 text-right">{{ core()->currency($cart->selected_shipping_rate->base_price) }}</span>
         </div>
     @endif
 
-    @if ($cart->base_tax_total)
+    @if ($cart->base_tax_total && false)
         @foreach (Webkul\Tax\Helpers\Tax::getTaxRatesWithAmount($cart, true) as $taxRate => $baseTaxAmount )
             <div class="row">
                 <span class="col-8" id="taxrate-{{ core()->taxRateAsIdentifier($taxRate) }}">{{ __('shop::app.checkout.total.tax') }} {{ $taxRate }} %</span>
@@ -48,10 +48,12 @@
         @php
             $minimumOrderAmount = (float) core()->getConfigData('sales.orderSettings.minimum-order.minimum_order_amount') ?? 0;
         @endphp
-
+        <div class="cart-coupon col-12 p-0">
+            <coupon-component></coupon-component>
+        </div>
         <proceed-to-checkout
             href="{{ route('shop.checkout.onepage.index') }}"
-            add-class="theme-btn text-uppercase col-12 remove-decoration fw6 text-center"
+            add-class="btn-procced theme-btn text-uppercase col-12 remove-decoration fw6 text-center"
             text="{{ __('velocity::app.checkout.proceed') }}"
             is-minimum-order-completed="{{ $cart->checkMinimumOrder() }}"
             minimum-order-message="{{ __('shop::app.checkout.cart.minimum-order-message', ['amount' => core()->currency($minimumOrderAmount)]) }}">

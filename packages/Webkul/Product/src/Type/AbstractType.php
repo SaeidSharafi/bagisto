@@ -850,7 +850,8 @@ abstract class AbstractType
      */
     public function prepareForCart($data)
     {
-        $data['quantity'] = (int) $data['quantity'] ?? 1;
+        //$data['quantity'] = (int) $data['quantity'] ?? 1;
+        $data['quantity'] = 1;
 
         $data = $this->getQtyRequest($data);
 
@@ -859,20 +860,20 @@ abstract class AbstractType
         }
 
         $price = $this->getFinalPrice();
-
+        $convertedPrice = core()->convertPrice($price);
         $products = [
             [
                 'product_id'        => $this->product->id,
                 'sku'               => $this->product->sku,
                 'quantity'          => $data['quantity'],
                 'name'              => $this->product->name,
-                'price'             => $convertedPrice = core()->convertPrice($price),
+                'price'             => $convertedPrice,
                 'base_price'        => $price,
                 'total'             => $convertedPrice * $data['quantity'],
                 'base_total'        => $price * $data['quantity'],
-                'weight'            => $this->product->weight ?? 0,
-                'total_weight'      => ($this->product->weight ?? 0) * $data['quantity'],
-                'base_total_weight' => ($this->product->weight ?? 0) * $data['quantity'],
+                'weight'            => $this->product->weight ?: 0,
+                'total_weight'      => ($this->product->weight ?: 0) * $data['quantity'],
+                'base_total_weight' => ($this->product->weight ?: 0) * $data['quantity'],
                 'type'              => $this->product->type,
                 'additional'        => $this->getAdditionalOptions($data),
             ],

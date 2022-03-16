@@ -17,6 +17,7 @@ body,
 a,
 h1, h2, h3, h4, h5, h6,
 input,
+::placeholder,
 button,
 select {
     font-family: 'Source Sans Pro', 'IRANSans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -37,11 +38,25 @@ body {
 .quantity .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container button.light,
 .quantity .account-content .account-layout .bottom-toolbar .pagination .account-table-content #datagrid-filters .dropdown-filters .dropdown-container button.page-item,
 .theme-btn.light {
-color: $purple !important;
+    color: $purple !important;
 }
 
-a {
-    transition: color 150ms ease-in;
+.account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container .quantity button,
+.account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container button.btn,
+.account-content .account-layout .bottom-toolbar .pagination .page-item, .cart-details .continue-shopping-btn,
+.quantity .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container button,
+.theme-btn {
+    transition: color ease-in-out 250ms, background-color ease-in-out 250ms;
+    background-color: $purple-dark !important;
+}
+
+.account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container .quantity button:hover,
+.account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container button.btn:hover,
+.account-content .account-layout .bottom-toolbar .pagination .page-item:hover,
+.btn-add-to-cart:hover, .cart-details .continue-shopping-btn:hover,
+.quantity .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container button:hover,
+.theme-btn:hover {
+    background-color: $purple !important;
 }
 
 a:hover {
@@ -352,14 +367,17 @@ img.cover {
         font-size: 1.5rem;
     }
 }
-.filters-extra{
+
+.filters-extra {
     display: none;
 }
+
 .account-content {
     .account-table-content.edit-account {
         max-width: 500px;
     }
 }
+
 .category-carousel {
     &.sticky-header {
         top: 50px;
@@ -626,6 +644,12 @@ section.product-footer {
         }
     }
 
+    &.checkout {
+
+        .discount {
+            justify-content: end;
+        }
+    }
 }
 
 .product-info {
@@ -1016,3 +1040,73 @@ section.product-footer {
     }
 }
 
+/***
+ * Cart
+ */
+.checkout-process .order-summary-container .theme-btn {
+    display: inline-block;
+}
+
+.checkout-process .coupon-container button {
+    margin: 0;
+}
+
+.coupon-container {
+    .coupon-input {
+        border-radius: 0 10px 10px 0 !important;
+        max-width: initial !important;
+    }
+
+    .btn-coupon {
+        border-radius: 10px 0 0 10px;
+        border-right: none;
+        box-shadow: none;
+        background-color: #770c76 !important;
+        color: #fff !important;
+
+        &:hover {
+            background-color: #770c76 !important;
+            color: #fff !important;
+            border: none !important;
+        }
+    }
+}
+
+.cart-details {
+    .cart-row {
+
+        * {
+            line-height: initial !important;
+        }
+
+        .product-image-container {
+            display: flex;
+            align-items: center;
+            height: 100%;
+
+            img {
+                max-width: 110px;
+            }
+        }
+
+        .item-details {
+            font-size: 0.8rem !important;
+            color: #6e6e6e;
+            font-weight: 600;
+
+        }
+
+        .product-price {
+            align-items: end;
+
+            span.final-price {
+                font-size: 1.3rem;
+                line-height: initial;
+            }
+        }
+    }
+
+    .btn-procced {
+        border-radius: 10px;
+    }
+}

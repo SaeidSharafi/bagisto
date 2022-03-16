@@ -1,6 +1,6 @@
 @if ($cart)
     <script type="text/x-template" id="coupon-component-template">
-        <div class="coupon-container">    
+        <div class="coupon-container">
             <div class="discount-control">
                 <form class="coupon-form" method="post" @submit.prevent="applyCoupon">
                     <div class="control-group" :class="[error_message ? 'has-error' : '']">
@@ -44,7 +44,7 @@
                     disable_button: false
                 }
             },
-            
+
             methods: {
                 applyCoupon: function() {
                     var self = this;
@@ -68,7 +68,7 @@
                                 window.flashMessages = [{'type': 'alert-success', 'message': response.data.message}];
 
                                 self.$root.addFlashMessages();
-                                
+
                                 self.redirectIfCartPage();
                             } else {
                                 self.error_message = response.data.message;

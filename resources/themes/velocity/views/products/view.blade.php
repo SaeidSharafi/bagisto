@@ -130,11 +130,14 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                         <div class="row align-items-center">
                             {{-- product-gallery --}}
                             <div class="col-md-6">
+                                <div class="px-3">
                                 @include ('shop::products.view.gallery')
+                                </div>
                             </div>
 
                             {{-- right-section --}}
                             <div class="product-info col-md-6">
+                                <div class="px-3">
                                 {{-- product-info-section --}}
                                 <div class="attributes">
                                     @include ('shop::products.view.attributes',['active' => true,'customAttributeValues'=>$course_details])
@@ -202,7 +205,7 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                                 @include ('shop::products.view.grouped-products')
 
                                 @include ('shop::products.view.bundle-options')
-
+                                </div>
                             </div>
                         </div>
                     </div>

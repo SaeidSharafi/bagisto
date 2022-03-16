@@ -183,6 +183,7 @@ class Cart
         Event::dispatch('checkout.cart.add.before', $productId);
 
         $cart = $this->getCart();
+
         //dd($data);
         if (! $cart && ! $cart = $this->create($data)) {
             return ['warning' => __('shop::app.checkout.cart.item.error-add')];
@@ -694,23 +695,25 @@ class Cart
             'applied_cart_rule_ids' => $data['applied_cart_rule_ids'],
             'discount_amount'       => $data['discount_amount'],
             'base_discount_amount'  => $data['base_discount_amount'],
-            'billing_address'       => Arr::except($data['billing_address'], ['id', 'cart_id']),
+            // No Need for Address
+            //'billing_address'       => Arr::except($data['billing_address'], ['id', 'cart_id']),
+            'billing_address'       => '',
             'payment'               => Arr::except($data['payment'], ['id', 'cart_id']),
             'channel'               => core()->getCurrentChannel(),
         ];
-
-        if ($this->getCart()->haveStockableItems()) {
-            $finalData = array_merge($finalData, [
-                'shipping_method'               => $data['selected_shipping_rate']['method'],
-                'shipping_title'                => $data['selected_shipping_rate']['carrier_title'] . ' - ' . $data['selected_shipping_rate']['method_title'],
-                'shipping_description'          => $data['selected_shipping_rate']['method_description'],
-                'shipping_amount'               => $data['selected_shipping_rate']['price'],
-                'base_shipping_amount'          => $data['selected_shipping_rate']['base_price'],
-                'shipping_address'              => Arr::except($data['shipping_address'], ['id', 'cart_id']),
-                'shipping_discount_amount'      => $data['selected_shipping_rate']['discount_amount'],
-                'base_shipping_discount_amount' => $data['selected_shipping_rate']['base_discount_amount'],
-            ]);
-        }
+        // No Need for Address
+        //if ($this->getCart()->haveStockableItems()) {
+        //    $finalData = array_merge($finalData, [
+        //        'shipping_method'               => $data['selected_shipping_rate']['method'],
+        //        'shipping_title'                => $data['selected_shipping_rate']['carrier_title'] . ' - ' . $data['selected_shipping_rate']['method_title'],
+        //        'shipping_description'          => $data['selected_shipping_rate']['method_description'],
+        //        'shipping_amount'               => $data['selected_shipping_rate']['price'],
+        //        'base_shipping_amount'          => $data['selected_shipping_rate']['base_price'],
+        //        'shipping_address'              => Arr::except($data['shipping_address'], ['id', 'cart_id']),
+        //        'shipping_discount_amount'      => $data['selected_shipping_rate']['discount_amount'],
+        //        'base_shipping_discount_amount' => $data['selected_shipping_rate']['base_discount_amount'],
+        //    ]);
+        //}
 
         foreach ($data['items'] as $item) {
             $finalData['items'][] = $this->prepareDataForOrderItem($item);
@@ -776,13 +779,13 @@ class Cart
 
         $data = $cart->toArray();
 
-        $data['billing_address'] = $cart->billing_address->toArray();
-
-        if ($cart->haveStockableItems()) {
-            $data['shipping_address'] = $cart->shipping_address->toArray();
-
-            $data['selected_shipping_rate'] = $cart->selected_shipping_rate ? $cart->selected_shipping_rate->toArray() : 0.0;
-        }
+        //$data['billing_address'] = $cart->billing_address->toArray();
+        //
+        //if ($cart->haveStockableItems()) {
+        //    $data['shipping_address'] = $cart->shipping_address->toArray();
+        //
+        //    $data['selected_shipping_rate'] = $cart->selected_shipping_rate ? $cart->selected_shipping_rate->toArray() : 0.0;
+        //}
 
         $data['payment'] = $cart->payment->toArray();
 

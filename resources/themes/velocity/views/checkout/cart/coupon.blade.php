@@ -1,20 +1,22 @@
 @if ($cart)
     <script type="text/x-template" id="coupon-component-template">
-        <div class="coupon-container">
+        <div class="coupon-container pb-2">
             <div class="discount-control">
                 <form class="custom-form" method="post" @submit.prevent="applyCoupon">
-                    <div class="control-group" :class="[error_message ? 'has-error' : '']">
-                        <input
-                            type="text"
-                            name="code"
-                            class="control"
-                            v-model="coupon_code"
-                            placeholder="{{ __('shop::app.checkout.onepage.enter-coupon-code') }}" />
-
-                        <div class="control-error">@{{ error_message }}</div>
+                    <div class="row no-gutters align-items-stretch">
+                        <div class="control-group col-8 col-lg-10" :class="[error_message ? 'has-error' : '']">
+                            <input
+                                type="text"
+                                name="code"
+                                class="control coupon-input"
+                                v-model="coupon_code"
+                                placeholder="{{ __('shop::app.checkout.onepage.enter-coupon-code') }}"/>
+                        </div>
+                        <div class="col-4 col-lg-2">
+                            <button class="btn-coupon theme-btn light p-0 w-100 h-100" :disabled="disable_button">{{ __('shop::app.checkout.onepage.apply-coupon') }}</button>
+                        </div>
                     </div>
-
-                    <button class="theme-btn light" :disabled="disable_button">{{ __('shop::app.checkout.onepage.apply-coupon') }}</button>
+                    <div class="control-error" v-if="error_message">@{{ error_message }}</div>
                 </form>
             </div>
 
@@ -24,7 +26,7 @@
                 <label class="right" style="display: inline-flex; align-items: center;">
                     <b>@{{ applied_coupon }}</b>
 
-                    <i class="rango-close fs18" title="{{ __('shop::app.checkout.total.remove-coupon') }}" v-on:click="removeCoupon"></i>
+                    <i class="rango-close fs18 cursor-pointer" title="{{ __('shop::app.checkout.total.remove-coupon') }}" v-on:click="removeCoupon"></i>
                 </label>
             </div>
         </div>
@@ -36,7 +38,7 @@
 
             inject: ['$validator'],
 
-            data: function() {
+            data: function () {
                 return {
                     coupon_code: '',
                     error_message: '',
@@ -47,8 +49,8 @@
             },
 
             methods: {
-                applyCoupon: function() {
-                    if (! this.coupon_code.length)
+                applyCoupon: function () {
+                    if (!this.coupon_code.length)
                         return;
 
                     this.error_message = null;
@@ -84,30 +86,30 @@
                     var self = this;
 
                     axios.delete('{{ route('shop.checkout.coupon.remove.coupon') }}')
-                    .then(function(response) {
-                        self.$emit('onRemoveCoupon')
+                        .then(function (response) {
+                            self.$emit('onRemoveCoupon')
 
-                        self.applied_coupon = '';
-                        self.disable_button = false;
+                            self.applied_coupon = '';
+                            self.disable_button = false;
 
-                        window.flashMessages = [{'type': 'alert-success', 'message': response.data.message}];
+                            window.flashMessages = [{'type': 'alert-success', 'message': response.data.message}];
 
-                        self.$root.addFlashMessages();
+                            self.$root.addFlashMessages();
 
-                        self.redirectIfCartPage();
-                    })
-                    .catch(function(error) {
-                        window.flashMessages = [{'type': 'alert-error', 'message': error.response.data.message}];
+                            self.redirectIfCartPage();
+                        })
+                        .catch(function (error) {
+                            window.flashMessages = [{'type': 'alert-error', 'message': error.response.data.message}];
 
-                        self.$root.addFlashMessages();
-                    });
+                            self.$root.addFlashMessages();
+                        });
                 },
 
-                redirectIfCartPage: function() {
+                redirectIfCartPage: function () {
                     if (this.route_name != 'shop.checkout.cart.index')
                         return;
 
-                    setTimeout(function() {
+                    setTimeout(function () {
                         window.location.reload();
                     }, 700);
                 }

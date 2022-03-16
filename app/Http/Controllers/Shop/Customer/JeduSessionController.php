@@ -48,6 +48,7 @@ class JeduSessionController
     public function show()
     {
         if (auth()->guard('customer')->check()) {
+            session()->reflash();
             return redirect()->route('customer.profile.index');
         }
         if (!request()->exists('token')) {

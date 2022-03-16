@@ -67,15 +67,7 @@
                         </header>
 
                         <div >
-                            <div class="w-100 remove-padding-margin">
-                                <sidebar-component
-                                    main-sidebar=true
-                                    id="sidebar-level-0"
-                                    url="{{ url()->to('/') }}"
-                                    category-count="{{ $velocityMetaData ? $velocityMetaData->sidebar_category_count : 10 }}"
-                                    add-class="category-list-container pt10">
-                                </sidebar-component>
-                            </div>
+
                             <div class="w-100">
                                 @yield('full-width-content')
                             </div>

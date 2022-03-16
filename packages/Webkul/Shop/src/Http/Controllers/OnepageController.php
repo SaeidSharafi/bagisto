@@ -55,11 +55,19 @@ class OnepageController extends Controller
     {
         Event::dispatch('checkout.load.index');
 
+
         if (! auth()->guard('customer')->check()
             && ! core()->getConfigData('catalog.products.guest-checkout.allow-guest-checkout')) {
             return redirect()->route('customer.session.index');
         }
 
+        if (!auth()->guard('customer')->user()->first_name
+            || !auth()->guard('customer')->user()->last_name
+            || !auth()->guard('customer')->user()->email) {
+
+            return redirect()->route('customer.profile.edit')
+                ->with('warning',"لطفا پروفایل خود را تکمیل نمایید");
+        }
         if (Cart::hasError()) {
             return redirect()->route('shop.checkout.cart.index');
         }
@@ -125,16 +133,28 @@ class OnepageController extends Controller
 
             Cart::collectTotals();
 
-            if ($cart->haveStockableItems()) {
-                if (! $rates = Shipping::collectRates()) {
-                    return response()->json(['redirect_url' => route('shop.checkout.cart.index')], 403);
-                } else {
-                    return response()->json($rates);
-                }
-            } else {
-                return response()->json(Payment::getSupportedPaymentMethods());
-            }
+            return response()->json(Payment::getSupportedPaymentMethods());
+
+            //if ($cart->haveStockableItems()) {
+            //    //return response()->json(Payment::getSupportedPaymentMethods());
+            //    if (! $rates = Shipping::collectRates()) {
+            //        return response()->json(['redirect_url' => route('shop.checkout.cart.index')], 403);
+            //    } else {
+            //        return response()->json($rates);
+            //    }
+            //} else {
+            //    return response()->json(Payment::getSupportedPaymentMethods());
+            //}
         }
+    }
+    /**
+     * Get Payment methods.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getPaymentMethods()
+    {
+        return response()->json(Payment::getSupportedPaymentMethods());
     }
 
     /**
@@ -244,17 +264,17 @@ class OnepageController extends Controller
             throw new \Exception(trans('shop::app.checkout.cart.minimum-order-message', ['amount' => core()->currency($minimumOrderAmount)]));
         }
 
-        if ($cart->haveStockableItems() && ! $cart->shipping_address) {
-            throw new \Exception(trans('Please check shipping address.'));
-        }
-
-        if (! $cart->billing_address) {
-            throw new \Exception(trans('Please check billing address.'));
-        }
-
-        if ($cart->haveStockableItems() && ! $cart->selected_shipping_rate) {
-            throw new \Exception(trans('Please specify shipping method.'));
-        }
+        //if ($cart->haveStockableItems() && ! $cart->shipping_address) {
+        //    throw new \Exception(trans('Please check shipping address.'));
+        //}
+        //
+        //if (! $cart->billing_address) {
+        //    throw new \Exception(trans('Please check billing address.'));
+        //}
+        //
+        //if ($cart->haveStockableItems() && ! $cart->selected_shipping_rate) {
+        //    throw new \Exception(trans('Please specify shipping method.'));
+        //}
 
         if (! $cart->payment) {
             throw new \Exception(trans('Please specify payment method.'));
