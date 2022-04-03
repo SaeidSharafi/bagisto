@@ -22,11 +22,6 @@ class CustomerGroupTableSeeder extends Seeder
                 'code'            => 'general',
                 'name'            => 'General',
                 'is_user_defined' => 0
-            ], [
-                'id'              => 3,
-                'code'            => 'wholesale',
-                'name'            => 'Wholesale',
-                'is_user_defined' => 0,
             ]
         ]);
     }

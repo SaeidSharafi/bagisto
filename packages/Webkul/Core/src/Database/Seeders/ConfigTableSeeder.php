@@ -17,7 +17,7 @@ class ConfigTableSeeder extends Seeder
         DB::table('core_config')->insert([
             'id'           => 1,
             'code'         => 'catalog.products.guest-checkout.allow-guest-checkout',
-            'value'        => '1',
+            'value'        => '0',
             'channel_code' => null,
             'locale_code'  => null,
             'created_at'   => $now,
@@ -47,7 +47,7 @@ class ConfigTableSeeder extends Seeder
         DB::table('core_config')->insert([
             'id'           => 4,
             'code'         => 'emails.general.notifications.emails.general.notifications.customer',
-            'value'        => '1',
+            'value'        => '0',
             'channel_code' => null,
             'locale_code'  => null,
             'created_at'   => $now,
@@ -67,7 +67,7 @@ class ConfigTableSeeder extends Seeder
         DB::table('core_config')->insert([
             'id'           => 6,
             'code'         => 'emails.general.notifications.emails.general.notifications.new-admin',
-            'value'        => '1',
+            'value'        => '0',
             'channel_code' => null,
             'locale_code'  => null,
             'created_at'   => $now,
@@ -97,7 +97,7 @@ class ConfigTableSeeder extends Seeder
         DB::table('core_config')->insert([
             'id'           => 9,
             'code'         => 'emails.general.notifications.emails.general.notifications.new-shipment',
-            'value'        => '1',
+            'value'        => '0',
             'channel_code' => null,
             'locale_code'  => null,
             'created_at'   => $now,

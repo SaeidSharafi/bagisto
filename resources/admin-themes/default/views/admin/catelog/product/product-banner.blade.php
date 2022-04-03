@@ -7,10 +7,10 @@
 
 @endphp
 
-<accordian :title="'{{ __('admin::app.catalog.products.banner') }}'" :active="false">
+<accordian :title="'{{ __('admin.catalog.products.banner') }}'" :active="false">
     <div slot="body">
         <div class="control-group">
-            <label>{{ __('shop.admin.product.banner') }}</label>
+            <label>{{ __('admin.catalog.products.banner') }}</label>
 
             @if (isset($product_flat) && $product_flat->banner)
                 <image-wrapper

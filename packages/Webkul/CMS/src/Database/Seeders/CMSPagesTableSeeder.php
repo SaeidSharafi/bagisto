@@ -58,12 +58,12 @@ class CMSPagesTableSeeder extends Seeder
                 'id'         => 11,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
-            ] 
+            ]
         ]);
 
         DB::table('cms_page_translations')->insert([
             [
-                'locale'           => 'en',
+                'locale'           => 'fa',
                 'cms_page_id'      => 1,
                 'url_key'          => 'about-us',
                 'html_content'     => '<div class="static-container"><div class="mb-5">About us page content</div></div>',
@@ -72,7 +72,7 @@ class CMSPagesTableSeeder extends Seeder
                 'meta_description' => '',
                 'meta_keywords'    => 'aboutus',
             ], [
-                'locale'           => 'en',
+                'locale'           => 'fa',
                 'cms_page_id'      => 2,
                 'url_key'          => 'return-policy',
                 'html_content'     => '<div class="static-container"><div class="mb-5">Return policy page content</div></div>',
@@ -81,7 +81,7 @@ class CMSPagesTableSeeder extends Seeder
                 'meta_description' => '',
                 'meta_keywords'    => 'return, policy',
             ], [
-                'locale'           => 'en',
+                'locale'           => 'fa',
                 'cms_page_id'      => 3,
                 'url_key'          => 'refund-policy',
                 'html_content'     => '<div class="static-container"><div class="mb-5">Refund policy page content</div></div>',
@@ -90,7 +90,7 @@ class CMSPagesTableSeeder extends Seeder
                 'meta_description' => '',
                 'meta_keywords'    => 'refund, policy',
             ], [
-                'locale'           => 'en',
+                'locale'           => 'fa',
                 'cms_page_id'      => 4,
                 'url_key'          => 'terms-conditions',
                 'html_content'     => '<div class="static-container"><div class="mb-5">Terms & conditions page content</div></div>',
@@ -99,7 +99,7 @@ class CMSPagesTableSeeder extends Seeder
                 'meta_description' => '',
                 'meta_keywords'    => 'term, conditions',
             ], [
-                'locale'           => 'en',
+                'locale'           => 'fa',
                 'cms_page_id'      => 5,
                 'url_key'          => 'terms-of-use',
                 'html_content'     => '<div class="static-container"><div class="mb-5">Terms of use page content</div></div>',
@@ -108,7 +108,7 @@ class CMSPagesTableSeeder extends Seeder
                 'meta_description' => '',
                 'meta_keywords'    => 'term, use',
             ], [
-                'locale'           => 'en',
+                'locale'           => 'fa',
                 'cms_page_id'      => 6,
                 'url_key'          => 'contact-us',
                 'html_content'     => '<div class="static-container"><div class="mb-5">Contact us page content</div></div>',
@@ -117,7 +117,7 @@ class CMSPagesTableSeeder extends Seeder
                 'meta_description' => '',
                 'meta_keywords'    => 'contact, us',
             ], [
-                'locale'           => 'en',
+                'locale'           => 'fa',
                 'cms_page_id'      => 7,
                 'url_key'          => 'cutomer-service',
                 'html_content'     => '<div class="static-container"><div class="mb-5">Customer service  page content</div></div>',
@@ -126,7 +126,7 @@ class CMSPagesTableSeeder extends Seeder
                 'meta_description' => '',
                 'meta_keywords'    => 'customer, service',
             ], [
-                'locale'           => 'en',
+                'locale'           => 'fa',
                 'cms_page_id'      => 8,
                 'url_key'          => 'whats-new',
                 'html_content'     => '<div class="static-container"><div class="mb-5">What\'s New page content</div></div>',
@@ -135,7 +135,7 @@ class CMSPagesTableSeeder extends Seeder
                 'meta_description' => '',
                 'meta_keywords'    => 'new',
             ], [
-                'locale'           => 'en',
+                'locale'           => 'fa',
                 'cms_page_id'      => 9,
                 'url_key'          => 'payment-policy',
                 'html_content'     => '<div class="static-container"><div class="mb-5">Payment Policy page content</div></div>',
@@ -144,7 +144,7 @@ class CMSPagesTableSeeder extends Seeder
                 'meta_description' => '',
                 'meta_keywords'    => 'payment, policy',
             ], [
-                'locale'           => 'en',
+                'locale'           => 'fa',
                 'cms_page_id'      => 10,
                 'url_key'          => 'shipping-policy',
                 'html_content'     => '<div class="static-container"><div class="mb-5">Shipping Policy  page content</div></div>',
@@ -153,7 +153,7 @@ class CMSPagesTableSeeder extends Seeder
                 'meta_description' => '',
                 'meta_keywords'    => 'shipping, policy',
             ], [
-                'locale'           => 'en',
+                'locale'           => 'fa',
                 'cms_page_id'      => 11,
                 'url_key'          => 'privacy-policy',
                 'html_content'     => '<div class="static-container"><div class="mb-5">Privacy Policy  page content</div></div>',
@@ -161,7 +161,7 @@ class CMSPagesTableSeeder extends Seeder
                 'meta_title'       => 'Privacy Policy',
                 'meta_description' => '',
                 'meta_keywords'    => 'privacy, policy',
-            ] 
+            ]
         ]);
     }
 }

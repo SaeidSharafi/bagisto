@@ -1,12 +1,17 @@
 <?php
 
-namespace Webkul\Attribute\Database\Seeders;
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class AttributeGroupTableSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
     public function run()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
@@ -21,39 +26,60 @@ class AttributeGroupTableSeeder extends Seeder
             [
                 'id'                  => '1',
                 'code'                => 'general',
-                'name'                => 'General',
+                'name'                => 'عمومی',
                 'position'            => '1',
                 'is_user_defined'     => '0',
                 'attribute_family_id' => '1',
             ], [
                 'id'                  => '2',
                 'code'                => 'description',
-                'name'                => 'Description',
-                'position'            => '2',
+                'name'                => 'توضیحات',
+                'position'            => '4',
                 'is_user_defined'     => '0',
                 'attribute_family_id' => '1',
             ], [
                 'id'                  => '3',
                 'code'                => 'meta_description',
-                'name'                => 'Meta Description',
-                'position'            => '3',
+                'name'                => 'توضیحات متا',
+                'position'            => '6',
                 'is_user_defined'     => '0',
                 'attribute_family_id' => '1',
             ], [
                 'id'                  => '4',
                 'code'                => 'price',
-                'name'                => 'Price',
-                'position'            => '4',
+                'name'                => 'قیمت',
+                'position'            => '7',
                 'is_user_defined'     => '0',
                 'attribute_family_id' => '1',
             ], [
                 'id'                  => '5',
                 'code'                => 'shipping',
-                'name'                => 'Shipping',
-                'position'            => '5',
+                'name'                => 'ارسال',
+                'position'            => '8',
                 'is_user_defined'     => '0',
                 'attribute_family_id' => '1'
-            ],
+            ], [
+                'id'                  => '6',
+                'code'                => 'course_detail',
+                'name'                => 'مشخصات دوره',
+                'position'            => '2',
+                'is_user_defined'     => '0',
+                'attribute_family_id' => '1',
+            ], [
+                'id'                  => '7',
+                'code'                => 'teacher_detail',
+                'name'                => 'اطلاعات استاد',
+                'position'            => '3',
+                'is_user_defined'     => '0',
+                'attribute_family_id' => '1',
+            ], [
+                'id'                  => '8',
+                'code'                => 'course_desc',
+                'name'                => 'ویژگی های بخش دوم',
+                'position'            => '5',
+                'is_user_defined'     => '0',
+                'attribute_family_id' => '1',
+            ]
         ]);
 
         DB::table('attribute_group_mappings')->insert([
@@ -131,40 +157,68 @@ class AttributeGroupTableSeeder extends Seeder
                 'position'            => '3',
             ], [
                 'attribute_id'        => '19',
-                'attribute_group_id'  => '5',
-                'position'            => '1',
-            ], [
-                'attribute_id'        => '20',
-                'attribute_group_id'  => '5',
-                'position'            => '2',
-            ], [
-                'attribute_id'        => '21',
-                'attribute_group_id'  => '5',
-                'position'            => '3',
-            ], [
-                'attribute_id'        => '22',
-                'attribute_group_id'  => '5',
-                'position'            => '4',
-            ], [
-                'attribute_id'        => '23',
-                'attribute_group_id'  => '1',
-                'position'            => '11',
-            ], [
-                'attribute_id'        => '24',
-                'attribute_group_id'  => '1',
-                'position'            => '12',
-            ], [
-                'attribute_id'        => '25',
-                'attribute_group_id'  => '1',
-                'position'            => '13',
-            ], [
-                'attribute_id'        => '26',
                 'attribute_group_id'  => '1',
                 'position'            => '9',
             ], [
-                'attribute_id'        => '27',
+                'attribute_id'        => '20',
                 'attribute_group_id'  => '1',
                 'position'            => '2',
+            ], [
+                'attribute_id'        => '21',
+                'attribute_group_id'  => '7',
+                'position'            => '1',
+            ], [
+                'attribute_id'        => '22',
+                'attribute_group_id'  => '7',
+                'position'            => '2',
+            ], [
+                'attribute_id'        => '23',
+                'attribute_group_id'  => '7',
+                'position'            => '3',
+            ], [
+                'attribute_id'        => '24',
+                'attribute_group_id'  => '6',
+                'position'            => '1',
+            ], [
+                'attribute_id'        => '25',
+                'attribute_group_id'  => '6',
+                'position'            => '2',
+            ], [
+                'attribute_id'        => '26',
+                'attribute_group_id'  => '6',
+                'position'            => '3',
+            ], [
+                'attribute_id'        => '27',
+                'attribute_group_id'  => '6',
+                'position'            => '4',
+            ], [
+                'attribute_id'        => '28',
+                'attribute_group_id'  => '6',
+                'position'            => '5',
+            ], [
+                'attribute_id'        => '29',
+                'attribute_group_id'  => '6',
+                'position'            => '6',
+            ], [
+                'attribute_id'        => '30',
+                'attribute_group_id'  => '8',
+                'position'            => '1',
+            ], [
+                'attribute_id'        => '31',
+                'attribute_group_id'  => '8',
+                'position'            => '2',
+            ], [
+                'attribute_id'        => '32',
+                'attribute_group_id'  => '8',
+                'position'            => '3',
+            ], [
+                'attribute_id'        => '33',
+                'attribute_group_id'  => '8',
+                'position'            => '4',
+            ], [
+                'attribute_id'        => '34',
+                'attribute_group_id'  => '8',
+                'position'            => '5',
             ]
         ]);
 

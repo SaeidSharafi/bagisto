@@ -20,6 +20,7 @@ return [
         'out-of-stock' => 'تکمیل شده',
         'details' => 'توضیحات',
     ],
+
     'course'     => 'دوره:',
     'teacher'    => 'استاد:',
     'reviews' =>[

@@ -7,10 +7,9 @@
 @section('content-wrapper')
     <div class="auth-content form-container">
         <div class="container">
-            <div class="col-lg-10 col-md-12 offset-lg-1">
+            <div class="d-flex w-100 auth-box">
 
-
-                <div class="body col-12">
+                <div class="body m-0 w-100 card">
                     <h3 class="fw6">
                         {{ __('velocity::app.customer.verify-form.verify')}}
                     </h3>

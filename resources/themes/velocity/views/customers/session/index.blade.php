@@ -10,16 +10,17 @@
         {!! view_render_event('bagisto.shop.customers.login.before') !!}
 
         <div class="container">
-            <div class="col-lg-10 col-md-12 offset-lg-1">
+            <div class="d-flex w-100 auth-box">
 
-                <div class="body col-12">
+
+                <div class="body m-0 w-100 card">
                     <div class="form-header">
-                        <h3 class="fw6">
-                            {{ __('velocity::app.customer.login-form.registered-user')}}
-                        </h3>
-
-                        <p class="fs16">
+                        <p class="fs24">
+                            @if ($type === "login_by_password")
                             {{ __('velocity::app.customer.login-form.form-login-text')}}
+                            @else
+                                {{ __('shop::app.customer.login-form.form-otp-text')}}
+                            @endif
                         </p>
                     </div>
 
@@ -35,6 +36,7 @@
 
                         <div class="form-group" :class="[errors.has('password') ? 'has-error' : '']">
                             @if ($type === "login_by_password")
+                                <div class="mb-2">
                                 <label for="password" class="mandatory label-style">
                                     {{ __('shop::app.customer.login-form.password') }}
                                 </label>
@@ -48,16 +50,18 @@
                                     data-vv-as="&quot;{{ __('shop::app.customer.login-form.password') }}&quot;"/>
 
                                 <span class="control-error" v-if="errors.has('password')" v-text="errors.first('password')"></span>
-                                <a class="d-block" href="{{route('customer.session.index',['token'=>request()->input('token'),'type' => 'login_by_otp'])}}">
-                                    {{__('shop::app.customer.login-form.otp')}}
+                                </div>
+                                <a class="d-block mb-2" href="{{route('customer.session.index',['token'=>request()->input('token'),'type' => 'login_by_otp'])}}">
+                                    {{__('shop::app.customer.login-form.otp-link')}}
                                 </a>
                                 <a href="{{ route('customer.forgot-password.create') }}" >
                                     {{ __('shop::app.customer.login-form.forgot_pass') }}
                                 </a>
 
                             @else
-                                <label for="otp" class="mandatory label-style">
-                                    {{ __('shop::app.customer.login-form.otp') }}
+                                <div class="mb-2">
+                                <label for="otp" class="label-style">
+                                    {{ __('shop::app.customer.login-form.otp',['phone' => $phone]) }}
                                 </label>
 
                                 <input
@@ -67,7 +71,7 @@
                                     v-validate="'required'"
                                     value="{{ old('otp') }}"
                                     data-vv-as="&quot;{{ __('shop::app.customer.login-form.otp') }}&quot;"/>
-
+                                </div>
                                 <span class="control-error" v-if="errors.has('otp')" v-text="errors.first('otp')"></span>
                                 <sms-timer http-request="/api/resend-sms"
                                            resend-text="ارسال مجدد"
@@ -87,11 +91,11 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+{{--                        <div class="form-group">--}}
 
-                            {!! Captcha::render() !!}
+{{--                            {!! Captcha::render() !!}--}}
 
-                        </div>
+{{--                        </div>--}}
 
                         {!! view_render_event('bagisto.shop.customers.login_form_controls.after') !!}
 
