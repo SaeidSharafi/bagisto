@@ -883,7 +883,7 @@ class AttributeTableSeeder extends Seeder
                 'name'         => 'تصویر استاد',
                 'attribute_id' => '22',
             ], [
-                'id'           => '40',
+                'id'           => '43',
                 'locale'       => 'fa',
                 'name'         => 'درباره استاد',
                 'attribute_id' => '23',
