@@ -43,7 +43,7 @@ class JeduCustomerController
         return $this->sendError(
             "SMS Disabled",
             [trans('responses.session_expired')],
-            405
+            423
         );
 
     }
