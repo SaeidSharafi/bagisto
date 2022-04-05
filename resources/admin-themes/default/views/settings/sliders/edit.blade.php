@@ -98,9 +98,8 @@
                     <div class="control-group">
                         <label for="status">{{ __('dmin::app.settings.sliders.show_content') }}</label>
                         <input type="hidden" id="show_content" name="show_content" value="0">
-
                         <label class="switch">
-                            <input type="checkbox" id="show_content" name="show_content" value="{{ $slider->show_content }}" {{ $slider->show_content ? 'checked' : '' }}>
+                            <input type="checkbox" id="show_content" name="show_content" value="1" {{ $slider->show_content ? 'checked' : '' }}>
                             <span class="slider round"></span>
                         </label>
                     </div>
@@ -124,35 +123,4 @@
     </div>
 @endsection
 
-@push('scripts')
-    @include('admin::layouts.tinymce')
 
-    <script>
-        {{--$(document).ready(function () {--}}
-
-        {{--    tinyMCEHelper.initTinyMCE({--}}
-        {{--        selector: 'textarea#tiny',--}}
-        {{--        height: 200,--}}
-        {{--        width: "100%",--}}
-        {{--        cleanup_on_startup: false,--}}
-        {{--        trim_span_elements: false,--}}
-        {{--        verify_html: false,--}}
-        {{--        cleanup: false,--}}
-        {{--        convert_urls: false,--}}
-        {{--        valid_children: '+a[div]',--}}
-        {{--        forced_root_block : "",--}}
-        {{--        extended_valid_elements : '*[*]',--}}
-        {{--        plugins: 'image imagetools media wordcount save fullscreen code table lists link hr',--}}
-        {{--        toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor link hr | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat | code | table',--}}
-        {{--        image_advtab: true,--}}
-        {{--        templates: [--}}
-        {{--            { title: 'Test template 1', content: 'Test 1' },--}}
-        {{--            { title: 'Test template 2', content: 'Test 2' }--}}
-        {{--        ],--}}
-        {{--        uploadRoute: '{{ route('admin.tinymce.upload') }}',--}}
-        {{--        csrfToken: '{{ csrf_token() }}',--}}
-
-        {{--    });--}}
-        {{--});--}}
-    </script>
-@endpush
