@@ -68,8 +68,7 @@ class OtpNotification extends Notification implements ShouldQueue
             ->to([$notifiable->phone])
             ->pattern($pattern ?: "mdoe1j1587")
             ->parameters($parametres)
-            ->initGateway(core()->getConfigData('sms.configure.sms_settings.gateway'))
-            ->dryRun();
+            ->initGateway(core()->getConfigData('sms.configure.sms_settings.gateway'));
     }
 
     /**
