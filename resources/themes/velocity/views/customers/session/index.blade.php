@@ -73,7 +73,7 @@
                                     data-vv-as="&quot;{{ __('shop::app.customer.login-form.otp') }}&quot;"/>
                                 </div>
                                 <span class="control-error" v-if="errors.has('otp')" v-text="errors.first('otp')"></span>
-                                <sms-timer http-request="/api/resend-sms"
+                                <sms-timer http-request="{{route('sms.resend')}}"
                                            resend-text="ارسال مجدد"
                                            timer-text="{{__('app.sms-timer')}}"
                                            phone="{{$phone}}"

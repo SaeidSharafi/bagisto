@@ -48,7 +48,7 @@
                         {!! view_render_event('bagisto.shop.customers.signup_form_controls.ver_code.after') !!}
 
                         <div class="control-group" id="smstimer">
-                            <sms-timer http-request="/api/resend-sms"
+                            <sms-timer http-request="{{route('sms.resend')}}"
                                        resend-text="ارسال مجدد"
                                        timer-text="{{__('app.sms-timer')}}"
                                        phone="{{$phone}}"
