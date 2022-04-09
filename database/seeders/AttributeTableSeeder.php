@@ -480,7 +480,7 @@ class AttributeTableSeeder extends Seeder
                 'is_comparable'       => '0',
             ], [
                 'id'                  => '25',
-                'code'                => 'length',
+                'code'                => 'class_length',
                 'admin_name'          => 'مدت زمان',
                 'type'                => 'text',
                 'validation'          => NULL,
