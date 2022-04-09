@@ -75,7 +75,7 @@
     </div>
 @endsection
 
-@section('full-content-wrapper-fluid')
+@section('full-content-wrapper')
 
     @include('shop::home.about-us')
     @include('shop::home.category-carousel')

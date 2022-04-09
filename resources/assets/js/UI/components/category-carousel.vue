@@ -8,7 +8,7 @@
             <div
                 :id="`slide-${index}`"
                 v-for="(category, index) in slicedCategories">
-                <div class="category-item"  v-if="category.category_icon_path">
+                <div class="category-item with-image"  v-if="category.category_icon_path">
                     <a
                         :href="`${$root.baseUrl}/${category.slug}`"
                         class="category"
@@ -16,7 +16,7 @@
                         {{category.name}}
                     </a>
                 </div>
-                <div class="category-item" v-else>
+                <div class="category-item no-image" v-else>
                     <a
                        :href="`${$root.baseUrl}/${category.slug}`"
                        class="category"

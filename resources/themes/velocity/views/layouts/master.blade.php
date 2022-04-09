@@ -72,7 +72,7 @@
                                 @yield('full-width-content')
                             </div>
                             <div class="col-12 no-padding content" id="home-right-bar-container">
-                                <div class="container-right row no-margin col-12 no-padding">
+                                <div class="container px-0">
                                     {!! view_render_event('bagisto.shop.layout.content.before') !!}
 
                                     @yield('content-wrapper')

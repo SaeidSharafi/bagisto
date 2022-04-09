@@ -24,7 +24,7 @@
     }
      $customAttributeValues = $productViewHelper->getAdditionalData($product);
 $teacher = collect($customAttributeValues)->first( function ($value,$key){
-    return $value['code'] =="teacher";
+    return $value['code'] =="teacher_name";
 })['value'];
 
 $course_details = collect($customAttributeValues)->filter( function ($value,$key){
