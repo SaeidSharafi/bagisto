@@ -26,7 +26,9 @@ select {
 body {
     background: $main-bg;
 }
-
+dl,ol,ul{
+    padding-right: 40px;
+}
 .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container .bottom-toolbar .pagination .quantity button.page-item,
 .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container .bottom-toolbar .pagination button.btn.page-item,
 .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container .quantity button.light,
@@ -140,6 +142,7 @@ header {
             display: -ms-inline-flexbox;
             display: inline-flex;
             align-items: center;
+            padding-right: 0;
         }
 
         li {

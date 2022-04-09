@@ -23,9 +23,10 @@
         $style = "background-image: url('$url')";
     }
      $customAttributeValues = $productViewHelper->getAdditionalData($product);
-$teacher = collect($customAttributeValues)->first( function ($value,$key){
-    return $value['code'] =="teacher_name";
-})['value'];
+
+$teacher = collect($customAttributeValues)->filter( function ($value,$key){
+    return $value['group'] =="teacher_detail";
+})->pluck('value','code');
 
 $course_details = collect($customAttributeValues)->filter( function ($value,$key){
     return $value['group'] == "course_detail";
@@ -108,7 +109,7 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
             </div>
             <div class="px-4">
                 <span class="teacher-label"> {{__('shop.teacher')}}</span>
-                <span class="teacher-name">{{$teacher}}</span>
+                <span class="teacher-name">{{$teacher['teacher_name']}}</span>
             </div>
         </div>
         @if($product->banner)
@@ -239,19 +240,21 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                         <div class="row h-100 align-items-center">
                             <div class="col-md-2 col-12">
                                 <div class="teacher-image rounded-circle overflow-hidden">
-                                    <img src="/images/teacher-sample.jpg" class="w-100">
+                                    @if ($teacher['teacher_image'])
+                                        <img src="/storage/{{$teacher['teacher_image']}}" class="w-100">
+                                    @else
+                                        <img src="/images/teacher-sample.jpg" class="w-100">
+                                    @endif
+
                                 </div>
                             </div>
                             <div class="col-md-10 col-12">
                                 <div class="w-100">
                                     <h6 class="fw6">
-                                        استاد گرامی
+                                        استاد گرامی {{ $teacher['teacher_name'] ?? '' }}
                                     </h6>
                                     <p>
-                                        دعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی
-                                        علی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی دعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
-                                        هدف بهبود
-                                        ابزارهای کاربردی می باشد، کتابهای زیادی دعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربر
+                                      {{$teacher['teacher_bio'] ?? ''}}
                                     </p>
                                 </div>
                             </div>
