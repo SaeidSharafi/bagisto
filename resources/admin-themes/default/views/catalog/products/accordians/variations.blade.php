@@ -115,7 +115,6 @@
 
                         <th class="qty">{{ __('admin::app.catalog.products.qty') }}</th>
                         <th class="price">{{ __('admin::app.catalog.products.price') }}</th>
-                        <th class="weight">{{ __('admin::app.catalog.products.weight') }}</th>
                         <th class="status">{{ __('admin::app.catalog.products.status') }}</th>
                         <th class="actions"></th>
                     </tr>
@@ -231,17 +230,6 @@
             </td>
 
             <td>
-                <div class="control-group"
-                    :class="[errors.has(variantInputName + '[weight]') ? 'has-error' : '']">
-                    <input type="number" v-validate="'required'" v-model="variant.weight"
-                        :name="[variantInputName + '[weight]']" class="control"
-                        data-vv-as="&quot;{{ __('admin::app.catalog.products.weight') }}&quot;"
-                        step="any"/>
-                    <span class="control-error" v-if="errors.has(variantInputName + '[weight]')">@{{ errors.first(variantInputName + '[weight]') }}</span>
-                </div>
-            </td>
-
-            <td>
                 <div class="control-group">
                     <select type="text" v-model="variant.status"
                             :name="[variantInputName + '[status]']" class="control">
@@ -324,7 +312,6 @@
                                     sku: '{{ $product->sku }}' + '-variant-' + optionIds.join('-'),
                                     name: '',
                                     price: 0,
-                                    weight: 0,
                                     status: 1
                                 }, this.variant));
 

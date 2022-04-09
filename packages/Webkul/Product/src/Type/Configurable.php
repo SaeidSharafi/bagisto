@@ -24,7 +24,7 @@ class Configurable extends AbstractType
      *
      * @var array
      */
-    protected $fillableTypes = ['sku', 'name', 'url_key', 'short_description', 'description', 'price', 'weight', 'status'];
+    protected $fillableTypes = ['sku', 'name', 'url_key', 'short_description', 'description', 'price', 'status'];
 
     /**
      * These blade files will be included in product edit page.
@@ -212,7 +212,6 @@ class Configurable extends AbstractType
                 'name'        => '',
                 'inventories' => [],
                 'price'       => 0,
-                'weight'      => 0,
                 'status'      => 1,
             ];
         }
@@ -241,6 +240,7 @@ class Configurable extends AbstractType
             $attribute = $this->attributeRepository->findOneByField('code', $attributeCode);
 
             if ($attribute->value_per_channel) {
+
                 if ($attribute->value_per_locale) {
                     foreach (core()->getAllChannels() as $channel) {
                         foreach (core()->getAllLocales() as $locale) {
@@ -430,7 +430,6 @@ class Configurable extends AbstractType
             'variants.*.name'   => 'required',
             'variants.*.sku'    => 'required',
             'variants.*.price'  => 'required',
-            'variants.*.weight' => 'required',
         ];
     }
 
@@ -617,9 +616,6 @@ class Configurable extends AbstractType
                 'base_price'        => $price,
                 'total'             => $convertedPrice * $data['quantity'],
                 'base_total'        => $price * $data['quantity'],
-                'weight'            => $childProduct->weight,
-                'total_weight'      => $childProduct->weight * $data['quantity'],
-                'base_total_weight' => $childProduct->weight * $data['quantity'],
                 'type'              => $this->product->type,
                 'additional'        => $this->getAdditionalOptions($data),
             ], [
