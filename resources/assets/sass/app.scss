@@ -699,10 +699,14 @@ section.product-footer {
     }
 
     .product-image-container {
-        padding: 0;
+        padding: 5px;
+        overflow: hidden;
         img {
-            height: 160px;
+            max-height: 160px;
+            width: 100%;
+            -o-object-fit: none;
             object-fit: none;
+            border-radius: 0.25rem;
         }
     }
 
