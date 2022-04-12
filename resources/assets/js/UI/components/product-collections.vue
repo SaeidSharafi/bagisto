@@ -1,12 +1,15 @@
 <template>
     <div class="w-100">
         <template v-if="hasProduct">
-            <div class="row no-gutters carousel-products">
+            <div class="row no-gutters carousel-products" :class="additionalClass">
                 <div class="col-md-3 col-lg-2 d-none d-md-block">
-                    <div class="category-header"
-                    :class="additionalClass">
+                    <div class="category-header">
                         <div class="category-title">
                            {{ (isCategory && !productTitle) ? categoryDetails.name : productTitle}}
+                        </div>
+                        <div class="category-image">
+                            <img :src="productImage" class="w-100" v-if="productImage">
+                            <img src="https://www.digikala.com/statics/img/png/specialCarousel/General.png" class="w-100" v-else>
                         </div>
                         <div class="category-link" v-if="isCategory">
                             <a class="btn btn-outline-light"
@@ -59,6 +62,7 @@ export default {
             default: ''
         },
         productTitle: String,
+        productImage: String,
         productRoute: String,
         localeDirection: String,
         showRecentlyViewed: {

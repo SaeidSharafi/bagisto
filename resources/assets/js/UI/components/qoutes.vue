@@ -34,7 +34,7 @@ export default {
     mounted: function (){
         this.sliderSetting = {
             "dots": true,
-            "arrows": false,
+            "arrows": true,
             "autoplay": true,
             "autoplaySpeed": 10000,
             "speed": 1000,

@@ -363,6 +363,8 @@ class Helper extends Review
             'slug'              => $product->url_key,
             'description'       => $product->description,
             'shortDescription'  => $product->short_description,
+            //Added teahcer_name attribtue to format
+            'teacher_name'  => $product->teacher_name ?? '',
             'firstReviewText'   => trans('velocity::app.products.be-first-review'),
             'addToCartHtml'     => view('shop::products.add-to-cart', [
                 'product'           => $product,

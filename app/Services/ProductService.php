@@ -60,6 +60,7 @@ class ProductService
             'shortDescription' => $product->short_description,
             'category_slug' => $product->category_slug,
             'category_name' => $product->category_name,
+            'teacher_name' => $product->teacher_name ?? '',
         ];
     }
 }

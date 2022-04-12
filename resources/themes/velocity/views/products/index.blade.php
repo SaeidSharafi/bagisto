@@ -107,7 +107,7 @@
                         <template v-else-if="products.length > 0">
                             @if ($toolbarHelper->getCurrentMode() == 'grid')
                                 <div class="row remove-padding-margin">
-                                    <div class="col-md-4 col-lg-3 col-xl-2 px-1 mb-2"
+                                    <div class="col-md-4 col-lg-3 col-xl-3 px-2 my-2"
                                          v-for="(product, index) in products">
                                         <product-card
                                             :key="index"
