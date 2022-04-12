@@ -10,7 +10,7 @@
 @import "~@fortawesome/fontawesome-free/scss/brands";
 
 * {
-    font-family: 'Source Sans Pro', 'IRANSans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Source Sans Pro', 'IRANYEKAN', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 body,
@@ -20,7 +20,7 @@ input,
 ::placeholder,
 button,
 select {
-    font-family: 'Source Sans Pro', 'IRANSans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Source Sans Pro', 'IRANYEKAN', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 body {
@@ -722,12 +722,12 @@ section.product-footer {
         padding: 0 10px;
         img {
             height: 160px;
-            //object-fit: contain;
+            object-fit: none;
         }
     }
 
     .product-name {
-        font-size: 1.1rem;
+        font-size: 0.9rem;
         font-weight: bold;
     }
 
@@ -1022,9 +1022,9 @@ section.product-footer {
 
 
 .footer {
+    background-color: #f1f1f4 !important;
     .footer-content {
         > .map-container {
-            background-color: #f4f4f4;
             padding: 50px;
         }
 
