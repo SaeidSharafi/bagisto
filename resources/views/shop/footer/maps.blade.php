@@ -1,4 +1,4 @@
-<div class="map-container">
+<div class="map-container container">
     <h4 class="text-center">
         معاونت آموزشی جهاد دانشگاهی قزوین
     </h4>
