@@ -93,8 +93,13 @@
 
         {{ view_render_event('bagisto.shop.home.content.after') }}
     </div>
+@endsection
+
+@section('after-full-content-wrapper')
     @include('shop.quotes')
+    <div class="container">
     @include('shop.teachers')
     @include('shop.contracts')
+    </div>
 @endsection
 

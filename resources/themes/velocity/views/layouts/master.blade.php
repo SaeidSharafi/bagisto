@@ -94,6 +94,9 @@
 
                     {!! view_render_event('bagisto.shop.layout.full-content.after') !!}
                 </div>
+                <div class="container-fluid">
+                    @yield('after-full-content-wrapper')
+                </div>
             </div>
 
             {{-- overlay loader --}}
