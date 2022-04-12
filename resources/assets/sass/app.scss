@@ -29,6 +29,9 @@ body {
 dl,ol,ul{
     padding-right: 40px;
 }
+ul[type="none"] {
+    padding-right: 0;
+}
 .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container .bottom-toolbar .pagination .quantity button.page-item,
 .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container .bottom-toolbar .pagination button.btn.page-item,
 .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container .quantity button.light,
@@ -1127,12 +1130,16 @@ section.product-footer {
 body.rtl .category-list-container li a{
     display: flex;
     align-items: center;
+    position: relative;
 }
 .sidebar .category-content .rango-arrow-right{
-    top: 4px;
+    top: 0;
     position: absolute;
     float: none !important;
     left: 4px;
+    display: flex;
+    height: 100%;
+    align-items: center;
 }
 .category-list-container .sub-categories{
     height: auto !important;
