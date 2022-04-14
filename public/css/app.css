@@ -7048,7 +7048,7 @@ section.product-footer .teacher-image img {
   overflow: hidden;
 }
 .product-card .product-image-container img {
-  max-height: 160px;
+  max-height: 125px;
   width: 100%;
   -o-object-fit: none;
   object-fit: none;
