@@ -28,19 +28,11 @@ export default {
     },
     data: function () {
         return {
-            hasProduct: true,
-            list: false,
-            isLoading: true,
-            isCategory: false,
-            productCollections: [],
-            slidesPerPage: 5,
-            windowWidth: window.innerWidth,
             sliderSetting: {}
         }
     },
     mounted: function () {
-        console.log(this.isRtl);
-        console.log(!!(this.isRtl));
+
         this.sliderSetting = {
             "dots": false,
             "arrows": false,

@@ -4,7 +4,7 @@
             تفاهم نامه ها
         </h4>
         <contracts
-            :locale-direction="{{$direction}}">
+            locale-direction="{{$direction}}">
         </contracts>
     </div>
 </div>

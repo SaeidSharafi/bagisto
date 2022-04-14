@@ -1,4 +1,4 @@
-<section class="qoutes ignore-padding">
+<section class="qoutes">
     <h4>
         درباره ما چه میگویند
     </h4>
