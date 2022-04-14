@@ -1,6 +1,6 @@
 <div class="w-100 category-carousel {{$direction}} py-3">
     <div class="row">
-        @foreach($categories as $category)
+        @foreach($front_categories as $category)
             @php
             $base = "/storage/";
             $image_path = $category->image ?$base .$category->image : '/images/category-base.png';

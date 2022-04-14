@@ -42,7 +42,7 @@ class ShopCoreServiceProvider extends ServiceProvider
             view()->share('direction', core()->getCurrentLocale()->direction);
             view()->composer('*', function ($view) {
                 $categories = app(CategoryRepository::class)->getVisibleCategoryTree(core()->getCurrentChannel()->root_category_id);
-                $view->with('categories',$categories);
+                $view->with('front_categories',$categories);
             });
 
         }
