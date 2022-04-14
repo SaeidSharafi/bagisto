@@ -26,12 +26,15 @@ select {
 body {
     background: $main-bg;
 }
-dl,ol,ul{
+
+dl, ol, ul {
     padding-right: 40px;
 }
+
 ul[type="none"] {
     padding-right: 0;
 }
+
 .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container .bottom-toolbar .pagination .quantity button.page-item,
 .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container .bottom-toolbar .pagination button.btn.page-item,
 .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container .quantity button.light,
@@ -264,10 +267,12 @@ header #search-form #header-search-icon i {
 img.cover {
     object-fit: cover;
 }
+
 .featured-slider {
     margin-top: -20px;
     position: relative;
     z-index: 99;
+
     .slider-side {
         display: flex;
         flex-direction: column;
@@ -326,6 +331,7 @@ img.cover {
         }
     }
 }
+
 .category-banner {
     height: 200px;
     color: #ffff;
@@ -395,7 +401,8 @@ img.cover {
 
     .category-item {
         padding: 0.5rem 0.9rem;
-        .category-text{
+
+        .category-text {
             color: #000000;
             font-size: 0.9rem;
         }
@@ -658,7 +665,8 @@ section.product-footer {
 .product-card {
     width: 100% !important;
     direction: rtl;
-     border: none;
+    border: none;
+
     .product-price {
         height: 72px;
         align-items: flex-end;
@@ -701,6 +709,7 @@ section.product-footer {
     .product-image-container {
         padding: 5px;
         overflow: hidden;
+
         img {
             max-height: 160px;
             width: 100%;
@@ -713,7 +722,8 @@ section.product-footer {
     .product-name {
         font-size: 0.9rem;
         font-weight: bold;
-        a{
+
+        a {
             color: #000 !important;
         }
     }
@@ -741,6 +751,7 @@ section.product-footer {
 .carousel-products {
     border-radius: 10px;
     overflow: hidden;
+
     &.purple {
         background: $purple;
     }
@@ -752,6 +763,7 @@ section.product-footer {
     &.gray {
         background: $blue-gray;
     }
+
     .category-header {
         display: flex;
         flex-direction: column;
@@ -765,7 +777,6 @@ section.product-footer {
         text-align: center;
 
 
-
         .category-title {
             flex: 0.5;
             display: flex;
@@ -777,11 +788,13 @@ section.product-footer {
             padding: 0 25px;
             line-height: 2.5rem;
         }
+
         .category-image {
             width: 100%;
             max-width: 140px;
             margin: 0 auto;
         }
+
         .category-link {
             flex: 0.5;
             display: flex;
@@ -920,9 +933,11 @@ section.product-footer {
         position: relative;
         z-index: 2;
     }
-    > .container{
+
+    > .container {
         max-width: 800px !important;
     }
+
     &:after {
         content: '';
         background-color: #000000a1;
@@ -1018,6 +1033,7 @@ section.product-footer {
 
 .footer {
     background-color: #fff !important;
+
     .footer-content {
         > .map-container {
             padding: 50px;
@@ -1083,10 +1099,12 @@ section.product-footer {
         }
     }
 }
-.auth-box{
+
+.auth-box {
     max-width: 500px;
     margin: 0 auto;
 }
+
 .cart-details {
     .cart-row {
 
@@ -1126,12 +1144,14 @@ section.product-footer {
         border-radius: 10px;
     }
 }
-body.rtl .category-list-container li a{
+
+body.rtl .category-list-container li a {
     display: flex;
     align-items: center;
     position: relative;
 }
-.sidebar .category-content .rango-arrow-right{
+
+.sidebar .category-content .rango-arrow-right {
     top: 0;
     position: absolute;
     float: none !important;
@@ -1140,7 +1160,25 @@ body.rtl .category-list-container li a{
     height: 100%;
     align-items: center;
 }
-.category-list-container .sub-categories{
+
+.category-list-container .sub-categories {
     height: auto !important;
     min-height: auto !important;
+}
+
+
+.container, .container-fluid, .container-lg,
+.container-md, .container-sm, .container-xl, .container-xxl {
+    width: 100%;
+    padding-left: var(--bs-gutter-x,.75rem);
+    padding-right: var(--bs-gutter-x,.75rem);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (min-width: 1400px) {
+    .container, .container-lg, .container-md,
+    .container-sm, .container-xl, .container-xxl {
+        max-width: 1320px;
+    }
 }

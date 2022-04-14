@@ -99,9 +99,9 @@
     @include('shop::home.category-carousel')
 @endsection
 
-@section('after-full-content-wrapper')
+@section('full-width-content-bot')
     @include('shop.quotes')
-    <div class="container">
+    <div class="container-lg">
         @include('shop.teachers')
         @include('shop.contracts')
     </div>
