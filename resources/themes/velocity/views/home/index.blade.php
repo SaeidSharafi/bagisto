@@ -101,7 +101,7 @@
 
 @section('full-width-content-bot')
     @include('shop.quotes')
-    <div class="container-lg">
+    <div class="container">
         @include('shop.teachers')
         @include('shop.contracts')
     </div>

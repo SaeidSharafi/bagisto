@@ -67,7 +67,7 @@
                             @yield('full-width-content')
                         </div>
                         <div class="col-12 no-padding content" id="home-right-bar-container">
-                            <div class="container-lg px-0">
+                            <div class="container px-0">
                                 {!! view_render_event('bagisto.shop.layout.content.before') !!}
 
                                 @yield('content-wrapper')
@@ -82,7 +82,7 @@
             <div class="w-100">
                 @yield('full-width-content-top')
             </div>
-            <div class="container-lg">
+            <div class="container">
                 {!! view_render_event('bagisto.shop.layout.full-content.before') !!}
 
                 @yield('full-content-wrapper')
