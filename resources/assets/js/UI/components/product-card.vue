@@ -62,12 +62,7 @@
 
             <div class="card-body">
                 <h2 class="product-name w-100 no-padding">
-                    <a
-                        class="unset"
-                        :title="product.name"
-                        :href="`${baseUrl}/${product.slug}`">
                         {{ product.name }}
-                    </a>
                 </h2>
                 <div class="product-details">
                     <div>

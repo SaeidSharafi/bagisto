@@ -7057,6 +7057,12 @@ section.product-footer .teacher-image img {
 .product-card .product-name {
   font-size: 0.9rem;
   font-weight: bold;
+  color: #000 !important;
+  height: 35px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .product-card .product-name a {
   color: #000 !important;

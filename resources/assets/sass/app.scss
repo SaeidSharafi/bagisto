@@ -722,7 +722,12 @@ section.product-footer {
     .product-name {
         font-size: 0.9rem;
         font-weight: bold;
-
+        color: #000 !important;
+        height: 35px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
         a {
             color: #000 !important;
         }
