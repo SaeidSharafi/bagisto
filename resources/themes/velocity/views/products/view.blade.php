@@ -119,7 +119,7 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
 @endsection
 @section('full-content-wrapper')
     {!! view_render_event('bagisto.shop.products.view.before', ['product' => $product]) !!}
-    <div class="no-margin">
+    <div class="mb-3">
         <section class="product-detail card-box simple-shadow">
             <div class="layouter">
                 <product-view>
@@ -128,7 +128,7 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
 
                         <input type="hidden" name="product_id" value="{{ $product->product_id }}">
 
-                        <div class="row align-items-center">
+                        <div class="row">
                             {{-- product-gallery --}}
                             <div class="col-md-6">
                                 <div class="px-3">
@@ -138,7 +138,7 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
 
                             {{-- right-section --}}
                             <div class="product-info col-md-6">
-                                <div class="px-3">
+                                <div class="pt-4 px-3">
                                 {{-- product-info-section --}}
                                 <div class="attributes">
                                     @include ('shop::products.view.attributes',['active' => true,'customAttributeValues'=>$course_details])
@@ -227,9 +227,7 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="related-products card-box simple-shadow h-100">
                         @include('shop::products.view.related-products')
-                    </div>
                 </div>
             </div>
         </section>

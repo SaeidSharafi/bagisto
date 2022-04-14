@@ -1,14 +1,14 @@
 {{--{!! view_render_event('bagisto.shop.products.view.description.before', ['product' => $product]) !!}--}}
 
-        <div slot="header">
-            <h3 class="no-margin display-inbl">
+        <div class="header mb-3">
+            <h5 class="no-margin display-inbl">
                 {{ __('shop.product.details') }}
-            </h3>
+            </h5>
 
             <i class="rango-arrow"></i>
         </div>
 
-        <div slot="body">
+        <div class="body">
             <div class="full-description">
                 {!! $product->description !!}
             </div>

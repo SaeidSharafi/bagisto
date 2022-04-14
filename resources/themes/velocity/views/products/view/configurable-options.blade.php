@@ -30,7 +30,7 @@
                 <div
                     :key="index"
                     v-for='(attribute, index) in childAttributes'
-                    :class="`attribute control-group ${errors.has('super_attribute[' + attribute.id + ']') ? 'has-error' : ''}
+                    :class="`variations control-group ${errors.has('super_attribute[' + attribute.id + ']') ? 'has-error' : ''}
                     `">
                     <label class="required">@{{ attribute.label }}</label>
 

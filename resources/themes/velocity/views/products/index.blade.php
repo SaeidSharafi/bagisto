@@ -102,12 +102,12 @@
                         style="width: 100%"
                         @endif>
 
-                        <shimmer-component v-if="isLoading" shimmer-count="4"></shimmer-component>
+                        <shimmer-component v-if="isLoading" shimmer-count="5"></shimmer-component>
 
                         <template v-else-if="products.length > 0">
                             @if ($toolbarHelper->getCurrentMode() == 'grid')
                                 <div class="row remove-padding-margin">
-                                    <div class="col-md-4 col-lg-3 col-xl-3 px-2 my-2"
+                                    <div class="col-md-4 col-lg-3 px-2 my-2 product-cell"
                                          v-for="(product, index) in products">
                                         <product-card
                                             :key="index"

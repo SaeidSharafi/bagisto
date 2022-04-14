@@ -2,17 +2,20 @@
 $relatedProducts = $product->related_products()->get();
 ?>
 
+
+
 @if ($relatedProducts->count())
-    <h6 class="fw6 text-center py-3">
-        دوره‌های مرتبط
-    </h6>
-    <product-collections-slot
-        :slides-to-show=1
-        additional-class="related-carousel"
-        product-id="related-carousel"
-        locale-direction="{{ $direction }}"
-        :count={{ $relatedProducts->count() }}>
-        @foreach ($relatedProducts as $index => $relatedProduct)
+    <div class="related-products card-box simple-shadow h-100">
+        <h6 class="fw6 text-center py-3">
+            دوره‌های مرتبط
+        </h6>
+        <product-collections-slot
+            :slides-to-show=1
+            additional-class="related-carousel"
+            product-id="related-carousel"
+            locale-direction="{{ $direction }}"
+            :count={{ $relatedProducts->count() }}>
+            @foreach ($relatedProducts as $index => $relatedProduct)
                 <div slot="slide-{{ $index }}" class="related-slide">
                     @include ('shop::products.list.card', [
                                'product' => $relatedProduct,
@@ -20,6 +23,7 @@ $relatedProducts = $product->related_products()->get();
                            ])
                 </div>
 
-        @endforeach
-    </product-collections-slot>
+            @endforeach
+        </product-collections-slot>
+    </div>
 @endif

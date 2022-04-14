@@ -111,48 +111,38 @@
         </div>
     </div>
 @else
-    <div class="card grid-card product-card">
+    <a
+        class="unset"
+        href="{{ route('shop.productOrCategory.index', $product->url_key) }}"
+        title="{{ $product->name }}">
+        <div class="card grid-card product-card">
+            <div class="product-image-container">
+                <img
+                    loading="lazy"
+                    alt="{{ $product->name }}"
+                    src="{{ $productBaseImage['large_image_url'] }}"
+                    data-src="{{ $productBaseImage['large_image_url'] }}"
+                    class="card-img-top lzy_img"/>
+            </div>
+            <div class="card-body">
+                <h2 class="product-name w-100 no-padding">
 
-        <a href="{{ route('shop.productOrCategory.index', $product->url_key) }}"
-           title="{{ $product->name }}" class="product-image-container">
-            <img
-                loading="lazy"
-                alt="{{ $product->name }}"
-                src="{{ $productBaseImage['large_image_url'] }}"
-                data-src="{{ $productBaseImage['large_image_url'] }}"
-                class="card-img-top lzy_img"/>
-        </a>
-
-        <div class="card-body">
-            <h2 class="product-name w-100 no-padding">
-                <a
-                    class="unset"
-                    href="{{ route('shop.productOrCategory.index', $product->url_key) }}"
-                    title="{{ $product->name }}">
                     {{ $product->name }}
-                </a>
-            </h2>
-            <div class="product-details">
-                <div>
-                    <i class="far fa-user-circle"></i>
-                    <span>امین خاکباز</span>
+
+                </h2>
+                <div class="product-details">
+                    <div>
+                        <i class="far fa-user-circle"></i>
+                        <span>{{$product->teacher_name}}</span>
+                    </div>
                 </div>
+
                 <div>
-                    <i class="far fa-clock"></i>
-                    <span>10 ساعت</span>
+                    @include ('shop::products.price', ['product' => $product])
                 </div>
             </div>
-
-            <div class="product-price fs16">
-                @include ('shop::products.price', ['product' => $product])
-            </div>
-
-            <a href="{{ route('shop.productOrCategory.index', $product->url_key) }}" class="btn btn-view-product">
-                مشاهده دوره
-            </a>
         </div>
-    </div>
-
+    </a>
 @endif
 
 {!! view_render_event('bagisto.shop.products.list.card.after', ['product' => $product]) !!}
