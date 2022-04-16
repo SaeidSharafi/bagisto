@@ -654,6 +654,11 @@ section.product-footer {
 
 .product-info {
     .attributes{
+        .header{
+            border-bottom: 1px solid #000;
+            width: 100%;
+            padding-bottom: .5rem;
+        }
         table.full-specifications{
             font-size: 0.8rem;
             font-weight: bold;

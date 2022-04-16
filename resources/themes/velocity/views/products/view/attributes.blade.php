@@ -3,7 +3,7 @@
 
     @if ($customAttributeValues)
 
-            <div slot="header" class="mb-3">
+            <div class="header mb-3">
                 <h5 class="no-margin display-inbl fw7">
                     {{ __('shop.attributes.course_details') }}
                 </h5>

@@ -6773,7 +6773,7 @@ img.cover {
   overflow: hidden;
 }
 .product-banner .banner-image {
-  background: linear-gradient(90deg, #530564 10%, #f9c21c 100%) no-repeat center center;
+  background: linear-gradient(90deg, #f9c21c -10%, #530564 100%) no-repeat center center;
   background-size: cover;
   height: 100%;
   position: absolute;
@@ -7000,6 +7000,11 @@ section.product-footer .teacher-image img {
   justify-content: end;
 }
 
+.product-info .attributes .header {
+  border-bottom: 1px solid #000;
+  width: 100%;
+  padding-bottom: 0.5rem;
+}
 .product-info .attributes table.full-specifications {
   font-size: 0.8rem;
   font-weight: bold;
