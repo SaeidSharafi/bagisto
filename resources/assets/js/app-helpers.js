@@ -4,7 +4,7 @@ export function getBaseUrl() {
 
 export function isMobile() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i |
-        /mobi/i.test(navigator.userAgent);
+              /mobi/i.test(navigator.userAgent);
 }
 
 export function loadDynamicScript(src, onScriptLoaded) {
@@ -24,8 +24,8 @@ export function showAlert(messageType, messageLabel, message) {
         let html = `<div class="alert ${messageType} alert-dismissible" id="${alertId}">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 <strong>${
-            messageLabel ? messageLabel + '!' : ''
-        } </strong> ${message}.
+                    messageLabel ? messageLabel + '!' : ''
+                } </strong> ${message}.
         </div>`;
 
         $('#alert-container')

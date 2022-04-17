@@ -5,6 +5,7 @@ return [
     'convention' => Webkul\Core\CoreConvention::class,
 
     'modules' => [
+
         /**
          * Example:
          * VendorA\ModuleX\Providers\ModuleServiceProvider::class,
@@ -13,7 +14,6 @@ return [
          */
 
         \Webkul\Admin\Providers\ModuleServiceProvider::class,
-        \Webkul\API\Providers\ModuleServiceProvider::class,
         \Webkul\Attribute\Providers\ModuleServiceProvider::class,
         \Webkul\BookingProduct\Providers\ModuleServiceProvider::class,
         \Webkul\CartRule\Providers\ModuleServiceProvider::class,
@@ -38,5 +38,6 @@ return [
         \Webkul\Ui\Providers\ModuleServiceProvider::class,
         \Webkul\User\Providers\ModuleServiceProvider::class,
         \Webkul\Velocity\Providers\ModuleServiceProvider::class,
-    ]
+
+    ],
 ];

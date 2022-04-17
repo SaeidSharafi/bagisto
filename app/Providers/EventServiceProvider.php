@@ -23,6 +23,11 @@ class EventServiceProvider extends ServiceProvider
                 [Order::class, 'sendOrderCommentSms']
             ],
         ];
+    // protected $listen = [
+    //     Registered::class => [
+    //         SendEmailVerificationNotification::class,
+    //     ],
+    // ];
 
     /**
      * Register any events for your application.
@@ -57,5 +62,6 @@ class EventServiceProvider extends ServiceProvider
         Event::listen([
             'catalog.product.update.after',
         ], [Product::class, 'storeProductBanner']);
+
     }
 }

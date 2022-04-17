@@ -10,36 +10,27 @@
             /* link making */
             $href = isset($route) ? $route : ($wishlist ? route('customer.wishlist.remove', $wishlist->id) : route('customer.wishlist.add', $product->product_id));
 
+            /* method */
+            $method = isset($route) ? 'POST' : ( $wishlist ? 'DELETE' : 'POST' );
+
+            /* is confirmation needed */
+            $isConfirm = isset($route) ? 'true' : 'false';
+
             /* title */
             $title = $wishlist ? __('velocity::app.shop.wishlist.remove-wishlist-text') : __('velocity::app.shop.wishlist.add-wishlist-text');
         @endphp
-
-        @if($wishlist)
-            <form
-                class="d-none"
-                id="wishlist-{{ $wishlist->id }}"
-                action="{{ $href }}"
-                method="POST">
-                @method('DELETE')
-
-                @csrf
-            </form>
-        @else
-            <form
-                class="d-none"
-                id="wishlist-{{ $product->product_id }}"
-                action="{{ $href }}"
-                method="POST">
-                @csrf
-            </form>
-        @endif
 
         <a
             class="unset wishlist-icon {{ $addWishlistClass ?? '' }} text-right"
             href="javascript:void(0);"
             title="{{ $title }}"
-            onclick="document.getElementById('wishlist-{{ $wishlist ? $wishlist->id : $product->product_id }}').submit();">
-
+            onclick="submitWishlistForm(
+                '{{ $href }}',
+                '{{ $method }}',
+                {{ $isConfirm }},
+                '{{ csrf_token() }}'
+            )"
+        >
             <wishlist-component active="{{ $wishlist ? false : true }}"></wishlist-component>
 
             @if (isset($text))

@@ -1,5 +1,4 @@
-@section('css')
-    @parent
+@push('css')
     <style>
         .table th.price, .table th.weight {
             width: 100px;
@@ -14,7 +13,7 @@
             margin-right: 10px;
         }
     </style>
-@stop
+@endpush
 
 {!! view_render_event('bagisto.admin.catalog.product.edit_form_accordian.customer_group_prices.before', ['product' => $product]) !!}
 
@@ -23,28 +22,34 @@
 {!! view_render_event('bagisto.admin.catalog.product.edit_form_accordian.customer_group_prices.after', ['product' => $product]) !!}
 
 @push('scripts')
-    @parent
-
     <script type="text/x-template" id="customer-group-price-list-template">
         <div>
             <div class="table" style="margin-top: 20px; overflow-x: unset;">
                 <table>
-
                     <thead>
                         <tr>
                             <th>{{ __('admin::app.catalog.products.customer-group') }}</th>
-                            <th>{{ __('admin::app.catalog.products.qty') }}</th>
-                            <th>{{ __('admin::app.catalog.products.price') }}</th>
+                            <th>
+                                <div class="control-group">
+                                    <label class="required">
+                                    {{ __('admin::app.catalog.products.qty') }}
+                                    </label>
+                                </div>
+                           </th>
+                            <th>
+                                <div class="control-group">
+                                    <label class="required">
+                                    {{ __('admin::app.catalog.products.price') }}
+                                    </label>
+                                </div>
+                           </th>
                             <th class="actions"></th>
                         </tr>
                     </thead>
 
                     <tbody>
-
                         <customer-group-price-item v-for='(customerGroupPrice, index) in customer_group_prices' :customer-group-price="customerGroupPrice" :key="index" :index="index" @onRemoveCustomerGroupPrice="removeCustomerGroupPrice($event)"></customer-group-price-item>
-
                     </tbody>
-
                 </table>
 
                 <button type="button" class="btn btn-lg btn-primary" style="margin-top: 20px" @click="addCustomerGroupPrice()">
@@ -70,7 +75,8 @@
 
             <td>
                 <div class="control-group" :class="[errors.has(inputName + '[qty]') ? 'has-error' : '']">
-                    <input type="number" v-validate="'required|min_value:0'" :name="[inputName + '[qty]']" v-model="customerGroupPrice.qty" class="control" data-vv-as="&quot;{{ __('admin::app.catalog.products.qty') }}&quot;"/>
+                    <input type="text" v-validate="'required|numeric|min_value:0'" :name="[inputName + '[qty]']" v-model="customerGroupPrice.qty" class="control" data-vv-as="&quot;{{ __('admin::app.catalog.products.qty') }}&quot;"/>
+
                     <span class="control-error" v-if="errors.has(inputName + '[qty]')">@{{ errors.first(inputName + '[qty]') }}</span>
                 </div>
             </td>
@@ -79,13 +85,15 @@
                 <div class="control-group">
                     <select :name="[inputName + '[value_type]']" v-model="customerGroupPrice.value_type" class="control">
                         <option value="fixed">{{ __('admin::app.catalog.products.fixed') }}</option>
+
                         <option value="discount">{{ __('admin::app.catalog.products.discount') }}</option>
                     </select>
                 </div>
 
                 <div class="control-group">
                     <div class="control-group" :class="[errors.has(inputName + '[value]') ? 'has-error' : '']">
-                        <input type="number" step=".01" v-validate="{required: true, min_value: 0, ...(customerGroupPrice.value_type === 'discount' ? {max_value: 100} : {})}" :name="[inputName + '[value]']" v-model="customerGroupPrice.value" class="control" data-vv-as="&quot;{{ __('admin::app.datagrid.price') }}&quot;"/>
+                        <input type="text" v-validate="{required: true, decimal: true, min_value: 0, ...(customerGroupPrice.value_type === 'discount' ? {max_value: 100} : {})}" :name="[inputName + '[value]']" v-model="customerGroupPrice.value" class="control" data-vv-as="&quot;{{ __('admin::app.datagrid.price') }}&quot;"/>
+
                         <span class="control-error" v-if="errors.has(inputName + '[value]')">@{{ errors.first(inputName + '[value]') }}</span>
                     </div>
                 </div>
@@ -99,7 +107,6 @@
 
     <script>
         Vue.component('customer-group-price-list', {
-
             template: '#customer-group-price-list-template',
 
             inject: ['$validator'],
@@ -129,7 +136,6 @@
         });
 
         Vue.component('customer-group-price-item', {
-
             template: '#customer-group-price-item-template',
 
             props: ['index', 'customerGroupPrice'],

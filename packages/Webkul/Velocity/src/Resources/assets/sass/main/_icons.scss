@@ -1,13 +1,13 @@
 .velocity-icon {
-    width: 60px;
-    height: 55px;
+    width: 48px;
+    height: 48px;
     display: inline-block;
     background-size: cover;
     background-image: url("../images/Icon-Velocity.svg");
 }
 
 .camera-icon {
-    background-image: url("../images/Camera.svg");
+    background-image: url("../images/icon-camera.svg");
     width: 24px;
     display: inline-block;
     background-size: cover;
@@ -22,4 +22,16 @@
     &.velocity-icon {
         background-image: url("../images/Icon-Velocity-Active.svg");
     }
+}
+
+.eye-icon {
+    background-image: url("../images/icon-eye.svg");
+    width: 24px;
+    height: 24px;
+}
+
+.cross-icon {
+    background-image: url("../images/icon-crossed.svg");
+    width: 18px;
+    height: 18px;
 }

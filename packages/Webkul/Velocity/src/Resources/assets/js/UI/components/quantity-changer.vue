@@ -1,10 +1,8 @@
 <template>
     <div
-        :class="
-            `quantity control-group ${
-                errors.has(controlName) ? 'has-error' : ''
-            }`
-        "
+        :class="`quantity control-group ${
+            errors.has(controlName) ? 'has-error' : ''
+        }`"
     >
         <label
             class="required"
@@ -12,19 +10,26 @@
             v-text="quantityText"
         ></label>
 
-        <button type="button" class="decrease" @click="decreaseQty()">-</button>
+        <div class="input-btn-group">
+            <button type="button" class="decrease" @click="decreaseQty()">
+                <i class="rango-minus"></i>
+            </button>
 
-        <input
-            :value="qty"
-            class="control"
-            :name="controlName"
-            :v-validate="validations"
-            id="quantity-changer"
-            :data-vv-as="`&quot;${quantityText}&quot;`"
-            readonly
-        />
+            <input
+                ref="quantityChanger"
+                :name="controlName"
+                :model="qty"
+                class="control"
+                id="quantity-changer"
+                v-validate="validations"
+                :data-vv-as="`&quot;${quantityText}&quot;`"
+                @keyup="setQty($event)"
+            />
 
-        <button type="button" class="increase" @click="increaseQty()">+</button>
+            <button type="button" class="increase" @click="increaseQty()">
+                <i class="rango-plus"></i>
+            </button>
+        </div>
 
         <span class="control-error" v-if="errors.has(controlName)">{{
             errors.first(controlName)
@@ -71,25 +76,35 @@ export default {
         };
     },
 
+    mounted: function() {
+        this.$refs.quantityChanger.value = this.qty > this.minQuantity
+            ? this.qty
+            : this.minQuantity;
+    },
+
     watch: {
-        quantity: function(val) {
-            this.qty = val;
+        qty: function(val) {
+            this.$refs.quantityChanger.value = ! isNaN(parseFloat(val)) ? val : 0;
+
+            this.qty = ! isNaN(parseFloat(val)) ? this.qty : 0;
 
             this.$emit('onQtyUpdated', this.qty);
+
+            this.$validator.validate();
         }
     },
 
     methods: {
+        setQty: function({ target }) {
+            this.qty = parseInt(target.value);
+        },
+
         decreaseQty: function() {
             if (this.qty > this.minQuantity) this.qty = parseInt(this.qty) - 1;
-
-            this.$emit('onQtyUpdated', this.qty);
         },
 
         increaseQty: function() {
             this.qty = parseInt(this.qty) + 1;
-
-            this.$emit('onQtyUpdated', this.qty);
         }
     }
 };

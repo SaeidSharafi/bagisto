@@ -41,7 +41,20 @@ return [
     |
     */
 
-    'queue' => env('SCOUT_QUEUE', true),
+    'queue' => env('SCOUT_QUEUE', false),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Database Transactions
+    |--------------------------------------------------------------------------
+    |
+    | This configuration option determines if your data will only be synced
+    | with your search indexes after every open database transaction has
+    | been committed, thus preventing any discarded data from syncing.
+    |
+    */
+
+    'after_commit' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -71,6 +84,21 @@ return [
     */
 
     'soft_delete' => false,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Identify User
+    |--------------------------------------------------------------------------
+    |
+    | This option allows you to control whether to notify the search engine
+    | of the user performing the search. This is sometimes useful if the
+    | engine supports any analytics based on this application's users.
+    |
+    | Supported engines: "algolia"
+    |
+    */
+
+    'identify' => env('SCOUT_IDENTIFY', false),
 
     /*
     |--------------------------------------------------------------------------

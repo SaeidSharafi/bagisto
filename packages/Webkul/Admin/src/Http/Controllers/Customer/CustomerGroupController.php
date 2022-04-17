@@ -2,26 +2,27 @@
 
 namespace Webkul\Admin\Http\Controllers\Customer;
 
+use Webkul\Admin\DataGrids\CustomerGroupDataGrid;
 use Webkul\Admin\Http\Controllers\Controller;
 use Webkul\Customer\Repositories\CustomerGroupRepository;
 
 class CustomerGroupController extends Controller
 {
     /**
-     * Contains route related configuration
+     * Contains route related configuration.
      *
      * @var array
-    */
+     */
     protected $_config;
 
     /**
-     * CustomerGroupRepository object
+     * Customer group repository instance.
      *
      * @var \Webkul\Customer\Repositories\CustomerGroupRepository
-    */
+     */
     protected $customerGroupRepository;
 
-     /**
+    /**
      * Create a new controller instance.
      *
      * @param  \Webkul\Customer\Repositories\CustomerGroupRepository  $customerGroupRepository;
@@ -40,9 +41,13 @@ class CustomerGroupController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\View\View
-    */
+     */
     public function index()
     {
+        if (request()->ajax()) {
+            return app(CustomerGroupDataGrid::class)->toJson();
+        }
+
         return view($this->_config['view']);
     }
 
@@ -56,7 +61,7 @@ class CustomerGroupController extends Controller
         return view($this->_config['view']);
     }
 
-     /**
+    /**
      * Store a newly created resource in storage.
      *
      * @return \Illuminate\Http\Response
@@ -79,7 +84,7 @@ class CustomerGroupController extends Controller
         return redirect()->route($this->_config['redirect']);
     }
 
-     /**
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -92,7 +97,7 @@ class CustomerGroupController extends Controller
         return view($this->_config['view'], compact('group'));
     }
 
-     /**
+    /**
      * Update the specified resource in storage.
      *
      * @param  int  $id
@@ -123,21 +128,23 @@ class CustomerGroupController extends Controller
         $customerGroup = $this->customerGroupRepository->findOrFail($id);
 
         if ($customerGroup->is_user_defined == 0) {
-            session()->flash('warning', trans('admin::app.customers.customers.group-default'));
-        } elseif (count($customerGroup->customers) > 0) {
-            session()->flash('warning', trans('admin::app.response.customer-associate', ['name' => 'Customer Group']));
-        } else {
-            try {
-                $this->customerGroupRepository->delete($id);
-
-                session()->flash('success', trans('admin::app.response.delete-success', ['name' => 'Customer Group']));
-
-                return response()->json(['message' => true], 200);
-            } catch(\Exception $e) {
-                session()->flash('error', trans('admin::app.response.delete-failed', ['name' => 'Customer Group']));
-            }
+            return response()->json([
+                'message' => trans('admin::app.customers.customers.group-default'),
+            ], 400);
         }
 
-        return response()->json(['message' => false], 400);
+        if (count($customerGroup->customers) > 0) {
+            return response()->json([
+                'message' => trans('admin::app.response.customer-associate', ['name' => 'Customer Group']),
+            ], 400);
+        }
+
+        try {
+            $this->customerGroupRepository->delete($id);
+
+            return response()->json(['message' => trans('admin::app.response.delete-success', ['name' => 'Customer Group'])]);
+        } catch (\Exception $e) {}
+
+        return response()->json(['message' => trans('admin::app.response.delete-failed', ['name' => 'Customer Group'])], 500);
     }
 }

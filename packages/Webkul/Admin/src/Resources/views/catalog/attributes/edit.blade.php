@@ -36,7 +36,7 @@
 
                     {!! view_render_event('bagisto.admin.catalog.attribute.edit_form_accordian.general.before', ['attribute' => $attribute]) !!}
 
-                    <accordian :title="'{{ __('admin::app.catalog.attributes.general') }}'" :active="true">
+                    <accordian title="{{ __('admin::app.catalog.attributes.general') }}" :active="true">
                         <div slot="body">
                             {!! view_render_event('bagisto.admin.catalog.attribute.edit_form_accordian.general.controls.before', ['attribute' => $attribute]) !!}
 
@@ -93,6 +93,18 @@
                                 <input type="hidden" name="type" value="{{ $attribute->type }}"/>
                             </div>
 
+                            
+                            @if ($attribute->type == 'textarea')
+                                <div class="control-group">
+                                    <label for="enable_wysiwyg">{{ __('admin::app.catalog.attributes.enable-wysiwyg') }}</label>
+
+                                    <label class="switch">
+                                        <input type="checkbox" id="enable_wysiwyg" name="enable_wysiwyg" value="1" {{ (old('enable_wysiwyg') ?: $attribute->enable_wysiwyg) ? 'checked' : '' }}>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            @endif
+
                             {!! view_render_event('bagisto.admin.catalog.attribute.edit_form_accordian.general.controls.after', ['attribute' => $attribute]) !!}
                         </div>
                     </accordian>
@@ -101,7 +113,7 @@
 
                     {!! view_render_event('bagisto.admin.catalog.attribute.edit_form_accordian.attributes.before', ['attribute' => $attribute]) !!}
 
-                    <accordian :title="'{{ __('admin::app.catalog.attributes.label') }}'" :active="true">
+                    <accordian title="{{ __('admin::app.catalog.attributes.label') }}" :active="true">
                         <div slot="body">
                             {!! view_render_event('bagisto.admin.catalog.attribute.edit_form_accordian.attributes.controls.before', ['attribute' => $attribute]) !!}
 
@@ -127,7 +139,7 @@
                     <div class="{{ in_array($attribute->type, ['select', 'multiselect', 'checkbox']) ?: 'hide' }}">
                         {!! view_render_event('bagisto.admin.catalog.attribute.edit_form_accordian.options.before', ['attribute' => $attribute]) !!}
 
-                        <accordian :title="'{{ __('admin::app.catalog.attributes.options') }}'" :active="true" :id="'options'">
+                        <accordian title="{{ __('admin::app.catalog.attributes.options') }}" :active="true" :id="'options'">
                             <div slot="body">
 
                                 {!! view_render_event('bagisto.admin.catalog.attribute.edit_form_accordian.options.controls.before', ['attribute' => $attribute]) !!}
@@ -147,13 +159,13 @@
 
                     {!! view_render_event('bagisto.admin.catalog.attribute.edit_form_accordian.validations.before', ['attribute' => $attribute]) !!}
 
-                    <accordian :title="'{{ __('admin::app.catalog.attributes.validations') }}'" :active="true">
+                    <accordian title="{{ __('admin::app.catalog.attributes.validations') }}" :active="true">
                         <div slot="body">
                             {!! view_render_event('bagisto.admin.catalog.attribute.edit_form_accordian.validations.controls.before', ['attribute' => $attribute]) !!}
 
                             <div class="control-group">
                                 <label for="is_required">{{ __('admin::app.catalog.attributes.is_required') }}</label>
-                                <select class="control" id="is_required" name="is_required">
+                                <select class="control" id="is_required" name="is_required" {{ ! $attribute->is_user_defined ? 'disabled' : '' }}>
                                     <option value="0" {{ $attribute->is_required ? '' : 'selected' }}>{{ __('admin::app.catalog.attributes.no') }}</option>
                                     <option value="1" {{ $attribute->is_required ? 'selected' : '' }}>{{ __('admin::app.catalog.attributes.yes') }}</option>
                                 </select>
@@ -175,7 +187,7 @@
                             <div class="control-group">
                                 <?php $selectedValidation = old('validation') ?: $attribute->validation ?>
                                 <label for="validation">{{ __('admin::app.catalog.attributes.input_validation') }}</label>
-                                <select class="control" id="validation" name="validation">
+                                <select class="control" id="validation" name="validation" {{ ! $attribute->is_user_defined ? 'disabled' : '' }}>
                                     <option value=""></option>
                                     <option value="numeric" {{ $selectedValidation == 'numeric' ? 'selected' : '' }}>
                                         {{ __('admin::app.catalog.attributes.number') }}
@@ -200,7 +212,7 @@
 
                     {!! view_render_event('bagisto.admin.catalog.attribute.edit_form_accordian.configuration.before', ['attribute' => $attribute]) !!}
 
-                    <accordian :title="'{{ __('admin::app.catalog.attributes.configuration') }}'" :active="true">
+                    <accordian title="{{ __('admin::app.catalog.attributes.configuration') }}" :active="true">
                         <div slot="body">
                             {!! view_render_event('bagisto.admin.catalog.attribute.edit_form_accordian.configuration.controls.before', ['attribute' => $attribute]) !!}
 

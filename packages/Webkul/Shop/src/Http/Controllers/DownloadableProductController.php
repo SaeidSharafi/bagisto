@@ -4,6 +4,7 @@ namespace Webkul\Shop\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
 use Webkul\Sales\Repositories\DownloadableLinkPurchasedRepository;
+use Webkul\Shop\DataGrids\DownloadableProductDataGrid;
 
 class DownloadableProductController extends Controller
 {
@@ -38,6 +39,10 @@ class DownloadableProductController extends Controller
     */
     public function index()
     {
+        if (request()->ajax()) {
+            return app(DownloadableProductDataGrid::class)->toJson();
+        }
+
         return view($this->_config['view']);
     }
 
@@ -64,6 +69,9 @@ class DownloadableProductController extends Controller
                 $totalInvoiceQty = $totalInvoiceQty + $invoice->total_qty;
             }
         }
+
+        $orderedQty = $downloadableLinkPurchased->order->total_qty_ordered;
+        $totalInvoiceQty = $totalInvoiceQty * ($downloadableLinkPurchased->download_bought / $orderedQty);
 
         if ($downloadableLinkPurchased->download_used == $totalInvoiceQty || $downloadableLinkPurchased->download_used > $totalInvoiceQty) {
             session()->flash('warning', trans('shop::app.customer.account.downloadable_products.payment-error'));

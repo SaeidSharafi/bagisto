@@ -5,11 +5,9 @@ namespace App\Providers;
 
 use App\Models\Shop\JeduCsutomer;
 use App\Models\Shop\JeduSlider;
-
 use Carbon\Carbon;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
-
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -62,8 +60,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->concord->registerModel(
             \Webkul\Core\Models\Slider::class, JeduSlider::class
         );
-
-
 
     }
 }

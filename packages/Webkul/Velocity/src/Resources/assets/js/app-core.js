@@ -1,8 +1,8 @@
 /**
  * Main imports.
  */
-import Vue from 'vue';
-import axios from 'axios';
+import Vue    from 'vue';
+import axios  from 'axios';
 
 /**
  * Helper functions.
@@ -29,9 +29,14 @@ window.eventBus = new Vue();
 
 window.axios = axios;
 
+// TODO once every package is migrated to laravel-mix 6, this can be removed safely (jquery will be injected when needed)
 window.jQuery = window.$ = require('jquery');
 
+require('./dropdown.js');
+
 window.BootstrapSass = require('bootstrap-sass');
+
+window.lazySize = require('lazysizes');
 
 window.getBaseUrl = getBaseUrl;
 
@@ -58,8 +63,7 @@ $(function() {
 
     if (
         isMobile() &&
-        removeTrailingSlash(baseUrl) ===
-            removeTrailingSlash(window.location.href)
+        removeTrailingSlash(baseUrl) === removeTrailingSlash(window.location.href)
     ) {
         /**
          * Event for mobile to check the user interaction for the homepage. In mobile,
@@ -76,7 +80,7 @@ $(function() {
 
                 loadDynamicScript(`${baseUrl}/${velocityJSPath}`, () => {
                     window.scrollTo(0, 0);
-
+                    
                     document.body.style.overflow = '';
 
                     this.removeEventListener('touchstart', dynamicScript);

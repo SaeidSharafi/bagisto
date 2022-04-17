@@ -20,35 +20,30 @@ class AttributeGroupTableSeeder extends Seeder
         DB::table('attribute_groups')->insert([
             [
                 'id'                  => '1',
-                'code'                => 'general',
                 'name'                => 'General',
                 'position'            => '1',
                 'is_user_defined'     => '0',
                 'attribute_family_id' => '1',
             ], [
                 'id'                  => '2',
-                'code'                => 'description',
                 'name'                => 'Description',
                 'position'            => '2',
                 'is_user_defined'     => '0',
                 'attribute_family_id' => '1',
             ], [
                 'id'                  => '3',
-                'code'                => 'meta_description',
                 'name'                => 'Meta Description',
                 'position'            => '3',
                 'is_user_defined'     => '0',
                 'attribute_family_id' => '1',
             ], [
                 'id'                  => '4',
-                'code'                => 'price',
                 'name'                => 'Price',
                 'position'            => '4',
                 'is_user_defined'     => '0',
                 'attribute_family_id' => '1',
             ], [
                 'id'                  => '5',
-                'code'                => 'shipping',
                 'name'                => 'Shipping',
                 'position'            => '5',
                 'is_user_defined'     => '0',

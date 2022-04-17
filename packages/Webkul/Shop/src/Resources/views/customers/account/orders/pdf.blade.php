@@ -83,7 +83,7 @@
                 border-right: solid 1px #d3d3d3;
             }
 
-           .sale-summary {
+            .sale-summary {
                 margin-top: 40px;
                 float: right;
             }
@@ -122,34 +122,45 @@
 
     <body style="background-image: none;background-color: #fff;">
         <div class="container">
-
             <div class="header">
                 <div class="row">
                     <div class="col-12">
                         <h1 class="text-center">{{ __('admin::app.sales.invoices.invoice') }}</h1>
                     </div>
                 </div>
+
                 @if (core()->getConfigData('sales.invoice_setttings.invoice_slip_design.logo'))
                     <div class="image">
                         <img class="logo" src="{{ Storage::url(core()->getConfigData('sales.invoice_setttings.invoice_slip_design.logo')) }}" alt=""/>
                     </div>
                 @endif
+
                 <div class="merchant-details">
-                    <div><span class="merchant-details-title">{{ core()->getConfigData('sales.shipping.origin.store_name') ? core()->getConfigData('sales.shipping.origin.store_name') : '' }}</span></div>
+                    <div>
+                        <span class="merchant-details-title">{{ core()->getConfigData('sales.shipping.origin.store_name') ? core()->getConfigData('sales.shipping.origin.store_name') : '' }}</span>
+                    </div>
+
                     <div>{{ core()->getConfigData('sales.shipping.origin.address1') ? core()->getConfigData('sales.shipping.origin.address1') : '' }}</div>
+
                     <div>
                         <span>{{ core()->getConfigData('sales.shipping.origin.zipcode') ? core()->getConfigData('sales.shipping.origin.zipcode') : '' }}</span>
-                        <span>{{ core()->getConfigData('sales.shipping.origin.city') ? core()->getConfigData('sales.shipping.origin.city') : '' }}</span></div>
+                        <span>{{ core()->getConfigData('sales.shipping.origin.city') ? core()->getConfigData('sales.shipping.origin.city') : '' }}</span>
+                    </div>
+
                     <div>{{ core()->getConfigData('sales.shipping.origin.state') ? core()->getConfigData('sales.shipping.origin.state') : '' }}</div>
+
                     <div>{{ core()->getConfigData('sales.shipping.origin.country') ?  core()->country_name(core()->getConfigData('sales.shipping.origin.country')) : '' }}</div>
                 </div>
+
                 <div class="merchant-details">
                     @if (core()->getConfigData('sales.shipping.origin.contact'))
                         <div><span class="merchant-details-title">{{ __('admin::app.admin.system.contact-number') }}:</span> {{ core()->getConfigData('sales.shipping.origin.contact') }}</div>
                     @endif
+
                     @if (core()->getConfigData('sales.shipping.origin.vat_number'))
                         <div><span class="merchant-details-title">{{ __('admin::app.admin.system.vat-number') }}:</span> {{ core()->getConfigData('sales.shipping.origin.vat_number') }}</div>
                     @endif
+
                     @if (core()->getConfigData('sales.shipping.origin.bank_details'))
                         <div><span class="merchant-details-title">{{ __('admin::app.admin.system.bank-details') }}:</span> {{ core()->getConfigData('sales.shipping.origin.bank_details') }}</div>
                     @endif
@@ -157,7 +168,6 @@
             </div>
 
             <div class="invoice-summary">
-
                 <div class="row">
                     <span class="label">{{ __('shop::app.customer.account.order.view.invoice-id') }} -</span>
                     <span class="value">#{{ $invoice->increment_id ?? $invoice->id }}</span>
@@ -268,23 +278,22 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>{{ __('shop::app.customer.account.order.view.SKU') }}</th>
-                                <th>{{ __('shop::app.customer.account.order.view.product-name') }}</th>
-                                <th>{{ __('shop::app.customer.account.order.view.price') }}</th>
-                                <th>{{ __('shop::app.customer.account.order.view.qty') }}</th>
-                                <th>{{ __('shop::app.customer.account.order.view.subtotal') }}</th>
-                                <th>{{ __('shop::app.customer.account.order.view.tax-amount') }}</th>
-                                <th>{{ __('shop::app.customer.account.order.view.grand-total') }}</th>
+                                <th class="text-center">{{ __('shop::app.customer.account.order.view.SKU') }}</th>
+                                <th class="text-center">{{ __('shop::app.customer.account.order.view.product-name') }}</th>
+                                <th class="text-center">{{ __('shop::app.customer.account.order.view.price') }}</th>
+                                <th class="text-center">{{ __('shop::app.customer.account.order.view.qty') }}</th>
+                                <th class="text-center">{{ __('shop::app.customer.account.order.view.subtotal') }}</th>
+                                <th class="text-center">{{ __('shop::app.customer.account.order.view.tax-amount') }}</th>
+                                <th class="text-center">{{ __('shop::app.customer.account.order.view.grand-total') }}</th>
                             </tr>
                         </thead>
 
                         <tbody>
-
                             @foreach ($invoice->items as $item)
                                 <tr>
-                                    <td>{{ $item->child ? $item->child->sku : $item->sku }}</td>
+                                    <td class="text-center">{{ $item->child ? $item->child->sku : $item->sku }}</td>
 
-                                    <td>
+                                    <td class="text-center">
                                         {{ $item->name }}
 
                                         @if (isset($item->additional['attributes']))
@@ -298,22 +307,20 @@
                                         @endif
                                     </td>
 
-                                    <td>{{ core()->formatPrice($item->price, $invoice->order->order_currency_code) }}</td>
+                                    <td class="text-center">{{ core()->formatPrice($item->price, $invoice->order->order_currency_code) }}</td>
 
-                                    <td>{{ $item->qty }}</td>
+                                    <td class="text-center">{{ $item->qty }}</td>
 
-                                    <td>{{ core()->formatPrice($item->total, $invoice->order->order_currency_code) }}</td>
+                                    <td class="text-center">{{ core()->formatPrice($item->total, $invoice->order->order_currency_code) }}</td>
 
-                                    <td>{{ core()->formatPrice($item->tax_amount, $invoice->order->order_currency_code) }}</td>
+                                    <td class="text-center">{{ core()->formatPrice($item->tax_amount, $invoice->order->order_currency_code) }}</td>
 
-                                    <td>{{ core()->formatPrice(($item->total + $item->tax_amount), $invoice->order->order_currency_code) }}</td>
+                                    <td class="text-center">{{ core()->formatPrice(($item->total + $item->tax_amount), $invoice->order->order_currency_code) }}</td>
                                 </tr>
                             @endforeach
-
                         </tbody>
                     </table>
                 </div>
-
 
                 <table class="sale-summary">
                     <tr>
@@ -342,15 +349,19 @@
                         <td>{{ core()->formatPrice($invoice->tax_amount, $invoice->order->order_currency_code) }}</td>
                     </tr>
 
-                    <tr class="bold">
+                    <tr>
+                        <td colspan="3">
+                            <hr>
+                        </td>
+                    </tr>
+
+                    <tr>
                         <td>{{ __('shop::app.customer.account.order.view.grand-total') }}</td>
                         <td>-</td>
                         <td>{{ core()->formatPrice($invoice->grand_total, $invoice->order->order_currency_code) }}</td>
                     </tr>
                 </table>
-
             </div>
-
         </div>
     </body>
 </html>

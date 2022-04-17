@@ -4,6 +4,24 @@
     {{ __('admin::app.cms.pages.edit-title') }}
 @stop
 
+@push('css')
+    <style>
+    @media only screen and (max-width: 768px){
+        .content-container .content .page-header .page-action button {
+            position: relative;
+            right: 0px !important;
+            top: 0px !important;
+        }
+
+        .content-container .content .page-header .page-title .control-group {
+            margin-top: 20px!important;
+            width: 100%!important;
+            margin-left: 0!important;
+        }
+    }
+    </style>
+@endpush
+
 @section('content')
     <div class="content">
         @php
@@ -50,7 +68,7 @@
 
                 <div class="form-container">
                     @csrf()
-                    <accordian :title="'{{ __('admin::app.cms.pages.general') }}'" :active="true">
+                    <accordian title="{{ __('admin::app.cms.pages.general') }}" :active="true">
                         <div slot="body">
                             <div class="control-group" :class="[errors.has('{{$locale}}[page_title]') ? 'has-error' : '']">
                                 <label for="page_title" class="required">{{ __('admin::app.cms.pages.page-title') }}</label>
@@ -60,7 +78,7 @@
                                 <span class="control-error" v-if="errors.has('{{$locale}}[page_title]')">@{{ errors.first('{!!$locale!!}[page_title]') }}</span>
                             </div>
 
-                            <div class="control-group" :class="[errors.has('channels[]') ? 'has-error' : '']">
+                            <div class="control-group multi-select" :class="[errors.has('channels[]') ? 'has-error' : '']">
                                 <label for="url-key" class="required">{{ __('admin::app.cms.pages.channel') }}</label>
 
                                 <?php $selectedOptionIds = old('inventory_sources') ?: $page->channels->pluck('id')->toArray() ?>
@@ -86,7 +104,7 @@
                         </div>
                     </accordian>
 
-                    <accordian :title="'{{ __('admin::app.cms.pages.seo') }}'" :active="true">
+                    <accordian title="{{ __('admin::app.cms.pages.seo') }}" :active="true">
                         <div slot="body">
                             <div class="control-group">
                                 <label for="meta_title">{{ __('admin::app.cms.pages.meta_title') }}</label>
@@ -136,8 +154,6 @@
                 toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor alignleft aligncenter alignright alignjustify | link hr | numlist bullist outdent indent  | removeformat | code | table',
                 image_advtab: true,
                 valid_elements : '*[*]',
-                uploadRoute: '{{ route('admin.tinymce.upload') }}',
-                csrfToken: '{{ csrf_token() }}',
             });
         });
     </script>

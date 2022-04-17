@@ -16,7 +16,7 @@ const jsPath = path.join(assetsPath, 'js');
 mix.js(path.join(jsPath, 'slider.js'), 'public/js').sourceMaps();
 mix
     .setPublicPath(publicPath)
-
+    .js(path.join(jsPath, 'jquery-ez-plus.js'), 'js/jquery-ez-plus.js')
     .js(path.join(jsPath, 'app-core.js'), 'js/velocity-core.js')
     .js(path.join(jsPath, 'app.js'), 'js/velocity.js')
     .vue()
@@ -30,6 +30,8 @@ mix
             }
         }
     )
+
+    .copy(imagesPath, path.join(publicPath, 'images'))
 
     .clean({
         // enable `dry` before adding new paths:
@@ -49,9 +51,7 @@ mix
     .mergeManifest()
     .sourceMaps();
 
-if (mix.inProduction()) {
-    mix.version();
-}
+
 mix.sass('resources/assets/sass/app.scss', 'public/css').version();
 
 mix.sass('resources/assets/sass/admin/app.scss', 'public/css/admin-app.css').version();
@@ -64,3 +64,7 @@ mix.combine([
     'node_modules/vue-slick-carousel/dist/vue-slick-carousel.css',
     'node_modules/vue-slick-carousel/dist/vue-slick-carousel-theme.css'
 ], 'public/css/slick.css');
+
+if (mix.inProduction()) {
+    mix.version();
+}

@@ -9,7 +9,7 @@ use Webkul\Sales\Models\Order;
 use Webkul\Sales\Models\OrderItem;
 use Webkul\Sales\Models\OrderAddress;
 use Webkul\Sales\Models\OrderPayment;
-use Webkul\Core\Helpers\Laravel5Helper;
+use Helper\Bagisto;
 
 class OrderCest
 {
@@ -19,10 +19,8 @@ class OrderCest
         $I->loginAsAdmin();
 
         /* go to order view page */
-        $I->amOnAdminRoute('admin.dashboard.index');
-        $I->click(__('admin::app.layouts.sales'), '//*[contains(@class, "navbar-left")]');
+        $I->amOnAdminRoute('admin.sales.orders.index');
         $I->seeCurrentRouteIs('admin.sales.orders.index');
-        $I->click(__('admin::app.layouts.orders'), '//*[contains(@class, "aside-nav")]');
 
         /* now test index page */
         $I->seeCurrentRouteIs('admin.sales.orders.index');
@@ -44,12 +42,12 @@ class OrderCest
         $I->see('Cancel', Locator::href(route('admin.sales.orders.cancel', $order->id)));
         $I->click('Cancel', Locator::href(route('admin.sales.orders.cancel', $order->id)));
         $I->seeCurrentRouteIs('admin.sales.orders.view');
-        $I->see(0.00, '#due-amount-on-cancelled');
+        $I->see("0.00", '#due-amount-on-cancelled');
     }
 
     private function generateCashOnDeliveryOrder(FunctionalTester $I)
     {
-        $product = $I->haveProduct(Laravel5Helper::SIMPLE_PRODUCT, [
+        $product = $I->haveProduct(Bagisto::SIMPLE_PRODUCT, [
             'productAttributes' => [],
             'productInventory'  => [
                 'qty' => 5,

@@ -3,25 +3,25 @@
 namespace Webkul\Shop\Http\Controllers;
 
 use Illuminate\Support\Facades\Event;
-use Webkul\Shop\Http\Controllers\Controller;
 use Webkul\Checkout\Facades\Cart;
-use Webkul\Shipping\Facades\Shipping;
-use Webkul\Payment\Facades\Payment;
 use Webkul\Checkout\Http\Requests\CustomerAddressForm;
-use Webkul\Sales\Repositories\OrderRepository;
 use Webkul\Customer\Repositories\CustomerRepository;
+use Webkul\Payment\Facades\Payment;
+use Webkul\Sales\Repositories\OrderRepository;
+use Webkul\Shipping\Facades\Shipping;
+use Webkul\Shop\Http\Controllers\Controller;
 
 class OnepageController extends Controller
 {
     /**
-     * OrderRepository object
+     * Order repository instance.
      *
      * @var \Webkul\Sales\Repositories\OrderRepository
      */
     protected $orderRepository;
 
-     /**
-     * customerRepository instance object
+    /**
+     * Customer repository instance.
      *
      * @var \Webkul\Customer\Repositories\CustomerRepository
      */
@@ -37,8 +37,7 @@ class OnepageController extends Controller
     public function __construct(
         OrderRepository $orderRepository,
         CustomerRepository $customerRepository
-    )
-    {
+    ) {
         $this->orderRepository = $orderRepository;
 
         $this->customerRepository = $customerRepository;
@@ -50,17 +49,20 @@ class OnepageController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\View\View
-    */
+     */
     public function index()
     {
         Event::dispatch('checkout.load.index');
 
-
-        if (! auth()->guard('customer')->check()
-            && ! core()->getConfigData('catalog.products.guest-checkout.allow-guest-checkout')) {
+        if (! auth()->guard('customer')->check() && ! core()->getConfigData('catalog.products.guest-checkout.allow-guest-checkout')) {
             return redirect()->route('customer.session.index');
         }
 
+        if (auth()->guard('customer')->check() && auth()->guard('customer')->user()->is_suspended) {
+            session()->flash('warning', trans('shop::app.checkout.cart.suspended-account-message'));
+
+            return redirect()->route('shop.checkout.cart.index');
+        }
         if (!auth()->guard('customer')->user()->first_name
             || !auth()->guard('customer')->user()->last_name
             || !auth()->guard('customer')->user()->email) {
@@ -68,17 +70,17 @@ class OnepageController extends Controller
             return redirect()->route('customer.profile.edit')
                 ->with('warning',"لطفا پروفایل خود را تکمیل نمایید");
         }
+
         if (Cart::hasError()) {
             return redirect()->route('shop.checkout.cart.index');
         }
 
         $cart = Cart::getCart();
 
-        if (! auth()->guard('customer')->check() && $cart->hasDownloadableItems()) {
-            return redirect()->route('customer.session.index');
-        }
-
-        if (! auth()->guard('customer')->check() && ! $cart->hasGuestCheckoutItems()) {
+        if (
+            (! auth()->guard('customer')->check() && $cart->hasDownloadableItems())
+            || (! auth()->guard('customer')->check() && ! $cart->hasGuestCheckoutItems())
+        ) {
             return redirect()->route('customer.session.index');
         }
 
@@ -96,10 +98,10 @@ class OnepageController extends Controller
     }
 
     /**
-     * Return order short summary
+     * Return order short summary.
      *
      * @return \Illuminate\Http\Response
-    */
+     */
     public function summary()
     {
         $cart = Cart::getCart();
@@ -114,10 +116,10 @@ class OnepageController extends Controller
      *
      * @param  \Webkul\Checkout\Http\Requests\CustomerAddressForm  $request
      * @return \Illuminate\Http\Response
-    */
+     */
     public function saveAddress(CustomerAddressForm $request)
     {
-        $data = request()->all();
+        $data = $request->all();
 
         if (! auth()->guard('customer')->check() && ! Cart::getCart()->hasGuestCheckoutItems()) {
             return response()->json(['redirect_url' => route('customer.session.index')], 403);
@@ -128,32 +130,20 @@ class OnepageController extends Controller
 
         if (Cart::hasError() || ! Cart::saveCustomerAddress($data)) {
             return response()->json(['redirect_url' => route('shop.checkout.cart.index')], 403);
-        } else {
-            $cart = Cart::getCart();
-
-            Cart::collectTotals();
-
-            return response()->json(Payment::getSupportedPaymentMethods());
-
-            //if ($cart->haveStockableItems()) {
-            //    //return response()->json(Payment::getSupportedPaymentMethods());
-            //    if (! $rates = Shipping::collectRates()) {
-            //        return response()->json(['redirect_url' => route('shop.checkout.cart.index')], 403);
-            //    } else {
-            //        return response()->json($rates);
-            //    }
-            //} else {
-            //    return response()->json(Payment::getSupportedPaymentMethods());
-            //}
         }
-    }
-    /**
-     * Get Payment methods.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getPaymentMethods()
-    {
+
+        $cart = Cart::getCart();
+
+        Cart::collectTotals();
+
+        //if ($cart->haveStockableItems()) {
+        //    if (! $rates = Shipping::collectRates()) {
+        //        return response()->json(['redirect_url' => route('shop.checkout.cart.index')], 403);
+        //    }
+        //
+        //    return response()->json($rates);
+        //}
+
         return response()->json(Payment::getSupportedPaymentMethods());
     }
 
@@ -161,12 +151,12 @@ class OnepageController extends Controller
      * Saves shipping method.
      *
      * @return \Illuminate\Http\Response
-    */
+     */
     public function saveShipping()
     {
         $shippingMethod = request()->get('shipping_method');
 
-        if (Cart::hasError() || !$shippingMethod || !Cart::saveShippingMethod($shippingMethod)) {
+        if (Cart::hasError() || ! $shippingMethod || ! Cart::saveShippingMethod($shippingMethod)) {
             return response()->json(['redirect_url' => route('shop.checkout.cart.index')], 403);
         }
 
@@ -179,7 +169,7 @@ class OnepageController extends Controller
      * Saves payment method.
      *
      * @return \Illuminate\Http\Response
-    */
+     */
     public function savePayment()
     {
         $payment = request()->get('payment');
@@ -202,7 +192,7 @@ class OnepageController extends Controller
      * Saves order.
      *
      * @return \Illuminate\Http\Response
-    */
+     */
     public function saveOrder()
     {
         if (Cart::hasError()) {
@@ -236,10 +226,10 @@ class OnepageController extends Controller
     }
 
     /**
-     * Order success page
+     * Order success page.
      *
      * @return \Illuminate\Http\Response
-    */
+     */
     public function success()
     {
         if (! $order = session('order')) {
@@ -250,7 +240,7 @@ class OnepageController extends Controller
     }
 
     /**
-     * Validate order before creation
+     * Validate order before creation.
      *
      * @return void|\Exception
      */
@@ -260,54 +250,58 @@ class OnepageController extends Controller
 
         $minimumOrderAmount = core()->getConfigData('sales.orderSettings.minimum-order.minimum_order_amount') ?? 0;
 
+        if (auth()->guard('customer')->check() && auth()->guard('customer')->user()->is_suspended) {
+            throw new \Exception(trans('shop::app.checkout.cart.suspended-account-message'));
+        }
+
         if (! $cart->checkMinimumOrder()) {
             throw new \Exception(trans('shop::app.checkout.cart.minimum-order-message', ['amount' => core()->currency($minimumOrderAmount)]));
         }
 
         //if ($cart->haveStockableItems() && ! $cart->shipping_address) {
-        //    throw new \Exception(trans('Please check shipping address.'));
+        //    throw new \Exception(trans('shop::app.checkout.cart.check-shipping-address'));
         //}
         //
         //if (! $cart->billing_address) {
-        //    throw new \Exception(trans('Please check billing address.'));
+        //    throw new \Exception(trans('shop::app.checkout.cart.check-billing-address'));
         //}
         //
         //if ($cart->haveStockableItems() && ! $cart->selected_shipping_rate) {
-        //    throw new \Exception(trans('Please specify shipping method.'));
+        //    throw new \Exception(trans('shop::app.checkout.cart.specify-shipping-method'));
         //}
 
         if (! $cart->payment) {
-            throw new \Exception(trans('Please specify payment method.'));
+            throw new \Exception(trans('shop::app.checkout.cart.specify-payment-method'));
         }
     }
 
     /**
-     * Check Customer is exist or not
+     * Check customer is exist or not.
      *
      * @return \Illuminate\Http\Response
      */
     public function checkExistCustomer()
     {
-       $customer = $this->customerRepository->findOneWhere([
+        $customer = $this->customerRepository->findOneWhere([
             'email' => request()->email,
-       ]);
+        ]);
 
-       if (! is_null($customer)) {
-           return 'true';
-       }
+        if (! is_null($customer)) {
+            return 'true';
+        }
 
-       return 'false';
+        return 'false';
     }
 
     /**
-     * Login for checkout
+     * Login for checkout.
      *
      * @return \Illuminate\Http\Response
      */
     public function loginForCheckout()
     {
         $this->validate(request(), [
-            'email' => 'required|email'
+            'email' => 'required|email',
         ]);
 
         if (! auth()->guard('customer')->attempt(request(['email', 'password']))) {
@@ -320,7 +314,7 @@ class OnepageController extends Controller
     }
 
     /**
-     * To apply couponable rule requested
+     * To apply couponable rule requested.
      *
      * @return \Illuminate\Http\Response
      */
@@ -341,20 +335,18 @@ class OnepageController extends Controller
                 'success' => true,
                 'message' => trans('shop::app.checkout.total.coupon-applied'),
                 'result'  => $result,
-            ], 200);
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => trans('shop::app.checkout.total.cannot-apply-coupon'),
-                'result'  => null,
-            ], 422);
+            ]);
         }
 
-        return $result;
+        return response()->json([
+            'success' => false,
+            'message' => trans('shop::app.checkout.total.cannot-apply-coupon'),
+            'result'  => null,
+        ], 422);
     }
 
     /**
-     * Initiates the removal of couponable cart rule
+     * Initiates the removal of couponable cart rule.
      *
      * @return array
      */
@@ -371,14 +363,14 @@ class OnepageController extends Controller
                 'data'    => [
                     'grand_total' => core()->currency(Cart::getCart()->grand_total),
                 ],
-            ], 200);
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => trans('admin::app.promotion.status.coupon-remove-failed'),
-                'data'    => null,
-            ], 422);
+            ]);
         }
+
+        return response()->json([
+            'success' => false,
+            'message' => trans('admin::app.promotion.status.coupon-remove-failed'),
+            'data'    => null,
+        ], 422);
     }
 
     /**
@@ -393,7 +385,7 @@ class OnepageController extends Controller
         $status = Cart::checkMinimumOrder();
 
         return response()->json([
-            'status' => ! $status ? false : true,
+            'status'  => ! $status ? false : true,
             'message' => ! $status ? trans('shop::app.checkout.cart.minimum-order-message', ['amount' => core()->currency($minimumOrderAmount)]) : 'Success',
         ]);
     }

@@ -6,12 +6,9 @@ use Illuminate\Support\Facades\DB;
 use Webkul\Customer\Models\CustomerAddress;
 use Webkul\Customer\Repositories\CustomerRepository;
 use Webkul\Ui\DataGrid\DataGrid;
-use Webkul\Ui\DataGrid\Traits\ProvideDataGridPlus;
 
 class AddressDataGrid extends DataGrid
 {
-    use ProvideDataGridPlus;
-
     /**
      * Index.
      *
@@ -88,6 +85,15 @@ class AddressDataGrid extends DataGrid
      */
     public function addColumns()
     {
+        $this->addColumn([
+            'index'      => 'address_id',
+            'label'      => trans('admin::app.datagrid.id'),
+            'type'       => 'number',
+            'searchable' => true,
+            'sortable'   => true,
+            'filterable' => true,
+        ]);
+
         $this->addColumn([
             'index'      => 'company_name',
             'label'      => trans('admin::app.customers.addresses.company-name'),

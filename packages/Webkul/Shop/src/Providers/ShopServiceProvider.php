@@ -2,13 +2,13 @@
 
 namespace Webkul\Shop\Providers;
 
-use Webkul\Core\Tree;
-use Illuminate\Routing\Router;
 use Illuminate\Pagination\Paginator;
-use Webkul\Shop\Http\Middleware\Theme;
+use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
-use Webkul\Shop\Http\Middleware\Locale;
+use Webkul\Core\Tree;
 use Webkul\Shop\Http\Middleware\Currency;
+use Webkul\Shop\Http\Middleware\Locale;
+use Webkul\Shop\Http\Middleware\Theme;
 
 class ShopServiceProvider extends ServiceProvider
 {
@@ -23,11 +23,11 @@ class ShopServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../../publishable/assets' => public_path('themes/default/assets'),
             __DIR__ . '/../Resources/views'       => resource_path('themes/default/views'),
-            __DIR__ . '/../Resources/lang'        => resource_path('lang/vendor/shop'),
+            __DIR__ . '/../Resources/lang'        => lang_path('vendor/shop'),
         ]);
 
         /* loaders */
-        $this->loadRoutesFrom(__DIR__ . '/../Http/routes.php');
+        $this->loadRoutesFrom(__DIR__ . '/../Routes/web.php');
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
         $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'shop');
         $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'shop');
@@ -43,6 +43,9 @@ class ShopServiceProvider extends ServiceProvider
         /* paginators */
         Paginator::defaultView('shop::partials.pagination');
         Paginator::defaultSimpleView('shop::partials.pagination');
+
+        /* breadcrumbs */
+        require __DIR__ . '/../Routes/breadcrumbs.php';
     }
 
     /**

@@ -181,6 +181,19 @@
     margin-left: 30px !important;
 }
 
+.w-0 {
+    width: 0px !important;
+}
+.w-5 {
+    width: 5px !important;
+}
+.w-10 {
+    width: 10px !important;
+}
+.w-15 {
+    width: 15px !important;
+}
+
 .body-blur {
     filter: blur(4px);
     -webkit-filter: blur(4px);
@@ -299,6 +312,7 @@
 .btn-add-to-cart:hover {
     border-color: $theme-dark-color !important;
     background-color: $theme-dark-color !important;
+    text-decoration: none;
 
     &.light {
         border: 1px solid rgba(0,0,0,0.12) !important;
@@ -411,6 +425,15 @@
 
     &.grid-card,
     &.list-card {
+        .wishlist-icon i {
+            padding-left: 10px;
+        }
+
+        .product-price span:first-child, .product-price span:last-child {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
         .card-current-price {
             font-size: 18px;
         }
@@ -589,7 +612,8 @@
     .product-image {
         @extend .bg-image;
 
-        height: 100%;
+        width: 70px;
+        height: 70px;
         background-position: center;
     }
 
@@ -599,7 +623,10 @@
         padding: 10px 0 !important;
 
         .product-name {
+            font-size: 18px;
+            color: #000000;
             width: 100%;
+            margin-bottom: 10px;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -761,6 +788,20 @@ a {
             margin-left: 5px;
         }
     }
+
+    .VueCarousel-navigation {
+        .VueCarousel-navigation-prev {
+            left: 10px;
+        }
+
+        .VueCarousel-navigation-next {
+            right: 12px;
+        }
+
+        span {
+            font-size: 32px;
+        }
+    }
 }
 
 .navigation-hide {
@@ -791,13 +832,12 @@ button[disabled] {
     cursor: not-allowed;
 }
 
-.max-sm-img-dimention {
+.max-sm-img-dimension {
     max-width: 110px;
     max-height: 110px;
 
     img {
         width: 100%;
-        height: 100%;
     }
 }
 
@@ -894,8 +934,8 @@ button[disabled] {
     width: 100%;
     height: 100%;
     position: fixed;
-    background: rgba(256, 256, 256, 0.9);
-    z-index: 125;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1001;
 }
 
 .compare-icon,

@@ -2,26 +2,35 @@
 
 namespace Webkul\Category\Models;
 
-use Webkul\Core\Eloquent\TranslatableModel;
-use Kalnoy\Nestedset\NodeTrait;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Storage;
+use Kalnoy\Nestedset\NodeTrait;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Webkul\Category\Contracts\Category as CategoryContract;
 use Webkul\Attribute\Models\AttributeProxy;
+use Webkul\Category\Contracts\Category as CategoryContract;
+use Webkul\Category\Database\Factories\CategoryFactory;
 use Webkul\Category\Repositories\CategoryRepository;
+use Webkul\Core\Eloquent\TranslatableModel;
 use Webkul\Product\Models\ProductProxy;
 
 /**
- * Class Category
+ * Category class.
  *
  * @package Webkul\Category\Models
  *
- * @property-read string $url_path maintained by database triggers
+ * @property-read string (`$url_path` maintained by database triggers.)
  */
 class Category extends TranslatableModel implements CategoryContract
 {
-    use NodeTrait;
+    use NodeTrait, HasFactory;
 
+    /**
+     * Translated attributes.
+     *
+     * @var array
+     */
     public $translatedAttributes = [
         'name',
         'description',
@@ -32,6 +41,11 @@ class Category extends TranslatableModel implements CategoryContract
         'meta_keywords',
     ];
 
+    /**
+     * Fillables.
+     *
+     * @var array
+     */
     protected $fillable = [
         'position',
         'status',
@@ -40,77 +54,54 @@ class Category extends TranslatableModel implements CategoryContract
         'additional',
     ];
 
+    /**
+     * Eager loading.
+     *
+     * @var array
+     */
     protected $with = ['translations'];
 
     /**
-     * Get image url for the category image.
+     * Appends.
+     *
+     * @var array
      */
-    public function image_url()
-    {
-        if (! $this->image)
-            return;
+    protected $appends = ['image_url', 'category_icon_url'];
 
-        return Storage::url($this->image);
+    /**
+     * The products that belong to the category.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(ProductProxy::modelClass(), 'product_categories');
     }
 
     /**
-     * Get image url for the category image.
-     */
-    public function getImageUrlAttribute()
-    {
-        return $this->image_url();
-    }
-
-     /**
      * The filterable attributes that belong to the category.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function filterableAttributes()
+    public function filterableAttributes(): BelongsToMany
     {
-        return $this->belongsToMany(AttributeProxy::modelClass(), 'category_filterable_attributes')->with(['options' => function($query) {
-            $query->orderBy('sort_order');
-        }]);
+        return $this->belongsToMany(AttributeProxy::modelClass(), 'category_filterable_attributes')
+            ->with([
+                'options' => function ($query) {
+                    $query->orderBy('sort_order');
+                },
+            ]);
     }
 
     /**
-     * Getting the root category of a category
+     * Finds and returns the category within a nested category tree.
      *
-     * @return Category
-     */
-    public function getRootCategory(): Category
-    {
-        return Category::where([
-            ['parent_id', '=', null],
-            ['_lft', '<=', $this->_lft],
-            ['_rgt', '>=', $this->_rgt],
-        ])->first();
-    }
-
-    /**
-     * Returns all categories within the category's path
+     * Will search in root category by default.
      *
-     * @return Category[]
-     */
-    public function getPathCategories(): array
-    {
-        $category = $this->findInTree();
-
-        $categories = [$category];
-
-        while (isset($category->parent)) {
-            $category = $category->parent;
-            $categories[] = $category;
-        }
-
-        return array_reverse($categories);
-    }
-
-    /**
-     * Finds and returns the category within a nested category tree
-     * will search in root category by default
-     * is used to minimize the numbers of sql queries for it only uses the already cached tree
+     * Is used to minimize the numbers of sql queries for it only uses the already cached tree.
      *
-     * @param Category[] $categoryTree
-     * @return Category
+     * @param  \Webkul\Velocity\Contracts\Category[]  $categoryTree
+     * @return \Webkul\Velocity\Contracts\Category
      */
     public function findInTree($categoryTree = null): Category
     {
@@ -132,10 +123,87 @@ class Category extends TranslatableModel implements CategoryContract
     }
 
     /**
-     * The products that belong to the category.
+     * Getting the root category of a category.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object
      */
-    public function products()
+    public function getRootCategory()
     {
-        return $this->belongsToMany(ProductProxy::modelClass(), 'product_categories');
+        return self::query()
+            ->where([
+                [
+                    'parent_id',
+                    '=',
+                    null,
+                ],
+                [
+                    '_lft',
+                    '<=',
+                    $this->_lft,
+                ],
+                [
+                    '_rgt',
+                    '>=',
+                    $this->_rgt,
+                ],
+            ])
+            ->first();
+    }
+
+    /**
+     * Returns all categories within the category's path.
+     *
+     * @return \Webkul\Velocity\Contracts\Category[]
+     */
+    public function getPathCategories(): array
+    {
+        $category = $this->findInTree();
+
+        $categories = [$category];
+
+        while (isset($category->parent)) {
+            $category = $category->parent;
+            $categories[] = $category;
+        }
+
+        return array_reverse($categories);
+    }
+
+    /**
+     * Get image url for the category image.
+     *
+     * @return string
+     */
+    public function getImageUrlAttribute()
+    {
+        if (! $this->image) {
+            return;
+        }
+
+        return Storage::url($this->image);
+    }
+
+    /**
+     * Get category icon url for the category icon image.
+     *
+     * @return string
+     */
+    public function getCategoryIconUrlAttribute()
+    {
+        if (! $this->category_icon_path) {
+            return;
+        }
+
+        return Storage::url($this->category_icon_path);
+    }
+
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    protected static function newFactory(): Factory
+    {
+        return CategoryFactory::new ();
     }
 }

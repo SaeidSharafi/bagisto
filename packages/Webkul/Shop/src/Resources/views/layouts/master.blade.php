@@ -9,6 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="base-url" content="{{ url()->to('/') }}">
     <meta http-equiv="content-language" content="{{ app()->getLocale() }}">
     <link rel="stylesheet" href="{{ asset('vendor/webkul/ui/assets/css/ui.css') }}">
 
@@ -87,6 +88,8 @@
         @endif
 
         <overlay-loader :is-open="show_loader"></overlay-loader>
+
+        <go-top bg-color="#0041ff"></go-top>
     </div>
 
     <script type="text/javascript">
@@ -111,7 +114,7 @@
         @endif
     </script>
 
-    <script type="text/javascript" src="{{ bagisto_asset('js/shop.js') }}"></script>
+    <script type="text/javascript" src="{{ bagisto_asset('js/shop.js') }}" ></script>
     <script type="text/javascript" src="{{ asset('vendor/webkul/ui/assets/js/ui.js') }}"></script>
 
     @stack('scripts')

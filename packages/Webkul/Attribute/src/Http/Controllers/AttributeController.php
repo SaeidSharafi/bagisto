@@ -2,6 +2,7 @@
 
 namespace Webkul\Attribute\Http\Controllers;
 
+use Webkul\Admin\DataGrids\AttributeDataGrid;
 use Webkul\Attribute\Repositories\AttributeRepository;
 
 class AttributeController extends Controller
@@ -40,6 +41,10 @@ class AttributeController extends Controller
      */
     public function index()
     {
+        if (request()->ajax()) {
+            return app(AttributeDataGrid::class)->toJson();
+        }
+
         return view($this->_config['view']);
     }
 
@@ -61,7 +66,7 @@ class AttributeController extends Controller
     public function store()
     {
         $this->validate(request(), [
-            'code'       => ['required', 'unique:attributes,code', new \Webkul\Core\Contracts\Validations\Code],
+            'code'       => ['required', 'not_in:type,attribute_family_id', 'unique:attributes,code', new \Webkul\Core\Contracts\Validations\Code],
             'admin_name' => 'required',
             'type'       => 'required',
         ]);
@@ -135,20 +140,18 @@ class AttributeController extends Controller
         $attribute = $this->attributeRepository->findOrFail($id);
 
         if (! $attribute->is_user_defined) {
-            session()->flash('error', trans('admin::app.response.user-define-error', ['name' => 'Attribute']));
-        } else {
-            try {
-                $this->attributeRepository->delete($id);
-
-                session()->flash('success', trans('admin::app.response.delete-success', ['name' => 'Attribute']));
-
-                return response()->json(['message' => true], 200);
-            } catch (\Exception $e) {
-                session()->flash('error', trans('admin::app.response.delete-failed', ['name' => 'Attribute']));
-            }
+            return response()->json([
+                'message' => trans('admin::app.response.user-define-error', ['name' => 'Attribute']),
+            ], 400);
         }
 
-        return response()->json(['message' => false], 400);
+        try {
+            $this->attributeRepository->delete($id);
+
+            return response()->json(['message' => trans('admin::app.response.delete-success', ['name' => 'Attribute'])]);
+        } catch (\Exception $e) {}
+
+        return response()->json(['message' => trans('admin::app.response.delete-failed', ['name' => 'Attribute'])], 500);
     }
 
     /**
@@ -158,34 +161,24 @@ class AttributeController extends Controller
      */
     public function massDestroy()
     {
-        $suppressFlash = false;
-
         if (request()->isMethod('post')) {
             $indexes = explode(',', request()->input('indexes'));
 
-            foreach ($indexes as $key => $value) {
-                $attribute = $this->attributeRepository->find($value);
+            foreach ($indexes as $index) {
+                $attribute = $this->attributeRepository->find($index);
 
-                try {
-                    if ($attribute->is_user_defined) {
-                        $suppressFlash = true;
+                if (! $attribute->is_user_defined) {
+                    session()->flash('error', trans('admin::app.response.user-define-error', ['name' => 'Attribute']));
 
-                        $this->attributeRepository->delete($value);
-                    }
-                } catch (\Exception $e) {
-                    report($e);
-
-                    $suppressFlash = true;
-
-                    continue;
+                    return redirect()->back();
                 }
             }
 
-            if ($suppressFlash) {
-                session()->flash('success', trans('admin::app.datagrid.mass-ops.delete-success', ['resource' => 'attributes']));
-            } else {
-                session()->flash('error', trans('admin::app.response.user-define-error', ['name' => 'Attribute']));
+            foreach ($indexes as $index) {
+                $this->attributeRepository->delete($index);
             }
+
+            session()->flash('success', trans('admin::app.datagrid.mass-ops.delete-success', ['resource' => 'attributes']));
 
             return redirect()->back();
         } else {

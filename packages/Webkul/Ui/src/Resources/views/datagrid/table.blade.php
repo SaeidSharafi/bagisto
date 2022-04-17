@@ -30,242 +30,253 @@
         <script type="text/x-template" id="datagrid-filters">
             <div class="grid-container">
 
-                <div class="datagrid-filters">
-                    <div class="filter-left">
-                        @if (isset($results['extraFilters']['channels']))
-                        <div class="dropdown-filters per-page">
-                            <div class="control-group">
-                                <select class="control" id="channel-switcher" name="channel"
-                                        onchange="reloadPage('channel', this.value)">
-                                    <option value="all" {{ ! isset($channel) ? 'selected' : '' }}>
-                                        {{ __('admin::app.admin.system.all-channels') }}
-                                    </option>
-                                    @foreach ($results['extraFilters']['channels'] as $channelModel)
-                                        <option
-                                            value="{{ $channelModel->code }}"
-                                            {{ (isset($channel) && ($channelModel->code) == $channel) ? 'selected' : '' }}>
-                                            {{ core()->getChannelName($channelModel) }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        @endif
+                <div class="grid-top">
 
-                        @if (isset($results['extraFilters']['locales']))
-                        <div class="dropdown-filters per-page">
-                            <div class="control-group">
-                                <select class="control" id="locale-switcher" name="locale"
-                                        onchange="reloadPage('locale', this.value)">
-                                    <option value="all" {{ ! isset($locale) ? 'selected' : '' }}>
-                                        {{ __('admin::app.admin.system.all-locales') }}
-                                    </option>
-                                    @foreach ($locales as $localeModel)
-                                        <option
-                                            value="{{ $localeModel->code }}" {{ (isset($locale) && ($localeModel->code) == $locale) ? 'selected' : '' }}>
-                                            {{ $localeModel->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        @endif
+                    <div class="datagrid-filters">
+                        <div class="filter-left">
+                            @if (isset($results['extraFilters']['channels']))
+                                <div class="dropdown-filters per-page">
+                                    <div class="control-group">
+                                        <select class="control" id="channel-switcher" name="channel"
+                                                onchange="reloadPage('channel', this.value)">
+                                            <option value="all" {{ ! isset($channel) ? 'selected' : '' }}>
+                                                {{ __('admin::app.admin.system.all-channels') }}
+                                            </option>
+                                            @foreach ($results['extraFilters']['channels'] as $channelModel)
+                                                <option
+                                                    value="{{ $channelModel->code }}"
+                                                    {{ (isset($channel) && ($channelModel->code) == $channel) ? 'selected' : '' }}>
+                                                    {{ core()->getChannelName($channelModel) }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            @endif
 
-                        @if (isset($results['extraFilters']['customer_groups']))
-                        <div class="dropdown-filters per-page">
-                            <div class="control-group">
-                                <select class="control" id="customer-group-switcher" name="customer_group"
-                                        onchange="reloadPage('customer_group', this.value)">
-                                    <option value="all" {{ ! isset($customer_group) ? 'selected' : '' }}>
-                                        {{ __('admin::app.admin.system.all-customer-groups') }}
-                                    </option>
-                                    @foreach ($results['extraFilters']['customer_groups'] as $customerGroupModel)
-                                        <option
-                                            value="{{ $customerGroupModel->id }}"
-                                            {{ (isset($customer_group) && ($customerGroupModel->id) == $customer_group) ? 'selected' : '' }}>
-                                            {{ $customerGroupModel->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        @endif
-                    </div>
-                </div>
+                            @if (isset($results['extraFilters']['locales']))
+                                <div class="dropdown-filters per-page">
+                                    <div class="control-group">
+                                        <select class="control" id="locale-switcher" name="locale"
+                                                onchange="reloadPage('locale', this.value)">
+                                            <option value="all" {{ ! isset($locale) ? 'selected' : '' }}>
+                                                {{ __('admin::app.admin.system.all-locales') }}
+                                            </option>
+                                            @foreach ($locales as $localeModel)
+                                                <option
+                                                    value="{{ $localeModel->code }}" {{ (isset($locale) && ($localeModel->code) == $locale) ? 'selected' : '' }}>
+                                                    {{ $localeModel->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            @endif
 
-                <div class="datagrid-filters" id="datagrid-filters">
-                    <div class="filter-left">
-                        <div class="search-filter">
-                            <input type="search" id="search-field" class="control"
-                                placeholder="{{ __('ui::app.datagrid.search') }}" v-model="searchValue"
-                                v-on:keyup.enter="searchCollection(searchValue)"/>
-
-                            <div class="icon-wrapper">
-                                <span class="icon search-icon search-btn"
-                                    v-on:click="searchCollection(searchValue)"></span>
-                            </div>
+                            @if (isset($results['extraFilters']['customer_groups']))
+                                <div class="dropdown-filters per-page">
+                                    <div class="control-group">
+                                        <select class="control" id="customer-group-switcher" name="customer_group"
+                                                onchange="reloadPage('customer_group', this.value)">
+                                            <option value="all" {{ ! isset($customer_group) ? 'selected' : '' }}>
+                                                {{ __('admin::app.admin.system.all-customer-groups') }}
+                                            </option>
+                                            @foreach ($results['extraFilters']['customer_groups'] as $customerGroupModel)
+                                                <option
+                                                    value="{{ $customerGroupModel->id }}"
+                                                    {{ (isset($customer_group) && ($customerGroupModel->id) == $customer_group) ? 'selected' : '' }}>
+                                                    {{ $customerGroupModel->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
 
-                    <div class="filter-right">
-                        <div class="dropdown-filters per-page">
-                            <div class="control-group">
-                                <label class="per-page-label" for="perPage">
-                                    {{ __('ui::app.datagrid.items-per-page') }}
-                                </label>
-
-                                <select id="perPage" name="perPage" class="control" v-model="perPage"
-                                        v-on:change="paginate">
-                                    <option v-for="index in this.perPageProduct" :key="index" :value="index"> @{{ index }} </option>
-                                </select>
+                    <div class="datagrid-filters" id="datagrid-filters">
+                        <div>
+                            <div class="search-filter">
+                                <input type="search" id="search-field" class="control"
+                                    placeholder="{{ __('ui::app.datagrid.search') }}" v-model="searchValue"
+                                    v-on:keyup.enter="searchCollection(searchValue)"/>
+                                <div class="icon-wrapper">
+                                    <span class="icon search-icon search-btn"
+                                        v-on:click="searchCollection(searchValue)"></span>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="dropdown-filters">
-                            <div class="dropdown-toggle">
-                                <div class="grid-dropdown-header">
-                                    <span class="name">{{ __('ui::app.datagrid.filter') }}</span>
-                                    <i class="icon arrow-down-icon active"></i>
+                        <div class="filter-right">
+                            <div class="dropdown-filters per-page">
+                                <div class="control-group">
+                                    <label class="per-page-label" for="perPage">
+                                        {{ __('ui::app.datagrid.items-per-page') }}
+                                    </label>
+
+                                    <select id="perPage" name="perPage" class="control" v-model="perPage"
+                                            v-on:change="paginate">
+                                        <option v-for="index in this.perPageProduct" :key="index" :value="index"> @{{ index }} </option>
+                                    </select>
                                 </div>
                             </div>
 
-                            <div class="dropdown-list dropdown-container" style="display: none;">
-                                <ul>
-                                    <li>
-                                        <div class="control-group">
-                                            <select class="filter-column-select control" v-model="filterColumn"
-                                                    v-on:change="getColumnOrAlias(filterColumn)">
-                                                <option selected disabled>{{ __('ui::app.datagrid.column') }}</option>
-                                                @foreach($results['columns'] as $column)
-                                                    @if(isset($column['filterable']) && $column['filterable'])
-                                                        <option value="{{ $column['index'] }}">
-                                                            {{ $column['label'] }}
-                                                        </option>
-                                                    @endif
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </li>
+                            <div class="dropdown-filters">
+                                <div class="dropdown-toggle">
+                                    <div class="grid-dropdown-header">
+                                        <span class="name">{{ __('ui::app.datagrid.filter') }}</span>
+                                        <i class="icon arrow-down-icon active"></i>
+                                    </div>
+                                </div>
 
-                                    {{-- suitable for string columns --}}
-                                    <li v-if='stringConditionSelect'>
-                                        <div class="control-group">
-                                            <select class="control" v-model="stringCondition">
-                                                <option selected
-                                                        disabled>{{ __('ui::app.datagrid.condition') }}</option>
-                                                <option value="like">{{ __('ui::app.datagrid.contains') }}</option>
-                                                <option value="nlike">{{ __('ui::app.datagrid.ncontains') }}</option>
-                                                <option value="eq">{{ __('ui::app.datagrid.equals') }}</option>
-                                                <option value="neqs">{{ __('ui::app.datagrid.nequals') }}</option>
-                                            </select>
-                                        </div>
-                                    </li>
+                                <div class="dropdown-list dropdown-container" style="display: none;">
+                                    <ul>
+                                        <li>
+                                            <div class="control-group">
+                                                <select class="filter-column-select control" v-model="filterColumn"
+                                                        v-on:change="getColumnOrAlias(filterColumn)">
+                                                    <option selected disabled>{{ __('ui::app.datagrid.column') }}</option>
+                                                    @foreach($results['columns'] as $column)
+                                                        @if(isset($column['filterable']) && $column['filterable'])
+                                                            <option value="{{ $column['index'] }}">
+                                                                {{ $column['label'] }}
+                                                            </option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </li>
 
-                                    {{-- Response fields based on the type of columns to be filtered --}}
-                                    <li v-if='stringCondition != null'>
-                                        <div class="control-group">
-                                            <input type="text" class="control response-string"
-                                                placeholder="{{ __('ui::app.datagrid.value-here') }}"
-                                                v-model="stringValue"/>
-                                        </div>
-                                    </li>
+                                        {{-- suitable for string columns --}}
+                                        <li v-if='stringConditionSelect'>
+                                            <div class="control-group">
+                                                <select class="control" v-model="stringCondition">
+                                                    <option selected
+                                                            disabled>{{ __('ui::app.datagrid.condition') }}</option>
+                                                    <option value="like">{{ __('ui::app.datagrid.contains') }}</option>
+                                                    <option value="nlike">{{ __('ui::app.datagrid.ncontains') }}</option>
+                                                    <option value="eq">{{ __('ui::app.datagrid.equals') }}</option>
+                                                    <option value="neqs">{{ __('ui::app.datagrid.nequals') }}</option>
+                                                </select>
+                                            </div>
+                                        </li>
 
-                                    {{-- suitable for numeric columns --}}
-                                    <li v-if='numberConditionSelect'>
-                                        <div class="control-group">
-                                            <select class="control" v-model="numberCondition">
-                                                <option selected
-                                                        disabled>{{ __('ui::app.datagrid.condition') }}</option>
-                                                <option value="eq">{{ __('ui::app.datagrid.equals') }}</option>
-                                                <option value="neqs">{{ __('ui::app.datagrid.nequals') }}</option>
-                                                <option value="gt">{{ __('ui::app.datagrid.greater') }}</option>
-                                                <option value="lt">{{ __('ui::app.datagrid.less') }}</option>
-                                                <option value="gte">{{ __('ui::app.datagrid.greatere') }}</option>
-                                                <option value="lte">{{ __('ui::app.datagrid.lesse') }}</option>
-                                            </select>
-                                        </div>
-                                    </li>
+                                        {{-- Response fields based on the type of columns to be filtered --}}
+                                        <li v-if='stringCondition != null'>
+                                            <div class="control-group">
+                                                <input type="text" class="control response-string"
+                                                    placeholder="{{ __('ui::app.datagrid.value-here') }}"
+                                                    v-model="stringValue"/>
+                                            </div>
+                                        </li>
 
-                                    <li v-if='numberCondition != null'>
-                                        <div class="control-group">
-                                            <input type="text" class="control response-number" v-on:input="filterNumberInput" placeholder="{{ __('ui::app.datagrid.numeric-value-here') }}"  v-model="numberValue"/>
-                                        </div>
-                                    </li>
+                                        {{-- suitable for numeric columns --}}
+                                        <li v-if='numberConditionSelect'>
+                                            <div class="control-group">
+                                                <select class="control" v-model="numberCondition">
+                                                    <option selected
+                                                            disabled>{{ __('ui::app.datagrid.condition') }}</option>
+                                                    <option value="eq">{{ __('ui::app.datagrid.equals') }}</option>
+                                                    <option value="neqs">{{ __('ui::app.datagrid.nequals') }}</option>
+                                                    <option value="gt">{{ __('ui::app.datagrid.greater') }}</option>
+                                                    <option value="lt">{{ __('ui::app.datagrid.less') }}</option>
+                                                    <option value="gte">{{ __('ui::app.datagrid.greatere') }}</option>
+                                                    <option value="lte">{{ __('ui::app.datagrid.lesse') }}</option>
+                                                </select>
+                                            </div>
+                                        </li>
 
-                                    {{-- suitable for boolean columns --}}
-                                    <li v-if='booleanConditionSelect'>
-                                        <div class="control-group">
-                                            <select class="control" v-model="booleanCondition">
-                                                <option selected
-                                                        disabled>{{ __('ui::app.datagrid.condition') }}</option>
-                                                <option value="eq">{{ __('ui::app.datagrid.equals') }}</option>
-                                                <option value="neqs">{{ __('ui::app.datagrid.nequals') }}</option>
-                                            </select>
-                                        </div>
-                                    </li>
+                                        <li v-if='numberCondition != null'>
+                                            <div class="control-group">
+                                                <input type="text" class="control response-number" v-on:input="filterNumberInput" placeholder="{{ __('ui::app.datagrid.numeric-value-here') }}"  v-model="numberValue"/>
+                                            </div>
+                                        </li>
 
-                                    <li v-if='booleanCondition != null'>
-                                        <div class="control-group">
-                                            <select class="control" v-model="booleanValue">
-                                                <option selected disabled>{{ __('ui::app.datagrid.value') }}</option>
-                                                <option value="1">{{ __('ui::app.datagrid.true') }}</option>
-                                                <option value="0">{{ __('ui::app.datagrid.false') }}</option>
-                                            </select>
-                                        </div>
-                                    </li>
+                                        {{-- suitable for boolean columns --}}
+                                        <li v-if='booleanConditionSelect'>
+                                            <div class="control-group">
+                                                <select class="control" v-model="booleanCondition">
+                                                    <option selected
+                                                            disabled>{{ __('ui::app.datagrid.condition') }}</option>
+                                                    <option value="eq">{{ __('ui::app.datagrid.equals') }}</option>
+                                                    <option value="neqs">{{ __('ui::app.datagrid.nequals') }}</option>
+                                                </select>
+                                            </div>
+                                        </li>
 
-                                    {{-- suitable for date/time columns --}}
-                                    <li v-if='datetimeConditionSelect'>
-                                        <div class="control-group">
-                                            <select class="control" v-model="datetimeCondition">
-                                                <option selected disabled>{{ __('ui::app.datagrid.condition') }}</option>
-                                                <option value="eq">{{ __('ui::app.datagrid.equals') }}</option>
-                                                <option value="neqs">{{ __('ui::app.datagrid.nequals') }}</option>
-                                                <option value="gt">{{ __('ui::app.datagrid.greater') }}</option>
-                                                <option value="lt">{{ __('ui::app.datagrid.less') }}</option>
-                                                <option value="gte">{{ __('ui::app.datagrid.greatere') }}</option>
-                                                <option value="lte">{{ __('ui::app.datagrid.lesse') }}</option>
-                                            </select>
-                                        </div>
-                                    </li>
+                                        <li v-if='booleanCondition != null'>
+                                            <div class="control-group">
+                                                <select class="control" v-model="booleanValue">
+                                                    <option selected disabled>{{ __('ui::app.datagrid.value') }}</option>
+                                                    <option value="1">{{ __('ui::app.datagrid.true') }}</option>
+                                                    <option value="0">{{ __('ui::app.datagrid.false') }}</option>
+                                                </select>
+                                            </div>
+                                        </li>
 
-                                    <li v-if='datetimeCondition != null'>
-                                        <div class="control-group">
-                                            <input class="control" v-model="datetimeValue" type="date">
-                                        </div>
-                                    </li>
+                                        {{-- suitable for date/time columns --}}
+                                        <li v-if='datetimeConditionSelect'>
+                                            <div class="control-group">
+                                                <select class="control" v-model="datetimeCondition">
+                                                    <option selected disabled>{{ __('ui::app.datagrid.condition') }}</option>
+                                                    <option value="eq">{{ __('ui::app.datagrid.equals') }}</option>
+                                                    <option value="neqs">{{ __('ui::app.datagrid.nequals') }}</option>
+                                                    <option value="gt">{{ __('ui::app.datagrid.greater') }}</option>
+                                                    <option value="lt">{{ __('ui::app.datagrid.less') }}</option>
+                                                    <option value="gte">{{ __('ui::app.datagrid.greatere') }}</option>
+                                                    <option value="lte">{{ __('ui::app.datagrid.lesse') }}</option>
+                                                </select>
+                                            </div>
+                                        </li>
 
-                                    <button class="btn btn-sm btn-primary apply-filter"
-                                            v-on:click="getResponse">{{ __('ui::app.datagrid.apply') }}</button>
-                                </ul>
+                                        <li v-if='datetimeCondition != null'>
+                                            <div class="control-group">
+                                                <input class="control" v-model="datetimeValue" type="date">
+                                            </div>
+                                        </li>
+
+                                        <button class="btn btn-sm btn-primary apply-filter"
+                                                v-on:click="getResponse">{{ __('ui::app.datagrid.apply') }}</button>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="filter-advance">
+                    <div class="filtered-tags">
+                        <span class="filter-tag" v-if="filters.length > 0" v-for="filter in filters" style="text-transform: capitalize;">
+                            <span v-if="filter.column == 'perPage'">perPage</span>
+                            <span v-else>@{{ filter.label }}</span>
 
-                <div class="filtered-tags">
-                    <span class="filter-tag" v-if="filters.length > 0" v-for="filter in filters" style="text-transform: capitalize;">
-                        <span v-if="filter.column == 'perPage'">perPage</span>
-                        <span v-else>@{{ filter.label }}</span>
-
-                        <span class="wrapper" v-if="filter.prettyValue">
-                            @{{ filter.prettyValue }}
-                            <span class="icon cross-icon" v-on:click="removeFilter(filter)"></span>
+                            <span class="wrapper" v-if="filter.prettyValue">
+                                @{{ filter.prettyValue }}
+                                <span class="icon cross-icon" v-on:click="removeFilter(filter)"></span>
+                            </span>
+                            <span class="wrapper" v-else>
+                                @{{ decodeURIComponent(filter.val) }}
+                                <span class="icon cross-icon" v-on:click="removeFilter(filter)"></span>
+                            </span>
                         </span>
-                        <span class="wrapper" v-else>
-                            @{{ decodeURIComponent(filter.val) }}
-                            <span class="icon cross-icon" v-on:click="removeFilter(filter)"></span>
+                    </div>
+                    
+                    <div class="records-count-container">
+                        <span class="datagrid-count">
+                            {{ $results['records']->total()  }}   {{ __('admin::app.admin.system.records-found') }}
                         </span>
-                    </span>
-                </div>
+                    </div>
+                </div>                                        
+                
+                <div class="table-responsive">
+                    <table class="table">
+                        @include('ui::datagrid.partials.mass-action-header')
 
-                <table class="table">
-                    @include('ui::datagrid.partials.mass-action-header')
+                        @include('ui::datagrid.partials.default-header')
 
-                    @include('ui::datagrid.partials.default-header')
-
-                    @include('ui::datagrid.body', ['records' => $results['records'], 'actions' => $results['actions'], 'index' => $results['index'], 'columns' => $results['columns'],'enableMassActions' => $results['enableMassActions'], 'enableActions' => $results['enableActions'], 'norecords' => $results['norecords']])
-                </table>
+                        @include('ui::datagrid.body', ['records' => $results['records'], 'actions' => $results['actions'], 'index' => $results['index'], 'columns' => $results['columns'],'enableMassActions' => $results['enableMassActions'], 'enableActions' => $results['enableActions'], 'norecords' => $results['norecords']])
+                    </table>
+                </div>                
             </div>
         </script>
 
@@ -281,7 +292,7 @@
                         massActionsToggle: false,
                         massActionTarget: null,
                         massActionConfirmText: '{{ __('ui::app.datagrid.click_on_action') }}',
-                        massActionType: null,
+                        massActionType: this.getDefaultMassActionType(),
                         massActionValues: [],
                         massActionTargets: [],
                         massActionUpdateValue: null,
@@ -322,6 +333,8 @@
 
                 mounted: function () {
                     this.setParamsAndUrl();
+
+                    this.checkedSelectedCheckbox();
 
                     if (this.filters.length) {
                         for (let i = 0; i < this.filters.length; i++) {
@@ -470,19 +483,12 @@
                         }
 
                         for (let id in this.massActions) {
-                            targetObj = {
+                            this.massActionTargets.push({
+                                'id': parseInt(id),
                                 'type': this.massActions[id].type,
                                 'action': this.massActions[id].action,
                                 'confirm_text': this.massActions[id].confirm_text
-                            };
-
-                            this.massActionTargets.push(targetObj);
-
-                            targetObj = {};
-
-                            if (this.massActions[id].type === 'update') {
-                                this.massActionValues = this.massActions[id].options;
-                            }
+                            });
                         }
                     },
 
@@ -494,8 +500,23 @@
                         }
                     },
 
+                    /**
+                     * Reset mass action type.
+                     *
+                     * @return {!object}
+                     */
+                    getDefaultMassActionType: function () {
+                        return {
+                            id: null,
+                            value: null
+                        };
+                    },
+
+                    /**
+                     * Change mass action target.
+                     */
                     changeMassActionTarget: function () {
-                        if (this.massActionType === 'delete') {
+                        if (this.massActionType.value === 'delete') {
                             for (let i in this.massActionTargets) {
                                 if (this.massActionTargets[i].type === 'delete') {
                                     this.massActionTarget = this.massActionTargets[i].action;
@@ -506,9 +527,10 @@
                             }
                         }
 
-                        if (this.massActionType === 'update') {
+                        if (this.massActionType.value === 'update') {
                             for (let i in this.massActionTargets) {
                                 if (this.massActionTargets[i].type === 'update') {
+                                    this.massActionValues = this.massActions[this.massActionType.id].options;
                                     this.massActionTarget = this.massActionTargets[i].action;
                                     this.massActionConfirmText = this.massActionTargets[i].confirm_text ? this.massActionTargets[i].confirm_text : this.massActionConfirmText;
 
@@ -541,6 +563,8 @@
                                         if (this.filters[j].column === column) {
                                             if (this.filters[j].cond === condition && this.filters[j].val === response) {
                                                 filterRepeated = true;
+
+                                                alert('{{ __('ui::app.datagrid.filter-exists') }}');
 
                                                 return false;
                                             } else if (this.filters[j].cond === condition && this.filters[j].val !== response) {
@@ -806,71 +830,6 @@
                         }
                     },
 
-                    /**
-                     * Triggered when any select box is clicked in the datagrid.
-                     */
-                    select: function () {
-                        this.allSelected = false;
-
-                        if (this.dataIds.length === 0) {
-                            this.massActionsToggle = false;
-                            this.massActionType = null;
-                        } else {
-                            this.massActionsToggle = true;
-                        }
-                    },
-
-                    /**
-                     * Triggered when master checkbox is clicked.
-                     */
-                    selectAll: function () {
-                        this.dataIds = [];
-
-                        this.massActionsToggle = true;
-
-                        if (this.allSelected) {
-                            if (this.gridCurrentData.hasOwnProperty("data")) {
-                                for (let currentData in this.gridCurrentData.data) {
-
-                                    let i = 0;
-                                    for (let currentId in this.gridCurrentData.data[currentData]) {
-                                        if (i == 0) {
-                                            this.dataIds.push(this.gridCurrentData.data[currentData][this.filterIndex]);
-                                        }
-
-                                        i++;
-                                    }
-                                }
-                            } else {
-                                for (currentData in this.gridCurrentData) {
-
-                                    let i = 0;
-                                    for (let currentId in this.gridCurrentData[currentData]) {
-                                        if (i === 0)
-                                            this.dataIds.push(this.gridCurrentData[currentData][currentId]);
-
-                                        i++;
-                                    }
-                                }
-                            }
-                        }
-                    },
-
-                    captureColumn: function (id) {
-                        element = document.getElementById(id);
-
-                    },
-
-                    removeMassActions: function () {
-                        this.dataIds = [];
-
-                        this.massActionsToggle = false;
-
-                        this.allSelected = false;
-
-                        this.massActionType = null;
-                    },
-
                     paginate: function (e) {
                         for (let i = 0; i < this.filters.length; i++) {
                             if (this.filters[i].column == 'perPage') {
@@ -883,6 +842,167 @@
                         this.makeURL();
                     },
 
+                    /**
+                     * Get current page ids.
+                     */
+                    getCurrentIds: function () {
+                        let currentIds = [];
+
+                        if (this.gridCurrentData.hasOwnProperty("data")) {
+                            for (let currentData in this.gridCurrentData.data) {
+                                currentIds.push(this.gridCurrentData.data[currentData][this.filterIndex]);
+                            }
+                        } else {
+                            for (let currentData in this.gridCurrentData) {
+                                let i = 0;
+                                for (let currentId in this.gridCurrentData[currentData]) {
+                                    if (i === 0) {
+                                        currentIds.push(this.gridCurrentData[currentData][currentId]);
+                                    }
+                                    i++;
+                                }
+                            }
+                        }
+
+                        return currentIds;
+                    },
+
+                    /**
+                     * Get page key.
+                     */
+                    getPageKey: function () {
+                        let routeSegments = this.gridCurrentData.path.split('/');
+
+                        return routeSegments[routeSegments.length - 1];
+                    },
+
+                    /**
+                     * Set selected indexes.
+                     */
+                    setSelectedIndexes: function () {
+                        let routeIndexObj = {};
+
+                        routeIndexObj[this.getPageKey()] = this.dataIds;
+
+                        localStorage.dataGridIndexes = JSON.stringify(routeIndexObj);
+                    },
+
+                    /**
+                     * Get selected indexes.
+                     */
+                    getSelectedIndexes: function () {
+                        let selectedIndexes = localStorage.getItem("dataGridIndexes");
+
+                        if (selectedIndexes !== null && selectedIndexes !== '') {
+                            return selectedIndexes;
+                        }
+
+                        return JSON.stringify({});
+                    },
+
+                    /**
+                     * Triggered when any select box is clicked in the datagrid.
+                     */
+                    select: function (event) {
+                        let checkboxElement = event.target;
+
+                        if (checkboxElement.checked) {
+                            if (! this.dataIds.includes(checkboxElement.value)) {
+                                this.dataIds.push(checkboxElement.value);
+                            }
+                        } else {
+                            if (this.dataIds.includes(checkboxElement.value)) {
+                                this.dataIds.pop(checkboxElement.value);
+                            }
+                        }
+
+                        this.allSelected = false;
+
+                        if (this.dataIds.length === 0) {
+                            this.massActionsToggle = false;
+                            this.massActionType = this.getDefaultMassActionType();
+                        } else {
+                            this.massActionsToggle = true;
+                        }
+
+                        this.setSelectedIndexes();
+                    },
+
+                    /**
+                     * Triggered when master checkbox is clicked.
+                     */
+                    selectAll: function () {
+                        this.massActionsToggle = true;
+
+                        if (this.allSelected) {
+                            if (this.gridCurrentData.hasOwnProperty("data")) {
+                                for (let currentData in this.gridCurrentData.data) {
+                                    this.dataIds.push(this.gridCurrentData.data[currentData][this.filterIndex]);
+                                }
+                            } else {
+                                for (let currentData in this.gridCurrentData) {
+                                    let i = 0;
+                                    for (let currentId in this.gridCurrentData[currentData]) {
+                                        if (i === 0) {
+                                            this.dataIds.push(this.gridCurrentData[currentData][currentId]);
+                                        }
+                                        i++;
+                                    }
+                                }
+                            }
+
+                            this.setSelectedIndexes();
+                        }
+                    },
+
+                    /**
+                     * Triggered when master checkbox is unchecked.
+                     */
+                    removeMassActions: function () {
+                        let currentIds = this.getCurrentIds();
+
+                        this.dataIds = this.dataIds.filter(id => currentIds.indexOf(parseInt(id)) == -1);
+
+                        this.massActionsToggle = false;
+
+                        this.allSelected = false;
+
+                        this.massActionType = this.getDefaultMassActionType();
+
+                        this.setSelectedIndexes();
+                    },
+
+                    /**
+                     * Triggered when page load for checking the selected ids.
+                     */
+                    checkedSelectedCheckbox: function () {
+                        let pageKey = this.getPageKey();
+
+                        let selectedIndexes = JSON.parse(this.getSelectedIndexes());
+
+                        if (Object.keys(selectedIndexes).length) {
+                            for (key in selectedIndexes) {
+                                if (key === pageKey) {
+                                    this.dataIds = selectedIndexes[key];
+                                    this.massActionsToggle = true;
+                                    this.allSelected = false;
+
+                                    if (this.dataIds.length === 0) {
+                                        this.massActionsToggle = false;
+                                        this.massActionType = this.getDefaultMassActionType();
+                                    }
+                                } else {
+                                    delete selectedIndexes[key];
+                                }
+                            }
+                        }
+
+                        this.setSelectedIndexes();
+                    },
+
+                    /**
+                     * Do actions.
+                     */
                     doAction: function (e, message, type) {
                         let element = e.currentTarget;
 

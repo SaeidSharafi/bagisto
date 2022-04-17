@@ -4,7 +4,6 @@ namespace Webkul\Velocity\Providers;
 
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Routing\Router;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 use Webkul\Velocity\Facades\Velocity as VelocityFacade;
 
@@ -19,9 +18,9 @@ class VelocityServiceProvider extends ServiceProvider
     {
         include __DIR__ . '/../Http/helpers.php';
 
-        include __DIR__ . '/../Http/admin-routes.php';
+        include __DIR__ . '/../Routes/admin-routes.php';
 
-        include __DIR__ . '/../Http/front-routes.php';
+        include __DIR__ . '/../Routes/front-routes.php';
 
         $this->app->register(EventServiceProvider::class);
 
@@ -93,7 +92,7 @@ class VelocityServiceProvider extends ServiceProvider
             __DIR__ . '/../Resources/views/shop' => resource_path('themes/velocity/views'),
         ]);
 
-        $this->publishes([__DIR__ . '/../Resources/lang' => resource_path('lang/vendor/velocity')]);
+        $this->publishes([__DIR__ . '/../Resources/lang' => lang_path('vendor/velocity')]);
 
         return true;
     }

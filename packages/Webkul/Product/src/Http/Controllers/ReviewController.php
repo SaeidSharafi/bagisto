@@ -3,19 +3,20 @@
 namespace Webkul\Product\Http\Controllers;
 
 use Illuminate\Support\Facades\Event;
+use Webkul\Admin\DataGrids\CustomerReviewDataGrid;
 use Webkul\Product\Repositories\ProductReviewRepository;
 
 class ReviewController extends Controller
 {
     /**
-     * Contains route related configuration
+     * Contains route related configuration.
      *
      * @var array
      */
     protected $_config;
 
     /**
-     * ProductReviewRepository object
+     * Product review repository instance.
      *
      * @var \Webkul\Product\Repositories\ProductReviewRepository
      */
@@ -34,13 +35,17 @@ class ReviewController extends Controller
         $this->_config = request('_config');
     }
 
-     /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\View\View
-    */
+     */
     public function index()
     {
+        if (request()->ajax()) {
+            return app(CustomerReviewDataGrid::class)->toJson();
+        }
+
         return view($this->_config['view']);
     }
 
@@ -65,11 +70,7 @@ class ReviewController extends Controller
      */
     public function update($id)
     {
-        Event::dispatch('customer.review.update.before', $id);
-
         $this->productReviewRepository->update(request()->all(), $id);
-
-        Event::dispatch('customer.review.update.after', $id);
 
         session()->flash('success', trans('admin::app.response.update-success', ['name' => 'Review']));
 
@@ -84,24 +85,17 @@ class ReviewController extends Controller
      */
     public function destroy($id)
     {
-        $productReview = $this->productReviewRepository->findOrFail($id);
+        $this->productReviewRepository->findOrFail($id);
 
         try {
-            Event::dispatch('customer.review.delete.before', $id);
-
             $this->productReviewRepository->delete($id);
 
-            Event::dispatch('customer.review.delete.after', $id);
-
-            session()->flash('success', trans('admin::app.response.delete-success', ['name' => 'Review']));
-
-            return response()->json(['message' => true], 200);
+            return response()->json(['message' => trans('admin::app.response.delete-success', ['name' => 'Review'])]);
         } catch (\Exception $e) {
             report($e);
-            session()->flash('success', trans('admin::app.response.delete-failed', ['name' => 'Review']));
         }
 
-        return response()->json(['message' => false], 400);
+        return response()->json(['message' => trans('admin::app.response.delete-failed', ['name' => 'Review'])], 500);
     }
 
     /**
@@ -120,12 +114,8 @@ class ReviewController extends Controller
 
             foreach ($indexes as $key => $value) {
                 try {
-                    Event::dispatch('customer.review.delete.before', $value);
-
                     $this->productReviewRepository->delete($value);
-
-                    Event::dispatch('customer.review.delete.after', $value);
-                } catch(\Exception $e) {
+                } catch (\Exception $e) {
                     $suppressFlash = true;
 
                     continue;
@@ -165,22 +155,28 @@ class ReviewController extends Controller
                 $review = $this->productReviewRepository->findOneByField('id', $value);
 
                 try {
-                    if ($data['massaction-type'] == 'update') {
-                        if ($data['update-options'] == 1) {
-                            Event::dispatch('customer.review.update.before', $value);
-
-                            $review->update(['status' => 'approved']);
-
-                            Event::dispatch('customer.review.update.after', $review);
-                        } elseif ($data['update-options'] == 0) {
-                            $review->update(['status' => 'pending']);
-                        } elseif ($data['update-options'] == 2) {
-                            $review->update(['status' => 'disapproved']);
-                        } else {
-                            continue;
-                        }
+                    if (! isset($data['massaction-type'])) {
+                        return redirect()->back();
                     }
-                } catch(\Exception $e) {
+
+                    if (! $data['massaction-type'] == 'update') {
+                        return redirect()->back();
+                    }
+
+                    if ($data['update-options'] == 1) {
+                        Event::dispatch('customer.review.update.before', $value);
+
+                        $review->update(['status' => 'approved']);
+
+                        Event::dispatch('customer.review.update.after', $review);
+                    } elseif ($data['update-options'] == 0) {
+                        $review->update(['status' => 'pending']);
+                    } elseif ($data['update-options'] == 2) {
+                        $review->update(['status' => 'disapproved']);
+                    } else {
+                        continue;
+                    }
+                } catch (\Exception $e) {
                     $suppressFlash = true;
 
                     continue;

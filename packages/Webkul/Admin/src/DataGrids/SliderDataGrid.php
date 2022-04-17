@@ -63,7 +63,8 @@ class SliderDataGrid extends DataGrid
 
         /* finding channel code */
         if ($this->channel !== 'all') {
-            $this->channel = Channel::query()->find($this->channel);
+            $this->channel = Channel::where('code', $this->channel)->first();
+
             $this->channel = $this->channel ? $this->channel->code : 'all';
         }
     }
@@ -96,7 +97,7 @@ class SliderDataGrid extends DataGrid
         $this->addFilter('locale', 'sl.locale');
         $this->addFilter('channel_name', 'ct.name');
         $this->addFilter('code', 'ch.code');
-        //$queryBuilder->dd();
+
         $this->setQueryBuilder($queryBuilder);
     }
 
@@ -135,12 +136,12 @@ class SliderDataGrid extends DataGrid
         ]);
 
         $this->addColumn([
-            'index' => 'locale',
-            'label' => trans('admin::app.datagrid.locale'),
-            'type' => 'string',
+            'index'      => 'locale',
+            'label'      => trans('admin::app.datagrid.locale'),
+            'type'       => 'string',
             'searchable' => true,
-            'sortable' => true,
-            'filterable' => true
+            'sortable'   => true,
+            'filterable' => true,
         ]);
     }
 
@@ -163,6 +164,21 @@ class SliderDataGrid extends DataGrid
             'method' => 'POST',
             'route'  => 'admin.sliders.delete',
             'icon'   => 'icon trash-icon',
+        ]);
+    }
+
+    /**
+     * Prepare mass actions.
+     *
+     * @return void
+     */
+    public function prepareMassActions()
+    {
+        $this->addMassAction([
+            'type'   => 'delete',
+            'label'  => trans('admin::app.datagrid.delete'),
+            'action' => route('admin.sliders.massdelete'),
+            'method' => 'POST',
         ]);
     }
 }

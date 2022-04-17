@@ -15,16 +15,13 @@ class AttributeCest
      */
     public function testIndex(FunctionalTester $I): void
     {
-        $attribute = $I->have(Attribute::class);
-
         $I->loginAsAdmin();
-        $I->amOnAdminRoute('admin.dashboard.index');
-        $I->click(__('admin::app.layouts.catalog'), '//*[contains(@class, "navbar-left")]');
-        $I->click(__('admin::app.layouts.attributes'), '//*[contains(@class, "aside-nav")]');
 
+        $I->amOnAdminRoute('admin.catalog.attributes.index');
         $I->seeCurrentRouteIs('admin.catalog.attributes.index');
-        $I->see($attribute->id, '//script[@type="text/x-template"]');
-        $I->see($attribute->admin_name, '//script[@type="text/x-template"]');
+
+        $I->sendAjaxGetRequest(route('admin.catalog.attributes.index'));
+        $I->seeResponseCodeIsSuccessful();
     }
 
     /**
@@ -66,7 +63,6 @@ class AttributeCest
         $I->amOnAdminRoute('admin.catalog.attributes.index');
 
         $route = route('admin.catalog.attributes.edit', ['id' => $attribute->id]);
-        $I->seeInSource($route);
         $I->amOnPage($route);
         $I->seeCurrentRouteIs('admin.catalog.attributes.edit');
 
@@ -100,7 +96,7 @@ class AttributeCest
                 'price',
                 'boolean',
                 'select',
-                'multiselect'
+                'multiselect',
             ]),
             'admin_name' => $I->fake()->firstName,
         ];

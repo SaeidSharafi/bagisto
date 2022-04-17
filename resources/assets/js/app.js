@@ -22,7 +22,6 @@ import tr from 'vee-validate/dist/locale/tr';
  * Vue plugins.
  */
 Vue.use(VueCarousel);
-
 Vue.use(BootstrapSass);
 const dictionary = {
     fa: {
@@ -40,20 +39,20 @@ Vue.use(VeeValidate, {
         fr: fr,
         nl: nl,
         tr: tr
-    }
+    },
+    events: 'input|change|blur'
 });
 
 /**
  * Filters.
  */
-Vue.filter('currency', function (value, argument) {
+Vue.filter('currency', function(value, argument) {
     return Accounting.formatMoney(value, argument);
 });
 
 /**
  * Global components.
- **/
-
+ */
 Vue.component('vue-slider', () => import('vue-slider-component'));
 Vue.component('mini-cart-button', () => import('@Components/mini-cart-button'));
 Vue.component('mini-cart', () => import('@Components/mini-cart'));
@@ -106,11 +105,12 @@ Vue.component('vnode-injector', {
         return props.nodes;
     }
 });
+Vue.component('go-top', () => import('@inotom/vue-go-top'));
 
 /**
  * Start from here.
- **/
-$(function () {
+ */
+$(function() {
 
     /**
      * Define a mixin object.
@@ -118,7 +118,7 @@ $(function () {
     Vue.mixin(translate);
 
     Vue.mixin({
-        data: function () {
+        data: function() {
             return {
                 imageObserver: null,
                 navContainer: false,
@@ -131,15 +131,15 @@ $(function () {
         },
 
         methods: {
-            redirect: function (route) {
+            redirect: function(route) {
                 route ? (window.location.href = route) : '';
             },
 
-            debounceToggleSidebar: function (id, {target}, type) {
+            debounceToggleSidebar: function(id, { target }, type) {
                 this.toggleSidebar(id, target, type);
             },
 
-            toggleSidebar: function (id, {target}, type) {
+            toggleSidebar: function(id, { target }, type) {
                 if (
                     Array.from(target.classList)[0] === 'main-category'
                     || Array.from(target.parentElement.classList)[0] === 'main-category'
@@ -192,25 +192,25 @@ $(function () {
                 }
             },
 
-            show: function (element) {
+            show: function(element) {
                 element.show();
-                element.mouseleave(({target}) => {
+                element.mouseleave(({ target }) => {
                     $(target.closest('.sidebar')).hide();
                 });
             },
 
-            hide: function (element) {
+            hide: function(element) {
                 element.hide();
             },
 
-            toggleButtonDisability({event, actionType}) {
+            toggleButtonDisability({ event, actionType }) {
                 let button = event.target.querySelector('button[type=submit]');
 
                 button ? (button.disabled = actionType) : '';
             },
 
-            onSubmit: function (event) {
-                this.toggleButtonDisability({event, actionType: true});
+            onSubmit: function(event) {
+                this.toggleButtonDisability({ event, actionType: true });
 
                 if (typeof tinyMCE !== 'undefined') tinyMCE.triggerSave();
 
@@ -230,14 +230,14 @@ $(function () {
 
             isMobile: isMobile,
 
-            loadDynamicScript: function (src, onScriptLoaded) {
+            loadDynamicScript: function(src, onScriptLoaded) {
                 loadDynamicScript(src, onScriptLoaded);
             },
 
-            getDynamicHTML: function (input) {
+            getDynamicHTML: function(input) {
                 let _staticRenderFns, output;
 
-                const {render, staticRenderFns} = Vue.compile(input);
+                const { render, staticRenderFns } = Vue.compile(input);
 
                 if (this.$options.staticRenderFns.length > 0) {
                     _staticRenderFns = this.$options.staticRenderFns;
@@ -256,7 +256,7 @@ $(function () {
                 return output;
             },
 
-            getStorageValue: function (key) {
+            getStorageValue: function(key) {
                 let value = window.localStorage.getItem(key);
 
                 if (value) {
@@ -266,7 +266,7 @@ $(function () {
                 return value;
             },
 
-            setStorageValue: function (key, value) {
+            setStorageValue: function(key, value) {
                 window.localStorage.setItem(key, JSON.stringify(value));
 
                 return true;
@@ -277,7 +277,7 @@ $(function () {
     window.app = new Vue({
         el: '#app',
 
-        data: function () {
+        data: function() {
             return {
                 loading: false,
                 modalIds: {},
@@ -287,7 +287,7 @@ $(function () {
             };
         },
 
-        mounted: function () {
+        mounted: function() {
             this.$validator.localize(document.documentElement.lang);
 
             this.addServerErrors();
@@ -299,8 +299,8 @@ $(function () {
         },
 
         methods: {
-            onSubmit: function (event) {
-                this.toggleButtonDisability({event, actionType: true});
+            onSubmit: function(event) {
+                this.toggleButtonDisability({ event, actionType: true });
 
                 if (typeof tinyMCE !== 'undefined') tinyMCE.triggerSave();
 
@@ -326,10 +326,10 @@ $(function () {
                 }
             },
 
-            addServerErrors: function (scope = null) {
+            addServerErrors: function(scope = null) {
                 for (let key in serverErrors) {
                     let inputNames = [];
-                    key.split('.').forEach(function (chunk, index) {
+                    key.split('.').forEach(function(chunk, index) {
                         if (index) {
                             inputNames.push('[' + chunk + ']');
                         } else {
@@ -355,30 +355,31 @@ $(function () {
                 }
             },
 
-            addFlashMessages: function () {
+            addFlashMessages: function() {
                 if (window.flashMessages.alertMessage)
                     window.alert(window.flashMessages.alertMessage);
             },
 
-            showModal: function (id) {
+            showModal: function(id) {
                 this.$set(this.modalIds, id, true);
             },
 
-            loadCategories: function () {
+            loadCategories: function() {
                 this.$http
                     .get(`${this.baseUrl}/categories`)
                     .then(response => {
                         this.sharedRootCategories = response.data.categories;
+
                         $(
-                            `<style type='text/css'> .sub-categories{ min-height:${response.data.categories.length * 30}px;} </style>`
+                            `<style type='text/css'> .sub-categories{ min-height:${ response.data.categories.length * 30 }px;} </style>`
                         ).appendTo('head');
                     })
                     .catch(error => {
-                        console.error(`failed to load categories:`, error);
+                        console.error(`Failed to load categories:`, error);
                     });
             },
 
-            addIntersectionObserver: function () {
+            addIntersectionObserver: function() {
                 this.imageObserver = new IntersectionObserver(
                     (entries, imgObserver) => {
                         entries.forEach(entry => {
@@ -391,11 +392,11 @@ $(function () {
                 );
             },
 
-            showLoader: function () {
+            showLoader: function() {
                 this.loading = true;
             },
 
-            hideLoader: function () {
+            hideLoader: function() {
                 this.loading = false;
             },
 

@@ -1,7 +1,7 @@
 @if ($product->type == 'downloadable')
     {!! view_render_event('bagisto.shop.products.view.downloadable.before', ['product' => $product]) !!}
 
-    <div class="downloadable-container">
+    <div class="col-12 downloadable-container">
 
         @if ($product->downloadable_samples->count())
             <div class="sample-list">
@@ -21,7 +21,7 @@
 
         @if ($product->downloadable_links->count())
             <div class=" link-list control-group" :class="[errors.has('links[]') ? 'has-error' : '']">
-                <h3>{{ __('shop::app.products.links') }}</h3>
+                <h3 class="required">{{ __('shop::app.products.links') }}</h3>
 
                 <ul type="none" class="mt15">
                     @foreach ($product->downloadable_links as $link)

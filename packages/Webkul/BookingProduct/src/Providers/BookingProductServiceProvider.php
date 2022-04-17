@@ -2,7 +2,6 @@
 
 namespace Webkul\BookingProduct\Providers;
 
-use Illuminate\Database\Eloquent\Factory as EloquentFactory;
 use Illuminate\Support\ServiceProvider;
 
 class BookingProductServiceProvider extends ServiceProvider
@@ -11,10 +10,11 @@ class BookingProductServiceProvider extends ServiceProvider
      * Bootstrap services.
      *
      * @return void
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function boot(): void
     {
+        $this->loadRoutesFrom(__DIR__ . '/../Http/admin-routes.php');
+
         $this->loadRoutesFrom(__DIR__ . '/../Http/front-routes.php');
 
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
@@ -28,8 +28,6 @@ class BookingProductServiceProvider extends ServiceProvider
         ], 'public');
 
         $this->app->register(EventServiceProvider::class);
-
-        $this->app->make(EloquentFactory::class)->load(__DIR__ . '/../Database/Factories');
     }
 
     /**
@@ -39,8 +37,10 @@ class BookingProductServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->mergeConfigFrom(dirname(__DIR__) . '/Config/product_types.php', 'product_types');
+
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/product_types.php', 'product_types'
+            dirname(__DIR__) . '/Config/menu.php', 'menu.admin'
         );
     }
 }

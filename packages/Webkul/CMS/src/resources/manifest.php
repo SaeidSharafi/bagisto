@@ -1,6 +1,6 @@
 <?php
 
- return [
-    'name'    => 'Webkul Bagisto Cms',
-    'version' => '0.0.1'
- ];
+return [
+    'name'    => 'Webkul Bagisto CMS',
+    'version' => '0.0.1',
+];

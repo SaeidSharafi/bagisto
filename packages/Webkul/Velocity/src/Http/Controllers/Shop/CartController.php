@@ -52,7 +52,7 @@ class CartController extends Controller
             ];
         }
 
-        return response()->json($response, 200);
+        return response()->json($response);
     }
 
     /**
@@ -128,6 +128,8 @@ class CartController extends Controller
     {
         $result = Cart::removeItem($itemId);
 
+        session()->forget('cart');
+
         if ($result) {
             $response = [
                 'status'  => 'success',
@@ -140,6 +142,6 @@ class CartController extends Controller
             'status'  => 'danger',
             'label'   => trans('velocity::app.shop.general.alert.error'),
             'message' => trans('velocity::app.error.something_went_wrong'),
-        ], 200);
+        ]);
     }
 }

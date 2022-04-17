@@ -6,15 +6,11 @@
 
 @section('content')
     <div class="content">
-
         <cart-rule></cart-rule>
-
     </div>
 @stop
 
 @push('scripts')
-    @parent
-
     <script type="text/x-template" id="cart-rule-template">
         <div>
             <form method="POST" action="{{ route('admin.cart-rules.store') }}" @submit.prevent="onSubmit">
@@ -41,7 +37,7 @@
 
                         {!! view_render_event('bagisto.admin.promotions.cart-rules.create.before') !!}
 
-                        <accordian :title="'{{ __('admin::app.promotions.cart-rules.rule-information') }}'" :active="true">
+                        <accordian title="{{ __('admin::app.promotions.cart-rules.rule-information') }}" :active="true">
                             <div slot="body">
 
                                 <div class="control-group" :class="[errors.has('name') ? 'has-error' : '']">
@@ -64,7 +60,7 @@
                                     </label>
                                 </div>
 
-                                <div class="control-group" :class="[errors.has('channels[]') ? 'has-error' : '']">
+                                <div class="control-group multi-select" :class="[errors.has('channels[]') ? 'has-error' : '']">
                                     <label for="channels" class="required">{{ __('admin::app.promotions.cart-rules.channels') }}</label>
 
                                     <select class="control" id="channels" name="channels[]" v-validate="'required'" data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.channels') }}&quot;" multiple="multiple">
@@ -161,7 +157,7 @@
                             </div>
                         </accordian>
 
-                        <accordian :title="'{{ __('admin::app.promotions.cart-rules.conditions') }}'" :active="false">
+                        <accordian title="{{ __('admin::app.promotions.cart-rules.conditions') }}" :active="false">
                             <div slot="body">
 
                                 <div class="control-group">
@@ -173,20 +169,14 @@
                                     </select>
                                 </div>
 
-                                <div class="table cart-rule-conditions" style="margin-top: 20px; overflow-x: unset;">
-                                    <table>
-                                        <tbody>
-                                            <cart-rule-condition-item
-                                                v-for='(condition, index) in conditions'
-                                                :condition="condition"
-                                                :key="index"
-                                                :index="index"
-                                                @onRemoveCondition="removeCondition($event)">
-                                            </cart-rule-condition-item>
-                                        </tbody>
-                                    </table>
-                                </div>
-
+                                <cart-rule-condition-item
+                                    v-for='(condition, index) in conditions'
+                                    :condition="condition"
+                                    :key="index"
+                                    :index="index"
+                                    @onRemoveCondition="removeCondition($event)">
+                                </cart-rule-condition-item>
+                                
                                 <button type="button" class="btn btn-lg btn-primary" style="margin-top: 20px;" @click="addCondition">
                                     {{ __('admin::app.promotions.cart-rules.add-condition') }}
                                 </button>
@@ -194,7 +184,7 @@
                             </div>
                         </accordian>
 
-                        <accordian :title="'{{ __('admin::app.promotions.cart-rules.actions') }}'" :active="false">
+                        <accordian title="{{ __('admin::app.promotions.cart-rules.actions') }}" :active="false">
                             <div slot="body">
 
                                 <div class="control-group" :class="[errors.has('action_type') ? 'has-error' : '']">
@@ -277,8 +267,8 @@
     </script>
 
     <script type="text/x-template" id="cart-rule-condition-item-template">
-        <tr>
-            <td class="attribute">
+        <div class="cart-rule-conditions">
+            <div class="attribute">
                 <div class="control-group">
                     <select :name="['conditions[' + index + '][attribute]']" class="control" v-model="condition.attribute">
                         <option value="">{{ __('admin::app.promotions.cart-rules.choose-condition-to-add') }}</option>
@@ -289,9 +279,9 @@
                         </optgroup>
                     </select>
                 </div>
-            </td>
+            </div>
 
-            <td class="operator">
+            <div class="operator">
                 <div class="control-group" v-if="matchedAttribute">
                     <select :name="['conditions[' + index + '][operator]']" class="control" v-model="condition.operator">
                         <option v-for='operator in condition_operators[matchedAttribute.type]' :value="operator.operator">
@@ -299,9 +289,9 @@
                         </option>
                     </select>
                 </div>
-            </td>
+            </div>
 
-            <td class="value">
+            <div class="value">
                 <div v-if="matchedAttribute">
                     <input type="hidden" :name="['conditions[' + index + '][attribute_type]']" v-model="matchedAttribute.type">
 
@@ -358,17 +348,16 @@
                         </div>
                     </div>
                 </div>
-            </td>
+            </div>
 
-            <td class="actions">
+            <div class="actions">
                 <i class="icon trash-icon" @click="removeCondition"></i>
-            </td>
-        </tr>
+            </div>
+        </div>
     </script>
 
     <script>
         Vue.component('cart-rule', {
-
             template: '#cart-rule-template',
 
             inject: ['$validator'],
@@ -417,7 +406,6 @@
         });
 
         Vue.component('cart-rule-condition-item', {
-
             template: '#cart-rule-condition-item-template',
 
             props: ['index', 'condition'],
@@ -587,12 +575,12 @@
                     if (this.condition.attribute == '')
                         return;
 
-                    var this_this = this;
+                    let self = this;
 
-                    var attributeIndex = this.attribute_type_indexes[this.condition.attribute.split("|")[0]];
+                    let attributeIndex = this.attribute_type_indexes[this.condition.attribute.split("|")[0]];
 
                     matchedAttribute = this.condition_attributes[attributeIndex]['children'].filter(function (attribute) {
-                        return attribute.key == this_this.condition.attribute;
+                        return attribute.key == self.condition.attribute;
                     });
 
                     if (matchedAttribute[0]['type'] == 'multiselect' || matchedAttribute[0]['type'] == 'checkbox') {

@@ -90,6 +90,7 @@ return [
     |
     */
 
+
     'locale' => env('APP_LOCALE', 'fa'),
 
     /*
@@ -157,15 +158,15 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
-    /*
-        Code Editor
-    */
+    /**
+     * Code editor.
+     */
     'editor' => 'vscode',
 
     /*
-        Application Version
-    */
-    'version' => env('APP_VERSION'),
+     *Application Version
+     */
+    'version' => env('APP_VERSION', '1.x-dev'),
 
     /**
      * Blacklisting attributes while debugging
@@ -200,7 +201,7 @@ return [
     'providers' => [
 
         /*
-         * Laravel Framework Service Providers...
+         * Laravel Framework Service Providers.
          */
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
@@ -229,27 +230,26 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
         /*
-         * Package Service Providers...
+         * Package Service Providers.
          */
 
         Astrotomic\Translatable\TranslatableServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
-         * Application Service Providers...
+         * Application Service Providers.
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
 
+        /**
+         * Repository Service Providers.
+         */
 
-        //Laravel Intervention
-        Intervention\Image\ImageServiceProvider::class,
-
-        //Laravel Maatwebsite
-        Maatwebsite\Excel\ExcelServiceProvider::class,
-
-        //Repository
         Prettus\Repository\Providers\RepositoryServiceProvider::class,
         Konekt\Concord\ConcordServiceProvider::class,
         Flynsarmy\DbBladeCompiler\DbBladeCompilerServiceProvider::class,
@@ -258,7 +258,9 @@ return [
 
         App\Providers\ShopCoreServiceProvider::class,
 
-        //Webkul packages
+        /**
+         * Webkul Package Service Providers.
+         */
         Webkul\Theme\Providers\ThemeServiceProvider::class,
         Webkul\User\Providers\UserServiceProvider::class,
         Webkul\Admin\Providers\AdminServiceProvider::class,
@@ -277,7 +279,6 @@ return [
         Webkul\Paypal\Providers\PaypalServiceProvider::class,
         Webkul\Sales\Providers\SalesServiceProvider::class,
         Webkul\Tax\Providers\TaxServiceProvider::class,
-        Webkul\API\Providers\APIServiceProvider::class,
         Webkul\CatalogRule\Providers\CatalogRuleServiceProvider::class,
         Webkul\CartRule\Providers\CartRuleServiceProvider::class,
         Webkul\Rule\Providers\RuleServiceProvider::class,
@@ -287,7 +288,6 @@ return [
         Webkul\SocialLogin\Providers\SocialLoginServiceProvider::class,
         Webkul\DebugBar\Providers\DebugBarServiceProvider::class,
         Webkul\Marketing\Providers\MarketingServiceProvider::class,
-
 
         //Overrding Bagisto CheckoutServiceProvider
         \App\Providers\CheckoutServiceProvider::class,
@@ -306,8 +306,10 @@ return [
         Barryvdh\Elfinder\ElfinderServiceProvider::class,
 
         //SMS provider
-        Kuro\LaravelSms\Providers\SmsServiceProvider::class
+        Kuro\LaravelSms\Providers\SmsServiceProvider::class,
 
+
+        Webkul\Notification\Providers\NotificationServiceProvider::class
 
     ],
 
@@ -370,6 +372,7 @@ return [
          */
         'Captcha' => Webkul\Customer\Facades\Captcha::class,
         'Cart' => App\Shop\Facades\Cart::class,
+        //'Cart' => Webkul\Checkout\Facades\Cart::class,
         'Concord' => Konekt\Concord\Facades\Concord::class,
         'Core' => Webkul\Core\Facades\Core::class,
         'Datagrid' => Webkul\Ui\DataGrid\Facades\DataGrid::class,
@@ -381,7 +384,7 @@ return [
         'JeduCore' => \App\Shop\Facades\JeduCoreFacade::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'ProductImage' => \App\Shop\Facades\ProductImage::class,
-        'ProductGrid' => Webkul\Ui\DataGrid\Facades\ProductGrid::class,
+        //'ProductImage' => Webkul\Product\Facades\ProductImage::class
         'ProductVideo' => Webkul\Product\Facades\ProductVideo::class,
 
         /**
@@ -389,5 +392,6 @@ return [
          * Kuro
          */
         'Sms' => Kuro\LaravelSms\Facade\Sms::class,
+
     ],
 ];

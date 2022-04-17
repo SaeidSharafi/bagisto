@@ -56,13 +56,13 @@ trait ProvideDataGridPlus
     public function getExtraFilters()
     {
         $necessaryExtraFilters = [
-            'current' => $this->getCurrentExtraFilterValue()
+            'current' => $this->getCurrentExtraFilterValue(),
         ];
 
         $checks = [
             'channels'        => core()->getAllChannels(),
             'locales'         => $necessaryExtraFilters['current']['locales'],
-            'customer_groups' => core()->getAllCustomerGroups()
+            'customer_groups' => core()->getAllCustomerGroups(),
         ];
 
         foreach ($checks as $key => $val) {
@@ -91,7 +91,7 @@ trait ProvideDataGridPlus
 
         /* handling cases for new locale if not present in current channel */
         if ($channel !== 'all') {
-            $channelLocales = app('Webkul\Core\Repositories\ChannelRepository')->findOneByField('code', $channel)->locales;
+            $channelLocales = app('Webkul\Core\Repositories\ChannelRepository')->findOneByField('code', $channel)->locales()->orderBy('name')->get();
 
             if ($channelLocales->contains('code', $locale)) {
                 $locales = $channelLocales;
@@ -105,12 +105,14 @@ trait ProvideDataGridPlus
             'locales'        => $locales,
             'locale'         => $locale,
             'channel'        => $channel,
-            'customer_group' => $customer_group
+            'customer_group' => $customer_group,
         ];
     }
 
     /**
      * Get all translations for json response fully controlled by backend.
+     *
+     * To Do (@devansh-webkul): Use translation from JS method by encoding lang file.
      *
      * @return array
      */
@@ -146,8 +148,10 @@ trait ProvideDataGridPlus
             'submit'              => __('ui::app.datagrid.submit'),
             'actions'             => __('ui::app.datagrid.actions'),
             'filterFieldsMissing' => __('ui::app.datagrid.filter-fields-missing'),
+            'filterExists'        => __('ui::app.datagrid.filter-exists'),
             'zeroIndex'           => __('ui::app.datagrid.zero-index'),
             'clickOnAction'       => __('ui::app.datagrid.click_on_action'),
+            'recordsFound'        => __('admin::app.admin.system.records-found'),
             'norecords'           => __('ui::app.datagrid.no-records'),
             'massActionDelete'    => __('ui::app.datagrid.massaction.delete'),
         ];

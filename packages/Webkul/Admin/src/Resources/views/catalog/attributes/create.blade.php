@@ -30,7 +30,7 @@
 
                     {!! view_render_event('bagisto.admin.catalog.attribute.create_form_accordian.general.before') !!}
 
-                    <accordian :title="'{{ __('admin::app.catalog.attributes.general') }}'" :active="true">
+                    <accordian title="{{ __('admin::app.catalog.attributes.general') }}" :active="true">
                         <div slot="body">
 
                             {!! view_render_event('bagisto.admin.catalog.attribute.create_form_accordian.general.controls.before') !!}
@@ -58,6 +58,15 @@
                                 </select>
                             </div>
 
+                            <div class="control-group hide">
+                                <label for="enable_wysiwyg">{{ __('admin::app.catalog.attributes.enable-wysiwyg') }}</label>
+
+                                <label class="switch">
+                                    <input type="checkbox" id="enable_wysiwyg" name="enable_wysiwyg" value="1" {{ old('enable_wysiwyg') ? 'checked' : '' }}>
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+
                             {!! view_render_event('bagisto.admin.catalog.attribute.create_form_accordian.general.controls.after') !!}
 
                         </div>
@@ -68,7 +77,7 @@
 
                     {!! view_render_event('bagisto.admin.catalog.attribute.create_form_accordian.label.before') !!}
 
-                    <accordian :title="'{{ __('admin::app.catalog.attributes.label') }}'" :active="true">
+                    <accordian title="{{ __('admin::app.catalog.attributes.label') }}" :active="true">
                         <div slot="body">
 
                             {!! view_render_event('bagisto.admin.catalog.attribute.create_form_accordian.label.controls.before') !!}
@@ -100,7 +109,7 @@
                     <div class="hide">
                         {!! view_render_event('bagisto.admin.catalog.attribute.create_form_accordian.options.before') !!}
 
-                        <accordian :title="'{{ __('admin::app.catalog.attributes.options') }}'" :active="true" :id="'options'">
+                        <accordian title="{{ __('admin::app.catalog.attributes.options') }}" :active="true" :id="'options'">
                             <div slot="body">
 
                                 {!! view_render_event('bagisto.admin.catalog.attribute.create_form_accordian.options.controls.before') !!}
@@ -118,7 +127,7 @@
 
                     {!! view_render_event('bagisto.admin.catalog.attribute.create_form_accordian.validations.before') !!}
 
-                    <accordian :title="'{{ __('admin::app.catalog.attributes.validations') }}'" :active="true">
+                    <accordian title="{{ __('admin::app.catalog.attributes.validations') }}" :active="true">
                         <div slot="body">
 
                             {!! view_render_event('bagisto.admin.catalog.attribute.create_form_accordian.options.controls.before') !!}
@@ -160,7 +169,7 @@
 
                     {!! view_render_event('bagisto.admin.catalog.attribute.create_form_accordian.configuration.before') !!}
 
-                    <accordian :title="'{{ __('admin::app.catalog.attributes.configuration') }}'" :active="true">
+                    <accordian title="{{ __('admin::app.catalog.attributes.configuration') }}" :active="true">
                         <div slot="body">
 
                             {!! view_render_event('bagisto.admin.catalog.attribute.create_form_accordian.configuration.controls.before') !!}
@@ -183,7 +192,7 @@
 
                             <div class="control-group">
                                 <label for="is_filterable">{{ __('admin::app.catalog.attributes.is_filterable') }}</label>
-                                <select class="control" id="is_filterable" name="is_filterable">
+                                <select class="control" id="is_filterable" name="is_filterable" disabled="disabled">
                                     <option value="0">{{ __('admin::app.catalog.attributes.no') }}</option>
                                     <option value="1">{{ __('admin::app.catalog.attributes.yes') }}</option>
                                 </select>
@@ -343,9 +352,23 @@
         $(document).ready(function () {
             $('#type').on('change', function (e) {
                 if (['select', 'multiselect', 'checkbox'].indexOf($(e.target).val()) === -1) {
-                    $('#options').parent().addClass('hide')
+                    $('#options').parent().addClass('hide');
                 } else {
-                    $('#options').parent().removeClass('hide')
+                    $('#options').parent().removeClass('hide');
+                }
+
+                if (['select', 'multiselect', 'checkbox', 'checkbox', 'price'].indexOf($(e.target).val()) === -1) {
+                    $('#options').parent().addClass('hide');
+                    $('#is_filterable').attr('disabled', 'disabled');
+                } else {
+                    $('#options').parent().removeClass('hide');
+                    $('#is_filterable').removeAttr('disabled');
+                }
+
+                if (['textarea'].indexOf($(e.target).val()) > -1) {
+                    $('#enable_wysiwyg').parents('.control-group').removeClass('hide');
+                } else {
+                    $('#enable_wysiwyg').parents('.control-group').addClass('hide');
                 }
             })
         });

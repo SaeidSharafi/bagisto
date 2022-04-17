@@ -29,6 +29,15 @@ class CategoryDataGrid extends DataGrid
      */
     protected $locale = 'all';
 
+     /**
+     * Contains the keys for which extra filters to show.
+     *
+     * @var string[]
+     */
+    protected $extraFilters = [
+        'locales',
+    ];
+
     /**
      * Create a new datagrid instance.
      *
@@ -157,7 +166,6 @@ class CategoryDataGrid extends DataGrid
             'route'        => 'admin.catalog.categories.delete',
             'confirm_text' => trans('ui::app.datagrid.massaction.delete', ['resource' => 'product']),
             'icon'         => 'icon trash-icon',
-            'function'     => 'deleteCategory(event, "delete")'
         ]);
 
         $this->addMassAction([

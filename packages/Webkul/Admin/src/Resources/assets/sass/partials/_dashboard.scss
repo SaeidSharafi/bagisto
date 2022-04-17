@@ -71,7 +71,7 @@
                         margin-top: 10px;
 
                         .name {
-                            color: #0041ff;
+                            color: #3a3a3a;
                         }
 
                         .info {
@@ -98,7 +98,7 @@
 
                 p {
                     margin: 0;
-                    color: #a2a2a2;
+                    color: #3a3a3a;
                 }
             }
         }
@@ -175,6 +175,53 @@
     }
 }
 
+#calender-destop {
+    display: block;
+}
+
+#calender-mobile {
+    position: relative;
+    display: none;
+}
+
+#calender-mobile span {
+    background-image: url(../images/Icon-Calendar.svg);
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 4px;
+}
+
+#date-start {
+    display: block;
+    width: 100%;
+    margin-top: 40px;
+    margin-left: -20px;
+
+    .control-group {
+        width: 100%;
+    }
+}
+
+#date-end {
+    display: block;
+    width: 100%;
+    margin-left: -20px;
+
+    .control-group {
+        width: 100%;
+    }
+}
+
+#date-submit {
+    display: block;
+    width: 100%;
+    margin-top: 15px;
+}
+
 .rtl {
     .dashboard {
         .page-header {
@@ -184,6 +231,68 @@
                     right: 100%;
                 }
             }
+        }
+    }
+
+    #calender-mobile span {
+        right: unset;
+        left: 4px;
+    }
+
+    .start-date:after,
+    .end-date:after {
+        margin-left: 0px;
+        top: 43%;
+        left: 12px;
+    }
+}
+
+// responsive css for modal
+@media only screen and (max-width: 770px) {
+
+    .dashboard {
+
+        .card {
+            padding: 10px 0px 0px 15px;
+            overflow: auto;
+            margin-bottom: 20px;
+        }
+
+        .sale-stock {
+            display: block;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+
+        .graph-stats {
+            .left-card-container {
+                float: left;
+                width: 100%;
+                padding-right: 0px;
+                margin-bottom: 10px;
+            }
+
+            .right-card-container {
+                float: left;
+                width: 100%;
+                padding-left: 0px;
+            }
+        }
+    }
+
+    #calender-mobile {
+        display: block;
+    }
+
+    #calender-destop {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 352px) {
+    .dashboard {
+        .dashboard-stats {
+            grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
         }
     }
 }

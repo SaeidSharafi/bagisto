@@ -2,20 +2,21 @@
 
 namespace Webkul\Inventory\Http\Controllers;
 
-use Illuminate\Support\Facades\Event;
+use Webkul\Admin\DataGrids\InventorySourcesDataGrid;
+use Webkul\Inventory\Http\Requests\InventorySourceRequest;
 use Webkul\Inventory\Repositories\InventorySourceRepository;
 
 class InventorySourceController extends Controller
 {
     /**
-     * Contains route related configuration
+     * Contains route related configuration.
      *
      * @var array
      */
     protected $_config;
 
     /**
-     * InventorySourceRepository object
+     * Inventory source repository instance.
      *
      * @var \Webkul\Inventory\Repositories\InventorySourceRepository
      */
@@ -41,6 +42,10 @@ class InventorySourceController extends Controller
      */
     public function index()
     {
+        if (request()->ajax()) {
+            return app(InventorySourcesDataGrid::class)->toJson();
+        }
+
         return view($this->_config['view']);
     }
 
@@ -59,30 +64,13 @@ class InventorySourceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(InventorySourceRequest $inventorySourceRequest)
     {
-        $this->validate(request(), [
-            'code'           => ['required', 'unique:inventory_sources,code', new \Webkul\Core\Contracts\Validations\Code],
-            'name'           => 'required',
-            'contact_name'   => 'required',
-            'contact_email'  => 'required|email',
-            'contact_number' => 'required',
-            'street'         => 'required',
-            'country'        => 'required',
-            'state'          => 'required',
-            'city'           => 'required',
-            'postcode'       => 'required',
-        ]);
+        $data = $inventorySourceRequest->all();
 
-        $data = request()->all();
+        $data['status'] = ! isset($data['status']) ? 0 : 1;
 
-        $data['status'] = !isset($data['status']) ? 0 : 1;
-
-        Event::dispatch('inventory.inventory_source.create.before');
-
-        $inventorySource = $this->inventorySourceRepository->create($data);
-
-        Event::dispatch('inventory.inventory_source.create.after', $inventorySource);
+        $this->inventorySourceRepository->create($data);
 
         session()->flash('success', trans('admin::app.settings.inventory_sources.create-success'));
 
@@ -108,30 +96,13 @@ class InventorySourceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($id)
+    public function update(InventorySourceRequest $inventorySourceRequest, $id)
     {
-        $this->validate(request(), [
-            'code'           => ['required', 'unique:inventory_sources,code,' . $id, new \Webkul\Core\Contracts\Validations\Code],
-            'name'           => 'required',
-            'contact_name'   => 'required',
-            'contact_email'  => 'required|email',
-            'contact_number' => 'required',
-            'street'         => 'required',
-            'country'        => 'required',
-            'state'          => 'required',
-            'city'           => 'required',
-            'postcode'       => 'required',
-        ]);
+        $data = $inventorySourceRequest->all();
 
-        $data = request()->all();
+        $data['status'] = ! isset($data['status']) ? 0 : 1;
 
-        $data['status'] = !isset($data['status']) ? 0 : 1;
-
-        Event::dispatch('inventory.inventory_source.update.before', $id);
-
-        $inventorySource = $this->inventorySourceRepository->update($data, $id);
-
-        Event::dispatch('inventory.inventory_source.update.after', $inventorySource);
+        $this->inventorySourceRepository->update($data, $id);
 
         session()->flash('success', trans('admin::app.settings.inventory_sources.update-success'));
 
@@ -146,28 +117,20 @@ class InventorySourceController extends Controller
      */
     public function destroy($id)
     {
-        $inventorySource = $this->inventorySourceRepository->findOrFail($id);
+        $this->inventorySourceRepository->findOrFail($id);
 
         if ($this->inventorySourceRepository->count() == 1) {
-            session()->flash('error', trans('admin::app.settings.inventory_sources.last-delete-error'));
-        } else {
-            try {
-                Event::dispatch('inventory.inventory_source.delete.before', $id);
-
-                $this->inventorySourceRepository->delete($id);
-
-                Event::dispatch('inventory.inventory_source.delete.after', $id);
-
-                session()->flash('success', trans('admin::app.settings.inventory_sources.delete-success'));
-
-                return response()->json(['message' => true], 200);
-            } catch (\Exception $e) {
-                report($e);
-                
-                session()->flash('error', trans('admin::app.response.delete-failed', ['name' => 'Inventory source']));
-            }
+            return response()->json(['message' => trans('admin::app.settings.inventory_sources.last-delete-error')], 400);
         }
 
-        return response()->json(['message' => false], 400);
+        try {
+            $this->inventorySourceRepository->delete($id);
+
+            return response()->json(['message' => trans('admin::app.settings.inventory_sources.delete-success')]);
+        } catch (\Exception $e) {
+            report($e);
+        }
+
+        return response()->json(['message' => trans('admin::app.response.delete-failed', ['name' => 'Inventory source'])], 500);
     }
 }

@@ -4,6 +4,17 @@
     {{ __('admin::app.catalog.categories.edit-title') }}
 @stop
 
+@push('css')
+    <style>
+        @media only screen and (max-width: 768px){
+            .content-container .content .page-header .page-title .control-group .control{
+                width: 100% !important;
+                margin-top:-25px !important;
+            }
+        }
+    </style>
+@endpush
+
 @section('content')
     <div class="content">
         @php
@@ -47,7 +58,7 @@
 
                     {!! view_render_event('bagisto.admin.catalog.category.edit_form_accordian.general.before', ['category' => $category]) !!}
 
-                    <accordian :title="'{{ __('admin::app.catalog.categories.general') }}'" :active="true">
+                    <accordian title="{{ __('admin::app.catalog.categories.general') }}" :active="true">
                         <div slot="body">
                             {!! view_render_event('bagisto.admin.catalog.category.edit_form_accordian.general.controls.before', ['category' => $category]) !!}
 
@@ -86,7 +97,7 @@
 
                     {!! view_render_event('bagisto.admin.catalog.category.edit_form_accordian.description_images.before', ['category' => $category]) !!}
 
-                    <accordian :title="'{{ __('admin::app.catalog.categories.description-and-images') }}'" :active="true">
+                    <accordian title="{{ __('admin::app.catalog.categories.description-and-images') }}" :active="true">
                         <div slot="body">
                             {!! view_render_event('bagisto.admin.catalog.category.edit_form_accordian.description_images.controls.before', ['category' => $category]) !!}
 
@@ -111,7 +122,7 @@
                             <div class="control-group {!! $errors->has('image.*') ? 'has-error' : '' !!}">
                                 <label>{{ __('admin::app.catalog.categories.image') }}</label>
 
-                                <image-wrapper :button-label="'{{ __('admin::app.catalog.products.add-image-btn-title') }}'" input-name="image" :multiple="false"  :images='"{{ $category->image_url }}"'></image-wrapper>
+                                <image-wrapper button-label="{{ __('admin::app.catalog.products.add-image-btn-title') }}" input-name="image" :multiple="false"  :images='"{{ $category->image_url }}"'></image-wrapper>
 
                                 <span class="control-error" v-if="{!! $errors->has('image.*') !!}">
                                     @foreach ($errors->get('image.*') as $key => $message)
@@ -129,7 +140,7 @@
                     @if ($categories->count())
                         {!! view_render_event('bagisto.admin.catalog.category.edit_form_accordian.parent_category.before', ['category' => $category]) !!}
 
-                        <accordian :title="'{{ __('admin::app.catalog.categories.parent-category') }}'" :active="true">
+                        <accordian title="{{ __('admin::app.catalog.categories.parent-category') }}" :active="true">
                             <div slot="body">
 
                                 {!! view_render_event('bagisto.admin.catalog.category.edit_form_accordian.parent_category.controls.before', ['category' => $category]) !!}
@@ -144,11 +155,11 @@
                         {!! view_render_event('bagisto.admin.catalog.category.edit_form_accordian.parent_category.after', ['category' => $category]) !!}
                     @endif
 
-                    <accordian :title="'{{ __('admin::app.catalog.categories.filterable-attributes') }}'" :active="true">
+                    <accordian title="{{ __('admin::app.catalog.categories.filterable-attributes') }}" :active="true">
                         <div slot="body">
                             <?php $selectedaAtributes = old('attributes') ?? $category->filterableAttributes->pluck('id')->toArray() ?>
 
-                            <div class="control-group" :class="[errors.has('attributes[]') ? 'has-error' : '']">
+                            <div class="control-group multi-select" :class="[errors.has('attributes[]') ? 'has-error' : '']">
                                 <label for="attributes" class="required">{{ __('admin::app.catalog.categories.attributes') }}</label>
                                 <select class="control" name="attributes[]" v-validate="'required'" data-vv-as="&quot;{{ __('admin::app.catalog.categories.attributes') }}&quot;" multiple>
 
@@ -168,7 +179,7 @@
 
                     {!! view_render_event('bagisto.admin.catalog.category.edit_form_accordian.seo.before', ['category' => $category]) !!}
 
-                    <accordian :title="'{{ __('admin::app.catalog.categories.seo') }}'" :active="true">
+                    <accordian title="{{ __('admin::app.catalog.categories.seo') }}" :active="true">
                         <div slot="body">
                             {!! view_render_event('bagisto.admin.catalog.category.edit_form_accordian.seo.controls.before', ['category' => $category]) !!}
 
@@ -202,6 +213,16 @@
                             </div>
 
                             {!! view_render_event('bagisto.admin.catalog.category.edit_form_accordian.seo.controls.after', ['category' => $category]) !!}
+                        </div>
+                    </accordian>
+
+                    <accordian title="{{ __('admin::app.catalog.categories.products') }}" :active="true">
+                        <div slot="body">
+                            {!! view_render_event('bagisto.admin.catalog.category.edit_form_accordian.products.controls.before', ['category' => $category]) !!}
+
+                            <datagrid-plus src="{{ route('admin.catalog.categories.products', $category->id) }}"></datagrid-plus>
+
+                            {!! view_render_event('bagisto.admin.catalog.category.edit_form_accordian.products.controls.before', ['category' => $category]) !!}
                         </div>
                     </accordian>
 
@@ -261,8 +282,6 @@
                         width: "100%",
                         plugins: 'image imagetools media wordcount save fullscreen code table lists link hr',
                         toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor link hr | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent  | removeformat | code | table',
-                        uploadRoute: '{{ route('admin.tinymce.upload') }}',
-                        csrfToken: '{{ csrf_token() }}',
                     });
                 });
             }

@@ -2,6 +2,7 @@
 <html lang="{{ config('app.locale') }}">
     <head>
         <title>@yield('page_title')</title>
+
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,17 +19,16 @@
 
         @yield('head')
 
-        @yield('css')
+        @stack('css')
 
         {!! view_render_event('bagisto.admin.layout.head') !!}
-
     </head>
 
     <body @if (core()->getCurrentLocale() && core()->getCurrentLocale()->direction == 'rtl') class="rtl" @endif style="scroll-behavior: smooth;">
+
         {!! view_render_event('bagisto.admin.layout.body.before') !!}
 
         <div id="app">
-
             <flash-wrapper ref='flashes'></flash-wrapper>
 
             {!! view_render_event('bagisto.admin.layout.nav-top.before') !!}
@@ -37,15 +37,13 @@
 
             {!! view_render_event('bagisto.admin.layout.nav-top.after') !!}
 
-
             {!! view_render_event('bagisto.admin.layout.nav-left.before') !!}
 
             @include ('admin::layouts.nav-left')
 
             {!! view_render_event('bagisto.admin.layout.nav-left.after') !!}
 
-
-            <div class="content-container">
+            <div class="content-container" :class="isMenuOpen ? 'padding-container-navbar-expand' : 'padding-container-navbar-not-expand'">
 
                 {!! view_render_event('bagisto.admin.layout.content.before') !!}
 
@@ -54,11 +52,14 @@
                 {!! view_render_event('bagisto.admin.layout.content.after') !!}
 
             </div>
-
         </div>
 
         <script type="text/javascript">
             window.flashMessages = [];
+
+            if(localStorage.getItem('dark-mode') == 'true'){
+                document.body.classList.toggle("dark-mode");
+            }    
 
             @foreach (['success', 'warning', 'error', 'info'] as $key)
                 @if ($value = session($key))
@@ -75,7 +76,9 @@
         </script>
 
         <script type="text/javascript" src="{{ asset('vendor/webkul/admin/assets/js/admin.js') }}"></script>
+
         <script type="text/javascript" src="{{ asset('vendor/webkul/ui/assets/js/ui.js') }}"></script>
+
         <script type="text/javascript">
             window.addEventListener('DOMContentLoaded', function() {
                 moveDown = 60;
@@ -129,8 +132,6 @@
                             countKeyUp = countKeyUp + pageUp;
 
                             $('.navbar-left').css("top", countKeyUp + "px");
-                        } else {
-                            $('.navbar-left').css("position", "fixed");
                         }
                     });
 
@@ -147,10 +148,12 @@
                 }
             });
         </script>
+
         @stack('scripts')
 
         {!! view_render_event('bagisto.admin.layout.body.after') !!}
 
         <div class="modal-overlay"></div>
+
     </body>
 </html>

@@ -28,20 +28,28 @@
                 </div>
 
                 <div class="control-group" :class="[errors.has('password') ? 'has-error' : '']">
-                    <label for="password" class="required">{{ __('shop::app.customer.login-form.password') }}</label>
+                    <label for="password" class="required">{{ __('shop::app.customer.login-form.password') }}  </label>
                     <input type="password" v-validate="'required|min:6'" class="control" id="password" name="password" data-vv-as="&quot;{{ __('admin::app.users.sessions.password') }}&quot;" value=""/>
-                    <span class="control-error" v-if="errors.has('password')">@{{ errors.first('password') }}</span>
+                   <span class="control-error" v-if="errors.has('password')">@{{ errors.first('password') }}</span>
                 </div>
 
-                <div class="forgot-password-link">
-                    <a href="{{ route('customer.forgot-password.create') }}">{{ __('shop::app.customer.login-form.forgot_pass') }}</a>
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="checkbox"  id="shoPassword" >{{ __('shop::app.customer.login-form.show-password') }}  
+                    </div>
 
-                    <div class="mt-10">
-                        @if (Cookie::has('enable-resend'))
-                            @if (Cookie::get('enable-resend') == true)
-                                <a href="{{ route('customer.resend.verification-email', Cookie::get('email-for-resend')) }}">{{ __('shop::app.customer.login-form.resend-verification') }}</a>
-                            @endif
-                        @endif
+                    <div class="col-md-6">
+                        <div class="forgot-password-link">
+                            <a href="{{ route('customer.forgot-password.create') }}">{{ __('shop::app.customer.login-form.forgot_pass') }}</a>
+
+                            <div class="mt-10">
+                                @if (Cookie::has('enable-resend'))
+                                    @if (Cookie::get('enable-resend') == true)
+                                        <a href="{{ route('customer.resend.verification-email', Cookie::get('email-for-resend')) }}">{{ __('shop::app.customer.login-form.resend-verification') }}</a>
+                                    @endif
+                                @endif
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -65,5 +73,18 @@
 @push('scripts')
 
 {!! Captcha::renderJS() !!}
+<script>
+    $(document).ready(function(){
+        $("#shoPassword").click(function() {              
+            var input = $('#password').attr("type");
+            if (input == "password") {
+                $('#password').attr("type", "text");
+            } else {
+                $('#password').attr("type", "password");
+            }
+        });
+        $(":input[name=email]").focus();
+    });
+</script>
 
 @endpush

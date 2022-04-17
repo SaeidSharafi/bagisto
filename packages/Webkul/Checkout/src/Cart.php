@@ -5,8 +5,8 @@ namespace Webkul\Checkout;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Event;
-use Webkul\Checkout\Models\Cart as CartModel;
 use Webkul\Checkout\Models\CartAddress;
+use Webkul\Checkout\Models\Cart as CartModel;
 use Webkul\Checkout\Models\CartPayment;
 use Webkul\Checkout\Repositories\CartAddressRepository;
 use Webkul\Checkout\Repositories\CartItemRepository;
@@ -49,7 +49,7 @@ class Cart
     /**
      * Product repository instance.
      *
-     * @var \Webkul\Checkout\Repositories\ProductRepository
+     * @var \Webkul\Product\Repositories\ProductRepository
      */
     protected $productRepository;
 
@@ -111,18 +111,6 @@ class Cart
     }
 
     /**
-     * Return current logged in customer.
-     *
-     * @return \Webkul\Customer\Contracts\Customer|bool
-     */
-    public function getCurrentCustomer()
-    {
-        $guard = request()->has('token') ? 'api' : 'customer';
-
-        return auth()->guard($guard);
-    }
-
-    /**
      * Returns cart.
      *
      * @return \Webkul\Checkout\Contracts\Cart|null
@@ -131,9 +119,9 @@ class Cart
     {
         $cart = null;
 
-        if ($this->getCurrentCustomer()->check()) {
+        if (auth()->guard()->check()) {
             $cart = $this->cartRepository->findOneWhere([
-                'customer_id' => $this->getCurrentCustomer()->user()->id,
+                'customer_id' => auth()->guard()->user()->id,
                 'is_active'   => 1,
             ]);
         } else if (session()->has('cart')) {
@@ -148,17 +136,18 @@ class Cart
     /**
      * Get cart item by product.
      *
-     * @param  array  $data
+     * @param  array|null  $data
+     * @param  array  $parentData
      * @return \Webkul\Checkout\Contracts\CartItem|void
      */
-    public function getItemByProduct($data)
+    public function getItemByProduct($data, $parentData = null)
     {
         $items = $this->getCart()->all_items;
 
         foreach ($items as $item) {
             if ($item->product->getTypeInstance()->compareOptions($item->additional, $data['additional'])) {
                 if (isset($data['additional']['parent_id'])) {
-                    if ($item->parent->product->getTypeInstance()->compareOptions($item->parent->additional, $data['additional'])) {
+                    if ($item->parent->product->getTypeInstance()->compareOptions($item->parent->additional, $parentData ?: request()->all())) {
                         return $item;
                     }
                 } else {
@@ -206,7 +195,7 @@ class Cart
             $parentCartItem = null;
 
             foreach ($cartProducts as $cartProduct) {
-                $cartItem = $this->getItemByProduct($cartProduct);
+                $cartItem = $this->getItemByProduct($cartProduct, $data);
 
                 if (isset($cartProduct['parent_id'])) {
                     $cartProduct['parent_id'] = $parentCartItem->id;
@@ -217,13 +206,9 @@ class Cart
                 } else {
                     if (isset($cartProduct['parent_id']) && $cartItem->parent_id !== $parentCartItem->id) {
                         $cartItem = $this->cartItemRepository->create(array_merge($cartProduct, [
-                            'cart_id' => $cart->id
+                            'cart_id' => $cart->id,
                         ]));
                     } else {
-                        // if ($cartItem->product->getTypeInstance()->isMultipleQtyAllowed() === false) {
-                        //     return ['warning' => __('shop::app.checkout.cart.integrity.qty_impossible')];
-                        // }
-
                         $cartItem = $this->cartItemRepository->update($cartProduct, $cartItem->id);
                     }
                 }
@@ -261,12 +246,12 @@ class Cart
         /**
          * Fill in the customer data, as far as possible.
          */
-        if ($this->getCurrentCustomer()->check()) {
-            $cartData['customer_id'] = $this->getCurrentCustomer()->user()->id;
+        if (auth()->guard()->check()) {
+            $cartData['customer_id'] = auth()->guard()->user()->id;
             $cartData['is_guest'] = 0;
-            $cartData['customer_first_name'] = $this->getCurrentCustomer()->user()->first_name;
-            $cartData['customer_last_name'] = $this->getCurrentCustomer()->user()->last_name;
-            $cartData['customer_email'] = $this->getCurrentCustomer()->user()->email;
+            $cartData['customer_first_name'] = auth()->guard()->user()->first_name;
+            $cartData['customer_last_name'] = auth()->guard()->user()->last_name;
+            $cartData['customer_email'] = auth()->guard()->user()->email;
         } else {
             $cartData['is_guest'] = 1;
         }
@@ -446,6 +431,10 @@ class Cart
             return false;
         }
 
+        if (! Shipping::isMethodCodeExists($shippingMethodCode)) {
+            return false;
+        }
+
         $cart->shipping_method = $shippingMethodCode;
         $cart->save();
 
@@ -506,8 +495,8 @@ class Cart
             $cart->discount_amount += $item->discount_amount;
             $cart->base_discount_amount += $item->base_discount_amount;
 
-            $cart->sub_total = (float)$cart->sub_total + $item->total;
-            $cart->base_sub_total = (float)$cart->base_sub_total + $item->base_total;
+            $cart->sub_total = (float) $cart->sub_total + $item->total;
+            $cart->base_sub_total = (float) $cart->base_sub_total + $item->base_total;
         }
 
         $cart->tax_total = Tax::getTaxTotal($cart, false);
@@ -569,8 +558,8 @@ class Cart
                 $address = $cart->billing_address;
             }
 
-            if ($address === null && auth()->guard('customer')->check()) {
-                $address = auth()->guard('customer')->user()->addresses()
+            if ($address === null && auth()->guard()->check()) {
+                $address = auth()->guard()->user()->addresses()
                     ->where('default_address', 1)->first();
             }
 
@@ -581,22 +570,11 @@ class Cart
             $item = $this->setItemTaxToZero($item);
 
             Tax::isTaxApplicableInCurrentAddress($taxCategory, $address, function ($rate) use ($cart, $item) {
-                /* assigning tax percent */
                 $item->tax_percent = $rate->tax_rate;
 
-                /* getting shipping rate for tax calculation */
-                $shippingPrice = $shippingBasePrice = 0;
+                $item->tax_amount = round(($item->total * $rate->tax_rate) / 100, 4);
 
-                if ($shipping = $cart->selected_shipping_rate) {
-                    if ($shipping->is_calculate_tax) {
-                        $shippingPrice = $shipping->price - $shipping->discount_amount;
-                        $shippingBasePrice = $shipping->base_price - $shipping->base_discount_amount;
-                    }
-                }
-
-                /* now assigning shipping prices for tax calculation */
-                $item->tax_amount = round((($item->total + $shippingPrice) * $rate->tax_rate) / 100, 4);
-                $item->base_tax_amount = round((($item->base_total + $shippingBasePrice) * $rate->tax_rate) / 100, 4);
+                $item->base_tax_amount = round(($item->base_total * $rate->tax_rate) / 100, 4);
             });
 
             $item->save();
@@ -666,7 +644,7 @@ class Cart
             'customer_email'        => $data['customer_email'],
             'customer_first_name'   => $data['customer_first_name'],
             'customer_last_name'    => $data['customer_last_name'],
-            'customer'              => $this->getCurrentCustomer()->check() ? $this->getCurrentCustomer()->user() : null,
+            'customer'              => auth()->guard()->check() ? auth()->guard()->user() : null,
             'total_item_count'      => $data['items_count'],
             'total_qty_ordered'     => $data['items_qty'],
             'base_currency_code'    => $data['base_currency_code'],
@@ -744,7 +722,14 @@ class Cart
 
         if (isset($data['children']) && $data['children']) {
             foreach ($data['children'] as $child) {
-                $child['quantity'] = $child['quantity'] ? $child['quantity'] * $data['quantity'] : $child['quantity'];
+                /**
+                 * - For bundle, child quantity will not be zero.
+                 *
+                 * - For configurable, parent one will be added as child one is zero.
+                 *
+                 * - In testing phase.
+                 */
+                $child['quantity'] = $child['quantity'] ? $child['quantity'] * $data['quantity'] : $data['quantity'];
 
                 $finalData['children'][] = $this->prepareDataForOrderItem($child);
             }
@@ -805,8 +790,8 @@ class Cart
     private function assignCustomerFields(\Webkul\Checkout\Contracts\Cart $cart): void
     {
         if (
-            $this->getCurrentCustomer()->check()
-            && ($user = $this->getCurrentCustomer()->user())
+            auth()->guard()->check()
+            && ($user = auth()->guard()->user())
             && $this->profileIsComplete($user)
         ) {
             $cart->customer_email = $user->email;
@@ -876,7 +861,7 @@ class Cart
     {
         $attributes = [];
 
-        $user = $this->getCurrentCustomer()->user();
+        $user = auth()->guard()->user();
 
         if ($user) {
             $attributes['first_name'] = $user->first_name;
@@ -921,7 +906,7 @@ class Cart
         array $billingAddress,
         array $shippingAddress
     ): void {
-        $shippingAddress['cart_id'] =  $billingAddress['cart_id'] = NULL;
+        $shippingAddress['cart_id'] = $billingAddress['cart_id'] = null;
 
         if (isset($data['billing']['save_as_address']) && $data['billing']['save_as_address']) {
             $this->customerAddressRepository->create($billingAddress);

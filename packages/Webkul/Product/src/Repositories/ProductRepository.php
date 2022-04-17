@@ -3,26 +3,25 @@
 namespace Webkul\Product\Repositories;
 
 use Exception;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
-use Webkul\Checkout\Facades\Cart;
-use Webkul\Product\Models\Product;
-use Illuminate\Pagination\Paginator;
-use Webkul\Core\Eloquent\Repository;
-use Illuminate\Support\Facades\Event;
-use Webkul\Attribute\Models\Attribute;
-use Webkul\Product\Models\ProductFlat;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Container\Container as App;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Webkul\Product\Models\ProductAttributeValueProxy;
-use Webkul\Attribute\Repositories\AttributeRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Webkul\Attribute\Models\Attribute;
+use Webkul\Attribute\Repositories\AttributeRepository;
+use Webkul\Core\Eloquent\Repository;
+use Webkul\Product\Models\Product;
+use Webkul\Product\Models\ProductAttributeValueProxy;
+use Webkul\Product\Models\ProductFlat;
 
 class ProductRepository extends Repository
 {
     /**
-     * AttributeRepository object
+     * Attribute repository instance,
      *
      * @var \Webkul\Attribute\Repositories\AttributeRepository
      */
@@ -31,34 +30,34 @@ class ProductRepository extends Repository
     /**
      * Create a new repository instance.
      *
-     * @param \Webkul\Attribute\Repositories\AttributeRepository $attributeRepository
-     * @param \Illuminate\Container\Container                    $app
+     * @param  \Webkul\Attribute\Repositories\AttributeRepository  $attributeRepository
+     * @param  \Illuminate\Container\Container  $app
      *
      * @return void
      */
     public function __construct(
         AttributeRepository $attributeRepository,
         App $app
-    )
-    {
+    ) {
         $this->attributeRepository = $attributeRepository;
 
         parent::__construct($app);
     }
 
     /**
-     * Specify Model class name
+     * Specify model class name.
      *
      * @return string
      */
-    function model()
+    public function model()
     {
-        return 'Webkul\Product\Contracts\Product';
+        return \Webkul\Product\Contracts\Product::class;
     }
 
     /**
-     * @param array $data
+     * Create product.
      *
+     * @param  array  $data
      * @return \Webkul\Product\Contracts\Product
      */
     public function create(array $data)
@@ -75,13 +74,14 @@ class ProductRepository extends Repository
     }
 
     /**
-     * @param array  $data
-     * @param int    $id
-     * @param string $attribute
+     * Update product.
      *
+     * @param  array  $data
+     * @param  int  $id
+     * @param  string  $attribute
      * @return \Webkul\Product\Contracts\Product
      */
-    public function update(array $data, $id, $attribute = "id")
+    public function update(array $data, $id, $attribute = 'id')
     {
         Event::dispatch('catalog.product.update.before', $id);
 
@@ -99,8 +99,9 @@ class ProductRepository extends Repository
     }
 
     /**
-     * @param int $id
+     * Delete product.
      *
+     * @param  int  $id
      * @return void
      */
     public function delete($id)
@@ -112,15 +113,54 @@ class ProductRepository extends Repository
         Event::dispatch('catalog.product.delete.after', $id);
     }
 
-     /**
-     * @param int $categoryId
+    /**
+     * Retrieve product from slug without throwing an exception.
      *
+     * @param  string  $slug
+     * @return \Webkul\Product\Contracts\ProductFlat
+     */
+    public function findBySlug($slug)
+    {
+        return app(ProductFlatRepository::class)->findOneWhere([
+            'url_key' => $slug,
+            'locale'  => app()->getLocale(),
+            'channel' => core()->getCurrentChannelCode(),
+        ]);
+    }
+
+    /**
+     * Retrive product from slug.
+     *
+     * @param  string  $slug
+     * @param  string  $columns
+     * @return \Webkul\Product\Contracts\Product
+     */
+    public function findBySlugOrFail($slug, $columns = null)
+    {
+        $product = app(ProductFlatRepository::class)->findOneWhere([
+            'url_key' => $slug,
+            'locale'  => app()->getLocale(),
+            'channel' => core()->getCurrentChannelCode(),
+        ]);
+
+        if (! $product) {
+            throw (new ModelNotFoundException)->setModel(
+                get_class($this->model), $slug
+            );
+        }
+
+        return $product;
+    }
+
+    /**
+     * Get product related to category.
+     *
+     * @param  int  $categoryId
      * @return \Illuminate\Support\Collection
      */
     public function getProductsRelatedToCategory($categoryId = null)
     {
-        $qb = $this->model
-            ->leftJoin('product_categories', 'products.id', '=', 'product_categories.product_id');
+        $qb = $this->model->leftJoin('product_categories', 'products.id', '=', 'product_categories.product_id');
 
         if ($categoryId) {
             $qb->where('product_categories.category_id', $categoryId);
@@ -130,8 +170,9 @@ class ProductRepository extends Repository
     }
 
     /**
-     * @param string $categoryId
+     * Get all products.
      *
+     * @param  string  $categoryId
      * @return \Illuminate\Support\Collection
      */
     public function getAll($categoryId = null)
@@ -155,9 +196,7 @@ class ProductRepository extends Repository
 
             $qb = $query->distinct()
                 ->select('product_flat.*')
-                ->join('product_flat as variants', 'product_flat.id', '=', DB::raw('COALESCE(' . DB::getTablePrefix() . 'variants.parent_id, ' . DB::getTablePrefix() . 'variants.id)'))
                 ->leftJoin('product_categories', 'product_categories.product_id', '=', 'product_flat.product_id')
-                ->leftJoin('product_attribute_values', 'product_attribute_values.product_id', '=', 'variants.product_id')
                 ->where('product_flat.channel', $channel)
                 ->where('product_flat.locale', $locale)
                 ->whereNotNull('product_flat.url_key');
@@ -182,12 +221,10 @@ class ProductRepository extends Repository
                 $qb->where('product_flat.name', 'like', '%' . urldecode($params['search']) . '%');
             }
 
-            /* added for api as per the documentation */
             if (isset($params['name'])) {
                 $qb->where('product_flat.name', 'like', '%' . urldecode($params['name']) . '%');
             }
 
-            /* added for api as per the documentation */
             if (isset($params['url_key'])) {
                 $qb->where('product_flat.url_key', 'like', '%' . urldecode($params['url_key']) . '%');
             }
@@ -198,6 +235,7 @@ class ProductRepository extends Repository
                 $orderDirection = $params['order'];
             } else {
                 $sortOptions = $this->getDefaultSortByOption();
+
                 $orderDirection = ! empty($sortOptions) ? $sortOptions[1] : 'asc';
             }
 
@@ -212,12 +250,12 @@ class ProductRepository extends Repository
 
             if ($priceFilter = request('price')) {
                 $priceRange = explode(',', $priceFilter);
-                if (count($priceRange) > 0) {
 
+                if (count($priceRange) > 0) {
                     $customerGroupId = null;
 
-                    if (Cart::getCurrentCustomer()->check()) {
-                        $customerGroupId = Cart::getCurrentCustomer()->user()->customer_group_id;
+                    if (auth()->guard()->check()) {
+                        $customerGroupId = auth()->guard()->user()->customer_group_id;
                     } else {
                         $customerGuestGroup = app('Webkul\Customer\Repositories\CustomerGroupRepository')->getCustomerGuestGroup();
 
@@ -226,26 +264,28 @@ class ProductRepository extends Repository
                         }
                     }
 
+                    $this->variantJoin($qb);
+
                     $qb
                         ->leftJoin('catalog_rule_product_prices', 'catalog_rule_product_prices.product_id', '=', 'variants.product_id')
                         ->leftJoin('product_customer_group_prices', 'product_customer_group_prices.product_id', '=', 'variants.product_id')
                         ->where(function ($qb) use ($priceRange, $customerGroupId) {
-                            $qb->where(function ($qb) use ($priceRange){
+                            $qb->where(function ($qb) use ($priceRange) {
                                 $qb
-                                    ->where('variants.min_price', '>=',  core()->convertToBasePrice($priceRange[0]))
-                                    ->where('variants.min_price', '<=',  core()->convertToBasePrice(end($priceRange)));
+                                    ->where('variants.min_price', '>=', core()->convertToBasePrice($priceRange[0]))
+                                    ->where('variants.min_price', '<=', core()->convertToBasePrice(end($priceRange)));
                             })
-                            ->orWhere(function ($qb) use ($priceRange) {
-                                $qb
-                                    ->where('catalog_rule_product_prices.price', '>=',  core()->convertToBasePrice($priceRange[0]))
-                                    ->where('catalog_rule_product_prices.price', '<=',  core()->convertToBasePrice(end($priceRange)));
-                            })
-                            ->orWhere(function ($qb) use ($priceRange, $customerGroupId) {
-                                $qb
-                                    ->where('product_customer_group_prices.value', '>=',  core()->convertToBasePrice($priceRange[0]))
-                                    ->where('product_customer_group_prices.value', '<=',  core()->convertToBasePrice(end($priceRange)))
-                                    ->where('product_customer_group_prices.customer_group_id', '=', $customerGroupId);
-                            });
+                                ->orWhere(function ($qb) use ($priceRange) {
+                                    $qb
+                                        ->where('catalog_rule_product_prices.price', '>=', core()->convertToBasePrice($priceRange[0]))
+                                        ->where('catalog_rule_product_prices.price', '<=', core()->convertToBasePrice(end($priceRange)));
+                                })
+                                ->orWhere(function ($qb) use ($priceRange, $customerGroupId) {
+                                    $qb
+                                        ->where('product_customer_group_prices.value', '>=', core()->convertToBasePrice($priceRange[0]))
+                                        ->where('product_customer_group_prices.value', '<=', core()->convertToBasePrice(end($priceRange)))
+                                        ->where('product_customer_group_prices.customer_group_id', '=', $customerGroupId);
+                                });
                         });
                 }
             }
@@ -256,8 +296,9 @@ class ProductRepository extends Repository
                 ));
 
             if (count($attributeFilters) > 0) {
-                $qb->where(function ($filterQuery) use ($attributeFilters) {
+                $this->variantJoin($qb);
 
+                $qb->where(function ($filterQuery) use ($attributeFilters) {
                     foreach ($attributeFilters as $attribute) {
                         $filterQuery->orWhere(function ($attributeQuery) use ($attribute) {
 
@@ -286,7 +327,6 @@ class ProductRepository extends Repository
                             }
                         });
                     }
-
                 });
 
                 # this is key! if a product has been filtered down to the same number of attributes that we filtered on,
@@ -296,7 +336,6 @@ class ProductRepository extends Repository
             }
 
             return $qb->groupBy('product_flat.id');
-
         });
 
         # apply scope query so we can fetch the raw sql and perform a count
@@ -325,49 +364,7 @@ class ProductRepository extends Repository
     }
 
     /**
-     * Retrive product from slug
-     *
-     * @param string $slug
-     * @param string $columns
-     *
-     * @return \Webkul\Product\Contracts\Product
-     */
-    public function findBySlugOrFail($slug, $columns = null)
-    {
-        $product = app(ProductFlatRepository::class)->findOneWhere([
-            'url_key' => $slug,
-            'locale'  => app()->getLocale(),
-            'channel' => core()->getCurrentChannelCode(),
-        ]);
-
-        if (! $product) {
-            throw (new ModelNotFoundException)->setModel(
-                get_class($this->model), $slug
-            );
-        }
-
-        return $product;
-    }
-
-    /**
-     * Retrieve product from slug without throwing an exception (might return null)
-     *
-     * @param string $slug
-     *
-     * @return \Webkul\Product\Contracts\ProductFlat
-     */
-    public function findBySlug($slug)
-    {
-
-        return app(ProductFlatRepository::class)->with('images')->findOneWhere([
-            'url_key' => $slug,
-            'locale'  => app()->getLocale(),
-            'channel' => core()->getCurrentChannelCode(),
-        ]);
-    }
-
-    /**
-     * Returns newly added product
+     * Returns newly added product.
      *
      * @return \Illuminate\Support\Collection
      */
@@ -394,7 +391,7 @@ class ProductRepository extends Repository
     }
 
     /**
-     * Returns featured product
+     * Returns featured product.
      *
      * @return \Illuminate\Support\Collection
      */
@@ -421,10 +418,35 @@ class ProductRepository extends Repository
     }
 
     /**
-     * Search Product by Attribute
+     * Returns product's super attribute with options.
      *
-     * @param string $term
+     * @param  \Webkul\Product\Contracts\Product  $product
+     * @return \Illuminate\Support\Collection
+     */
+    public function getSuperAttributes($product)
+    {
+        $superAttrbutes = [];
+
+        foreach ($product->super_attributes as $key => $attribute) {
+            $superAttrbutes[$key] = $attribute->toArray();
+
+            foreach ($attribute->options as $option) {
+                $superAttrbutes[$key]['options'][] = [
+                    'id'           => $option->id,
+                    'admin_name'   => $option->admin_name,
+                    'sort_order'   => $option->sort_order,
+                    'swatch_value' => $option->swatch_value,
+                ];
+            }
+        }
+
+        return $superAttrbutes;
+    }
+
+    /**
+     * Search product by attribute.
      *
+     * @param  string  $term
      * @return \Illuminate\Support\Collection
      */
     public function searchProductByAttribute($term)
@@ -441,8 +463,8 @@ class ProductRepository extends Repository
 
                 $searchDriver->setSettings([
                     'attributesForFaceting' => [
-                        "searchable(locale)",
-                        "searchable(channel)",
+                        'searchable(locale)',
+                        'searchable(channel)',
                     ],
                 ]);
 
@@ -469,7 +491,6 @@ class ProductRepository extends Repository
 
                 $query = $query->distinct()
                     ->addSelect('product_flat.*')
-                    ->join('product_flat as variants', 'product_flat.id', '=', DB::raw('COALESCE(' . DB::getTablePrefix() . 'variants.parent_id, ' . DB::getTablePrefix() . 'variants.id)'))
                     ->where('product_flat.channel', $channel)
                     ->where('product_flat.locale', $locale)
                     ->whereNotNull('product_flat.url_key');
@@ -496,37 +517,9 @@ class ProductRepository extends Repository
     }
 
     /**
-     * Returns product's super attribute with options
+     * Search simple products for grouped product association.
      *
-     * @param \Webkul\Product\Contracts\Product $product
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function getSuperAttributes($product)
-    {
-        $superAttrbutes = [];
-
-        foreach ($product->super_attributes as $key => $attribute) {
-            $superAttrbutes[$key] = $attribute->toArray();
-
-            foreach ($attribute->options as $option) {
-                $superAttrbutes[$key]['options'][] = [
-                    'id'           => $option->id,
-                    'admin_name'   => $option->admin_name,
-                    'sort_order'   => $option->sort_order,
-                    'swatch_value' => $option->swatch_value,
-                ];
-            }
-        }
-
-        return $superAttrbutes;
-    }
-
-    /**
-     * Search simple products for grouped product association
-     *
-     * @param string $term
-     *
+     * @param  string  $term
      * @return \Illuminate\Support\Collection
      */
     public function searchSimpleProducts($term)
@@ -549,11 +542,42 @@ class ProductRepository extends Repository
     }
 
     /**
+     * Check out of stock items.
+     *
+     * @param  Webkul\Product\Models\ProductFlat  $query
+     * @return Illuminate\Database\Eloquent\Builder
+     */
+    public function checkOutOfStockItem($query)
+    {
+        return $query
+            ->leftJoin('products as ps', 'product_flat.product_id', '=', 'ps.id')
+            ->leftJoin('product_inventories as pv', 'product_flat.product_id', '=', 'pv.product_id')
+            ->where(function ($qb) {
+                return $qb
+                /* for grouped, downloadable, bundle and booking product */
+                    ->orWhereIn('ps.type', ['grouped', 'downloadable', 'bundle', 'booking'])
+                    /* for simple and virtual product */
+                    ->orWhere(function ($qb) {
+                        return $qb->whereIn('ps.type', ['simple', 'virtual'])->where('pv.qty', '>', 0);
+                    })
+                    /* for configurable product */
+                    ->orWhere(function ($qb) {
+                        return $qb->where('ps.type', 'configurable')->where(function ($qb) {
+                            return $qb
+                                ->selectRaw('SUM(' . DB::getTablePrefix() . 'product_inventories.qty)')
+                                ->from('product_flat')
+                                ->leftJoin('product_inventories', 'product_inventories.product_id', '=', 'product_flat.product_id');
+                        }, '>', 0);
+                    });
+            });
+    }
+
+    /**
      * Copy a product. Is usually called by the copy() function of the ProductController.
      *
      * Always make the copy is inactive so the admin is able to configure it before setting it live.
      *
-     * @param int $sourceProductId the id of the product that should be copied
+     * @param  int  $sourceProductId (The id of the product that should be copied.)
      */
     public function copy(Product $originalProduct): Product
     {
@@ -585,7 +609,26 @@ class ProductRepository extends Repository
     }
 
     /**
-     * Get default sort by option
+     * Variant join.
+     *
+     * @param  mixed  $query
+     * @return void
+     */
+    private function variantJoin($query)
+    {
+        static $alreadyJoined = false;
+
+        if (! $alreadyJoined) {
+            $alreadyJoined = true;
+
+            $query
+                ->join('product_flat as variants', 'product_flat.id', '=', DB::raw('COALESCE(' . DB::getTablePrefix() . 'variants.parent_id, ' . DB::getTablePrefix() . 'variants.id)'))
+                ->leftJoin('product_attribute_values', 'product_attribute_values.product_id', '=', 'variants.product_id');
+        }
+    }
+
+    /**
+     * Get default sort by option.
      *
      * @return array
      */
@@ -599,12 +642,11 @@ class ProductRepository extends Repository
     }
 
     /**
-     * Check sort attribute and generate query
+     * Check sort attribute and generate query.
      *
-     * @param object $query
-     * @param string $sort
-     * @param string $direction
-     *
+     * @param  object  $query
+     * @param  string  $sort
+     * @param  string  $direction
      * @return object
      */
     private function checkSortAttributeAndGenerateQuery($query, $sort, $direction)
@@ -625,6 +667,12 @@ class ProductRepository extends Repository
         return $query;
     }
 
+    /**
+     * Fill original product.
+     *
+     * @param  \Webkul\Product\Models\Product  $sourceProduct
+     * @return void
+     */
     private function fillOriginalProduct(Product &$sourceProduct): void
     {
         $sourceProduct
@@ -636,16 +684,17 @@ class ProductRepository extends Repository
     }
 
     /**
-     * @param $originalProduct
+     * Persist copied product.
      *
-     * @return mixed
+     * @param  $originalProduct
+     * @return \Webkul\Product\Models\Product
      */
     private function persistCopiedProduct($originalProduct): Product
     {
         $copiedProduct = $originalProduct
             ->replicate()
             ->fill([
-                // the sku and url_key needs to be unique and should be entered again newly by the admin:
+                // the sku and url_key needs to be unique and should be entered again newly by the admin
                 'sku' => 'temporary-sku-' . substr(md5(microtime()), 0, 6),
             ]);
 
@@ -654,10 +703,12 @@ class ProductRepository extends Repository
         return $copiedProduct;
     }
 
-
     /**
      * Gather the ids of the necessary product attributes.
+     *
      * Throw an Exception if one of these 'basic' attributes are missing for some reason.
+     *
+     * @return array
      */
     private function gatherAttributeIds(): array
     {
@@ -670,6 +721,13 @@ class ProductRepository extends Repository
         return $ids;
     }
 
+    /**
+     * Persist attribute values.
+     *
+     * @param  \Webkul\Product\Models\Product  $originalProduct
+     * @param  \Webkul\Product\Models\Product  $copiedProduct
+     * @return void
+     */
     private function persistAttributeValues(Product $originalProduct, Product $copiedProduct): void
     {
         $attributeIds = $this->gatherAttributeIds();
@@ -743,15 +801,17 @@ class ProductRepository extends Repository
             }
 
             $copiedProduct->attribute_values()->save($newValue);
-
         }
 
         $newProductFlat->save();
     }
 
     /**
-     * @param $originalProduct
-     * @param $copiedProduct
+     * Persist relations.
+     *
+     * @param  $originalProduct
+     * @param  $copiedProduct
+     * @return void
      */
     private function persistRelations($originalProduct, $copiedProduct): void
     {
@@ -823,15 +883,18 @@ class ProductRepository extends Repository
     }
 
     /**
-     * @object $data
-     * @object $copiedProduct
-     * @object $copiedProductImageVideo
+     * Copy product image video.
+     *
+     * @param  $data
+     * @param  $copiedProduct
+     * @param  $copiedProductImageVideo
+     * @return void
      */
     private function copyProductImageVideo($data, $copiedProduct, $copiedProductImageVideo): void
     {
-        $path = explode("/", $data->path);
+        $path = explode('/', $data->path);
 
-        $path = 'product/' . $copiedProduct->id .'/'. end($path);
+        $path = 'product/' . $copiedProduct->id . '/' . end($path);
 
         $copiedProductImageVideo->path = $path;
 
@@ -840,38 +903,5 @@ class ProductRepository extends Repository
         Storage::makeDirectory('product/' . $copiedProduct->id);
 
         Storage::copy($data->path, $copiedProductImageVideo->path);
-    }
-
-    /**
-     * Check out of stock items. This method needed `variants` alias in
-     * the `product_flat` query.
-     *
-     * @param  Webkul\Product\Models\ProductFlat  $query
-     * @return Illuminate\Database\Eloquent\Builder
-     */
-    public function checkOutOfStockItem($query)
-    {
-        return $query
-            ->leftJoin('products as ps', 'product_flat.product_id', '=', 'ps.id')
-            ->leftJoin('product_inventories as pv', 'product_flat.product_id', '=', 'pv.product_id')
-            ->where(function ($qb) {
-                return $qb
-                    /* for grouped, downloadable, bundle and booking product */
-                    ->orWhereIn('ps.type', ['grouped', 'downloadable', 'bundle', 'booking'])
-                    /* for simple and virtual product */
-                    ->orWhere(function ($qb) {
-                        return $qb->whereIn('ps.type', ['simple', 'virtual'])->where('pv.qty', '>', 0);
-                    })
-                    /* for configurable product */
-                    ->orWhere(function ($qb) {
-                        return $qb->where('ps.type', 'configurable')->where(function ($qb) {
-                            return $qb
-                                ->selectRaw('SUM(' . DB::getTablePrefix() . 'product_inventories.qty)')
-                                ->from('product_flat')
-                                ->leftJoin('product_inventories', 'product_inventories.product_id', '=', 'product_flat.product_id')
-                                ->whereRaw(DB::getTablePrefix() . 'product_flat.parent_id = variants.id');
-                        }, '>', 0);
-                    });
-            });
     }
 }

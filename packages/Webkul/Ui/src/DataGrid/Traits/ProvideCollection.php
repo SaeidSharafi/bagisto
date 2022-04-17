@@ -208,6 +208,8 @@ trait ProvideCollection
                     $this->resolve($collection, $columnName, $condition, $filterValue, 'whereDate');
                 } else if ($columnType === 'boolean') {
                     $this->resolve($collection, $columnName, $condition, $filterValue, 'where', 'resolveBooleanQuery');
+                } else if ($columnType === 'price') {
+                    $this->resolve($collection, $columnName, $condition, $filterValue, 'having');
                 } else {
                     $this->resolve($collection, $columnName, $condition, $filterValue);
                 }
@@ -273,6 +275,7 @@ trait ProvideCollection
 
             if ($toDisplay) {
                 $urlKey = $this->generateKeyFromActionTitle($action['title'], '_url');
+
                 $record->$urlKey = route($action['route'], $record->{$action['index'] ?? $this->index});
             }
         }
@@ -304,7 +307,7 @@ trait ProvideCollection
      */
     private function generateKeyFromActionTitle($title, $suffix)
     {
-        $validatedStrings = Str::slug($title, '_');
+        $validatedStrings = Str::slug($title, '_', app()->getLocale());
 
         return strtolower($validatedStrings) . $suffix;
     }

@@ -31,7 +31,7 @@
 
                     {!! view_render_event('bagisto.admin.cms.pages.create_form_accordian.general.before') !!}
 
-                    <accordian :title="'{{ __('admin::app.cms.pages.general') }}'" :active="true">
+                    <accordian title="{{ __('admin::app.cms.pages.general') }}" :active="true">
                         <div slot="body">
                             <div class="control-group" :class="[errors.has('page_title') ? 'has-error' : '']">
                                 <label for="page_title" class="required">{{ __('admin::app.cms.pages.page-title') }}</label>
@@ -43,7 +43,7 @@
 
                             @inject('channels', 'Webkul\Core\Repositories\ChannelRepository')
 
-                            <div class="control-group" :class="[errors.has('channels[]') ? 'has-error' : '']">
+                            <div class="control-group multi-select" :class="[errors.has('channels[]') ? 'has-error' : '']">
                                 <label for="url-key" class="required">{{ __('admin::app.cms.pages.channel') }}</label>
 
                                 <select type="text" class="control" name="channels[]" v-validate="'required'" value="{{ old('channel[]') }}" data-vv-as="&quot;{{ __('admin::app.cms.pages.channel') }}&quot;" multiple="multiple">
@@ -70,7 +70,7 @@
 
                     {!! view_render_event('bagisto.admin.cms.pages.create_form_accordian.seo.before') !!}
 
-                    <accordian :title="'{{ __('admin::app.cms.pages.seo') }}'" :active="true">
+                    <accordian title="{{ __('admin::app.cms.pages.seo') }}" :active="true">
                         <div slot="body">
                             <div class="control-group">
                                 <label for="meta_title">{{ __('admin::app.cms.pages.meta_title') }}</label>
@@ -121,8 +121,6 @@
                 toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor alignleft aligncenter alignright alignjustify | link hr |numlist bullist outdent indent  | removeformat | code | table',
                 image_advtab: true,
                 valid_elements : '*[*]',
-                uploadRoute: '{{ route('admin.tinymce.upload') }}',
-                csrfToken: '{{ csrf_token() }}',
             });
         });
     </script>

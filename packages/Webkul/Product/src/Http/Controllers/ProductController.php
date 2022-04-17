@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
+use Webkul\Admin\DataGrids\ProductDataGrid;
 use Webkul\Attribute\Repositories\AttributeFamilyRepository;
 use Webkul\Category\Repositories\CategoryRepository;
 use Webkul\Core\Contracts\Validations\Slug;
@@ -132,6 +133,10 @@ class ProductController extends Controller
      */
     public function index()
     {
+        if (request()->ajax()) {
+            return app(ProductDataGrid::class)->toJson();
+        }
+
         return view($this->_config['view']);
     }
 
@@ -186,6 +191,7 @@ class ProductController extends Controller
         Cache::forget('featured_products');
         Cache::forget('new_products');
         Cache::forget('free_products');
+
         $product = $this->productRepository->create(request()->all());
 
         session()->flash('success', trans('admin::app.response.create-success', ['name' => 'Product']));
@@ -223,7 +229,7 @@ class ProductController extends Controller
         Cache::forget('featured_products');
         Cache::forget('new_products');
         Cache::forget('free_products');
-        $multiselectAttributeCodes = array();
+        $multiselectAttributeCodes = [];
 
         $productAttributes = $this->productRepository->findOrFail($id);
 
@@ -232,7 +238,7 @@ class ProductController extends Controller
 
             if (count($customAttributes)) {
                 foreach ($customAttributes as $attribute) {
-                    if ($attribute->type == 'multiselect' || $attribute->type == 'gallery') {
+                    if ($attribute->type == 'multiselect' || $attribute->type == 'checkbox' || $attribute->type == 'gallery') {
                         array_push($multiselectAttributeCodes, $attribute->code);
                     }
                 }
@@ -242,7 +248,7 @@ class ProductController extends Controller
         if (count($multiselectAttributeCodes)) {
             foreach ($multiselectAttributeCodes as $multiselectAttributeCode) {
                 if (! isset($data[$multiselectAttributeCode])) {
-                    $data[$multiselectAttributeCode] = array();
+                    $data[$multiselectAttributeCode] = [];
                 }
             }
         }
@@ -267,8 +273,8 @@ class ProductController extends Controller
         $this->productInventoryRepository->saveInventories(request()->all(), $product);
 
         return response()->json([
-            'message' => __('admin::app.catalog.products.saved-inventory-message'),
-            'updatedTotal' => $this->productInventoryRepository->where('product_id', $product->id)->sum('qty')
+            'message'      => __('admin::app.catalog.products.saved-inventory-message'),
+            'updatedTotal' => $this->productInventoryRepository->where('product_id', $product->id)->sum('qty'),
         ]);
     }
 
@@ -352,20 +358,20 @@ class ProductController extends Controller
         try {
             $this->productRepository->delete($id);
 
-            session()->flash('success', trans('admin::app.response.delete-success', ['name' => 'Product']));
-
-            return response()->json(['message' => true], 200);
+            return response()->json([
+                'message' => trans('admin::app.response.delete-success', ['name' => 'Product']),
+            ]);
         } catch (Exception $e) {
             report($e);
-
-            session()->flash('error', trans('admin::app.response.delete-failed', ['name' => 'Product']));
         }
 
-        return response()->json(['message' => false], 400);
+        return response()->json([
+            'message' => trans('admin::app.response.delete-failed', ['name' => 'Product']),
+        ], 500);
     }
 
     /**
-     * Mass Delete the products.
+     * Mass delete the products.
      *
      * @return \Illuminate\Http\Response
      */
@@ -387,7 +393,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Mass updates the products.
+     * Mass update the products.
      *
      * @return \Illuminate\Http\Response
      */

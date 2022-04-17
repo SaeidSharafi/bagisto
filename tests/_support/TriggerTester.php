@@ -1,8 +1,8 @@
 <?php
 
-
 /**
- * Inherited Methods
+ * Inherited methods.
+ *
  * @method void wantToTest($text)
  * @method void wantTo($text)
  * @method void execute($callable)
@@ -19,8 +19,4 @@
 class TriggerTester extends \Codeception\Actor
 {
     use _generated\TriggerTesterActions;
-
-    /**
-     * Define custom actions here
-     */
 }

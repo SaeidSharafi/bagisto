@@ -34,7 +34,7 @@
 
                     {!! view_render_event('bagisto.admin.settings.slider.create.before') !!}
 
-                    <div class="control-group" :class="[errors.has('locale[]') ? 'has-error' : '']">
+                    <div class="control-group multi-select" :class="[errors.has('locale[]') ? 'has-error' : '']">
                         <label for="locale">{{ __('admin::app.datagrid.locale') }}</label>
 
                         <select class="control" id="locale" name="locale[]" data-vv-as="&quot;{{ __('admin::app.datagrid.locale') }}&quot;" value="" v-validate="'required'" multiple>
@@ -83,8 +83,9 @@
 
                     <div class="control-group {!! $errors->has('image.*') ? 'has-error' : '' !!}">
                         <label class="required">{{ __('admin::app.catalog.categories.image') }}</label>
-
-                        <image-wrapper :button-label="'{{ __('admin::app.settings.sliders.image') }}'" input-name="image" :multiple="false"></image-wrapper>
+                        <span class="control-info mt-10">{{ __('admin::app.settings.sliders.image-size') }}</span>
+                        
+                        <image-wrapper button-label="{{ __('admin::app.settings.sliders.image') }}" input-name="image" :multiple="false"></image-wrapper>
 
                         <span class="control-error" v-if="{!! $errors->has('image.*') !!}">
                             @foreach ($errors->get('image.*') as $key => $message)
@@ -124,8 +125,6 @@
                     { title: 'Test template 1', content: 'Test 1' },
                     { title: 'Test template 2', content: 'Test 2' }
                 ],
-                uploadRoute: '{{ route('admin.tinymce.upload') }}',
-                csrfToken: '{{ csrf_token() }}',
             });
         });
     </script>

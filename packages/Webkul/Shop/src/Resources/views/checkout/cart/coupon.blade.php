@@ -45,12 +45,23 @@
                 }
             },
 
+            watch: {
+                coupon_code: function (value) {
+                    if (value != '') {
+                        this.error_message = '';
+                    }
+                }
+            },
+
             methods: {
                 applyCoupon: function() {
-                    var self = this;
+                    let self = this;
 
-                    if (! self.coupon_code.length)
+                    if (! this.coupon_code.length) {
+                        this.error_message = '{{ __('shop::app.checkout.total.invalid-coupon') }}';
+
                         return;
+                    }
 
                     self.error_message = null;
 
@@ -84,7 +95,7 @@
                 },
 
                 removeCoupon: function () {
-                    var self = this;
+                    let self = this;
 
                     axios.delete('{{ route('shop.checkout.coupon.remove.coupon') }}')
                         .then(function(response) {
@@ -106,8 +117,7 @@
                 },
 
                 redirectIfCartPage: function() {
-                    if (this.route_name != 'shop.checkout.cart.index')
-                        return;
+                    if (this.route_name != 'shop.checkout.cart.index') return;
 
                     setTimeout(function() {
                         window.location.reload();

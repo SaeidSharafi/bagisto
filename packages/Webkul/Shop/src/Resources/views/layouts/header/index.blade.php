@@ -61,27 +61,9 @@
                     $showCompare = core()->getConfigData('general.content.shop.compare_option') == "1" ? true : false
                 @endphp
 
-                @if ($showCompare)
-                    <li class="compare-dropdown-container">
-                        <a
-                            @auth('customer')
-                                href="{{ route('velocity.customer.product.compare') }}"
-                            @endauth
-
-                            @guest('customer')
-                                href="{{ route('velocity.product.compare') }}"
-                            @endguest
-                            style="color: #242424;"
-                            >
-
-                            <i class="icon compare-icon"></i>
-                            <span class="name">
-                                {{ __('shop::app.customer.compare.text') }}
-                                <span class="count">(<span id="compare-items-count"></span>)<span class="count">
-                            </span>
-                        </a>
-                    </li>
-                @endif
+               @php
+                    $showWishlist = core()->getConfigData('general.content.shop.wishlist_option') == "1" ? true : false;
+                @endphp
 
                 {!! view_render_event('bagisto.shop.layout.header.compare-item.after') !!}
 
@@ -136,7 +118,7 @@
                                     <span style="font-size: 12px;">{{ __('shop::app.header.dropdown-text') }}</span>
                                 </div>
 
-                                <div style="margin-top: 15px;">
+                                <div class="button-group">
                                     <a class="btn btn-primary btn-md" href="{{ route('customer.session.index') }}" style="color: #ffffff">
                                         {{ __('shop::app.header.sign-in') }}
                                     </a>
@@ -173,12 +155,34 @@
                                         </li>
                                     @endif
 
+                                    @if ($showCompare)                                     
                                     <li>
-                                        <a href="{{ route('shop.checkout.cart.index') }}">{{ __('shop::app.header.cart') }}</a>
+                                        <a
+                                            @auth('customer')
+                                                href="{{ route('velocity.customer.product.compare') }}"
+                                            @endauth
+
+                                            @guest('customer')
+                                                href="{{ route('velocity.product.compare') }}"
+                                            @endguest
+                                            
+                                            > {{ __('shop::app.customer.compare.text') }}
+                                        </a>
                                     </li>
+                                    @endif
 
                                     <li>
-                                        <a href="{{ route('customer.session.destroy') }}">{{ __('shop::app.header.logout') }}</a>
+                                        <form id="customerLogout" action="{{ route('customer.session.destroy') }}" method="POST">
+                                            @csrf
+
+                                            @method('DELETE')
+                                        </form>
+
+                                        <a
+                                            href="{{ route('customer.session.destroy') }}"
+                                            onclick="event.preventDefault(); document.getElementById('customerLogout').submit();">
+                                            {{ __('shop::app.header.logout') }}
+                                        </a>
                                     </li>
                                 </ul>
                             </li>
@@ -236,7 +240,7 @@
 
                 <input type="file" :id="'image-search-container-' + _uid" ref="image_search_input" v-on:change="uploadImage()"/>
 
-                <img :id="'uploaded-image-url-' +  + _uid" :src="uploaded_image_url" alt="" width="20" height="20" />
+                <img :id="'uploaded-image-url-' +  + _uid" :src="uploaded_image_url" alt="" width="20" height="20" style="display:none" />
             </label>
         </div>
     </script>
