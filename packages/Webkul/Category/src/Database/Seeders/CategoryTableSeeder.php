@@ -47,9 +47,9 @@ class CategoryTableSeeder extends Seeder
                 'locale'           => 'en',
             ],
             [
-                'name'             => 'ریشه',
+                'name'             => 'طبقه بندی دوره ها',
                 'slug'             => 'root',
-                'description'      => 'ریشه',
+                'description'      => 'طبقه بندی دوره ها',
                 'meta_title'       => '',
                 'meta_description' => '',
                 'meta_keywords'    => '',
