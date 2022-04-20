@@ -62,7 +62,7 @@ class ChannelTableSeeder extends Seeder
                             </ul>
                         </div>
                 ',
-                'home_seo'          => '{"meta_title": "Demo store", "meta_keywords": "Demo store meta keyword", "meta_description": "Demo store meta description"}',
+                'home_seo'          => '{"meta_title": "آموزشگاه جهاد دانشگاهی استان قزوین", "meta_keywords": "آموزشگاه جهاد دانشگاهی استان قزوین", "meta_description": "آموزشگاه جهاد دانشگاهی استان قزوین"}',
             ]
         ]);
 
