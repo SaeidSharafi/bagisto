@@ -76,3 +76,11 @@ input,
 select {
   font-family: "Source Sans Pro", "IRANSans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+
+.rtl .navbar-left {
+  right: 0 !important;
+}
+.rtl .navbar-left ul.menubar li.menu-item ul.sub-menubar {
+  top: 0;
+  right: 54px !important;
+}

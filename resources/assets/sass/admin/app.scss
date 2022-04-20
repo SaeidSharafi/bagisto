@@ -9,7 +9,20 @@ input,
 select{
     font-family: 'Source Sans Pro','IRANSans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
+.rtl {
+    .navbar-left {
+        right: 0 !important;
 
+        ul.menubar {
+            li.menu-item {
+                ul.sub-menubar {
+                    top: 0;
+                    right: 54px !important;
+                }
+            }
+        }
+    }
+}
 //.rtl .navbar-left {
 //    left: auto;
 //    right: 0;
