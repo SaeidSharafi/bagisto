@@ -21,7 +21,7 @@
         "bagistobrasil/bagisto-product-social-share": "^0.1.2",
         "barryvdh/laravel-debugbar": "^3.1",
         "barryvdh/laravel-dompdf": "^1.0.0",
-        "barryvdh/laravel-elfinder": "^0.4.7",
+        "barryvdh/laravel-elfinder": "^0.5.1",
         "diglactic/laravel-breadcrumbs": "^7.0",
         "doctrine/dbal": "^2.9",
         "enshrined/svg-sanitize": "^0.15.0",
@@ -34,7 +34,7 @@
         "kalnoy/nestedset": "^6.0",
         "khaled.alshamaa/ar-php": "^6.0.0",
         "konekt/concord": "^1.2",
-        "laravel/framework": "^9.0",
+        "laravel/framework": "^9.9",
         "laravel/sanctum": "^2.12",
         "laravel/scout": "^9.0",
         "kuro/laravel-sms": "@dev",
@@ -44,14 +44,13 @@
         "maatwebsite/excel": "^3.1.26",
         "paypal/paypal-checkout-sdk": "1.0.1",
         "prettus/l5-repository": "^2.6",
-        "ridhima/mediamanager": "^1.1",
         "ext-curl": "*",
         "ext-json": "*",
         "pusher/pusher-php-server": "^7.0"
     },
     "require-dev": {
-        "barryvdh/laravel-ide-helper": "^2.10",
-        "beyondcode/laravel-query-detector": "^1.5",
+        "barryvdh/laravel-ide-helper": "^2.12.3",
+        "beyondcode/laravel-query-detector": "^1.6",
         "codeception/codeception": "*@dev",
         "codeception/module-asserts": "^3.0.0",
         "codeception/module-filesystem": "^3.0.0",
@@ -118,7 +117,8 @@
             "Webkul\\Marketing\\": "packages/Webkul/Marketing/src",
             "PayIr\\": "packages/PayIr/src",
             "Kuro\\LaravelSms\\": "packages/Kuro/LaravelSms/src",
-            "Webkul\\Notification\\": "packages/Webkul/Notification/src"
+            "Webkul\\Notification\\": "packages/Webkul/Notification/src",
+            "Ridhima\\MediaManager\\": "packages/Ridhima/MediaManager/src"
         }
     },
     "autoload-dev": {

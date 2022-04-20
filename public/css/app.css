@@ -6748,7 +6748,7 @@ img.cover {
 
 .category-banner {
   height: 200px;
-  color: #ffff;
+  color: white;
 }
 .category-banner .banner-image {
   background: linear-gradient(135deg, #BC78EC -10%, #3B2667 100%) no-repeat center center;
@@ -6769,7 +6769,7 @@ img.cover {
 
 .product-banner {
   height: 80px;
-  color: #ffff;
+  color: white;
   overflow: hidden;
 }
 .product-banner .banner-image {
@@ -7259,7 +7259,7 @@ section.product-footer .teacher-image img {
 }
 .qoutes:after {
   content: "";
-  background-color: #000000a1;
+  background-color: rgba(0, 0, 0, 0.631372549);
   position: absolute;
   width: 100%;
   height: 100%;
@@ -7349,7 +7349,7 @@ section.product-footer .teacher-image img {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: #0000001f;
+  background: rgba(0, 0, 0, 0.1215686275);
   z-index: 1;
   left: 0;
   top: 0;

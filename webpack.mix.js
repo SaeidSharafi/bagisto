@@ -12,6 +12,7 @@ console.log((`Assets will be published in: ${publicPath}`));
 
 const assetsPath = path.join('Resources', 'assets');
 const jsPath = path.join(assetsPath, 'js');
+const imagesPath = path.join(assetsPath, 'images');
 
 mix.js(path.join(jsPath, 'slider.js'), 'public/js').sourceMaps();
 mix

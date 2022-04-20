@@ -6,28 +6,18 @@
       0 => 'Astrotomic\\Translatable\\TranslatableServiceProvider',
     ),
   ),
-  'babenkoivan/elastic-client' => 
+  'bagisto/legacy-api' => 
   array (
     'providers' => 
     array (
-      0 => 'ElasticClient\\ServiceProvider',
+      0 => 'Webkul\\API\\Providers\\APIServiceProvider',
     ),
   ),
-  'babenkoivan/elastic-scout-driver' => 
+  'bagisto/rest-api' => 
   array (
     'providers' => 
     array (
-      0 => 'ElasticScoutDriver\\ServiceProvider',
-    ),
-  ),
-  'bagisto/bagisto-package-generator' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Webkul\\PackageGenerator\\Providers\\PackageGeneratorServiceProvider',
-    ),
-    'aliases' => 
-    array (
+      0 => 'Webkul\\RestApi\\Providers\\RestApiServiceProvider',
     ),
   ),
   'bagistobrasil/bagisto-product-social-share' => 
@@ -59,7 +49,7 @@
     ),
     'aliases' => 
     array (
-      'PDF' => 'Barryvdh\\DomPDF\\Facade',
+      'PDF' => 'Barryvdh\\DomPDF\\Facade\\Pdf',
     ),
   ),
   'barryvdh/laravel-elfinder' => 
@@ -76,22 +66,15 @@
       0 => 'BeyondCode\\QueryDetector\\QueryDetectorServiceProvider',
     ),
   ),
-  'facade/ignition' => 
+  'diglactic/laravel-breadcrumbs' => 
   array (
     'providers' => 
     array (
-      0 => 'Facade\\Ignition\\IgnitionServiceProvider',
+      0 => 'Diglactic\\Breadcrumbs\\ServiceProvider',
     ),
     'aliases' => 
     array (
-      'Flare' => 'Facade\\Ignition\\Facades\\Flare',
-    ),
-  ),
-  'fideloper/proxy' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Fideloper\\Proxy\\TrustedProxyServiceProvider',
+      'Breadcrumbs' => 'Diglactic\\Breadcrumbs\\Breadcrumbs',
     ),
   ),
   'flynsarmy/db-blade-compiler' => 
@@ -160,11 +143,11 @@
       'Sms' => 'Kuro\\LaravelSms\\Facade\\Sms',
     ),
   ),
-  'laravel/legacy-factories' => 
+  'laravel/sanctum' => 
   array (
     'providers' => 
     array (
-      0 => 'Illuminate\\Database\\Eloquent\\LegacyFactoryServiceProvider',
+      0 => 'Laravel\\Sanctum\\SanctumServiceProvider',
     ),
   ),
   'laravel/scout' => 
@@ -224,6 +207,18 @@
       0 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
     ),
   ),
+  'php-open-source-saver/jwt-auth' => 
+  array (
+    'aliases' => 
+    array (
+      'JWTAuth' => 'PHPOpenSourceSaver\\JWTAuth\\Facades\\JWTAuth',
+      'JWTFactory' => 'PHPOpenSourceSaver\\JWTAuth\\Facades\\JWTFactory',
+    ),
+    'providers' => 
+    array (
+      0 => 'PHPOpenSourceSaver\\JWTAuth\\Providers\\LaravelServiceProvider',
+    ),
+  ),
   'prettus/l5-repository' => 
   array (
     'providers' => 
@@ -231,26 +226,15 @@
       0 => 'Prettus\\Repository\\Providers\\RepositoryServiceProvider',
     ),
   ),
-  'ridhima/mediamanager' => 
+  'spatie/laravel-ignition' => 
   array (
     'providers' => 
     array (
-      0 => 'Ridhima\\MediaManager\\Providers\\MediaManagerServiceProvider',
+      0 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
     ),
     'aliases' => 
     array (
-    ),
-  ),
-  'tymon/jwt-auth' => 
-  array (
-    'aliases' => 
-    array (
-      'JWTAuth' => 'Tymon\\JWTAuth\\Facades\\JWTAuth',
-      'JWTFactory' => 'Tymon\\JWTAuth\\Facades\\JWTFactory',
-    ),
-    'providers' => 
-    array (
-      0 => 'Tymon\\JWTAuth\\Providers\\LaravelServiceProvider',
+      'Flare' => 'Spatie\\LaravelIgnition\\Facades\\Flare',
     ),
   ),
 );

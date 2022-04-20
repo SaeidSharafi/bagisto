@@ -254,7 +254,6 @@ return [
         Konekt\Concord\ConcordServiceProvider::class,
         Flynsarmy\DbBladeCompiler\DbBladeCompilerServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
-        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
 
         App\Providers\ShopCoreServiceProvider::class,
 

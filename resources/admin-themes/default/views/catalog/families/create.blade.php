@@ -31,7 +31,7 @@
 
                     {!! view_render_event('bagisto.admin.catalog.family.create_form_accordian.general.before') !!}
 
-                    <accordian :title="'{{ __('admin::app.catalog.families.general') }}'" :active="true">
+                    <accordian title="{{ __('admin::app.catalog.families.general') }}" :active="true">
                         <div slot="body">
 
                             {!! view_render_event('bagisto.admin.catalog.family.create_form_accordian.general.controls.before') !!}
@@ -58,7 +58,7 @@
 
                     {!! view_render_event('bagisto.admin.catalog.family.create_form_accordian.groups.before') !!}
 
-                    <accordian :title="'{{ __('admin::app.catalog.families.groups') }}'" :active="true">
+                    <accordian title="{{ __('admin::app.catalog.families.groups') }}" :active="true">
                         <div slot="body">
 
                             <button type="button" style="margin-bottom : 20px" class="btn btn-md btn-primary" @click="showModal('addGroup')">
@@ -97,7 +97,7 @@
         <form method="POST" action="{{ route('admin.catalog.families.store') }}" data-vv-scope="add-group-form" @submit.prevent="addGroup('add-group-form')">
 
             <div class="page-content">
-                <div class="form-container test">
+                <div class="form-container">
                     @csrf()
 
                     <div class="control-group" :class="[errors.has('add-group-form.groupCode') ? 'has-error' : '']">
@@ -206,7 +206,6 @@
 
     <script>
         var groups = @json($attributeFamily ? $attributeFamily->attribute_groups : []);
-
         var custom_attributes = @json($custom_attributes);
 
         Vue.component('group-form', {

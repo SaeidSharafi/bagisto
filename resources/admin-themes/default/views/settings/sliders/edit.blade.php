@@ -37,7 +37,7 @@
 
                     {!! view_render_event('bagisto.admin.settings.slider.edit.before') !!}
 
-                    <div class="control-group" :class="[errors.has('locale[]') ? 'has-error' : '']">
+                    <div class="control-group multi-select" :class="[errors.has('locale[]') ? 'has-error' : '']">
                         <label for="locale">{{ __('admin::app.datagrid.locale') }}</label>
 
                         <select class="control" id="locale" name="locale[]" data-vv-as="&quot;{{ __('admin::app.datagrid.locale') }}&quot;" value="" v-validate="'required'" multiple>
@@ -86,8 +86,9 @@
 
                     <div class="control-group {!! $errors->has('image.*') ? 'has-error' : '' !!}">
                         <label class="required">{{ __('admin::app.catalog.categories.image') }}</label>
+                        <span class="control-info mt-10">{{ __('admin::app.settings.sliders.image-size') }}</span>
 
-                        <image-wrapper :button-label="'{{ __('admin::app.settings.sliders.image') }}'" input-name="image" :multiple="false" :images='"{{ Storage::url($slider->path) }}"'></image-wrapper>
+                        <image-wrapper button-label="{{ __('admin::app.settings.sliders.image') }}" input-name="image" :multiple="false" :images='"{{ Storage::url($slider->path) }}"'></image-wrapper>
 
                         <span class="control-error" v-if="{!! $errors->has('image.*') !!}">
                             @foreach ($errors->get('image.*') as $key => $message)
@@ -104,12 +105,13 @@
                         </label>
                     </div>
                     <div class="control-group">
-                        <label for="content">{{ __('admin::app.settings.sliders.description') }}</label>
+                        <label for="content">{{ __('admin::app.settings.sliders.content') }}</label>
+
                         <div class="panel-body">
-                            <textarea class="control" name="description" rows="5">{{ $slider->description ? : old('description') }}</textarea>
+                            <textarea id="tiny" class="control" id="add_content" name="content" rows="5">{{ $slider->content ? : old('content') }}</textarea>
                         </div>
 
-                        <span class="control-error" v-if="errors.has('description')">@{{ errors.first('description') }}</span>
+                        <span class="control-error" v-if="errors.has('content')">@{{ errors.first('content') }}</span>
                     </div>
                     <div class="control-group">
                         <label for="sort_order">{{ __('admin::app.settings.sliders.button') }}</label>
@@ -123,4 +125,23 @@
     </div>
 @endsection
 
+@push('scripts')
+    @include('admin::layouts.tinymce')
 
+    <script>
+        $(document).ready(function () {
+            tinyMCEHelper.initTinyMCE({
+                selector: 'textarea#tiny',
+                height: 200,
+                width: "100%",
+                plugins: 'image imagetools media wordcount save fullscreen code table lists link hr',
+                toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor link hr | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat | code | table',
+                image_advtab: true,
+                templates: [
+                    { title: 'Test template 1', content: 'Test 1' },
+                    { title: 'Test template 2', content: 'Test 2' }
+                ],
+            });
+        });
+    </script>
+@endpush

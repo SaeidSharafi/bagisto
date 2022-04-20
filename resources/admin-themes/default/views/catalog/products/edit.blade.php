@@ -4,6 +4,27 @@
     {{ __('admin::app.catalog.products.edit-title') }}
 @stop
 
+@push('css')
+    <style>
+       @media only screen and (max-width: 728px){
+            .content-container .content .page-header .page-title{
+                width: 100%;
+            }
+            
+            .content-container .content .page-header .page-title .control-group {
+                margin-top: 20px!important;
+                width: 100%!important;
+                margin-left: 0!important;
+            }
+
+            .content-container .content .page-header .page-action {
+                margin-top: 10px!important;
+                float: left;
+            }
+       }        
+    </style>
+@endpush
+
 @section('content')
     <div class="content">
         @php
@@ -72,7 +93,7 @@
 
                         {!! view_render_event('bagisto.admin.catalog.product.edit_form_accordian.' . $attributeGroup->name . '.before', ['product' => $product]) !!}
 
-                        <accordian :title="'{{ __($attributeGroup->name) }}'"
+                        <accordian title="{{ __($attributeGroup->name) }}"
                                    :active="{{$index == 0 ? 'true' : 'false'}}">
                             <div slot="body">
                                 {!! view_render_event('bagisto.admin.catalog.product.edit_form_accordian.' . $attributeGroup->name . '.controls.before', ['product' => $product]) !!}
@@ -111,7 +132,7 @@
 
                                     @if (view()->exists($typeView = 'admin::catalog.products.field-types.' . $attribute->type))
 
-                                        <div class="control-group {{ $attribute->type }}"
+                                        <div class="control-group {{ $attribute->type }} {{ $attribute->enable_wysiwyg ? 'have-wysiwyg' : '' }}"
                                              @if ($attribute->type == 'multiselect') :class="[errors.has('{{ $attribute->code }}[]') ? 'has-error' : '']"
                                              @else :class="[errors.has('{{ $attribute->code }}') ? 'has-error' : '']" @endif>
 
@@ -215,14 +236,12 @@
             });
 
             tinyMCEHelper.initTinyMCE({
-                selector: 'textarea#description, textarea#short_description',
+                selector: 'textarea.enable-wysiwyg, textarea.enable-wysiwyg',
                 height: 200,
                 width: "100%",
                 plugins: 'image imagetools media wordcount save fullscreen code table lists link hr',
                 toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor link hr | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent  | removeformat | code | table',
                 image_advtab: true,
-                uploadRoute: '{{ route('admin.tinymce.upload') }}',
-                csrfToken: '{{ csrf_token() }}',
             });
         });
     </script>

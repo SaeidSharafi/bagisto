@@ -1,6 +1,6 @@
 {!! view_render_event('bagisto.admin.catalog.product.edit_form_accordian.bundle.before', ['product' => $product]) !!}
 
-<accordian :title="'{{ __('admin::app.catalog.products.bundle-items') }}'" :active="true">
+<accordian title="{{ __('admin::app.catalog.products.bundle-items') }}" :active="true">
     <div slot="body">
 
         {!! view_render_event('bagisto.admin.catalog.product.edit_form_accordian.bundle.controls.before', ['product' => $product]) !!}
@@ -13,8 +13,6 @@
 </accordian>
 
 @push('scripts')
-
-
     <script type="text/x-template" id="bundle-option-list-template">
         <div class="">
             <button type="button" class="btn btn-md btn-primary" @click="addOption" style="margin-bottom: 20px;">
@@ -124,7 +122,6 @@
 
             <div class="table" style="margin-top: 20px; overflow-x: unset;">
                 <table>
-
                     <thead>
                         <tr>
                             <th class="name">{{ __('admin::app.catalog.products.is-default') }}</th>
@@ -150,7 +147,6 @@
                         </bundle-product-item>
 
                     </tbody>
-
                 </table>
             </div>
         </div>
@@ -203,7 +199,6 @@
 
     <script>
         Vue.component('bundle-option-list', {
-
             template: '#bundle-option-list-template',
 
             inject: ['$validator'],
@@ -234,7 +229,6 @@
         });
 
         Vue.component('bundle-option-item', {
-
             template: '#bundle-option-item-template',
 
             props: ['index', 'option'],
@@ -265,7 +259,6 @@
         });
 
         Vue.component('bundle-product-list', {
-
             template: '#bundle-product-list-template',
 
             inject: ['$validator'],
@@ -292,7 +285,7 @@
 
             methods: {
                 addProduct: function(item, key) {
-                    var alreadyAdded = false;
+                    let alreadyAdded = false;
 
                     this.bundle_option_products.forEach(function(optionProduct) {
                         if (item.id == optionProduct.product.id) {
@@ -331,24 +324,24 @@
                         return;
                     }
 
-                    var this_this = this;
+                    let self = this;
 
                     this.$http.get ("{{ route('admin.catalog.products.search_simple_product') }}", {params: {query: this.search_term}})
                         .then (function(response) {
-                            this_this.searched_results = response.data;
+                            self.searched_results = response.data;
 
-                            this_this.is_searching = false;
+                            self.is_searching = false;
                         })
                         .catch (function (error) {
-                            this_this.is_searching = false;
+                            self.is_searching = false;
                         })
                 },
 
                 checkProduct: function(productId) {
-                    var this_this = this;
+                    let self = this;
 
                     this.bundle_option_products.forEach(function(product) {
-                        if (this_this.bundleOption.type == 'radio' || this_this.bundleOption.type == 'select') {
+                        if (self.bundleOption.type == 'radio' || self.bundleOption.type == 'select') {
                             product.is_default = product.product.id == productId ? 1 : 0;
                         } else {
                             if (product.product.id == productId)
@@ -360,7 +353,6 @@
         });
 
         Vue.component('bundle-product-item', {
-
             template: '#bundle-product-item-template',
 
             props: ['controlName', 'index', 'bundleOption', 'product'],
@@ -387,5 +379,4 @@
             }
         });
     </script>
-
 @endpush

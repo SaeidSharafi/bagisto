@@ -1,5 +1,4 @@
-@section('css')
-    @parent
+@push('css')
     <style>
         .table th.price, .table th.weight {
             width: 100px;
@@ -14,11 +13,11 @@
             margin-right: 10px;
         }
     </style>
-@stop
+@endpush
 
 {!! view_render_event('bagisto.admin.catalog.product.edit_form_accordian.grouped_products.before', ['product' => $product]) !!}
 
-<accordian :title="'{{ __('admin::app.catalog.products.grouped-products') }}'" :active="true">
+<accordian title="{{ __('admin::app.catalog.products.grouped-products') }}" :active="true">
     <div slot="body">
 
         {!! view_render_event('bagisto.admin.catalog.product.edit_form_accordian.grouped_products.controls.before', ['product' => $product]) !!}
@@ -33,7 +32,6 @@
 {!! view_render_event('bagisto.admin.catalog.product.edit_form_accordian.grouped_products.after', ['product' => $product]) !!}
 
 @push('scripts')
-
     <script type="text/x-template" id="grouped-product-list-template">
         <div>
             <div class="control-group">
@@ -60,7 +58,6 @@
 
             <div class="table" style="margin-top: 20px; overflow-x: unset;">
                 <table>
-
                     <thead>
                         <tr>
                             <th class="name">{{ __('admin::app.catalog.products.name') }}</th>
@@ -76,7 +73,6 @@
                         <grouped-product-item v-for='(groupedProduct, index) in grouped_products' :grouped-product="groupedProduct" :key="index" :index="index" @onRemoveGroupedProduct="removeGroupedProduct($event)"></grouped-product-item>
 
                     </tbody>
-
                 </table>
             </div>
         </div>
@@ -113,7 +109,6 @@
 
     <script>
         Vue.component('grouped-product-list', {
-
             template: '#grouped-product-list-template',
 
             inject: ['$validator'],
@@ -138,7 +133,7 @@
 
             methods: {
                 addGroupedProduct: function(item, key) {
-                    var alreadyAdded = false;
+                    let alreadyAdded = false;
 
                     this.grouped_products.forEach(function(groupProduct) {
                         if (item.id == groupProduct.associated_product.id) {
@@ -176,23 +171,22 @@
                         return;
                     }
 
-                    var this_this = this;
+                    let self = this;
 
                     this.$http.get ("{{ route('admin.catalog.products.search_simple_product') }}", {params: {query: this.search_term}})
                         .then (function(response) {
-                            this_this.searched_results = response.data;
+                            self.searched_results = response.data;
 
-                            this_this.is_searching = false;
+                            self.is_searching = false;
                         })
                         .catch (function (error) {
-                            this_this.is_searching = false;
+                            self.is_searching = false;
                         })
                 }
             }
         });
 
         Vue.component('grouped-product-item', {
-
             template: '#grouped-product-item-template',
 
             props: ['index', 'groupedProduct'],

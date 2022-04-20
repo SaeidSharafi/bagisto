@@ -32,7 +32,7 @@
 
                     <input name="_method" type="hidden" value="PUT">
 
-                    <accordian :title="'{{ __('admin::app.settings.inventory_sources.general') }}'" :active="true">
+                    <accordian title="{{ __('admin::app.settings.inventory_sources.general') }}" :active="true">
                         <div slot="body">
 
                             <div class="control-group" :class="[errors.has('code') ? 'has-error' : '']">
@@ -52,19 +52,22 @@
                                 <textarea class="control" id="description" name="description">{{ old('description') ?: $inventorySource->description }}</textarea>
                             </div>
 
-                            <div class="control-group">
+                            <div class="control-group" :class="[errors.has('latitude') ? 'has-error' : '']">
                                 <label for="latitude">{{ __('admin::app.settings.inventory_sources.latitude') }}</label>
-                                <input class="control" id="latitude" name="latitude" value="{{ old('latitude') ?: $inventorySource->latitude }}"/>
+                                <input class="control" id="latitude" name="latitude" value="{{ old('latitude') ?: $inventorySource->latitude }}" v-validate="'between:-90,90'"/>
+                                <span class="control-error" v-if="errors.has('latitude')">@{{ errors.first('latitude') }}</span>
                             </div>
 
-                            <div class="control-group">
+                            <div class="control-group" :class="[errors.has('longitude') ? 'has-error' : '']">
                                 <label for="longitude">{{ __('admin::app.settings.inventory_sources.longitude') }}</label>
-                                <input class="control" id="longitude" name="longitude" value="{{ old('longitude') ?: $inventorySource->longitude }}"/>
+                                <input class="control" id="longitude" name="longitude" value="{{ old('longitude') ?: $inventorySource->longitude }}" v-validate="'between:-180,180'"/>
+                                <span class="control-error" v-if="errors.has('longitude')">@{{ errors.first('longitude') }}</span>
                             </div>
 
-                            <div class="control-group">
+                            <div class="control-group" :class="[errors.has('priority') ? 'has-error' : '']">
                                 <label for="priority">{{ __('admin::app.settings.inventory_sources.priority') }}</label>
-                                <input class="control" id="priority" name="priority" value="{{ old('priority') ?: $inventorySource->priority }}"/>
+                                <input class="control" id="priority" name="priority" value="{{ old('priority') ?: $inventorySource->priority }}" v-validate="'numeric'"/>
+                                <span class="control-error" v-if="errors.has('priority')">@{{ errors.first('priority') }}</span>
                             </div>
 
                             <div class="control-group">
@@ -79,7 +82,7 @@
                         </div>
                     </accordian>
 
-                    <accordian :title="'{{ __('admin::app.settings.inventory_sources.contact-info') }}'" :active="true">
+                    <accordian title="{{ __('admin::app.settings.inventory_sources.contact-info') }}" :active="true">
                         <div slot="body">
 
                             <div class="control-group" :class="[errors.has('contact_name') ? 'has-error' : '']">
@@ -108,7 +111,7 @@
                         </div>
                     </accordian>
 
-                    <accordian :title="'{{ __('admin::app.settings.inventory_sources.address') }}'" :active="true">
+                    <accordian title="{{ __('admin::app.settings.inventory_sources.address') }}" :active="true">
                         <div slot="body">
 
                             @include ('admin::customers.country-state', ['countryCode' => old('country') ?? $inventorySource->country, 'stateCode' => old('state') ?? $inventorySource->state])
