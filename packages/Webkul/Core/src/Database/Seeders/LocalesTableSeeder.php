@@ -18,6 +18,7 @@ class LocalesTableSeeder extends Seeder
                 'id'   => 1,
                 'code' => 'fa',
                 'name' => 'فارسی',
+                'direction' => 'rtl'
             ],
             [
                 'id'   => 2,
