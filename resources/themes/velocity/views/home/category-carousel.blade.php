@@ -6,7 +6,7 @@
             $image_path = $category->image ?$base .$category->image : '/images/category-base.png';
             @endphp
             <div class="col-lg-2 col-md-3">
-                    <a href="/{{$category->slug}}}"
+                    <a href="/{{$category->slug}}"
                        class="d-block">
                         <div class="category-item">
                             <img src="{{$image_path}}" class="w-100">
