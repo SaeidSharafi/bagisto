@@ -2,16 +2,82 @@
 
 namespace App\Http\Controllers\Shop\Customer;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\Shop\CustomerProfileRequest;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Webkul\Customer\Http\Controllers\CustomerController;
-use Webkul\Customer\Http\Requests\CustomerProfileRequest;
+use Webkul\Core\Repositories\SubscribersListRepository;
+use Webkul\Customer\Http\Controllers\Controller;
+use Webkul\Customer\Repositories\CustomerRepository;
+use Webkul\Product\Repositories\ProductReviewRepository;
 use Webkul\Shop\Mail\SubscriptionEmail;
 
-class JeduCustomerController extends CustomerController
+class JeduCustomerController extends Controller
 {
+    /**
+     * Contains route related configuration.
+     *
+     * @var array
+     */
+    protected $_config;
+
+    /**
+     * Customer repository instance.
+     *
+     * @var \Webkul\Customer\Repositories\CustomerRepository
+     */
+    protected $customerRepository;
+
+    /**
+     * Product review repository instance.
+     *
+     * @var \Webkul\Customer\Repositories\ProductReviewRepository
+     */
+    protected $productReviewRepository;
+
+    /**
+     * Subscribers list repository instance.
+     *
+     * @var \Webkul\Core\Repositories\SubscribersListRepository
+     */
+    protected $subscriptionRepository;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param  \Webkul\Customer\Repositories\CustomerRepository  $customerRepository
+     * @param  \Webkul\Product\Repositories\ProductReviewRepository  $productReviewRepository
+     * @param  \Webkul\Core\Repositories\SubscribersListRepository  $subscriptionRepository
+     * @return void
+     */
+    public function __construct(
+        CustomerRepository $customerRepository,
+        ProductReviewRepository $productReviewRepository,
+        SubscribersListRepository $subscriptionRepository
+    ) {
+        $this->middleware('customer');
+
+        $this->_config = request('_config');
+
+        $this->customerRepository = $customerRepository;
+
+        $this->productReviewRepository = $productReviewRepository;
+
+        $this->subscriptionRepository = $subscriptionRepository;
+    }
+
+    /**
+     * For loading the edit form page.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function edit()
+    {
+        $customer = $this->customerRepository->find(auth()->guard('customer')->user()->id);
+
+        return view($this->_config['view'], compact('customer'));
+    }
+
     /**
      * Edit function for editing customer profile.
      *
