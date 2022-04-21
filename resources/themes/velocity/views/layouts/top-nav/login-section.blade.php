@@ -4,7 +4,7 @@
         <div id="account" class="account-menu d-flex align-items-center">
             @auth('customer')
             <div class="d-inline-block welcome-content" @click="togglePopup">
-                <i class="fa-user far px-2"></i>
+                <i class="fa-user far px-1"></i>
                 <i class="fa fa-caret-down"></i>
             </div>
             @endauth
