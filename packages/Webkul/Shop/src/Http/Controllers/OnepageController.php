@@ -64,8 +64,7 @@ class OnepageController extends Controller
             return redirect()->route('shop.checkout.cart.index');
         }
         if (!auth()->guard('customer')->user()->first_name
-            || !auth()->guard('customer')->user()->last_name
-            || !auth()->guard('customer')->user()->email) {
+            || !auth()->guard('customer')->user()->last_name) {
 
             return redirect()->route('customer.profile.edit')
                 ->with('warning',"لطفا پروفایل خود را تکمیل نمایید");
@@ -148,6 +147,16 @@ class OnepageController extends Controller
     }
 
     /**
+     * Get Payment methods.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getPaymentMethods()
+    {
+        return response()->json(Payment::getSupportedPaymentMethods());
+    }
+
+    /**
      * Saves shipping method.
      *
      * @return \Illuminate\Http\Response
@@ -205,11 +214,13 @@ class OnepageController extends Controller
 
         $cart = Cart::getCart();
 
-        if ($redirectUrl = Payment::getRedirectUrl($cart)) {
-            return response()->json([
-                'success'      => true,
-                'redirect_url' => $redirectUrl,
-            ]);
+        if ($cart->grand_total != 0){
+            if ($redirectUrl = Payment::getRedirectUrl($cart)) {
+                return response()->json([
+                    'success'      => true,
+                    'redirect_url' => $redirectUrl,
+                ]);
+            }
         }
 
         $order = $this->orderRepository->create(Cart::prepareDataForOrder());
