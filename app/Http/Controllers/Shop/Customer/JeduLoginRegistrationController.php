@@ -2,19 +2,15 @@
 
 namespace App\Http\Controllers\Shop\Customer;
 
-use App\Jobs\SendSMS;
-use App\Requests\Shop\JeduCustomerRegistrationRequest;
+use App\Http\Requests\Shop\JeduCustomerRegistrationRequest;
 use App\Services\OTP;
 use App\Services\PrepareOtpSms;
-
 use App\Services\SmsBuilder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
-
 use Webkul\Customer\Mail\RegistrationEmail;
 use Webkul\Customer\Mail\VerificationEmail;
 

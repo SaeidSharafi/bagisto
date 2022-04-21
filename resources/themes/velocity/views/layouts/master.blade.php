@@ -58,7 +58,7 @@
                     <header class="row velocity-divide-page vc-header header-shadow active">
                         {{-- mobile header --}}
                         <div class="vc-small-screen container">
-                            @include('velocity::layouts.header.mobile')
+                            @include('shop::layouts.header.mobile')
                         </div>
                     </header>
 
@@ -96,6 +96,7 @@
 
         {{-- overlay loader --}}
         <velocity-overlay-loader></velocity-overlay-loader>
+        <go-top bg-color="#26A37C"></go-top>
     </div>
 
     {{-- footer --}}

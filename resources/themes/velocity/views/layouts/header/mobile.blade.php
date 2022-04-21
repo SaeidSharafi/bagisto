@@ -1,13 +1,11 @@
 @php
     $cart = cart()->getCart();
     $cartItemsCount = $cart ? $cart->items->count() : trans('shop::app.minicart.zero');
-      $showWishlist = core()->getConfigData('general.content.shop.wishlist_option') == "1" ? true : false;
-       $showCompare = core()->getConfigData('general.content.shop.compare_option') == "1" ? true : false;
 @endphp
 
 <mobile-header
     is-customer="{{ auth()->guard('customer')->check() ? 'true' : 'false' }}"
-    heading="{{ __('velocity::app.menu-navbar.text-category') }}"
+    heading= "{{ __('velocity::app.menu-navbar.text-category') }}"
     :header-content="{{ json_encode(app('Webkul\Velocity\Repositories\ContentRepository')->getAllContents()) }}"
     category-count="{{ $velocityMetaData ? $velocityMetaData->sidebar_category_count : 10 }}"
     cart-items-count="{{ $cartItemsCount }}"
@@ -26,23 +24,11 @@
             </div>
 
             <a class="left" href="{{ route('shop.home.index') }}" aria-label="Logo">
-                <img class="logo" src="{{ core()->getCurrentChannel()->logo_url ?? asset('themes/velocity/assets/images/logo-text.png') }}" alt=""/>
+                <img class="logo" src="{{ core()->getCurrentChannel()->logo_url ?? asset('themes/velocity/assets/images/logo-text.png') }}" alt="" />
             </a>
         </div>
 
         <div class="right-vc-header col-6">
-            @if ($showCompare)
-                <a href="{{ auth()->guard('customer')->check() ? route('velocity.customer.product.compare') : route('velocity.product.compare') }}" class="compare-btn unset">
-                    <i class="material-icons">compare_arrows</i>
-                </a>
-            @endif
-
-            @if ($showWishlist)
-                <a href="{{ route('customer.wishlist.index') }}" class="wishlist-btn unset">
-                    <i class="material-icons">favorite_border</i>
-                </a>
-            @endif
-
             <a class="unset cursor-pointer">
                 <i class="material-icons">search</i>
             </a>
@@ -131,10 +117,17 @@
     <template v-slot:extra-navigation>
         <li>
             @auth('customer')
+                <form id="customerLogout" action="{{ route('customer.session.destroy') }}" method="POST">
+                    @csrf
+
+                    @method('DELETE')
+                </form>
+
                 <a
                     class="unset"
-                    href="{{ route('customer.session.destroy') }}">
-                    <span>{{ __('shop::app.header.logout') }}</span>
+                    href="{{ route('customer.session.destroy') }}"
+                    onclick="event.preventDefault(); document.getElementById('customerLogout').submit();">
+                    {{ __('shop::app.header.logout') }}
                 </a>
             @endauth
 
@@ -151,20 +144,16 @@
 
     <template v-slot:logo>
         <a class="left" href="{{ route('shop.home.index') }}" aria-label="Logo">
-            <img class="logo" src="{{ core()->getCurrentChannel()->logo_url ?? asset('themes/velocity/assets/images/logo-text.png') }}" alt=""/>
+            <img class="logo" src="{{ core()->getCurrentChannel()->logo_url ?? asset('themes/velocity/assets/images/logo-text.png') }}" alt="" />
         </a>
     </template>
 
-    <template v-slot:top-header>
-        @include('velocity::layouts.particals.compare', ['isText' => false])
 
-        @include('velocity::layouts.particals.wishlist', ['isText' => false])
-    </template>
 
     <template v-slot:search-bar>
         <div class="row">
             <div class="col-md-12">
-                @include('velocity::layouts.particals.search-bar')
+                @include('velocity::shop.layouts.particals.search-bar')
             </div>
         </div>
     </template>

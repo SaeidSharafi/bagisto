@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Requests\Shop;
+namespace App\Http\Requests\Shop;
 
 use Webkul\Customer\Facades\Captcha;
 

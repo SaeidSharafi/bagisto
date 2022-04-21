@@ -3,14 +3,11 @@
 namespace App\Http\Controllers\Shop\Customer;
 
 use App\Http\Controllers\Controller;
-use App\Jobs\SendSMS;
-use App\Requests\Shop\JeduCustomerLoginRequest;
+use App\Http\Requests\Shop\JeduCustomerLoginRequest;
 use App\Services\OTP;
 use App\Services\PrepareOtpSms;
 use App\Services\SmsBuilder;
 use Illuminate\Support\Facades\Event;
-use PharIo\Version\Exception;
-use Webkul\Customer\Http\Requests\CustomerLoginRequest;
 use Webkul\Customer\Repositories\CustomerRepository;
 
 class JeduSessionController
