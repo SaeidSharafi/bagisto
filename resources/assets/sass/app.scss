@@ -1229,18 +1229,26 @@ body.rtl .category-list-container li a {
     margin-left: auto;
     margin-right: auto;
 }
-.dropdown-toggle{
-    &::after{
-        display: none;
-    }
-    .mini-cart-content{
-        .fa-caret-down{
-            font-size: 1.2rem;
-            position: relative;
-            top: -2px;
+header {
+    .mini-cart-container {
+        #mini-cart {
+            &.dropdown-toggle{
+                &::after{
+                    display: none;
+                }
+            }
+            .mini-cart-content {
+                margin-right: 0;
+                .fa-caret-down{
+                    font-size: 1.2rem;
+                    position: relative;
+                    top: -2px;
+                }
+            }
         }
     }
 }
+
 
 
 

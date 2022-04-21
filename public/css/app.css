@@ -7475,6 +7475,18 @@ body.rtl .category-list-container li a {
   margin-right: auto;
 }
 
+header .mini-cart-container #mini-cart.dropdown-toggle::after {
+  display: none;
+}
+header .mini-cart-container #mini-cart .mini-cart-content {
+  margin-right: 0;
+}
+header .mini-cart-container #mini-cart .mini-cart-content .fa-caret-down {
+  font-size: 1.2rem;
+  position: relative;
+  top: -2px;
+}
+
 @media (min-width: 1320px) {
   .category-block .product-cell {
     flex: 0 0 20%;

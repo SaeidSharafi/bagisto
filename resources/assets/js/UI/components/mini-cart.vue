@@ -2,15 +2,12 @@
     <div :class="`dropdown ${cartItems.length > 0 ? '' : 'disable-active'}`">
         <div class="dropdown-toggle btn btn-link" id="mini-cart" :class="{'cursor-not-allowed': ! cartItems.length}">
             <div class="mini-cart-content">
-                <i class="material-icons-outlined">shopping_cart</i>
+                <i class="material-icons-outlined text-down-3">shopping_cart</i>
+                <i class="fa fa-caret-down"></i>
                 <div class="badge-container">
                     <span class="badge" v-text="cartItems.length" v-if="cartItems.length != 0"></span>
                 </div>
-                <span class="fs18 fw6 cart-text" v-text="cartText"></span>
-            </div>
-
-            <div class="down-arrow-container">
-                <span class="rango-arrow-down"></span>
+                <span class="fs18 fw6 cart-text" v-if="cartText" v-text="cartText"></span>
             </div>
         </div>
 
