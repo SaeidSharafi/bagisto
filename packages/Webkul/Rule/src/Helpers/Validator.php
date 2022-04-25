@@ -35,7 +35,6 @@ class Validator
 
             if ($rule->condition_type == 1) {
                 if (! $this->validateObject($condition, $entity)) {
-
                     return false;
                 } else {
                     $validConditionCount++;
@@ -100,7 +99,7 @@ class Validator
             case 'product':
 
                 if ($attributeCode == 'category_ids') {
-                    if ($entity->product->parent){
+                    if (!$entity->product->categories()->exists() && $entity->product->parent){
                         return $entity->product
                             ? $entity->product->parent->categories()->pluck('id')->toArray()
                             : $entity->categories()->pluck('id')->toArray();
@@ -108,6 +107,7 @@ class Validator
                     $value = $entity->product
                              ? $entity->product->categories()->pluck('id')->toArray()
                              : $entity->categories()->pluck('id')->toArray();
+
 
                     return $value;
                 } else {
