@@ -25,7 +25,7 @@ class CategoryTableSeeder extends Seeder
                 'status'     => '1',
                 '_lft'       => '15',
                 '_rgt'       => '16',
-                'parent_id'  => null,
+                'parent_id'  => '1',
                 'created_at' => $now,
                 'updated_at' => $now,
             ],
@@ -36,7 +36,7 @@ class CategoryTableSeeder extends Seeder
                 'status'     => '1',
                 '_lft'       => '17',
                 '_rgt'       => '18',
-                'parent_id'  => null,
+                'parent_id'  => '1',
                 'created_at' => $now,
                 'updated_at' => $now,
             ],
@@ -47,23 +47,13 @@ class CategoryTableSeeder extends Seeder
                 'status'     => '1',
                 '_lft'       => '19',
                 '_rgt'       => '20',
-                'parent_id'  => null,
+                'parent_id'  => '1',
                 'created_at' => $now,
                 'updated_at' => $now,
             ]
         ]);
 
         DB::table('category_translations')->insert([
-            [
-                'name'             => 'طبقه بندی دوره ها',
-                'slug'             => 'root',
-                'description'      => 'طبقه بندی دوره ها',
-                'meta_title'       => '',
-                'meta_description' => '',
-                'meta_keywords'    => '',
-                'category_id'      => '1',
-                'locale'           => 'fa',
-            ],
             [
                 'name'             => 'مجازی',
                 'slug'             => 'virtual',
