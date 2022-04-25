@@ -12,16 +12,14 @@ class JeduSimple extends Simple
     {
 
         if ($this->haveSpecialPrice()) {
-            $amount = "";
+            $discount='';
             if ($this->product->action_type === "by_percent") {
-                $amount = '<span class="discount-amount">'
-                    .core()->formatPercent($this->product->discount_amount)
-                    .'</span>';
+                $discount = core()->formatPercent($this->product->discount_amount);
             }
             return '<div class="discount"><span class="regular-price">'
                 .core()->currencyNoSymbole($this->evaluatePrice($this->product->price))
                 .'</span>'
-                .$amount
+                .'<span class=discount-amount>'.$discount.'</span>'
                 .'</div>'
                 .'<span class="final-price">'
                 .core()->currency($this->evaluatePrice($this->product->special_price))

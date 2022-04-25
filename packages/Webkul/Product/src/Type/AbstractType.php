@@ -760,10 +760,12 @@ abstract class AbstractType
             'regular_price' => [
                 'price'          => core()->convertPrice($this->evaluatePrice($this->product->price)),
                 'formated_price' => core()->currency($this->evaluatePrice($this->product->price)),
+                'discount' => $this->product->discount_amount ? core()->formatPercent($this->product->discount_amount) : null,
             ],
             'final_price'   => [
                 'price'          => core()->convertPrice($this->evaluatePrice($this->getMinimalPrice())),
                 'formated_price' => core()->currency($this->evaluatePrice($this->getMinimalPrice())),
+                'discount' =>  $this->product->discount_amount ? core()->formatPercent($this->product->discount_amount) : null,
             ],
         ];
     }

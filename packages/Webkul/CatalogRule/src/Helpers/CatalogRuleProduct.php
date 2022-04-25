@@ -149,7 +149,7 @@ class CatalogRuleProduct
                 ) {
                     continue;
                 }
-                
+
                 $appliedAttributes[] = $condition['attribute'];
 
                 $chunks = explode('|', $condition['attribute']);
@@ -164,6 +164,7 @@ class CatalogRuleProduct
 
         foreach ($qb->get() as $product) {
             if (! $product->getTypeInstance()->priceRuleCanBeApplied()) {
+                dd($product);
                 continue;
             }
 
@@ -178,7 +179,7 @@ class CatalogRuleProduct
 
         return array_unique($validatedProductIds);
     }
-    
+
     /**
      * Add product attribute condition to query
      *
@@ -197,7 +198,7 @@ class CatalogRuleProduct
         $query = $query->leftJoin('product_attribute_values as ' . 'pav_' . $attribute->code, function($qb) use($attribute) {
             $qb = $qb->where('pav_' . $attribute->code . '.channel', $attribute->value_per_channel ? core()->getDefaultChannelCode() : null)
                      ->where('pav_' . $attribute->code . '.locale', $attribute->value_per_locale ? app()->getLocale() : null);
-            
+
             $qb->on('products.id', 'pav_' . $attribute->code . '.product_id')
                ->where('pav_' . $attribute->code . '.attribute_id', $attribute->id);
         });

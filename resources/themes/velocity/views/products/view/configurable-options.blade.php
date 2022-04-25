@@ -14,7 +14,7 @@
 
     {!! view_render_event('bagisto.shop.products.view.configurable-options.before', ['product' => $product]) !!}
 
-        <product-options></product-options>
+    <product-options></product-options>
 
     {!! view_render_event('bagisto.shop.products.view.configurable-options.after', ['product' => $product]) !!}
 
@@ -67,10 +67,10 @@
 
                     <span class="swatch-container" v-else>
                         <label class="swatch"
-                            v-for='(option, index) in attribute.options'
-                            v-if="option.id"
-                            :data-id="option.id"
-                            :for="['attribute_' + attribute.id + '_option_' + option.id]">
+                               v-for='(option, index) in attribute.options'
+                               v-if="option.id"
+                               :data-id="option.id"
+                               :for="['attribute_' + attribute.id + '_option_' + option.id]">
 
                             <input
                                 type="radio"
@@ -84,7 +84,7 @@
 
                             <span v-if="attribute.swatch_type == 'color'" :style="{ background: option.swatch_value }"></span>
 
-                            <img v-if="attribute.swatch_type == 'image'" :src="option.swatch_value" :title="option.label" alt="" />
+                            <img v-if="attribute.swatch_type == 'image'" :src="option.swatch_value" :title="option.label" alt=""/>
 
                             <span v-if="attribute.swatch_type == 'text'">
                                 @{{ option.label }}
@@ -110,7 +110,7 @@
 
                     inject: ['$validator'],
 
-                    data: function() {
+                    data: function () {
                         return {
                             defaultVariant: @json($defaultVariant),
 
@@ -162,7 +162,7 @@
                             }
                         },
 
-                        initDefaultSelection: function() {
+                        initDefaultSelection: function () {
                             if (this.defaultVariant) {
                                 this.childAttributes.forEach((attribute) => {
                                     let attributeValue = this.defaultVariant[attribute.code];
@@ -172,7 +172,7 @@
                             }
                         },
 
-                        configure: function(attribute, value) {
+                        configure: function (attribute, value) {
 
                             this.simpleProduct = this.getSelectedProductId(attribute, value);
                             console.log(this.simpleProduct);
@@ -198,10 +198,10 @@
                             this.changeStock(this.simpleProduct);
                         },
 
-                        getSelectedIndex: function(attribute, value) {
+                        getSelectedIndex: function (attribute, value) {
                             let selectedIndex = 0;
 
-                            attribute.options.forEach(function(option, index) {
+                            attribute.options.forEach(function (option, index) {
                                 if (option.id == value) {
                                     selectedIndex = index;
                                 }
@@ -210,7 +210,7 @@
                             return selectedIndex;
                         },
 
-                        getSelectedProductId: function(attribute, value) {
+                        getSelectedProductId: function (attribute, value) {
 
                             let options = attribute.options,
                                 matchedOptions;
@@ -222,7 +222,7 @@
                             if (matchedOptions[0] != undefined && matchedOptions[0].allowedProducts != undefined) {
                                 console.log("matchedOptions: " + this.config.parent);
                                 return matchedOptions[0].allowedProducts[0];
-                            }else {
+                            } else {
                                 console.log("parent: " + this.config.parent);
                                 return this.config.parent;
                             }
@@ -230,7 +230,7 @@
                             return undefined;
                         },
 
-                        fillSelect: function(attribute) {
+                        fillSelect: function (attribute) {
                             let options = this.getAttributeOptions(attribute.id);
                             let prevOption;
                             let index = 1;
@@ -271,7 +271,7 @@
                             }
                         },
 
-                        resetChildren: function(attribute) {
+                        resetChildren: function (attribute) {
                             if (attribute.childAttributes) {
                                 attribute.childAttributes.forEach(function (set) {
                                     set.selectedIndex = 0;
@@ -281,10 +281,10 @@
                         },
 
                         clearSelect: function (attribute) {
-                            if (! attribute)
+                            if (!attribute)
                                 return;
 
-                            if (! attribute.swatch_type
+                            if (!attribute.swatch_type
                                 || attribute.swatch_type == ''
                                 || attribute.swatch_type == 'dropdown'
                             ) {
@@ -296,7 +296,7 @@
                             } else {
                                 let elements = document.getElementsByName(`super_attribute[${attribute.id}]`);
 
-                                elements.forEach(function(element) {
+                                elements.forEach(function (element) {
                                     element.checked = false;
                                 })
                             }
@@ -305,7 +305,7 @@
                         getAttributeOptions: function (attributeId) {
                             let options;
 
-                            this.config.attributes.forEach(function(attribute, index) {
+                            this.config.attributes.forEach(function (attribute, index) {
                                 if (attribute.id == attributeId) {
                                     options = attribute.options;
                                 }
@@ -317,19 +317,27 @@
                         reloadPrice: function () {
                             let selectedOptionCount = 0;
 
-                            this.childAttributes.forEach(function(attribute) {
+                            this.childAttributes.forEach(function (attribute) {
                                 if (attribute.selectedIndex) {
                                     selectedOptionCount++;
                                 }
                             });
 
                             // let priceLabelElement = document.querySelector('.price-label');
+                            let productDiscount = document.querySelector('.discount');
+                            let discountAmount = document.querySelector('.discount-amount');
                             let priceElement = document.querySelector('.final-price');
                             let regularPriceElement = document.querySelector('.regular-price');
                             // console.log(priceLabelElement);
                             if (this.childAttributes.length === selectedOptionCount) {
                                 // priceLabelElement.style.display = 'none';
-
+                                if(productDiscount && discountAmount){
+                                    productDiscount.classList.add('d-none');
+                                    if(this.config.variant_prices[this.simpleProduct].final_price.discount){
+                                        productDiscount.classList.remove('d-none');
+                                        discountAmount.innerHTML=this.config.variant_prices[this.simpleProduct].final_price.discount;
+                                    }
+                                }
                                 priceElement.innerHTML = this.config.variant_prices[this.simpleProduct].final_price.formated_price;
 
                                 if (regularPriceElement) {
@@ -350,23 +358,23 @@
                             console.log(galleryImages);
                             galleryImages.splice(0, galleryImages.length)
                             console.log(galleryImages);
-                            this.galleryImages.forEach(function(image) {
+                            this.galleryImages.forEach(function (image) {
                                 galleryImages.push(image)
                             });
 
                             if (this.simpleProduct) {
-                                this.config.variant_images[this.simpleProduct].forEach(function(image) {
+                                this.config.variant_images[this.simpleProduct].forEach(function (image) {
                                     galleryImages.push(image)
                                 });
 
-                                this.config.variant_videos[this.simpleProduct].forEach(function(video) {
+                                this.config.variant_videos[this.simpleProduct].forEach(function (video) {
                                     galleryImages.push(video)
                                 });
                             }
 
-                            galleryImages.forEach(function(image){
+                            galleryImages.forEach(function (image) {
                                 if (image.type == 'video') {
-                                    image.small_image_url = image.medium_image_url = image.large_image_url = image.original_image_url= image.video_url;
+                                    image.small_image_url = image.medium_image_url = image.large_image_url = image.original_image_url = image.video_url;
                                 }
                             });
 
@@ -377,9 +385,9 @@
                             let inStockElement = document.querySelector('.disable-box-shadow');
 
                             if (productId) {
-                                inStockElement.style.display= "block";
+                                inStockElement.style.display = "block";
                             } else {
-                                inStockElement.style.display= "none";
+                                inStockElement.style.display = "none";
                             }
                         },
                     }

@@ -11,6 +11,7 @@ class JeduConfigurable extends Configurable
 {
 
     protected $fillableTypes = ['sku', 'name', 'url_key', 'short_description', 'description', 'price', 'status'];
+
     /**
      * Get product minimal price.
      *
@@ -18,19 +19,17 @@ class JeduConfigurable extends Configurable
      */
     public function getPriceHtml()
     {
-
+        $discount = $regular_price = '';
         if ($offer = $this->getOfferPrice()) {
-            $amount = "";
 
             if ($offer['action_type'] === "by_percent") {
-                $amount = '<span class="discount-amount">'
-                    .core()->formatPercent($offer['discount_amount'])
-                    .'</span>';
+                $discount = core()->formatPercent($offer['discount_amount']);
             }
+            $regular_price = core()->currencyNoSymbole($this->evaluatePrice($this->getMaximamPrice()));
             return '<div class="discount"><span class="regular-price">'
-                .core()->currencyNoSymbole($this->evaluatePrice($this->getMaximamPrice()))
+                .$regular_price
                 .'</span>'
-                .$amount
+                .'<span class=discount-amount>'.$discount.'</span>'
                 .'</div>'
                 .'<span class="final-price">'
                 .core()->currency($this->evaluatePrice($offer['price']))
@@ -39,7 +38,11 @@ class JeduConfigurable extends Configurable
         if (core()->getCurrentLocale()
             && core()->getCurrentLocale()->direction == 'rtl'
         ) {
-            return '<span class="final-price">'
+            return
+                '<div class="discount d-none"><span class="regular-price"></span>'
+                .'<span class=discount-amount></span>'
+                .'</div>'
+                .'<span class="final-price">'
                 .core()->currency($this->evaluatePrice($this->getMaximamPrice()))
                 .'</span>';
         }
@@ -99,6 +102,7 @@ class JeduConfigurable extends Configurable
      * Get product base image.
      *
      * @param  \Webkul\Customer\Contracts\Wishlist|\Webkul\Checkout\Contracts\CartItem  $item
+     *
      * @return array
      */
     public function getBaseImage($item)
@@ -128,15 +132,16 @@ class JeduConfigurable extends Configurable
      * Create variant.
      *
      * @param  \Webkul\Product\Contracts\Product  $product
-     * @param  array                              $permutation
-     * @param  array                              $data
+     * @param  array  $permutation
+     * @param  array  $data
+     *
      * @return \Webkul\Product\Contracts\Product
      */
     public function createVariant($product, $permutation, $data = [])
     {
-        if (! count($data)) {
+        if (!count($data)) {
             $data = [
-                'sku'         => $product->sku . '-variant-' . implode('-', $permutation),
+                'sku'         => $product->sku.'-variant-'.implode('-', $permutation),
                 'name'        => '',
                 'inventories' => [],
                 'price'       => 0,
@@ -147,9 +152,11 @@ class JeduConfigurable extends Configurable
         $data = $this->fillRequiredFields($data);
 
         $typeOfVariants = 'simple';
-        $productInstance = app(config('product_types.' . $product->type . '.class'));
+        $productInstance = app(config('product_types.'.$product->type.'.class'));
 
-        if (isset($productInstance->variantsType) && ! in_array($productInstance->variantsType, ['bundle', 'configurable', 'grouped'])) {
+        if (isset($productInstance->variantsType)
+            && !in_array($productInstance->variantsType, ['bundle', 'configurable', 'grouped'])
+        ) {
             $typeOfVariants = $productInstance->variantsType;
         }
 
@@ -161,7 +168,7 @@ class JeduConfigurable extends Configurable
         ]);
 
         foreach ($this->fillableTypes as $attributeCode) {
-            if (! isset($data[$attributeCode])) {
+            if (!isset($data[$attributeCode])) {
                 continue;
             }
 
@@ -231,9 +238,9 @@ class JeduConfigurable extends Configurable
     public function getTypeValidationRules()
     {
         return [
-            'variants.*.name'   => 'required',
-            'variants.*.sku'    => 'required',
-            'variants.*.price'  => 'required',
+            'variants.*.name'  => 'required',
+            'variants.*.sku'   => 'required',
+            'variants.*.price' => 'required',
         ];
     }
 
@@ -241,11 +248,12 @@ class JeduConfigurable extends Configurable
      * Add product. Returns error message if can't prepare product.
      *
      * @param  array  $data
+     *
      * @return array|string
      */
     public function prepareForCart($data)
     {
-        if (! isset($data['selected_configurable_option']) || ! $data['selected_configurable_option']) {
+        if (!isset($data['selected_configurable_option']) || !$data['selected_configurable_option']) {
             if ($this->getDefaultVariantId()) {
                 $data['selected_configurable_option'] = $this->getDefaultVariantId();
             } else {
@@ -257,7 +265,7 @@ class JeduConfigurable extends Configurable
 
         $childProduct = $this->productRepository->find($data['selected_configurable_option']);
 
-        if (! $childProduct->haveSufficientQuantity($data['quantity'])) {
+        if (!$childProduct->haveSufficientQuantity($data['quantity'])) {
             return trans('shop::app.checkout.cart.quantity.inventory_warning');
         }
 
@@ -265,16 +273,16 @@ class JeduConfigurable extends Configurable
 
         return [
             [
-                'product_id'        => $this->product->id,
-                'sku'               => $this->product->sku,
-                'name'              => $this->product->name,
-                'type'              => $this->product->type,
-                'quantity'          => $data['quantity'],
-                'price'             => $convertedPrice = core()->convertPrice($price),
-                'base_price'        => $price,
-                'total'             => $convertedPrice * $data['quantity'],
-                'base_total'        => $price * $data['quantity'],
-                'additional'        => $this->getAdditionalOptions($data),
+                'product_id' => $this->product->id,
+                'sku'        => $this->product->sku,
+                'name'       => $this->product->name,
+                'type'       => $this->product->type,
+                'quantity'   => $data['quantity'],
+                'price'      => $convertedPrice = core()->convertPrice($price),
+                'base_price' => $price,
+                'total'      => $convertedPrice * $data['quantity'],
+                'base_total' => $price * $data['quantity'],
+                'additional' => $this->getAdditionalOptions($data),
             ], [
                 'parent_id'  => $this->product->id,
                 'product_id' => (int) $data['selected_configurable_option'],

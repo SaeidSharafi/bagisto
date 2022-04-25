@@ -22,6 +22,7 @@ class Validator
         $validConditionCount = $totalConditionCount = 0;
 
         foreach ($rule->conditions as $condition) {
+
             if (! $condition['attribute'] || ! isset($condition['value']) || is_null($condition['value']) ||  $condition['value'] == '') {
                 continue;
             }
@@ -34,11 +35,13 @@ class Validator
 
             if ($rule->condition_type == 1) {
                 if (! $this->validateObject($condition, $entity)) {
+
                     return false;
                 } else {
                     $validConditionCount++;
                 }
             } else {
+
                 if ($this->validateObject($condition, $entity)) {
                     return true;
                 }
@@ -95,7 +98,13 @@ class Validator
                 return $entity->{$attributeCode};
 
             case 'product':
+
                 if ($attributeCode == 'category_ids') {
+                    if ($entity->product->parent){
+                        return $entity->product
+                            ? $entity->product->parent->categories()->pluck('id')->toArray()
+                            : $entity->categories()->pluck('id')->toArray();
+                    }
                     $value = $entity->product
                              ? $entity->product->categories()->pluck('id')->toArray()
                              : $entity->categories()->pluck('id')->toArray();
@@ -128,7 +137,6 @@ class Validator
 
         foreach ($this->getAllItems($this->getAttributeScope($condition), $entity) as $item) {
             $attributeValue = $this->getAttributeValue($condition, $item);
-
             if ($validated = $this->validateAttribute($condition, $attributeValue)) {
                 break;
             }
@@ -265,7 +273,7 @@ class Validator
         if (in_array($conditionValue, $attributeValue, true) === true) {
             return true;
         }
-        
+
         foreach ($attributeValue as $subValue) {
             if (is_array($subValue)) {
                 if (self::validateArrayValues($subValue, $conditionValue) === true) {
