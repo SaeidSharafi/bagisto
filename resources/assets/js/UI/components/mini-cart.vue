@@ -1,5 +1,5 @@
 <template>
-    <div :class="`dropdown ${cartItems.length > 0 ? '' : 'disable-active'}`">
+    <div :class="`dropdown ${cartItems.length > 0 ? 'disable-active' : 'disable-active'}`">
         <div class="dropdown-toggle btn btn-link" id="mini-cart" :class="{'cursor-not-allowed': ! cartItems.length}">
             <div class="mini-cart-content">
                 <i class="material-icons-outlined text-down-3">shopping_cart</i>
@@ -14,6 +14,7 @@
         <div
             id="cart-modal-content"
             class="modal-content dropdown-list sensitive-modal cart-modal-content"
+            style="display: none;"
             :class="{hide: ! cartItems.length}"
         >
             <div class="mini-cart-container">
