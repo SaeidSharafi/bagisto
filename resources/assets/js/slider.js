@@ -226,8 +226,18 @@ if ($('.main-content .slideshow').length > 1) {
     $(window).on('scroll', homeSlideshowParallax);
 }
 document.addEventListener("DOMContentLoaded", () => {
+    let div = $('.slideshow');
+    let width = div.width() / 3;
+
+    div.css('height', width);
     $('.slide').addClass('is-loaded');
 });
+window.addEventListener('resize',() =>{
+    console.log("resize");
+    let div = $('.slideshow');
+    let width = div.width() / 3;
+    div.css('height', width);
+})
 // import Splide from '@splidejs/splide';
 // // import Swiper from 'tiny-swiper'
 //
