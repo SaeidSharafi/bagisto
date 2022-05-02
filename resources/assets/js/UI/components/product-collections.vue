@@ -97,21 +97,27 @@ export default {
             "slidesToScroll": 1,
             "responsive": [
                 {
-                    "breakpoint": 1200,
+                    "breakpoint": 1400,
                     "settings": {
                         "slidesToShow": 5
                     }
                 },
                 {
-                    "breakpoint": 992,
+                    "breakpoint": 1200,
                     "settings": {
                         "slidesToShow": 4
                     }
                 },
                 {
-                    "breakpoint": 768,
+                    "breakpoint": 992,
                     "settings": {
                         "slidesToShow": 3
+                    }
+                },
+                {
+                    "breakpoint": 768,
+                    "settings": {
+                        "slidesToShow": 2
                     }
                 },
                 {
@@ -121,7 +127,7 @@ export default {
                     }
                 },
                 {
-                    "breakpoint": 480,
+                    "breakpoint": 420,
                     "settings": {
                         "slidesToShow": 1
                     }
