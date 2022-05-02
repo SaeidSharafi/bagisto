@@ -71,19 +71,6 @@
                             <span :class="`control-error ${errors.has('comment') ? '' : 'hide'}`" v-text="errors.first('comment')"></span>
                         </div>
 
-                        <div class="{!! $errors->has('images.*') ? 'has-error' : '' !!}">
-                            <label>{{ __('admin::app.catalog.categories.image') }}</label>
-
-                            <image-wrapper></image-wrapper>
-
-                            <span class="control-error" v-if="{!! $errors->has('images.*') !!}">
-                                @php $count=1 @endphp
-                                @foreach ($errors->get('images.*') as $key => $message)
-                                    @php echo str_replace($key, 'Image'.$count, $message[0]); $count++ @endphp
-                                @endforeach
-                            </span>
-                        </div>
-
                         <div class="submit-btn">
                             <button
                                 type="submit"

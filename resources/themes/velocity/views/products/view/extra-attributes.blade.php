@@ -55,7 +55,7 @@
         @endforeach
         <div class="tab-pane" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
             {{-- reviews count --}}
-            @include ('shop::products.view.reviews', ['accordian' => true])
+            @include ('shop::products.view.reviews', ['accordian' => false])
         </div>
     </div>
 @endif
