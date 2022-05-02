@@ -55,7 +55,7 @@
         <div class="row align-items-stretch justify-content-center featured-slider">
             <div class="col-6 col-md-5 col-lg-4">
                 <div class="slider-side">
-                    <div class="item w-100 d-none d-md-block position-relative rounded overflow-hidden"
+                    <div class="item w-100 position-relative rounded overflow-hidden"
                     style="background-image: url('{{asset("/images/temp/futur-gold.png")}}');">
                         <div class="overlay-img">آینده طلاسازی</div>
                     </div>
@@ -81,7 +81,7 @@
 
 @section('full-content-wrapper')
 
-    <div class="full-content-wrapper py-3">
+    <div class="full-content-wrapper py-lg-3 py-md-1">
         {!! view_render_event('bagisto.shop.home.content.before') !!}
 
         @if ($velocityMetaData)

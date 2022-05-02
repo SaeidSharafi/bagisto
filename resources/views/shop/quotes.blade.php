@@ -1,4 +1,4 @@
-<section class="qoutes">
+<section class="qoutes overflow-hidden">
     <h4>
         درباره ما چه میگویند
     </h4>

@@ -1,11 +1,11 @@
 <div class="w-100 category-carousel {{$direction}} py-3">
-    <div class="row">
+    <div class="row no-gutters">
         @foreach($front_categories as $category)
             @php
             $base = "/storage/";
             $image_path = $category->image ?$base .$category->image : '/images/category-base.png';
             @endphp
-            <div class="col-lg-2 col-md-3">
+            <div class="col-lg-2 col-md-3 col-6">
                     <a href="/{{$category->slug}}"
                        class="d-block">
                         <div class="category-item">

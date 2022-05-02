@@ -53,7 +53,7 @@
 
                 {!! view_render_event('bagisto.shop.layout.header.after') !!}
 
-                <div class="main-content-wrapper col-12 no-padding d-block">
+                <div class="col-12 no-padding d-block">
                     {{-- secondary header --}}
                     <header class="row velocity-divide-page vc-header header-shadow active">
                         {{-- mobile header --}}
