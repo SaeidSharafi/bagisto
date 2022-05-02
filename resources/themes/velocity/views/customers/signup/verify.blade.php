@@ -40,7 +40,7 @@
                                 name="ver_code"
                                 v-validate="'required'"
                                 value="{{ old('ver_code') }}"
-                                data-vv-as="&quot;{{ __('shop::app.customer.signup-form.ver_code') }}&quot;" />
+                                data-vv-as="&quot;{{ __('shop::app.customer.login-form.otp_field') }}&quot;" />
 
                             <span class="control-error" v-if="errors.has('ver_code')" v-text="errors.first('ver_code')"></span>
                         </div>

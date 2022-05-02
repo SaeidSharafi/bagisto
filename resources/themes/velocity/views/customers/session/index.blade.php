@@ -70,7 +70,7 @@
                                     name="otp"
                                     v-validate="'required'"
                                     value="{{ old('otp') }}"
-                                    data-vv-as="&quot;{{ __('shop::app.customer.login-form.otp') }}&quot;"/>
+                                    data-vv-as="&quot;{{ __('shop::app.customer.login-form.otp_field') }}&quot;"/>
                                 </div>
                                 <span class="control-error" v-if="errors.has('otp')" v-text="errors.first('otp')"></span>
                                 <sms-timer http-request="{{route('sms.resend')}}"
