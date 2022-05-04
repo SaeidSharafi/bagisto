@@ -185,21 +185,14 @@
                             <tr>
                                 <td>
                                     <p>{{ $invoice->order->billing_address->company_name ?? '' }}</p>
-                                    <p>{{ $invoice->order->billing_address->name }}</p>
-                                    <p>{{ $invoice->order->billing_address->address1 }}</p>
-                                    <p>{{ $invoice->order->billing_address->city }}</p>
-                                    <p>{{ $invoice->order->billing_address->state }}</p>
-                                    <p>
-                                        {{ core()->country_name($invoice->order->billing_address->country) }}
-                                        {{ $invoice->order->billing_address->postcode }}
-                                    </p>
-                                    {{ __('shop::app.customer.account.order.view.contact') }} : {{ $invoice->order->billing_address->phone }}
+                                    <p>{{ $invoice->order->customer_first_name }} {{$invoice->order->customer_last_name}}</p>
+                                    {{ __('shop::app.customer.account.order.view.contact') }} : {{ $invoice->order->customer_phone }}
                                 </td>
 
                                 @if ($invoice->order->shipping_address)
                                     <td>
                                         <p>{{ $invoice->order->shipping_address->company_name ?? '' }}</p>
-                                        <p>{{ $invoice->order->shipping_address->name }}</p>
+                                        <p>{{ $invoice->order->customer_first_name }} {{$invoice->order->customer_last_name}}</p>
                                         <p>{{ $invoice->order->shipping_address->address1 }}</p>
                                         <p>{{ $invoice->order->shipping_address->city }}</p>
                                         <p>{{ $invoice->order->shipping_address->state }}</p>
