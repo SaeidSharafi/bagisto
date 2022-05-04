@@ -14,7 +14,7 @@
 
             <div class="page-action">
                 <date-filter></date-filter>
-               
+
             </div>
 
             <date-mobile-filter></date-mobile-filter>
@@ -380,11 +380,27 @@
     <script type="text/x-template" id="date-filter-template">
         <div id="calender-destop">
             <div class="control-group date">
-                <date @onChange="applyFilter('start', $event)" hide-remove-button="1"><input type="text" class="control" id="start_date" value="{{ $startDate->format('Y-m-d') }}" placeholder="{{ __('admin::app.dashboard.from') }}" v-model="start"/></date>
+                <div class="control">
+                    <p-date-picker
+                        @onDateChange="applyFilter('start', $event)"
+                        name="start_date"
+                        id="start_date"
+                        initial-value="{{  $startDate->format('Y-m-d')}}"
+                        placeholder="{{ __('admin::app.promotions.catalog-rules.to') }}"></p-date-picker>
+
+                </div>
             </div>
 
             <div class="control-group date">
-                <date @onChange="applyFilter('end', $event)" hide-remove-button="1"><input type="text" class="control" id="end_date" value="{{ $endDate->format('Y-m-d') }}" placeholder="{{ __('admin::app.dashboard.to') }}" v-model="end"/></date>
+                <div class="control">
+                    <p-date-picker
+                        @onDateChange="applyFilter('end', $event)"
+                        name="end_date"
+                        id="end_date"
+                        initial-value="{{  $endDate->format('Y-m-d')}}"
+                        placeholder="{{ __('admin::app.promotions.catalog-rules.to') }}"></p-date-picker>
+
+                </div>
             </div>
         </div>
     </script>
@@ -415,8 +431,8 @@
 
                 <div id="date-submit" style="">
                     <button class="btn btn-lg btn-primary" @click="applyFilter">Submit</button>
-                </div>              
-            </div>            
+                </div>
+            </div>
         </div>
     </script>
 
@@ -507,7 +523,8 @@
                             },
                             ticks: {
                                 beginAtZero: true,
-                                fontColor: 'rgba(162, 162, 162, 1)'
+                                fontColor: 'rgba(162, 162, 162, 1)',
+                                fontFamily: "'Source Sans Pro','IRANYEKAN', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'"
                             }
                         }],
                         yAxes: [{

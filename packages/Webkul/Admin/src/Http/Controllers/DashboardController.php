@@ -158,7 +158,8 @@ class DashboardController extends Controller
         ];
 
         foreach (core()->getTimeInterval($this->startDate, $this->endDate) as $interval) {
-            $statistics['sale_graph']['label'][] = $interval['start']->format('d M');
+
+            $statistics['sale_graph']['label'][] = $interval['start']->jdate('d M','en');
 
             $total = $this->getOrdersBetweenDate($interval['start'], $interval['end'])->sum('base_grand_total_invoiced') - $this->getOrdersBetweenDate($interval['start'], $interval['end'])->sum('base_grand_total_refunded');
 
