@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         include_once __DIR__ . '/../Helpers/jdf.php';
 
-        Carbon::macro('jdate', function ($format, $tr_num = 'fa') {
+        Carbon::macro('jdate', function ($format="", $tr_num = 'fa') {
             if (app()->getLocale() ==="fa"){
                 $format= $format ?: 'j F Y H:i:s';
                 return jdate($format, self::this()->timestamp, '', '', $tr_num);
