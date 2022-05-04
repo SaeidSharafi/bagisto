@@ -5,28 +5,12 @@
         <meta http-equiv="Cache-control" content="no-cache">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-        {{-- lang supports inclusion --}}
-        <style type="text/css">
-            @font-face {
-                font-family: 'Hind';
-                src: url({{ asset('vendor/webkul/ui/assets/fonts/Hind/Hind-Regular.ttf') }}) format('truetype');
-            }
 
-            @font-face {
-                font-family: 'Noto Sans';
-                src: url({{ asset('vendor/webkul/ui/assets/fonts/Noto/NotoSans-Regular.ttf') }}) format('truetype');
-            }
-        </style>
-
-        @php
-            /* main font will be set on locale based */
-            $mainFontFamily = app()->getLocale() === 'ar' ? 'DejaVu Sans' : 'Noto Sans';
-        @endphp
 
         {{-- main css --}}
         <style type="text/css">
             * {
-                font-family: '{{ $mainFontFamily }}';
+                direction: {{$direction}};
             }
 
             body, th, td, h5 {
@@ -59,6 +43,7 @@
                 border-top: solid 1px #d3d3d3;
                 border-bottom: solid 1px #d3d3d3;
                 border-left: solid 1px #d3d3d3;
+                border-right: solid 1px #d3d3d3;
                 padding: 5px 10px;
                 background: #F4F4F4;
             }
@@ -71,6 +56,7 @@
                 padding: 5px 10px;
                 border-bottom: solid 1px #d3d3d3;
                 border-left: solid 1px #d3d3d3;
+                border-right: solid 1px #d3d3d3;
                 color: #3A3A3A;
                 vertical-align: middle;
             }

@@ -253,8 +253,6 @@ return [
         Prettus\Repository\Providers\RepositoryServiceProvider::class,
         Konekt\Concord\ConcordServiceProvider::class,
         Flynsarmy\DbBladeCompiler\DbBladeCompilerServiceProvider::class,
-        Barryvdh\DomPDF\ServiceProvider::class,
-
         App\Providers\ShopCoreServiceProvider::class,
 
         /**
@@ -381,7 +379,6 @@ return [
         'Helper'  => Konekt\Concord\Facades\Helper::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'JeduCore' => \App\Shop\Facades\JeduCoreFacade::class,
-        'PDF' => Barryvdh\DomPDF\Facade::class,
         'ProductImage' => \App\Shop\Facades\ProductImage::class,
         //'ProductImage' => Webkul\Product\Facades\ProductImage::class
         'ProductVideo' => Webkul\Product\Facades\ProductVideo::class,

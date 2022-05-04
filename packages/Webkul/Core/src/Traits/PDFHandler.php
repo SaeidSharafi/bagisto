@@ -2,8 +2,10 @@
 
 namespace Webkul\Core\Traits;
 
+use App\Services\FarsiLanguageToFontImplementation;
 use Illuminate\Support\Str;
-use PDF;
+use Mpdf\Mpdf;
+use Mpdf\Output\Destination;
 
 trait PDFHandler
 {
@@ -12,6 +14,7 @@ trait PDFHandler
      *
      * @param  string  $html
      * @param  string  $fileName
+     *
      * @return \Illuminate\Http\Response
      */
     protected function downloadPDF(string $html, ?string $fileName = null)
@@ -22,15 +25,39 @@ trait PDFHandler
 
         $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
 
-        return PDF::loadHTML($this->adjustArabicAndPersianContent($html))
-            ->setPaper('a4')
-            ->download($fileName . '.pdf');
+        $document = new Mpdf([
+            'mode'           => 'utf-8',
+            'format'         => 'A4',
+            'margin_header'  => '3',
+            'margin_top'     => '20',
+            'margin_bottom'  => '20',
+            'margin_footer'  => '2',
+            'languageToFont' => new FarsiLanguageToFontImplementation(),
+            'fontDir'        => [
+                base_path().'/public/fonts/IranYekan/ttf',
+            ],
+            'fontdata'       => [
+                    'iranyekan' => [
+                        'R' => 'iranyekanwebregularfanum.ttf',
+                        'I' => 'iranyekanwebregularfanum.ttf',
+                        'useOTL' => 0xFF,
+                    ]
+                ],
+            'default_font' => 'iranyekan',
+            'direction'      => 'rtl'
+        ]);
+        $document->autoScriptToLang = true;
+        $document->autoLangToFont = true;
+        $document->SetDirectionality('rtl');
+        $document->WriteHTML($html);
+        return $document->Output($fileName.".pdf", Destination::DOWNLOAD);
     }
 
     /**
      * Adjust arabic and persian content.
      *
      * @param  string  $html
+     *
      * @return string
      */
     protected function adjustArabicAndPersianContent(string $html)
