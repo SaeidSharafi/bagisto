@@ -72,7 +72,7 @@
                                                 </span>
 
                                                 <span class="value">
-                                                    {{ $order->created_at }}
+                                                    {{ $order->created_at->jdate() }}
                                                 </span>
                                             </div>
 

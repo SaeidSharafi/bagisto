@@ -112,4 +112,27 @@ class JeduCore extends \Webkul\Core\Core
 
         return $formatter->format($number)."%";
     }
+
+    /**
+     * Format date using current channel.
+     *
+     * @param  \Illuminate\Support\Carbon|null  $date
+     * @param  string  $format
+     * @return string
+     */
+    public function formatDate($date = null, $format = 'd-m-Y H:i:s')
+    {
+        $channel = $this->getCurrentChannel();
+
+        if (is_null($date)) {
+            $date = Carbon::now();
+        }
+
+        $date->setTimezone($channel->timezone);
+
+        if (app()->getLocale() ==="fa"){
+            return $date->jdate($format);
+        }
+        return $date->format($format);
+    }
 }

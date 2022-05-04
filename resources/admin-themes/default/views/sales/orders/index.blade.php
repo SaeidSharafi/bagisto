@@ -25,7 +25,6 @@
             <datagrid-plus src="{{ route('admin.sales.orders.index') }}"></datagrid-plus>
         </div>
     </div>
-
     <modal id="downloadDataGrid" :is-open="modalIds.downloadDataGrid">
         <h3 slot="header">{{ __('admin::app.export.download') }}</h3>
         <div slot="body">

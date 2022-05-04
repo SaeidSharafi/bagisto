@@ -93,14 +93,14 @@
                                         </span>
 
                                         <span class="value">
-                                            {{ $transaction->created_at }}
+                                            {{ $transaction->created_at->jdate() }}
                                         </span>
                                     </div>
 
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </accordian>
 
@@ -132,7 +132,7 @@
 
                             </div>
                         </div>
-                        
+
                     </div>
                 </accordian>
 

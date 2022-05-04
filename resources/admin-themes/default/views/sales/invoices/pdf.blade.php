@@ -189,7 +189,7 @@
 
                 <div class="row">
                     <span class="label">{{ __('admin::app.sales.invoices.order-date') }} -</span>
-                    <span class="value">{{ $invoice->created_at->format('d-m-Y') }}</span>
+                    <span class="value">{{ $invoice->order->created_at->jdate('d-m-Y') }}</span>
                 </div>
 
                 @if ($invoice->hasPaymentTerm())

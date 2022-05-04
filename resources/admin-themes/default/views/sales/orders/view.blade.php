@@ -77,7 +77,7 @@
                                                 </span>
 
                                                 <span class="value">
-                                                    {{ $order->created_at }}
+                                                    {{ $order->created_at->jdate() }}
                                                 </span>
                                             </div>
 
@@ -497,9 +497,9 @@
                                 @foreach ($order->invoices as $invoice)
                                     <tr>
                                         <td>#{{ $invoice->increment_id ?? $invoice->id }}</td>
-                                        <td>{{ $invoice->created_at }}</td>
+                                        <td>{{ $invoice->created_at->jdate() }}</td>
                                         <td>#{{ $invoice->order->increment_id }}</td>
-                                        <td>{{ $invoice->customer->name }}</td>
+                                        <td></td>
                                         <td>{{ $invoice->status_label }}</td>
                                         <td>{{ core()->formatBasePrice($invoice->base_grand_total) }}</td>
                                         <td class="action">
@@ -541,7 +541,7 @@
                                 @foreach ($order->shipments as $shipment)
                                     <tr>
                                         <td>#{{ $shipment->id }}</td>
-                                        <td>{{ $shipment->created_at }}</td>
+                                        <td>{{ $shipment->created_at->jdate() }}</td>
                                         <td>{{ $shipment->carrier_title }}</td>
                                         <td>{{ $shipment->track_number }}</td>
                                         <td>{{ $shipment->total_qty }}</td>
@@ -585,7 +585,7 @@
                                 @foreach ($order->refunds as $refund)
                                     <tr>
                                         <td>#{{ $refund->id }}</td>
-                                        <td>{{ $refund->created_at }}</td>
+                                        <td>{{ $refund->created_at->jdate() }}</td>
                                         <td>#{{ $refund->order->increment_id }}</td>
                                         <td>{{ $refund->order->customer_full_name }}</td>
                                         <td>{{ __('admin::app.sales.refunds.refunded') }}</td>

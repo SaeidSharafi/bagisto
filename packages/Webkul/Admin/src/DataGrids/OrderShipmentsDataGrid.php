@@ -2,6 +2,7 @@
 
 namespace Webkul\Admin\DataGrids;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Webkul\Sales\Models\OrderAddress;
 use Webkul\Ui\DataGrid\DataGrid;
@@ -81,6 +82,10 @@ class OrderShipmentsDataGrid extends DataGrid
             'sortable'   => true,
             'searchable' => false,
             'filterable' => true,
+            'closure' => function ($value) {
+                return Carbon::createFromFormat('Y-m-d H:i:s',  $value->created_at)
+                    ->jdate();
+            }
         ]);
 
         $this->addColumn([
@@ -90,6 +95,10 @@ class OrderShipmentsDataGrid extends DataGrid
             'sortable'   => true,
             'searchable' => false,
             'filterable' => true,
+            'closure' => function ($value) {
+                return Carbon::createFromFormat('Y-m-d H:i:s',  $value->created_at)
+                    ->jdate();
+            }
         ]);
 
         $this->addColumn([

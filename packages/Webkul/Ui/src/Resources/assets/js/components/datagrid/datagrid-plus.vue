@@ -446,11 +446,11 @@
 
                                     <li v-if="datetimeCondition != null">
                                         <div class="control-group">
-                                            <input
-                                                class="control"
-                                                v-model="datetimeValue"
-                                                type="date"
-                                            />
+                                            <p-date-picker
+                                                auto-submit
+                                                popover="right"
+                                                @onDateChange="datetimeValue=$event"
+                                                :initial-value="datetimeValue"></p-date-picker>
                                         </div>
                                     </li>
 
@@ -1022,7 +1022,7 @@ export default {
             for (let column in this.columns) {
                 if (this.columns[column].index === this.columnOrAlias) {
                     this.type = this.columns[column].type;
-
+                    console.log(this.type);
                     switch (this.type) {
                         case 'string': {
                             this.stringConditionSelect = true;

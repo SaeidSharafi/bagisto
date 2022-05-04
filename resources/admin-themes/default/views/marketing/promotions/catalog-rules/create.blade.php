@@ -94,16 +94,26 @@
 
                                 <div class="control-group date">
                                     <label for="starts_from">{{ __('admin::app.promotions.catalog-rules.from') }}</label>
-                                    <date>
-                                        <input type="text" name="starts_from" class="control" value="{{ old('starts_from') }}"/>
-                                    </date>
+                                    <div class="control">
+                                        <p-date-picker name="starts_from"
+                                                       id="starts_from"
+                                                       initial-value="{{  old('starts_from')}}"
+                                                       clearable
+                                                       placeholder="{{ __('admin::app.promotions.catalog-rules.from') }}"></p-date-picker>
+
+                                    </div>
                                 </div>
 
                                 <div class="control-group date">
                                     <label for="ends_till">{{ __('admin::app.promotions.catalog-rules.to') }}</label>
-                                    <date>
-                                        <input type="text" name="ends_till" class="control" value="{{ old('ends_till') }}"/>
-                                    </date>
+                                    <div class="control">
+                                        <p-date-picker name="ends_till"
+                                                       clearable
+                                                       id="ends_till"
+                                                       initial-value="{{  old('ends_till')}}"
+                                                       placeholder="{{ __('admin::app.promotions.catalog-rules.to') }}"></p-date-picker>
+
+                                    </div>
                                 </div>
 
                                 <div class="control-group">
@@ -130,7 +140,7 @@
                                     :key="index"
                                     :index="index"
                                     @onRemoveCondition="removeCondition($event)">
-                                </catalog-rule-condition-item>                                     
+                                </catalog-rule-condition-item>
 
                                 <button type="button" class="btn btn-lg btn-primary" style="margin-top: 20px;" @click="addCondition">
                                     {{ __('admin::app.promotions.catalog-rules.add-condition') }}
@@ -223,15 +233,24 @@
                         </div>
 
                         <div class="control-group date" v-if="matchedAttribute.type == 'date'">
-                            <date>
-                                <input class="control" :name="['conditions[' + index + '][value]']" v-model="condition.value"/>
-                            </date>
+                            <div class="control">
+                                <p-date-picker :name="['conditions[' + index + '][value]']"
+                                                   :id="['conditions[' + index + '][value]']"
+                                                   :initial-value="condition.value"
+                                               clearable
+                                                   placeholder=""></p-date-picker>
+
+                            </div>
                         </div>
 
                         <div class="control-group date" v-if="matchedAttribute.type == 'datetime'">
-                            <datetime>
-                                <input class="control" :name="['conditions[' + index + '][value]']" v-model="condition.value"/>
-                            </datetime>
+                            <div class="control">
+                                <p-datetime-picker :name="['conditions[' + index + '][value]']"
+                                                   :id="['conditions[' + index + '][value]']"
+                                                   :initial-value="condition.value"
+                                                   placeholder=""></p-datetime-picker>
+
+                            </div>
                         </div>
 
                         <div class="control-group" v-if="matchedAttribute.type == 'boolean'">

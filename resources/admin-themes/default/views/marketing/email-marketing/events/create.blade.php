@@ -46,9 +46,16 @@
 
                             <div class="control-group date" :class="[errors.has('date') ? 'has-error' : '']">
                                 <label for="date" class="required">{{ __('admin::app.marketing.events.date') }}</label>
-                                <date>
-                                    <input type="text" name="date" class="control" v-validate="'required'" value="{{ old('date') }}" data-vv-as="&quot;{{ __('admin::app.marketing.events.date') }}&quot;">
-                                </date>
+                                <div class="control">
+                                    <p-date-picker
+                                        v-validate="'required'"
+                                        data-vv-as="&quot;{{ __('admin::app.marketing.events.date') }}&quot;"
+                                        name="date"
+                                        id="date"
+                                        clearable
+                                        initial-value="{{ old('date') }}"
+                                        placeholder="{{ __('admin::app.promotions.cart-rules.from') }}"></p-date-picker>
+                                </div>
                                 <span class="control-error" v-if="errors.has('date')">@{{ errors.first('date') }}</span>
                             </div>
 

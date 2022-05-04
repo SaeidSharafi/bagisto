@@ -54,7 +54,7 @@
                                             </span>
 
                                             <span class="value">
-                                                {{ $order->created_at }}
+                                                {{ $order->created_at->jdate() }}
                                             </span>
                                         </div>
 
@@ -107,7 +107,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>                          
+                            </div>
                         </div>
                     </accordian>
 
@@ -139,7 +139,7 @@
                                         </div>
                                     </div>
                                 @endif
-                            </div>                            
+                            </div>
                         </div>
                     </accordian>
 
@@ -273,7 +273,7 @@
 
                                         </tbody>
                                     </table>
-                                </div>                                
+                                </div>
                             </div>
                         </div>
                     </accordian>

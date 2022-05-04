@@ -97,6 +97,7 @@ Vue.component('teacher-collections', () => import('@Components/teacher-collectio
 Vue.component('qoutes', () => import('@Components/qoutes'));
 Vue.component('contracts', () => import('@Components/contracts'));
 Vue.component('product-collections-slot', () => import('@Components/product-collections-slot'));
+Vue.component('p-date-picker', () => import('@Components/datepicker'));
 
 Vue.component('vnode-injector', {
     functional: true,

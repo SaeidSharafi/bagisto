@@ -53,6 +53,7 @@
                 {!! view_render_event('bagisto.admin.layout.content.after') !!}
 
             </div>
+            <div id="datepicker-placeholder"></div>
         </div>
 
         <script type="text/javascript">

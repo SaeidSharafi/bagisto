@@ -22,7 +22,12 @@ class AppServiceProvider extends ServiceProvider
         include_once __DIR__ . '/../Helpers/jdf.php';
 
         Carbon::macro('jdate', function ($format, $tr_num = 'fa') {
-            return jdate($format, self::this()->timestamp, '', '', $tr_num);
+            if (app()->getLocale() ==="fa"){
+                $format= $format ?: 'j F Y H:i:s';
+                return jdate($format, self::this()->timestamp, '', '', $tr_num);
+            }
+            $format= $format ?: 'Y-m-d';
+            return self::this()->format($format);
         });
 
         Carbon::macro('jmktime', function ($year, $month, $day, $hour = 0, $minute = 0, $second = 0) {

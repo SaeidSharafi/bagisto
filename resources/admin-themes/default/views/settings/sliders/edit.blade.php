@@ -74,9 +74,14 @@
 
                     <div class="control-group date">
                         <label for="expired_at">{{ __('admin::app.settings.sliders.expired-at') }}</label>
-                        <date>
-                            <input type="text" name="expired_at" class="control" value="{{ old('expired_at') ?: $slider->expired_at }}"/>
-                        </date>
+                        <div class="control">
+                            <p-date-picker
+                                name="expired_at"
+                                id="expired_at"
+                                initial-value="{{ old('expired_at') ?: $slider->expired_at }}"
+                                clearable
+                                placeholder="{{ __('admin::app.settings.sliders.expired-at') }}"></p-date-picker>
+                        </div>
                     </div>
 
                     <div class="control-group">

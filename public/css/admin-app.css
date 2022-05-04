@@ -72,9 +72,9 @@
 body,
 a,
 h1, h2, h3, h4, h5, h6,
-input,
+input, button,
 select {
-  font-family: "Source Sans Pro", "IRANSans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Source Sans Pro", "IRANYEKAN", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .rtl .navbar-left {
@@ -83,4 +83,27 @@ select {
 .rtl .navbar-left ul.menubar li.menu-item ul.sub-menubar {
   top: 0;
   right: 54px !important;
+}
+
+.content-container .content .page-header .control-group.date {
+  width: 210px;
+}
+
+.control-group.date .control,
+.control-group.datetime .control,
+.rtl .control-group.date .control,
+.rtl .control-group.datetime .control {
+  padding: 0;
+}
+
+.control-group.date:after, .control-group.datetime:after {
+  content: none;
+}
+
+.datapicker-wrapper {
+  width: 100%;
+}
+
+.vpd-input-group input {
+  width: 100%;
 }

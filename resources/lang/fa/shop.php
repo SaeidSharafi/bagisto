@@ -3,7 +3,8 @@ return [
     'general'    => [
         'no'  => 'خیر',
         'yes' => 'بله',
-        'register_course' => 'ثبت‌نام دوره'
+        'register_course' => 'ثبت‌نام دوره',
+        'submit'=> 'ارسال'
     ],
     'attributes' => [
         'course_details' => 'مشخصات دوره'

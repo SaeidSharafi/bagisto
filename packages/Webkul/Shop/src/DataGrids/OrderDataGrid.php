@@ -58,6 +58,10 @@ class OrderDataGrid extends DataGrid
             'searchable' => true,
             'sortable'   => true,
             'filterable' => true,
+            'closure' => function ($value) {
+                return Carbon::createFromFormat('Y-m-d H:i:s',  $value->created_at)
+                    ->jdate();
+            }
         ]);
 
         $this->addColumn([

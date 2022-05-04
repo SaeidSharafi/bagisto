@@ -26,7 +26,9 @@ class JeduCsutomer extends \Webkul\Customer\Models\Customer
         'notes',
         'status',
     ];
-
+    protected $casts = [
+        'date_of_birth' => 'date:Y/m/d',
+    ];
     //TODO use this function for asking extra info
     public function extra_info()
     {

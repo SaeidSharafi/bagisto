@@ -414,23 +414,35 @@
                 <div id="date-start" style="">
                     <div class="control-group start-date" style="margin-top:15px">
                     <label for="type">{{ __('admin::app.dashboard.from') }}</label>
-                        <date @onChange="setDate('start', $event)" hide-remove-button="1">
-                            <input type="text" class="control" id="start_date" value="{{ $startDate->format('Y-m-d') }}" placeholder="{{ __('admin::app.dashboard.from') }}" v-model="start"/>
-                        </date>
+                        <div class="control">
+                            <p-date-picker
+                                @onDateChange="setDate('start', $event)"
+                                name="start_date"
+                                id="start_date"
+                                initial-value="{{  $startDate->format('Y-m-d')}}"
+                                placeholder="{{ __('admin::app.promotions.catalog-rules.from') }}"></p-date-picker>
+
+                        </div>
                     </div>
                 </div>
 
                 <div id="date-end" style="">
                     <div class="control-group end-date" style="margin-top:15px">
                         <label for="type">{{ __('admin::app.dashboard.to') }}</label>
-                        <date @onChange="setDate('end', $event)" hide-remove-button="1">
-                            <input type="text" class="control" id="end_date" value="{{ $endDate->format('Y-m-d') }}" placeholder="{{ __('admin::app.dashboard.to') }}" v-model="end"/>
-                        </date>
+                        <div class="control">
+                            <p-date-picker
+                                @onDateChange="setDate('end', $event)"
+                                name="end_date"
+                                id="end_date"
+                                initial-value="{{  $startDate->format('Y-m-d')}}"
+                                placeholder="{{ __('admin::app.promotions.catalog-rules.to') }}"></p-date-picker>
+
+                        </div>
                     </div>
                 </div>
 
                 <div id="date-submit" style="">
-                    <button class="btn btn-lg btn-primary" @click="applyFilter">Submit</button>
+                    <button class="btn btn-lg btn-primary" @click="applyFilter">{{__('shop.general.submit')}}</button>
                 </div>
             </div>
         </div>

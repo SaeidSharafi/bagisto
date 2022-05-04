@@ -103,14 +103,13 @@
                 </label>
 
                 <div class="col-12">
-                    <input
-                        type="date"
-                        name="date_of_birth"
-                        placeholder="dd/mm/yyyy"
-                        value="{{ old('date_of_birth') ?? $customer->date_of_birth }}"
-                        v-validate="" data-vv-as="&quot;{{ __('shop::app.customer.account.profile.dob') }}&quot;" />
 
-                        <span class="control-error" v-if="errors.has('date_of_birth')" v-text="errors.first('date_of_birth')"></span>
+                    <p-date-picker name="date_of_birth"
+                                   id="date_of_birth"
+                                   max-date="{{now()->subDay()}}"
+                                   initial-value="{{  old('date_of_birth') ?? $customer->date_of_birth}}"
+                                   placeholder="{{ trans('shop::app.customer.account.profile.dob') }}"></p-date-picker>
+
                 </div>
             </div>
 
