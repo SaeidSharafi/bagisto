@@ -21,7 +21,7 @@ class JeduConfigurable extends Configurable
     {
         $discount = $regular_price = '';
         if ($offer = $this->getOfferPrice()) {
-
+            $discount ='تخفیف ویژه';
             if ($offer['action_type'] === "by_percent") {
                 $discount = core()->formatPercent($offer['discount_amount']);
             }

@@ -12,7 +12,7 @@ class JeduSimple extends Simple
     {
 
         if ($this->haveSpecialPrice()) {
-            $discount='';
+            $discount='تخفیف ویژه';
             if ($this->product->action_type === "by_percent") {
                 $discount = core()->formatPercent($this->product->discount_amount);
             }
