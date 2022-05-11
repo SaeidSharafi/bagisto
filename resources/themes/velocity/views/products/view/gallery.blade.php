@@ -1,7 +1,9 @@
 @inject ('wishListHelper', 'Webkul\Customer\Helpers\Wishlist')
 
 @php
-    $images = productimage()->getGalleryImages($product);
+    if (!$images){
+        $images = productimage()->getGalleryImages($product);
+    }
     $videos = productvideo()->getVideos($product);
 
     $videoData = $imageData = [];
@@ -36,7 +38,7 @@
             <div class="main-image"
                  :class="[`img-main-${index}` ,index == 0 ? 'is-active' : '']"
                  v-for="(image, index) in images" v-bind:key="index">
-                <video  v-if="image.type == 'video'" width="100%" preload="none" controls>
+                <video v-if="image.type == 'video'" width="100%" preload="none" controls>
                     <source :src="image.large_image_url" type="video/mp4">
                 </video>
                 <img loading="lazy" v-else

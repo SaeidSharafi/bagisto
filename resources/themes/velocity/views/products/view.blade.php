@@ -12,6 +12,9 @@
 
     $productImages = [];
     $images = productimage()->getGalleryImages($product);
+    if (count($images) > 1){
+         array_shift($images);
+    }
 
     foreach ($images as $key => $image) {
         array_push($productImages, $image['medium_image_url']);
@@ -132,7 +135,7 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                             {{-- product-gallery --}}
                             <div class="col-md-6">
                                 <div class="px-3">
-                                @include ('shop::products.view.gallery')
+                                @include ('shop::products.view.gallery',['images' => $images])
                                 </div>
                             </div>
 
