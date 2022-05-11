@@ -1,7 +1,7 @@
 <template>
     <div class="col-12 lg-card-container list-card product-card row" v-if="list">
         <div class="product-image">
-            <a :title="product.name" :href="`${baseUrl}/${product.slug}`">
+            <a :title="product.short_name" :href="`${baseUrl}/${product.slug}`">
                 <img
                     :src="product.image || product.product_image"
                     :onerror="`this.src='${this.$root.baseUrl}/vendor/webkul/ui/assets/images/product/large-product-placeholder.png'`"/>
@@ -14,7 +14,7 @@
             <div>
                 <div class="product-name">
                     <a :href="`${baseUrl}/${product.slug}`" :title="product.name" class="unset">
-                        <span class="fs16">{{ product.name }}</span>
+                        <span class="fs16">{{ product.short_name }}</span>
                     </a>
                 </div>
 
@@ -47,11 +47,11 @@
         <!--                <span class="category-text">{{ product.category_name }}</span>-->
         <!--            </a>-->
         <!--        </div>-->
-        <a :href="`${baseUrl}/${product.slug}`" :title="product.name" class="d-block">
+        <a :href="`${baseUrl}/${product.slug}`" :title="product.short_name" class="d-block">
             <div class="product-image-container">
                 <img
                     loading="lazy"
-                    :alt="product.name"
+                    :alt="product.short_name"
                     :src="product.image || product.product_image"
                     :data-src="product.image || product.product_image"
                     class="card-img-top lzy_img"
@@ -62,7 +62,7 @@
 
             <div class="card-body">
                 <h2 class="product-name w-100 no-padding">
-                        {{ product.name }}
+                        {{ product.short_name }}
                 </h2>
                 <div class="product-details">
                     <div>

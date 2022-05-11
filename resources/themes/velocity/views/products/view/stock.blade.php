@@ -7,11 +7,10 @@
             </td>
             <td  class="fw6">
                 @if ( $product->haveSufficientQuantity(1) === true )
-                    {{$product->totalQuantity()}}
+                    <span class="total-quantity">{{$product->totalQuantity()}}</span>
+                    <span class="text-danger disable-box-shadow" style="display: none"> {{ __('shop.product.out-of-stock') }}</span>
                 @else
-
-                    <span class="text-danger"> {{ __('shop.product.out-of-stock') }}</span>
-
+                    <span class="text-danger disable-box-shadow"> {{ __('shop.product.out-of-stock') }}</span>
                 @endif
             </td>
         </tr>

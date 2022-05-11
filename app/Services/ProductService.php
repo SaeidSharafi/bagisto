@@ -55,6 +55,7 @@ class ProductService
             'new'              => $isProductNew,
             'galleryImages'    => $galleryImages,
             'name'             => $product->name,
+            'short_name'       => $product->short_name ?? $product->name,
             'slug'             => $product->url_key,
             'description'      => $product->description,
             'shortDescription' => $product->short_description,
