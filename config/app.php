@@ -296,6 +296,7 @@ return [
 
         //Payments
         PayIr\Providers\PayIrServiceProvider::class,
+        MellatGateway\Providers\MellatServiceProvider::class,
 
 
         //Media Manager

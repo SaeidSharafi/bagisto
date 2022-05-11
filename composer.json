@@ -117,6 +117,7 @@
             "Webkul\\DebugBar\\": "packages/Webkul/DebugBar/src",
             "Webkul\\Marketing\\": "packages/Webkul/Marketing/src",
             "PayIr\\": "packages/PayIr/src",
+            "MellatGateway\\": "packages/MellatGateway/src",
             "Kuro\\LaravelSms\\": "packages/Kuro/LaravelSms/src",
             "Webkul\\Notification\\": "packages/Webkul/Notification/src",
             "Ridhima\\MediaManager\\": "packages/Ridhima/MediaManager/src"
