@@ -290,6 +290,7 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
             method="POST"
             id="product-form"
             @click="onSubmit($event)"
+            data-vv-scope="form-buy"
             action="{{ route('cart.add', $product->product_id) }}">
 
             <input type="hidden" name="is_buy_now" v-model="is_buy_now">
@@ -348,12 +349,15 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
 
             methods: {
                 onSubmit: function (event) {
+                    console.log(event.target.parent);
                     if (event.target.getAttribute('type') != 'submit')
                         return;
 
                     event.preventDefault();
+                    console.log(event.target.getAttribute('type'));
 
-                    this.$validator.validateAll().then(result => {
+                    this.$validator.validateAll('form-buy').then(result => {
+                        console.log(result);
                         if (result) {
                             this.is_buy_now = event.target.classList.contains('buynow') ? 1 : 0;
 

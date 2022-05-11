@@ -94,8 +94,7 @@
 
                         <span v-if="! attribute.options.length" class="no-options">{{ __('shop::app.products.select-above-options') }}</span>
                     </span>
-
-                    <span class="control-error" v-if="errors.has('super_attribute[' + attribute.id + ']')" v-text="errors.first('super_attribute[' + attribute.id + ']')"></span>
+                    <span class="control-error" v-if="errors.has('form-buy.super_attribute[' + attribute.id + ']')" v-text="errors.first('form-buy.super_attribute[' + attribute.id + ']')"></span>
                 </div>
 
             </div>
@@ -384,11 +383,11 @@
                         changeStock: function (productId) {
                             let inStockElement = document.querySelector('.disable-box-shadow');
 
-                            if (productId) {
-                                inStockElement.style.display = "block";
-                            } else {
-                                inStockElement.style.display = "none";
-                            }
+                            // if (productId) {
+                            //     inStockElement.style.display = "block";
+                            // } else {
+                            //     inStockElement.style.display = "none";
+                            // }
                         },
                     }
                 });
