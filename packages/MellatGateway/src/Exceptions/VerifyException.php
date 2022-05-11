@@ -2,7 +2,7 @@
 
 namespace MellatGateway\Exceptions;
 
-class VerifyException extends \Exception
+class VerifyException extends BaseException
 {
 
 }

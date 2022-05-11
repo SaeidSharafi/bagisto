@@ -6,6 +6,11 @@ use Illuminate\Support\Facades\Log;
 
 class Request
 {
+
+    public const SUCCESS=1;
+    public const ERROR=-1;
+    public const EXIST=2;
+    public const FAIL=3;
     /**
      * Make http request to Pay.ir
      *
@@ -23,28 +28,29 @@ class Request
             if (isset($response->return)) {
                 Log::info('bpPayRequest response', ['return' => $response->return]);
 
-                $response = explode(',', $response->return);
+                $return = explode(',', $response->return);
 
-                if ($response[0] == 0) {
+                if ($return[0] == 0) {
                     return [
-                        'status'   => 200,
-                        'response' => $response[1],
+                        'status'   => self::SUCCESS,
+                        'response' => $return[1],
                     ];
                 }
+
                 return [
-                    'status'       => $response[0],
-                    'errorMessage' => 'error',
+                    'status'       => self::FAIL,
+                    'response' => $return[0],
                 ];
 
             }
             return [
-                'status'       => -1,
-                'errorMessage' => 'larapay::larapay.invalid_response',
+                'status'       => self::ERROR,
+                'response' => 'larapay::larapay.invalid_response',
             ];
         } catch (\SoapFault $e) {
             return [
-                'status'       => -1,
-                'errorMessage' => 'SoapFault: '.$e->getMessage().' #'.$e->getCode(), $e->getCode(),
+                'status'       => self::ERROR,
+                'response' => 'SoapFault: '.$e->getMessage().' #'.$e->getCode(), $e->getCode(),
             ];
         }
     }
@@ -60,24 +66,24 @@ class Request
 
                 if ($response->return  == 0 || $response->return  == 43) {
                     return [
-                        'status'   => 200,
+                        'status'   =>  self::SUCCESS,
                         'response' => true,
                     ];
                 }
                 return [
-                    'status'       => $response->return ,
-                    'errorMessage' => 'error',
+                    'status'       => self::FAIL,
+                    'response' => $response->return,
                 ];
 
             }
             return [
-                'status'       => -1,
-                'errorMessage' => 'larapay::larapay.invalid_response',
+                'status'       => self::ERROR,
+                'response' => 'larapay::larapay.invalid_response',
             ];
         } catch (\SoapFault $e) {
             return [
-                'status'       => -1,
-                'errorMessage' => 'SoapFault: '.$e->getMessage().' #'.$e->getCode(), $e->getCode(),
+                'status'       => self::ERROR,
+                'response' => 'SoapFault: '.$e->getMessage().' #'.$e->getCode(), $e->getCode(),
             ];
         }
     }
@@ -93,24 +99,24 @@ class Request
 
                 if ($response->return == '0' || $response->return == '45') {
                     return [
-                        'status'   => 200,
+                        'status'   =>  self::SUCCESS,
                         'response' => true,
                     ];
                 }
                 return [
-                    'status'       => $response->return ,
-                    'errorMessage' => 'error',
+                    'status'       => self::FAIL,
+                    'response' => $response->return ,
                 ];
 
             }
             return [
-                'status'       => -1,
-                'errorMessage' => 'larapay::larapay.invalid_response',
+                'status'       => self::ERROR,
+                'response' => 'larapay::larapay.invalid_response',
             ];
         } catch (\SoapFault $e) {
             return [
-                'status'       => -1,
-                'errorMessage' => 'SoapFault: '.$e->getMessage().' #'.$e->getCode(), $e->getCode(),
+                'status'       => self::ERROR,
+                'response' => 'SoapFault: '.$e->getMessage().' #'.$e->getCode(), $e->getCode(),
             ];
         }
     }

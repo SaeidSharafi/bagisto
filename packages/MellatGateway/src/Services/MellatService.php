@@ -14,6 +14,7 @@ use Webkul\Checkout\Facades\Cart;
 use Webkul\Sales\Contracts\Order;
 use Webkul\Sales\Repositories\InvoiceRepository;
 use Webkul\Sales\Repositories\OrderRepository;
+use Webkul\Sales\Repositories\OrderTransactionRepository;
 
 class MellatService
 {
@@ -60,6 +61,13 @@ class MellatService
     protected $orderRepository;
 
     /**
+     * OrderRepository $orderRepository
+     *
+     * @var \Webkul\Sales\Repositories\OrderTransactionRepository
+     */
+    protected $orderTransactionRepository;
+
+    /**
      * InvoiceRepository $invoiceRepository
      *
      * @var \Webkul\Sales\Repositories\InvoiceRepository
@@ -84,13 +92,15 @@ class MellatService
     public function __construct(
         Mellat $mellat,
         OrderRepository $orderRepository,
-        InvoiceRepository $invoiceRepository
+        InvoiceRepository $invoiceRepository,
+        OrderTransactionRepository $orderTransactionRepository
     ) {
         $this->mellat = $mellat;
 
         $this->orderRepository = $orderRepository;
 
         $this->invoiceRepository = $invoiceRepository;
+        $this->orderTransactionRepository = $orderTransactionRepository;
     }
 
     /**
@@ -101,8 +111,10 @@ class MellatService
     public function send()
     {
         $cart = $this->mellat->getCart();
-        $this->orderId = $cart->id;
-        Log::info("ORder ID:".$this->orderId,[]);
+        $cart->transaction_id = $cart->id.now()->timestamp;
+        $cart->save();
+        $this->orderId = $cart->transaction_id;
+        Log::info("ORder ID:".$this->orderId, []);
         $wsdl = $this->mellat->getConfigData('sandbox') ? $this->testWSDL
             : $this->WSDL;
         $endpoint = $this->mellat->getConfigData('sandbox') ? $this->testEndPoint
@@ -132,13 +144,13 @@ class MellatService
         Log::info('response recived from gateway', $send);
         $params = [];
         if (isset($send['status']) && isset($send['response'])) {
-            if ($send['status'] == 200) {
+            if ($send['status'] === Request::SUCCESS) {
                 $params['response']['payment_url'] = $endpoint;
                 $params['response']['refID'] = $send['response'];
 
                 return $params['response'];
             }
-            throw new SendException($send['response']['errorMessage']);
+            throw new SendException('', $send['response']);
         }
         throw new SendException('خطا در ارسال اطلاعات به درگاه بانتک ملت. لطفا از برقرار بودن اینترنت و در دسترس بودن بانک ملت اطمینان حاصل کنید');
     }
@@ -154,22 +166,26 @@ class MellatService
     {
         $this->post = $post;
         $cart = $this->mellat->getCart();
-        $this->orderId = $cart->id;
+
+        $this->orderId = $cart->transaction_id;
         try {
-            Log::info("ORder ID:".$this->orderId,[]);
+            Log::info("ORder ID:".$this->orderId, []);
+            $this->order = $this->orderRepository->create(Cart::prepareDataForOrder());
+
             $this->verify();
-            Log::info("ORder ID:".$this->orderId,[]);
+
+            Log::info("Order ID:".$this->orderId, []);
             $this->settle();
-            $this->order
-                = $this->orderRepository->create(Cart::prepareDataForOrder());
-            //$this->getOrder();
+
             $this->processOrder();
             return $this->order;
-        } catch (VerifyException|SettleException $e) {
+        } catch (VerifyException|SettleException|SendException $e) {
             if ($this->order) {
                 $this->orderRepository->update(['status' => 'canceled'],
                     $this->order->id);
+                $e->orderId = $this->order->id;
             }
+
             throw $e;
         }
 
@@ -198,13 +214,14 @@ class MellatService
      */
     protected function processOrder()
     {
-        if ($this->response['status'] === 1) {
+        if ($this->response['status'] === Request::SUCCESS) {
             $this->orderRepository->update(['status' => 'processing'],
                 $this->order->id);
             if ($this->order->canInvoice()) {
                 $invoice
                     = $this->invoiceRepository->create($this->prepareInvoiceData());
             }
+            $transaction = $this->orderTransactionRepository->create($this->prepareTransactionData($invoice));
             return;
         }
         throw new VerifyException("Process order End");
@@ -224,6 +241,30 @@ class MellatService
         }
 
         return $invoiceData;
+    }
+
+    /**
+     * Prepares transaction data for creation.
+     *
+     * @return array
+     */
+    protected function prepareTransactionData($invoice)
+    {
+        return [
+            'order_id'       => $this->order->id,
+            'transaction_id' => $this->mellat->getCart()->transaction_id,
+            'status'         => "موفق",
+            'payment_method' => "mellat",
+            'invoice_id'     => $invoice->id,
+            'data'           => json_encode(
+                [
+                    'transaction_id' => $this->post['RefId'] ?? '',
+                    'SaleReferenceId' => $this->post['SaleReferenceId'] ?? '',
+                    'CardHolderPan'   => $this->post['CardHolderPan'] ?? '',
+                    'CardHolderInfo'  => $this->post['CardHolderInfo'] ?? ''
+                ]),
+            'amount'         => $this->order->grand_total,
+        ];
     }
 
     /**
@@ -256,14 +297,14 @@ class MellatService
         Log::info('verificiation response recived from gateway', $response);
 
         if (isset($response['status']) && isset($response['response'])) {
-            if ($response['status'] == 200) {
-                $this->response['status'] = 1;
+            if ($response['status'] === Request::SUCCESS) {
+                $this->response['status'] = Request::SUCCESS;
                 return;
             }
-            throw new VerifyException("Verfiy fucntion");
+            throw new VerifyException('', $response['response']);
         }
 
-        throw new SendException($response['status'].':'.$response['errorMessage']);
+        throw new SendException('خطا در ارسال اطلاعات به درگاه بانتک ملت. لطفا از برقرار بودن اینترنت و در دسترس بودن بانک ملت اطمینان حاصل کنید');
     }
 
     /**
@@ -297,13 +338,13 @@ class MellatService
         Log::info('settle response recived from gateway', $response);
 
         if (isset($response['status']) && isset($response['response'])) {
-            if ($response['status'] == 200) {
-                $this->response['status'] = 1;
+            if ($response['status'] === Request::SUCCESS) {
+                $this->response['status'] = Request::SUCCESS;
                 return;
             }
-            throw new SettleException("Verfiy fucntion");
+            throw new SettleException('', $response['response']);
         }
 
-        throw new SendException($response['status'].':'.$response['errorMessage']);
+        throw new SendException('خطا در ارسال اطلاعات به درگاه بانتک ملت. لطفا از برقرار بودن اینترنت و در دسترس بودن بانک ملت اطمینان حاصل کنید');
     }
 }

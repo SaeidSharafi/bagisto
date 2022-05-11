@@ -2,7 +2,7 @@
 
 namespace MellatGateway\Exceptions;
 
-class SettleException extends \Exception
+class SettleException extends BaseException
 {
 
 }

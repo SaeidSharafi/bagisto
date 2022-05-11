@@ -2,7 +2,7 @@
 
 namespace MellatGateway\Exceptions;
 
-class ResponseException extends \Exception
+class ResponseException extends BaseException
 {
 
 

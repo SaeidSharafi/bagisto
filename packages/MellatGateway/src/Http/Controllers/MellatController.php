@@ -46,7 +46,7 @@ class MellatController extends Controller
             $paymentUrl = $send['payment_url'];
             $refID = $send['refID'];
         } catch (SendException $e) {
-            session()->flash('error', 'Cannot connect to gateway.');
+            session()->flash('error', $e->getErrorMessage());
             return redirect()->route('shop.checkout.cart.index');
         }
         //return redirect($paymentUrl);
@@ -61,7 +61,7 @@ class MellatController extends Controller
      */
     public function cancel()
     {
-        session()->flash('error', 'Paypal payment has been canceled.');
+        session()->flash('error', 'پرداخت ناموفق');
 
         return redirect()->route('shop.checkout.cart.index');
     }
@@ -75,7 +75,7 @@ class MellatController extends Controller
     {
         session()->flash('error', 'Payment verification failed');
         Cart::deActivateCart();
-        return redirect()->route('shop.checkout.cart.index');
+        return redirect()->route('order');
     }
 
     /**
@@ -92,13 +92,17 @@ class MellatController extends Controller
         $request = \request()->all();
 
         if ($request['ResCode'] != "0") {
-            return redirect()->route('paydotir.cancel');
+            return redirect()->route('mellat.cancel');
         }
 
         try {
             $order = $this->mellatService->processCart($request);
-        } catch (VerifyException|SettleException $e) {
-            return redirect()->route('paydotir.failed');
+        } catch (VerifyException|SettleException|SendException $e) {
+            if ($e->orderId) {
+                session()->flash('error', 'خطا در تایید تراکنش');
+                return redirect()->route('customer.orders.view', $e->orderId);
+            }
+            return redirect()->route('mellat.cancel');
         }
 
         Cart::deActivateCart();
