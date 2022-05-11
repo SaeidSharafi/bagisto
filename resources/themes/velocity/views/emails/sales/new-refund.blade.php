@@ -83,33 +83,13 @@
                 </div>
 
                 <div>
-                    {{ $order->billing_address->company_name ?? '' }}
-                </div>
-
-                <div>
-                    {{ $order->billing_address->name }}
-                </div>
-
-                <div>
-                    {{ $order->billing_address->address1 }}
-                </div>
-
-                <div>
-                    {{ $order->billing_address->postcode . " " . $order->billing_address->city }}
-                </div>
-                
-                <div>
-                    {{ $order->billing_address->state }}
-                </div>
-
-                <div>
-                    {{ core()->country_name($order->billing_address->country) }}
+                    {{ $order->customer_first_name }}  {{ $order->customer_last_name }}
                 </div>
 
                 <div>---</div>
 
                 <div style="margin-bottom: 40px;">
-                    {{ __('shop::app.mail.order.contact') }} : {{ $order->billing_address->phone }}
+                    {{ __('shop::app.mail.order.contact') }} : {{ $order->customer_phone }}
                 </div>
 
                 <div style="font-size: 16px; color: #242424;">

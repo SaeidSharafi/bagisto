@@ -29,49 +29,7 @@
         </div>
 
         <div style="display: flex;flex-direction: row;margin-top: 20px;justify-content: space-between;margin-bottom: 40px;">
-            <div style="line-height: 25px;">
-                <div style="font-weight: bold;font-size: 16px;color: #242424;">
-                    {{ __('shop::app.mail.order.cancel.shipping-address') }}
-                </div>
 
-                <div>
-                    {{ $order->shipping_address->company_name ?? '' }}
-                </div>
-
-                <div>
-                    {{ $order->shipping_address->name }}
-                </div>
-
-                <div>
-                    {{ $order->shipping_address->address1 }}
-                </div>
-
-                <div>
-                    {{ $order->shipping_address->postcode . " " . $order->shipping_address->city }}
-                </div>
-
-                <div>
-                    {{ $order->shipping_address->state }}
-                </div>
-
-                <div>
-                    {{ core()->country_name($order->shipping_address->country) }}
-                </div>
-
-                <div>---</div>
-
-                <div style="margin-bottom: 40px;">
-                    {{ __('shop::app.mail.order.cancel.contact') }} : {{ $order->shipping_address->phone }}
-                </div>
-
-                <div style="font-size: 16px;color: #242424; font-weight: bold">
-                    {{ __('shop::app.mail.order.cancel.shipping') }}
-                </div>
-
-                <div style="font-size: 16px;color: #242424;">
-                    {{ $order->shipping_title }}
-                </div>
-            </div>
 
             <div style="line-height: 25px;">
                 <div style="font-weight: bold;font-size: 16px;color: #242424;">
@@ -79,29 +37,13 @@
                 </div>
 
                 <div>
-                    {{ $order->billing_address->company_name ?? '' }}
-                </div>
-
-                <div>
-                    {{ $order->billing_address->address1 }}
-                </div>
-
-                <div>
-                    {{ $order->billing_address->postcode . " " . $order->billing_address->city }}
-                </div>
-                
-                <div>
-                    {{ $order->billing_address->state }}
-                </div>
-
-                <div>
-                    {{ core()->country_name($order->billing_address->country) }}
+                    {{ $order->customer_first_name }}  {{ $order->customer_last_name }}
                 </div>
 
                 <div>---</div>
 
                 <div style="margin-bottom: 40px;">
-                    {{ __('shop::app.mail.order.cancel.contact') }} : {{ $order->billing_address->phone }}
+                    {{ __('shop::app.mail.order.contact') }} : {{ $order->customer_phone }}
                 </div>
 
                 <div style="font-size: 16px; color: #242424; font-weight: bold">

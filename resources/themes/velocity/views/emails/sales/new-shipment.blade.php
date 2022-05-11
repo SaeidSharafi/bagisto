@@ -105,7 +105,7 @@
                 <div>
                     {{ $order->billing_address->postcode . " " . $order->billing_address->city }}
                 </div>
-                
+
                 <div>
                     {{ $order->billing_address->state }}
                 </div>
