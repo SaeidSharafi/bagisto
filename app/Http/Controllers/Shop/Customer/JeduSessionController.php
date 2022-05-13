@@ -94,12 +94,22 @@ class JeduSessionController
         $credentials = $request->only('token', 'otp', 'password');
         $credentials['token'] = trim($credentials['token']);
 
-        if (!auth()->guard('customer')->attempt($credentials)) {
+        if (array_key_exists('password', $credentials) && !auth()->guard('customer')->attempt($credentials)) {
             session()->flash('error',
                 trans('shop::app.customer.login-form.invalid-creds'));
             return redirect()->back();
         }
+        $customer = $this->customerRepository->findOneByField('token', $request->get('token'));
 
+        if (!$customer){
+            session()->flash('error', trans('shop::app.customer.login-form.invalid-creds'));
+            return redirect()->back();
+        }
+        if (array_key_exists('otp', $credentials) && $customer->otp->token !== $credentials['otp']) {
+            session()->flash('error', trans('shop::app.customer.login-form.invalid-creds'));
+            return redirect()->back();
+        }
+        auth()->guard('customer')->login($customer);
         if (auth()->guard('customer')->user()->status == 0) {
             auth()->guard('customer')->logout();
 

@@ -21,7 +21,11 @@ return [
         'out-of-stock' => 'تکمیل شده',
         'details' => 'توضیحات',
     ],
-
+    'customer'=>[
+        'forget_password'=>[
+            'too_many_request' => 'خطا در ارتباط با سرور',
+        ]
+    ],
     'course'     => 'دوره:',
     'teacher'    => 'استاد:',
     'reviews' =>[

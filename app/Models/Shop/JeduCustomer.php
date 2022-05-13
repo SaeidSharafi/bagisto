@@ -5,7 +5,7 @@ namespace App\Models\Shop;
 use App\Traits\hasOTP;
 use Illuminate\Notifications\Notifiable;
 
-class JeduCsutomer extends \Webkul\Customer\Models\Customer
+class JeduCustomer extends \Webkul\Customer\Models\Customer
 {
     use Notifiable,hasOTP;
 
@@ -30,6 +30,17 @@ class JeduCsutomer extends \Webkul\Customer\Models\Customer
     protected $casts = [
         'date_of_birth' => 'date:Y/m/d',
     ];
+
+    public function username()
+    {
+        return 'phone';
+    }
+    public function getPhoneForPasswordReset()
+    {
+        return $this->phone;
+    }
+
+
     //TODO use this function for asking extra info
     public function extra_info()
     {

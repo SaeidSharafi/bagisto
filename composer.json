@@ -25,7 +25,7 @@
         "barryvdh/laravel-dompdf": "^1.0.0",
         "barryvdh/laravel-elfinder": "^0.5.1",
         "diglactic/laravel-breadcrumbs": "^7.0",
-        "doctrine/dbal": "^2.9",
+        "doctrine/dbal": "^3.3",
         "enshrined/svg-sanitize": "^0.15.0",
         "fakerphp/faker": "^1.14",
         "flynsarmy/db-blade-compiler": "dev-master",

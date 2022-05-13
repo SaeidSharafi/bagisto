@@ -6,7 +6,7 @@ use Webkul\Customer\Http\Controllers\AddressController;
 use Webkul\Customer\Http\Controllers\CustomerController;
 use Webkul\Customer\Http\Controllers\ForgotPasswordController;
 use Webkul\Customer\Http\Controllers\RegistrationController;
-use Webkul\Customer\Http\Controllers\ResetPasswordController;
+use Webkul\Customer\Http\Controllers\JeduResetPasswordController;
 use Webkul\Customer\Http\Controllers\SessionController;
 use Webkul\Customer\Http\Controllers\WishlistController;
 use Webkul\Shop\Http\Controllers\DownloadableProductController;
@@ -34,11 +34,11 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']], function 
 
             Route::post('/forgot-password', [ForgotPasswordController::class, 'store'])->name('customer.forgot-password.store');
 
-            Route::get('/reset-password/{token}', [ResetPasswordController::class, 'create'])->defaults('_config', [
+            Route::get('/reset-password/{token}', [JeduResetPasswordController::class, 'create'])->defaults('_config', [
                 'view' => 'shop::customers.signup.reset-password',
             ])->name('customer.reset-password.create');
 
-            Route::post('/reset-password', [ResetPasswordController::class, 'store'])->defaults('_config', [
+            Route::post('/reset-password', [JeduResetPasswordController::class, 'store'])->defaults('_config', [
                 'redirect' => 'customer.profile.index',
             ])->name('customer.reset-password.store');
 

@@ -31,7 +31,7 @@ return [
     'providers' => [
         'customers' => [
             'driver' => 'JeduUserProvider',
-            'model' => Webkul\Customer\Models\Customer::class,
+            'model' => \App\Models\Shop\JeduCustomer::class,
         ],
 
         'admins' => [

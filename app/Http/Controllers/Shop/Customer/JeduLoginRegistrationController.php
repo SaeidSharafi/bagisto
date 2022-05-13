@@ -200,7 +200,7 @@ class JeduLoginRegistrationController
                 trans('shop::app.customer.signup-form.verify-failed'));
             return redirect()->route('customer.session.index');
         }
-        if ($customer->otp !== $request->ver_code) {
+        if ($customer->otp->token !== $request->ver_code) {
             session()->flash('warning',
                 trans('shop::app.customer.signup-form.verify-failed'));
             return redirect()->route($this->_config['redirect_on_fail'],
@@ -220,7 +220,7 @@ class JeduLoginRegistrationController
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|RedirectResponse
      */
-    public function showverfiy($token)
+    public function showVerify($token)
     {
         $customer
             = $this->customerRepository->findOneByField('token',

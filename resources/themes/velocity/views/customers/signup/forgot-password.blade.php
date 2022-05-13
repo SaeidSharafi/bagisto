@@ -40,18 +40,21 @@
 
                         {!! view_render_event('bagisto.shop.customers.forget_password_form_controls.before') !!}
 
-                        <div class="control-group" :class="[errors.has('email') ? 'has-error' : '']">
-                            <label for="email" class="mandatory label-style">
-                                {{ __('shop::app.customer.forgot-password.email') }}
+                        <div class="control-group" :class="[errors.has('first_name') ? 'has-error' : '']">
+                            <label for="first_name" class="required label-style">
+                                {{ __('shop::app.customer.signup-form.phone') }}
                             </label>
 
                             <input
-                                type="email"
-                                name="email"
+                                type="text"
                                 class="form-style"
-                                v-validate="'required|email'" />
+                                name="phone"
+                                v-validate="'required|regex:^09([0-9]{9})'"
+                                value="{{ old('phone') }}"
+                                data-vv-as="&quot;{{ __('shop::app.customer.signup-form.phone') }}&quot;"
+                                data-vv-validate-on="submit"/>
 
-                            <span class="control-error" v-if="errors.has('email')" v-text="errors.first('email')"></span>
+                            <span class="control-error" v-if="errors.has('phone')" v-text="errors.first('phone')"></span>
                         </div>
 
                         <div class="control-group">
