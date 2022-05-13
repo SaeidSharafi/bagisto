@@ -2,11 +2,12 @@
 
 namespace App\Models\Shop;
 
+use App\Traits\hasOTP;
 use Illuminate\Notifications\Notifiable;
 
 class JeduCsutomer extends \Webkul\Customer\Models\Customer
 {
-    use Notifiable;
+    use Notifiable,hasOTP;
 
     protected $fillable = [
         'first_name',

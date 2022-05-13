@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Shop\API;
 
 use App\Jobs\SendSMS;
-use App\Services\OTP;
+use App\Services\OtpService;
 use App\Services\PrepareOtpSms;
 use App\Services\SmsBuilder;
 use Illuminate\Http\JsonResponse;
@@ -34,9 +34,9 @@ class JeduCustomerController
         }
         if (core()->getConfigData('customer.settings.sms.verification')) {
             if (core()->getConfigData('sms.general.notifications.verification.status')) {
-                $customer = OTP::getOTP($customer);
+                $otp = OtpService::getOTP($customer);
                 return $this->sendResponse([
-                    'remainTime' => OTP::remaining($customer)
+                    'remainTime' => $otp->remaining()
                 ], "");
             }
         }

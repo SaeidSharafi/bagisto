@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Shop\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Shop\JeduCustomerLoginRequest;
-use App\Services\OTP;
+use App\Models\Shop\Otp;
+use App\Services\OtpService;
 use App\Services\PrepareOtpSms;
 use App\Services\SmsBuilder;
 use Illuminate\Support\Facades\Event;
@@ -71,12 +72,12 @@ class JeduSessionController
                 ->with('type', 'login_by_password');
         }
 
-        $customer = OTP::getOTP($customer, 180);
-
+        $otp = OtpService::getOTP($customer, Otp::VERFIY, 180);
+        abort_if(($otp->type === Otp::RESET), 429);
         return view($this->_config['view'])
             ->with('type', 'login_by_otp')
             ->with('phone', $customer->phone)
-            ->with('otp_expire', OTP::remaining($customer));
+            ->with('otp_expire', $otp->remaining());
     }
 
     /**
@@ -128,7 +129,7 @@ class JeduSessionController
 
         $customer = $this->customerRepository->findOneByField('token',
             $request->get('token'));
-        OTP::clearOTP($customer);
+        OtpService::clearOTP($customer);
 
         return redirect()->intended(route($this->_config['redirect']));
     }

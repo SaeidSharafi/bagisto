@@ -57,7 +57,7 @@ class Sms
     /**
      * paramaters for replacing values in pattern
      *
-     * @var string
+     * @var array
      */
     public $parameters;
 
@@ -231,7 +231,7 @@ class Sms
     public function send()
     {
         if ($this->dry_run){
-            \Log::info("Sending sms to [" .implode(",",$this->to) ."]");
+            \Log::info("Sending [".implode($this->parameters)."] sms to [" .implode(",",$this->to) ."]");
             return "Simualted Sms Sending";
         }
         if ($this->pattern) {

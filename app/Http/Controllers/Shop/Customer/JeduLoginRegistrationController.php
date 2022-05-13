@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Shop\Customer;
 
 use App\Http\Requests\Shop\JeduCustomerRegistrationRequest;
-use App\Services\OTP;
+use App\Services\OtpService;
 use App\Services\PrepareOtpSms;
 use App\Services\SmsBuilder;
 use Illuminate\Http\RedirectResponse;
@@ -195,7 +195,7 @@ class JeduLoginRegistrationController
                 trans('responses.customer_not_found'));
             return redirect()->route('customer.session.index');
         }
-        if (OTP::isExpired($customer)) {
+        if (OtpService::isExpired($customer)) {
             session()->flash('warning',
                 trans('shop::app.customer.signup-form.verify-failed'));
             return redirect()->route('customer.session.index');
@@ -210,7 +210,7 @@ class JeduLoginRegistrationController
         session()->flash('success',
             trans('shop::app.customer.signup-form.verified'));
         auth()->guard('customer')->loginUsingId($customer->id);
-        OTP::clearOTP($customer);
+        OtpService::clearOTP($customer);
         return redirect()->route('customer.session.index');
 
     }
@@ -232,11 +232,11 @@ class JeduLoginRegistrationController
 
         if (core()->getConfigData('customer.settings.sms.verification')) {
             if (core()->getConfigData('sms.general.notifications.verification.status')) {
-                $customer = OTP::getOTP($customer);
+                $otp = OtpService::getOTP($customer);
                 return view($this->_config['view'])
                     ->with('token', $token)
                     ->with('phone', $customer->phone)
-                    ->with('otp_expire', ($customer->otp_expire - time()));
+                    ->with('otp_expire', $otp->remaining());
             }
         }
         return redirect()->back();
