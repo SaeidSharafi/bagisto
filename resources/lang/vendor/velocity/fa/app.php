@@ -234,8 +234,8 @@ return [
         'forget-password' => [
             'login' => 'وارد شدن',
             'forgot-password' => 'رمز عبور را فراموش کرده اید',
-            'recover-password' => 'بازیابی رمز عبور',
-            'recover-password-text' => 'اگر رمز عبور خود را فراموش کرده اید ، با وارد کردن آدرس ایمیل خود آن را بازیابی کنید.',
+            'recover-password' => 'تغییر رمز عبور',
+            'recover-password-text' => 'برای تغییر رمز عبور، شماره موبایل یا ایمیل خود را وارد کنید.',
         ],
         'wishlist' => [
             'remove-all-success' => 'همه موارد لیست دلخواه شما حذف شده است',

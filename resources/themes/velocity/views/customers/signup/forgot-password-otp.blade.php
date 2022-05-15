@@ -15,10 +15,7 @@
                     </h3>
 
                     <p class="fs16">
-                        {{ __('velocity::app.customer.verify-form.form-verfiy-text',['phone'=>$phone])}}
-                    </p>
-                    <p class="fs16">
-                        {{ __('velocity::app.customer.verify-form.form-verfiy-desc')}}
+                        {{ __('app.velocity.otp-form.forgotpassword-text',['phone'=>$phone])}}
                     </p>
                     {!! view_render_event('bagisto.shop.customers.signup.before') !!}
 
@@ -66,7 +63,7 @@
                         {!! view_render_event('bagisto.shop.customers.signup_form_controls.after') !!}
 
                         <button class="theme-btn" type="submit">
-                            {{ __('shop::app.customer.signup-form.title') }}
+                            {{ __('app.velocity.otp-form.confirm') }}
                         </button>
                     </form>
 

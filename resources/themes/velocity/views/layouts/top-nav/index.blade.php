@@ -1,8 +1,16 @@
-<div class="col-12 topbar">
-    <div class="w-100 text-right topbar">
-        <span>۰۲۸-۳۳۶۶۷۰۰۱</span>
-        <span>۰۲۸-۳۳۳۳۷۶۷۹۷</span>
-    </div>
+@php
+if ($velocityMetaData){
+    $advertisement = collect(json_decode($velocityMetaData->advertisement, true))->first()[1];
+    }
+@endphp
+<div class="w-100 d-none d-md-block">
+    @if ($advertisement)
+        <div style="height: 60px;">
+            <img class="w-100"
+                 src="{{ asset('/storage/' .$advertisement)}}"
+                 height="60" style="object-fit: cover;">
+        </div>
+    @endif
 </div>
 <nav class="row align-items-stretch justify-content-around" id="top">
     <div class="col-sm-6">

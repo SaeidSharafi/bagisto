@@ -61,7 +61,7 @@
                         {!! view_render_event('bagisto.shop.customers.signup_form_controls.after') !!}
 
                         <button class="theme-btn" type="submit">
-                            {{ __('shop::app.customer.signup-form.title') }}
+                            {{ __('app.velocity.auth-form.authenticate-submit') }}
                         </button>
                     </form>
 

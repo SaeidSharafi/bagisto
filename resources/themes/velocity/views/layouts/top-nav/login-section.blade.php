@@ -1,15 +1,15 @@
 {!! view_render_event('bagisto.shop.layout.header.account-item.before') !!}
 
     <div class="dropdown">
+        @auth('customer')
         <div id="account" class="account-menu d-flex align-items-center">
-            @auth('customer')
             <div class="d-inline-block welcome-content" @click="togglePopup">
                 <i class="fa-user far px-1"></i>
                 <i class="fa fa-caret-down"></i>
             </div>
-            @endauth
-        </div>
 
+        </div>
+        @endauth
         <div id="account-modal" class="account-modal sensitive-modal hide mt5">
             @guest('customer')
                 <div class="modal-content">

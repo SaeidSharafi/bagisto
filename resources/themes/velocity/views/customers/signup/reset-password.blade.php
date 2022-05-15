@@ -11,7 +11,7 @@
         <div class="auth-content form-container">
             <div class="container">
                 <div class="col-lg-10 col-md-12 offset-lg-1">
-                    <div class="heading">
+                    <div class="heading mb-2">
                         <h2 class="fs24 fw6">
                             {{ __('shop::app.customer.reset-password.title')}}
                         </h2>
@@ -34,7 +34,7 @@
 
                             <div :class="`form-group ${errors.has('email') ? 'has-error' : ''}`">
                                 <label for="phone" class="required label-style mandatory">
-                                    {{ __('shop::app.customer.phone') }}
+                                    {{ __('shop::app.customer.signup-form.phone') }}
                                 </label>
 
                                 <input
@@ -43,6 +43,7 @@
                                     name="phone"
                                     class="form-style"
                                     value="{{ old('phone') }}"
+                                    data-vv-as="&quot;{{ __('shop::app.customer.signup-form.phone') }}&quot;"
                                     v-validate="'required'" />
 
                                 <span class="control-error" v-if="errors.has('phone')" v-text="errors.first('phone')"></span>
@@ -58,6 +59,7 @@
                                     class="form-style"
                                     name="password"
                                     type="password"
+                                    data-vv-as="&quot;{{ __('shop::app.customer.reset-password.password') }}&quot;"
                                     v-validate="'required|min:6'" />
 
                                 <span class="control-error" v-if="errors.has('password')" v-text="errors.first('password')"></span>
@@ -65,13 +67,14 @@
 
                             <div :class="`form-group ${errors.has('confirm_password') ? 'has-error' : ''}`">
                                 <label for="confirm_password" class="required label-style mandatory">
-                                    {{ __('shop::app.customer.reset-password.confirm-password') }}
+                                    {{ __('app.velocity.reset-password.confirm-password') }}
                                 </label>
 
                                 <input
                                     type="password"
                                     class="form-style"
                                     name="password_confirmation"
+                                    data-vv-as="&quot;{{ __('app.velocity.reset-password.confirm-password') }}&quot;"
                                     v-validate="'required|min:6|confirmed:password'" />
 
                                 <span class="control-error" v-if="errors.has('password_confirmation')" v-text="errors.first('password_confirmation')"></span>
