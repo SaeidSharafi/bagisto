@@ -342,7 +342,8 @@ return [
                     'adjustment-refund' => 'بازپرداخت تنظیم',
                     'adjustment-fee' => 'هزینه تنظیم',
                     'tracking-number' => 'Tracking Number',
-                    'cancel-confirm-msg' => 'Are you sure you want to cancel this order ?'
+                    'cancel-btn-title' => 'لغو',
+                    'cancel-confirm-msg' => 'آیا از لغو این سفارش اطمینان دارید؟'
                 ]
             ],
 
