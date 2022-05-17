@@ -23,72 +23,72 @@ class AttributeOptionTableSeeder extends Seeder
                 'id'           => '1',
                 'admin_name'   => 'مختلط',
                 'sort_order'   => '1',
-                'attribute_id' => '26',
+                'attribute_id' => '27',
             ], [
                 'id'           => '2',
                 'admin_name'   => 'بانوان',
                 'sort_order'   => '2',
-                'attribute_id' => '26',
+                'attribute_id' => '27',
             ], [
                 'id'           => '3',
                 'admin_name'   => 'آقایان',
                 'sort_order'   => '3',
-                'attribute_id' => '26',
+                'attribute_id' => '27',
             ], [
                 'id'           => '4',
                 'admin_name'   => 'شنبه',
                 'sort_order'   => '1',
-                'attribute_id' => '27',
+                'attribute_id' => '28',
             ], [
                 'id'           => '5',
                 'admin_name'   => 'یکشنبه',
                 'sort_order'   => '2',
-                'attribute_id' => '27',
+                'attribute_id' => '28',
             ], [
                 'id'           => '6',
                 'admin_name'   => 'دوشنبه',
                 'sort_order'   => '3',
-                'attribute_id' => '27',
+                'attribute_id' => '28',
             ], [
                 'id'           => '7',
                 'admin_name'   => 'سه‌شنبه',
                 'sort_order'   => '4',
-                'attribute_id' => '27',
+                'attribute_id' => '28',
             ], [
                 'id'           => '8',
                 'admin_name'   => 'چهارشنبه',
                 'sort_order'   => '5',
-                'attribute_id' => '27',
+                'attribute_id' => '28',
             ], [
                 'id'           => '9',
                 'admin_name'   => 'پنجشنبه',
                 'sort_order'   => '6',
-                'attribute_id' => '27',
+                'attribute_id' => '28',
             ], [
                 'id'           => '10',
                 'admin_name'   => 'جمعه',
                 'sort_order'   => '7',
-                'attribute_id' => '27',
+                'attribute_id' => '28',
             ], [
                 'id'           => '11',
                 'admin_name'   => 'مجازی',
                 'sort_order'   => '1',
-                'attribute_id' => '28',
+                'attribute_id' => '29',
             ], [
                 'id'           => '12',
                 'admin_name'   => 'اشتغالی',
                 'sort_order'   => '2',
-                'attribute_id' => '28',
+                'attribute_id' => '29',
             ], [
                 'id'           => '13',
                 'admin_name'   => 'مرکز ۱',
                 'sort_order'   => '1',
-                'attribute_id' => '29',
+                'attribute_id' => '30',
             ], [
                 'id'           => '14',
                 'admin_name'   => 'مرکز ۲',
                 'sort_order'   => '2',
-                'attribute_id' => '29',
+                'attribute_id' => '30',
             ]
         ]);
 
