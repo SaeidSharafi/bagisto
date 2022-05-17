@@ -84,15 +84,12 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
                     [JeduLoginRegistrationController::class, 'showVerify'])
                     ->defaults('_config', [
                         'view' => 'shop::customers.signup.verify'
-                    ])
-                    ->name('customer.sms.verify.show');
+                    ])->name('customer.sms.verify.show');
 
                 // Verify account.
-                Route::post('register/confirm/',
+                Route::post('register/confirm/{token}',
                     [JeduLoginRegistrationController::class, 'verifyAccountWithSMS'])
-                    ->defaults('_config', [
-                        'redirect_on_fail' => 'customer.sms.verify.show'
-                    ])
+                    ->defaults('_config', ['redirect_on_fail' => 'customer.sms.verify.show'])
                     ->name('customer.sms.verify.complete');
 
                 /**

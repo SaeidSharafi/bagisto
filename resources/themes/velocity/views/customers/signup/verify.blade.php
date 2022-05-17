@@ -24,7 +24,7 @@
 
                     <form
                         method="post"
-                        action="{{ route('customer.sms.verify.complete') }}"
+                        action="{{ route('customer.sms.verify.complete',['token'=>$token]) }}"
                         @submit.prevent="onSubmit">
 
                         {{ csrf_field() }}
