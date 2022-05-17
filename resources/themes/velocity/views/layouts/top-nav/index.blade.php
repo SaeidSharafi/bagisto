@@ -1,6 +1,6 @@
 @php
 if ($velocityMetaData){
-    $advertisement = collect(json_decode($velocityMetaData->advertisement, true))->first()[1];
+    $advertisement =optional(collect(json_decode($velocityMetaData->advertisement, true))->first())[1];
     }
 @endphp
 <div class="w-100 d-none d-md-block">
