@@ -69,7 +69,7 @@
 
                 <tr>
                     <td>{{ __('shop::app.customer.account.profile.dob') }}</td>
-                    <td style="direction: rtl">{{ $customer->date_of_birth->jdate('d F Y') ?? '-' }}</td>
+                    <td style="direction: rtl">{{ optional($customer->date_of_birth)->jdate('d F Y') ?? '-' }}</td>
                 </tr>
 
                 {!! view_render_event('bagisto.shop.customers.account.profile.view.table.date_of_birth.after', ['customer' => $customer]) !!}
