@@ -138,5 +138,8 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
             Route::get('/category-details',
                 [JeduShopController::class, 'categoryDetails'])
                 ->name('velocity.category.details');
+
+            Route::get('/category-products/{categoryId}', [JeduShopController::class, 'getCategoryProducts'])
+                ->name('velocity.category.products');
         });
     });

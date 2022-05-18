@@ -99,4 +99,38 @@ class JeduShopController
                 'status' => false,
             ];
     }
+
+    /**
+     * This method will fetch products from category.
+     *
+     * @param  int  $categoryId
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getCategoryProducts($categoryId)
+    {
+        /* fetch category details */
+        $categoryDetails = $this->categoryRepository->find($categoryId);
+
+        /* if category not found then return empty response */
+        if (! $categoryDetails) {
+            return response()->json([
+                'products'       => [],
+                'paginationHTML' => '',
+            ]);
+        }
+
+        /* fetching products */
+        $products = $this->productRepository->getAll($categoryId);
+        $products->withPath($categoryDetails->slug);
+
+        /* sending response */
+        return response()->json([
+            'products'       => collect($products->items())->map(function ($product) {
+                return ProductService::formatProduct($product);
+            }),
+            'paginationHTML' => $products->appends(request()->input())->links()->toHtml(),
+        ]);
+    }
+
 }
