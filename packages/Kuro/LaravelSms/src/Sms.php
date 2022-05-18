@@ -235,6 +235,7 @@ class Sms
             return "Simualted Sms Sending";
         }
         if ($this->pattern) {
+            \Log::info("Sending [".$this->pattern."] sms to [" .implode(",",$this->to) ."]");
             return $this->gateway->sendPatternSms();
         }
         return $this->gateway->sendSms();

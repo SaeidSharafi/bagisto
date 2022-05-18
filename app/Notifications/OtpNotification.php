@@ -57,7 +57,7 @@ class OtpNotification extends Notification implements ShouldQueue
         $pattern = $this->pattern
             ?: core()->getConfigData('sms.general.notifications.verification.pattern');
 
-        $parametres = $this->parameters ?: ['code' => $notifiable->otp];
+        $parametres = $this->parameters ?: ['code' => $notifiable->otp->token];
 
         \Log::info("Sending Sms With Notifications");
 

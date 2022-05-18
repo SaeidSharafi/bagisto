@@ -33,7 +33,7 @@ class SmsChannel
                         \Log::info(print_r($sms, true));
                     }
                     $result = $sms->send();
-                    \Log::info($result);
+                    \Log::info("SMS result: ".$result);
                     return $result;
                 } catch (\Exception $e) {
                     $this->events->dispatch(new NotificationFailed($notifiable,

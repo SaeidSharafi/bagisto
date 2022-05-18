@@ -52,6 +52,14 @@ class RangineGateway extends GatewayAbstract
     public function sendPatternSms()
     {
         try {
+            if (config(('app.debug'))) {
+                \Log::info("sending sms with from :".$this->from);
+                \Log::info("sending sms with to :".implode(",", $this->to));
+                \Log::info("sending sms with username :".$this->username);
+                \Log::info("sending sms with password :".$this->password);
+                \Log::info("sending sms with pattern :".$this->pattern);
+                \Log::info("sending sms with parameters :".implode(",", $this->parameters));
+            }
             return (new \SoapClient($this->webService))->sendPatternSms(
                 $this->from,
                 $this->to,
@@ -61,6 +69,7 @@ class RangineGateway extends GatewayAbstract
                 $this->parameters
             );
         } catch (SoapFault $ex) {
+            \Log::error("error sending sms with rangine:",$ex);
             throw CouldNotSendNotification::serviceRespondedWithAnError(
                 $ex->getMessage(),
                 $ex->getCode()
