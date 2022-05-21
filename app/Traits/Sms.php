@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Notifications\NewOrderNotification;
 use App\Notifications\OrderCommentNotification;
 use Illuminate\Support\Facades\Notification;
 use Kuro\LaravelSms\SmsChannel;
@@ -24,7 +25,7 @@ trait Sms
         }
 
         try {
-            /* email to customer */
+            /* send sms to customer */
             Notification::route('phone',$comment->order->customer_phone)
                 ->notify(new OrderCommentNotification($comment));
 
@@ -34,6 +35,40 @@ trait Sms
         }
     }
 
+    /**
+     * Send new order Mail to the customer and admin.
+     *
+     * @param  \Webkul\Sales\Contracts\Order  $order
+     * @return void
+     */
+    public function sendNewOrderSms($order)
+    {
+        //$customerLocale = $this->getLocale($order);
+
+        try {
+            /**
+             * Email to customer.
+             */
+            $configKey = 'sms.general.notifications.new-order.status';
+            \Log::info("core()->getConfigData($configKey)");
+            if (core()->getConfigData($configKey)) {
+                Notification::route('phone',$order->customer_phone)
+                    ->notify(new NewOrderNotification($order));
+                //$this->prepareMail($customerLocale, new NewOrderNotification($order));
+            }
+
+            ///**
+            // * Email to admin.
+            // */
+            //$configKey = 'emails.general.notifications.emails.general.notifications.new-admin';
+            //
+            //if (core()->getConfigData($configKey)) {
+            //    $this->prepareMail(config('app.locale'), new NewAdminNotification($order));
+            //}
+        } catch (\Exception $e) {
+            report($e);
+        }
+    }
     /**
      * Get the locale of the customer if somehow item name changes then the english locale will pe provided.
      *

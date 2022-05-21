@@ -22,6 +22,9 @@ class EventServiceProvider extends ServiceProvider
             'sales.order.comment.create.after' => [
                 [Order::class, 'sendOrderCommentSms']
             ],
+            'checkout.order.save.after' => [
+                [Order::class, 'sendNewOrderSms']
+            ]
         ];
     // protected $listen = [
     //     Registered::class => [
