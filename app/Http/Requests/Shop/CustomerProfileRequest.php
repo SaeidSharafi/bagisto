@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Shop;
 
+use App\Rules\Nationalcode;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CustomerProfileRequest extends FormRequest
@@ -30,12 +31,15 @@ class CustomerProfileRequest extends FormRequest
             'last_name'             => 'required',
             'gender'                => 'required|in:Other,Male,Female',
             'date_of_birth'         => 'date|before:today',
-            'email'                 => 'email|unique:customers,email,' . $id,
+            'email'                 => 'email|unique:customers,email,'.$id,
             'password'              => 'confirmed|min:6|required_with:oldpassword',
             'oldpassword'           => 'present',
             'password_confirmation' => 'required_with:password',
             'image.*'               => 'mimes:bmp,jpeg,jpg,png,webp',
             'phone'                 => 'numeric',
+            'national_code'         => ['required', new Nationalcode],
+            'father_name'           => 'nullable',
+            'education_field'       => 'nullable',
         ];
     }
 }

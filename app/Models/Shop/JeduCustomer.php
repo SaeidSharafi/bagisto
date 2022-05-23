@@ -14,6 +14,7 @@ class JeduCustomer extends \Webkul\Customer\Models\Customer
         'last_name',
         'gender',
         'date_of_birth',
+        'national_code',
         'email',
         'phone',
         'password',
@@ -22,9 +23,9 @@ class JeduCustomer extends \Webkul\Customer\Models\Customer
         'subscribed_to_news_letter',
         'is_verified',
         'token',
-        'pin',
-        'pin_expire',
         'notes',
+        'father_name',
+        'education_field',
         'status',
     ];
     protected $casts = [

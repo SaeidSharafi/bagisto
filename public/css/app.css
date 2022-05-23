@@ -6603,6 +6603,17 @@ a:hover {
   text-decoration: none !important;
 }
 
+.rtl .table table {
+  text-align: right;
+}
+
+.account-content .account-layout .table table tr {
+  border: none !important;
+}
+.account-content .account-layout .table table tr td {
+  border: none !important;
+}
+
 nav#top {
   background: #ffffff;
 }

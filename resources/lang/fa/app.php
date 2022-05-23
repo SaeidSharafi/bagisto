@@ -1,6 +1,15 @@
 <?php
 return [
     'sms-timer' => 'ارسال مجدد کد تا {} دیگر',
+    'customer'=>[
+        'account' =>[
+            'profile' =>[
+                'national_code' => 'کد ملی',
+                'father_name'=>'نام پدر',
+                'education_field'=>'رشته تحصیلی',
+            ]
+        ]
+    ],
     'velocity'  => [
         'admin'          => [
             'meta-data' => [
