@@ -10,9 +10,9 @@
             <div class="d-flex w-100 auth-box">
 
                 <div class="body m-0 w-100 card">
-                    <h3 class="fw6">
+                    <h5 class="fw6">
                         {{ __('velocity::app.customer.verify-form.verify')}}
-                    </h3>
+                    </h5>
 
                     <p class="fs16">
                         {{ __('app.velocity.otp-form.forgotpassword-text',['phone'=>$phone])}}
@@ -33,7 +33,7 @@
                             <input type="hidden" name="token" value="{{$token}}">
                             <input
                                 type="text"
-                                class="form-style"
+                                class="form-style rounded"
                                 name="ver_code"
                                 v-validate="'required'"
                                 value="{{ old('ver_code') }}"
@@ -62,7 +62,7 @@
 
                         {!! view_render_event('bagisto.shop.customers.signup_form_controls.after') !!}
 
-                        <button class="theme-btn" type="submit">
+                        <button class="theme-btn w-100 rounded" type="submit">
                             {{ __('app.velocity.otp-form.confirm') }}
                         </button>
                     </form>

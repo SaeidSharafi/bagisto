@@ -10,9 +10,9 @@
             <div class="d-flex w-100 auth-box">
 
                 <div class="body m-0 w-100 card">
-                    <h3 class="fw6">
+                    <h5 class="fw6">
                         {{ __('velocity::app.customer.signup-form.become-user')}}
-                    </h3>
+                    </h5>
 
                     <p class="fs16">
                         {{ __('velocity::app.customer.signup-form.form-sginup-text')}}
@@ -30,13 +30,9 @@
                         {!! view_render_event('bagisto.shop.customers.signup_form_controls.before') !!}
 
                         <div class="control-group" :class="[errors.has('first_name') ? 'has-error' : '']">
-                            <label for="first_name" class="required label-style">
-                                {{ __('shop::app.customer.signup-form.phone') }}
-                            </label>
-
                             <input
                                 type="text"
-                                class="form-style"
+                                class="form-style rounded"
                                 name="phone"
                                 v-validate="'required|regex:^09([0-9]{9})'"
                                 value="{{ old('phone') }}"
@@ -60,11 +56,17 @@
 
                         {!! view_render_event('bagisto.shop.customers.signup_form_controls.after') !!}
 
-                        <button class="theme-btn" type="submit">
+                        <button class="theme-btn w-100 rounded" type="submit">
                             {{ __('app.velocity.auth-form.authenticate-submit') }}
                         </button>
                     </form>
-
+                    <p class="fs13 pt-3 text-center">
+                        ورود شما به معنای پذیرش
+                        <a href="#" class="text-nowrap">شرایط جهاد دانشگاهی قزوین</a>
+                        و
+                        <a href="#" class="text-nowrap">قوانین حریم‌خصوصی</a>
+                        است
+                    </p>
                     {!! view_render_event('bagisto.shop.customers.signup.after') !!}
                 </div>
             </div>

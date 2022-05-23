@@ -37,13 +37,10 @@
                         <div class="form-group" :class="[errors.has('password') ? 'has-error' : '']">
                             @if ($type === "login_by_password")
                                 <div class="mb-2">
-                                <label for="password" class="mandatory label-style">
-                                    {{ __('shop::app.customer.login-form.password') }}
-                                </label>
 
                                 <input
                                     type="password"
-                                    class="form-style"
+                                    class="form-style rounded"
                                     name="password"
                                     v-validate="'required'"
                                     value="{{ old('password') }}"
@@ -60,13 +57,13 @@
 
                             @else
                                 <div class="mb-2">
-                                <label for="otp" class="label-style">
+                                <label for="otp" class="pb-3">
                                     {{ __('shop::app.customer.login-form.otp',['phone' => $phone]) }}
                                 </label>
 
                                 <input
                                     type="text"
-                                    class="form-style"
+                                    class="form-style rounded"
                                     name="otp"
                                     v-validate="'required'"
                                     value="{{ old('otp') }}"
@@ -99,7 +96,7 @@
 
                         {!! view_render_event('bagisto.shop.customers.login_form_controls.after') !!}
 
-                        <input class="theme-btn" type="submit" value="{{ __('shop::app.customer.login-form.button_title') }}">
+                        <input class="theme-btn w-100 rounded" type="submit" value="{{ __('app.velocity.otp-form.confirm') }}">
 
                     </form>
                 </div>

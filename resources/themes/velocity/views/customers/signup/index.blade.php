@@ -10,9 +10,9 @@
             <div class="d-flex w-100 auth-box">
 
                 <div class="body m-0 w-100 card">
-                    <h3 class="fw6">
+                    <h5 class="fw6">
                         {{ __('velocity::app.customer.signup-form.become-user')}}
-                    </h3>
+                    </h5>
 
                     <p class="fs16">
                         {{ __('velocity::app.customer.signup-form.form-sginup-text')}}
@@ -30,10 +30,6 @@
                         {!! view_render_event('bagisto.shop.customers.signup_form_controls.before') !!}
 
                         <div class="control-group" :class="[errors.has('first_name') ? 'has-error' : '']">
-                            <label for="first_name" class="required label-style">
-                                {{ __('shop::app.customer.signup-form.phone') }}
-                            </label>
-
                             <input
                                 type="text"
                                 class="form-style"
@@ -46,7 +42,6 @@
                             <span class="control-error" v-if="errors.has('phone')" v-text="errors.first('phone')"></span>
                         </div>
                         <div class="control-group">
-
                             {!! Captcha::render() !!}
 
                         </div>

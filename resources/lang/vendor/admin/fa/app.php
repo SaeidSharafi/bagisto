@@ -276,7 +276,7 @@ return [
         ],
 
         'reset-password' => [
-            'title'            => 'بازنشانی گذرواژه',
+            'title'            => 'تغییر رمز عبور',
             'email'            => 'پست الکترونیک',
             'password'         => 'رمز عبور',
             'confirm-password' => 'تایید رمز عبور',

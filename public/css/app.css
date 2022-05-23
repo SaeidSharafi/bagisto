@@ -6616,6 +6616,13 @@ nav#sidebar-level-0 {
   margin-bottom: 0;
 }
 
+.form-container .container {
+  margin: 0 auto;
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+}
+
 .rtl .navbar-left {
   left: auto;
   right: 0;
