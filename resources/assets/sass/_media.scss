@@ -12,7 +12,7 @@ body header .vc-small-screen #search-form,
 body.rtl header .vc-small-screen #search-form {
 
     #header-search-icon {
-        background-color: $purple;
+        background-color: $main-color;
         border-radius: 2px 0 0 2px;
         min-width: 40px;
 
@@ -24,7 +24,7 @@ body.rtl header .vc-small-screen #search-form {
     }
 
     input {
-        border: 1px solid $purple;
+        border: 1px solid $main-color;
         width: calc(100% - 40px);
     }
 

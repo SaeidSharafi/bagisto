@@ -48,7 +48,7 @@ ul[type="none"] {
 .quantity .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container button.light,
 .quantity .account-content .account-layout .bottom-toolbar .pagination .account-table-content #datagrid-filters .dropdown-filters .dropdown-container button.page-item,
 .theme-btn.light {
-    color: $purple !important;
+    color: $main-color !important;
 }
 
 .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container .quantity button,
@@ -57,7 +57,7 @@ ul[type="none"] {
 .quantity .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container button,
 .theme-btn {
     transition: color ease-in-out 250ms, background-color ease-in-out 250ms;
-    background-color: $purple-dark !important;
+    background-color: $main-color-dark !important;
 }
 
 .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container .quantity button:hover,
@@ -66,7 +66,7 @@ ul[type="none"] {
 .btn-add-to-cart:hover, .cart-details .continue-shopping-btn:hover,
 .quantity .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container button:hover,
 .theme-btn:hover {
-    background-color: $purple !important;
+    background-color: $main-color !important;
 }
 
 a:hover {
@@ -113,7 +113,7 @@ nav .logo {
 }
 
 .topbar {
-    background: $purple-dark;
+    background: $main-color-dark;
     color: #ffffff;
     font-weight: bold;
     font-size: 1rem;
@@ -209,9 +209,9 @@ header {
         li.login {
             background: #c61590;
             background: -webkit-linear-gradient(
-                    180deg, #1e80dc, #c61590);
+                    180deg, #1e80dc, $main-color);
             background: linear-gradient(
-                    270deg, #1e80dc, #c61590);
+                    270deg, #1e80dc, $main-color);
             background-size: 300% 100%;
             background-position: 5% 50%;
             border-radius: 30px;
@@ -306,7 +306,7 @@ img.cover {
         }
 
         .overlay-img {
-            background: $purple-trans;
+            background: $main-color-transparent;
             color: #ffffff;
             width: 100%;
             height: 30%;
@@ -355,7 +355,7 @@ img.cover {
     z-index: 1;
 
     .banner-image {
-        background: $purple-grad no-repeat center center;
+        background: $main-color-grad no-repeat center center;
         background-size: cover;
         height: 100%;
         position: absolute;
@@ -379,7 +379,7 @@ img.cover {
     overflow: hidden;
 
     .banner-image {
-        background: $yello-purple-grad no-repeat center center;
+        background: $yellow-main-color-grad no-repeat center center;
         background-size: cover;
         height: 100%;
         position: absolute;
@@ -499,7 +499,7 @@ header {
 }
 
 .customer-name {
-    background: $purple;
+    background: $main-color;
 }
 
 .velocity-divide-page {
@@ -556,7 +556,7 @@ section.product-extra-detail {
 
             &.active {
                 a {
-                    color: $purple;
+                    color: $main-color;
                 }
 
             }
@@ -747,7 +747,7 @@ section.product-footer {
         }
 
         .category-text {
-            color: $purple;
+            color: $main-color;
             margin-right: 3px;
             font-weight: bold;
         }
@@ -790,10 +790,10 @@ section.product-footer {
         margin: 0 auto;
         display: block;
         color: #ffffff;
-        background-color: $purple;
+        background-color: $main-color;
 
         &:hover, &:focus {
-            background-color: $purple-dark;
+            background-color: $main-color-dark;
         }
     }
 }
@@ -818,7 +818,7 @@ section.product-footer {
     overflow: hidden;
 
     &.purple {
-        background: $purple;
+        background: $main-color;
     }
 
     &.yellow {
@@ -920,7 +920,7 @@ section.product-footer {
     overflow: hidden;
 
     &.is-active {
-        border: 1px solid $purple;
+        border: 1px solid $main-color;
     }
 
     > .bg-video {
@@ -1080,7 +1080,7 @@ section.product-footer {
         flex-flow: column;
         padding: 10px;
         font-size: 1rem;
-        background-color: $purple-dark;
+        background-color: $main-color-dark;
 
         span.teacher-honorific {
             margin-bottom: 5px;

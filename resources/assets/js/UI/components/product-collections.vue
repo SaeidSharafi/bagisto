@@ -8,8 +8,8 @@
                             {{ (isCategory && !productTitle) ? categoryDetails.name : productTitle }}
                         </div>
                         <div class="category-image">
-                            <img :src="productImage" class="w-100" v-if="productImage">
-                            <img src="https://www.digikala.com/statics/img/png/specialCarousel/General.png" class="w-100" v-else>
+                            <img :src="categoryImage" class="w-100 img-crisp" v-if="categoryImage">
+                            <img :src="`${this.baseUrl}/images/shop/carousel/free.png`" class="w-100 img-crisp" v-else>
                         </div>
                         <div class="category-link" v-if="isCategory">
                             <a class="btn btn-outline-light"
@@ -64,7 +64,7 @@ export default {
             default: ''
         },
         productTitle: String,
-        productImage: String,
+        categoryImage: String,
         productRoute: String,
         localeDirection: String,
         showRecentlyViewed: {

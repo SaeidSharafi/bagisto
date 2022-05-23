@@ -8,12 +8,12 @@ $font-size-base: 0.9rem;
 $line-height-base: 1.6;
 
 $main-bg: #fff;
-$purple: #2b348f;
-$purple-dark: #1f256a;
+$main-color: #2b348f;
+$main-color-dark: #1f256a;
 $blue-gray: #969da1;
 $yellow: #ffb911;
-$purple-trans: rgba(43, 52, 143, 0.8);
+$main-color-transparent: rgba(43, 52, 143, 0.8);
 $important: #d20c0c;
 
-$purple-grad: linear-gradient( 135deg, #4a58f1 -10%, #2b348f 100%);
-$yello-purple-grad: linear-gradient( 90deg, #f9c21c -10%, #2b348f 100%);
+$main-color-grad: linear-gradient( 135deg, #4a58f1 -10%, #2b348f 100%);
+$yellow-main-color-grad: linear-gradient( 90deg, #f9c21c -10%, #2b348f 100%);

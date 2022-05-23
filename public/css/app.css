@@ -87,6 +87,18 @@ body.open-hamburger #modal-blocker {
   z-index: 10;
 }
 
+.img-crisp {
+  image-rendering: -moz-crisp-edges;
+  /* Firefox */
+  image-rendering: -o-crisp-edges;
+  /* Opera */
+  image-rendering: -webkit-optimize-contrast;
+  /* Webkit (non-standard naming) */
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;
+  /* IE (non-standard property) */
+}
+
 .slideshow {
   overflow: hidden;
   position: relative;
@@ -355,7 +367,7 @@ header #search-form #header-search-icon {
 
 body header .vc-small-screen #search-form #header-search-icon,
 body.rtl header .vc-small-screen #search-form #header-search-icon {
-  background-color: #770c76;
+  background-color: #2b348f;
   border-radius: 2px 0 0 2px;
   min-width: 40px;
 }
@@ -366,7 +378,7 @@ body.rtl header .vc-small-screen #search-form #header-search-icon i {
 }
 body header .vc-small-screen #search-form input,
 body.rtl header .vc-small-screen #search-form input {
-  border: 1px solid #770c76;
+  border: 1px solid #2b348f;
   width: calc(100% - 40px);
 }
 
@@ -6566,7 +6578,7 @@ ul[type=none] {
 .quantity .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container button.light,
 .quantity .account-content .account-layout .bottom-toolbar .pagination .account-table-content #datagrid-filters .dropdown-filters .dropdown-container button.page-item,
 .theme-btn.light {
-  color: #770c76 !important;
+  color: #2b348f !important;
 }
 
 .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container .quantity button,
@@ -6575,7 +6587,7 @@ ul[type=none] {
 .quantity .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container button,
 .theme-btn {
   transition: color ease-in-out 250ms, background-color ease-in-out 250ms;
-  background-color: #4d054c !important;
+  background-color: #1f256a !important;
 }
 
 .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container .quantity button:hover,
@@ -6584,7 +6596,7 @@ ul[type=none] {
 .btn-add-to-cart:hover, .cart-details .continue-shopping-btn:hover,
 .quantity .account-content .account-layout .account-table-content #datagrid-filters .dropdown-filters .dropdown-container button:hover,
 .theme-btn:hover {
-  background-color: #770c76 !important;
+  background-color: #2b348f !important;
 }
 
 a:hover {
@@ -6633,7 +6645,7 @@ nav .logo {
 }
 
 .topbar {
-  background: #4d054c;
+  background: #1f256a;
   color: #ffffff;
   font-weight: bold;
   font-size: 1rem;
@@ -6713,7 +6725,7 @@ header .main-nav li a:hover {
 }
 header .main-nav li.login {
   background: #c61590;
-  background: linear-gradient(270deg, #1e80dc, #c61590);
+  background: linear-gradient(270deg, #1e80dc, #2b348f);
   background-size: 300% 100%;
   background-position: 5% 50%;
   border-radius: 30px;
@@ -6799,7 +6811,7 @@ img.cover {
   background: #060606;
 }
 .featured-slider .slider-side .overlay-img {
-  background: rgba(82, 46, 142, 0.8);
+  background: rgba(43, 52, 143, 0.8);
   color: #ffffff;
   width: 100%;
   height: 30%;
@@ -6842,7 +6854,7 @@ img.cover {
   z-index: 1;
 }
 .category-banner .banner-image {
-  background: linear-gradient(135deg, #BC78EC -10%, #3B2667 100%) no-repeat center center;
+  background: linear-gradient(135deg, #4a58f1 -10%, #2b348f 100%) no-repeat center center;
   background-size: cover;
   height: 100%;
   position: absolute;
@@ -6864,7 +6876,7 @@ img.cover {
   overflow: hidden;
 }
 .product-banner .banner-image {
-  background: linear-gradient(90deg, #f9c21c -10%, #530564 100%) no-repeat center center;
+  background: linear-gradient(90deg, #f9c21c -10%, #2b348f 100%) no-repeat center center;
   background-size: cover;
   height: 100%;
   position: absolute;
@@ -6961,7 +6973,7 @@ header .mini-cart-container > .dropdown #mini-cart {
 }
 
 .customer-name {
-  background: #770c76;
+  background: #2b348f;
 }
 
 .velocity-divide-page .customer-sidebar {
@@ -7005,7 +7017,7 @@ section.product-extra-detail .extra-attributes .nav-item a {
   border-bottom: 2px solid;
 }
 section.product-extra-detail .extra-attributes .nav-item.active a {
-  color: #770c76;
+  color: #2b348f;
 }
 section.product-extra-detail .extra-attributes .tab-pane {
   padding: 1rem;
@@ -7150,7 +7162,7 @@ section.product-footer .teacher-image img {
   display: inline-block;
 }
 .product-card .product-category .category-text {
-  color: #770c76;
+  color: #2b348f;
   margin-right: 3px;
   font-weight: bold;
 }
@@ -7185,10 +7197,10 @@ section.product-footer .teacher-image img {
   margin: 0 auto;
   display: block;
   color: #ffffff;
-  background-color: #770c76;
+  background-color: #2b348f;
 }
 .product-card .btn.btn-view-product:hover, .product-card .btn.btn-view-product:focus {
-  background-color: #4d054c;
+  background-color: #1f256a;
 }
 
 .product-card-wrapper {
@@ -7209,7 +7221,7 @@ section.product-footer .teacher-image img {
   overflow: hidden;
 }
 .carousel-products.purple {
-  background: #770c76;
+  background: #2b348f;
 }
 .carousel-products.yellow {
   background: #ffb911;
@@ -7290,7 +7302,7 @@ section.product-footer .teacher-image img {
   overflow: hidden;
 }
 .thumb-list .thumb-frame.is-active {
-  border: 1px solid #770c76;
+  border: 1px solid #2b348f;
 }
 .thumb-list .thumb-frame > .bg-video {
   width: 100%;
@@ -7425,7 +7437,7 @@ section.product-footer .teacher-image img {
   flex-flow: column;
   padding: 10px;
   font-size: 1rem;
-  background-color: #4d054c;
+  background-color: #1f256a;
 }
 .teacher-card .teahcer-info span.teacher-honorific {
   margin-bottom: 5px;

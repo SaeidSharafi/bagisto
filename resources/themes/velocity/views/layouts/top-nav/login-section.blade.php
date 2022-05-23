@@ -1,38 +1,16 @@
 {!! view_render_event('bagisto.shop.layout.header.account-item.before') !!}
 
 <div id="account">
-    <div class="d-inline-block welcome-content dropdown-toggle account-menu d-flex align-items-center">
-        <div class="welcome-content">
-        <i class="fa-user far px-1"></i>
-        <i class="fa fa-caret-down"></i>
-        </div>
-    </div>
 
-    @guest('customer')
-        <div class="dropdown-list" style="width: 290px">
-            <div class="modal-content dropdown-container">
-                <div class="modal-header no-border pb0">
-                    <label class="fs18 grey">{{ __('shop::app.header.title') }}</label>
-                </div>
 
-                <div class="fs14 content">
-                    <p class="no-margin">{{ __('shop::app.header.dropdown-text') }}</p>
-                </div>
-
-                <div class="modal-footer">
-                    <a href="{{ route('customer.session.index') }}" class="theme-btn fs14 fw6">
-                        {{ __('shop::app.header.sign-in') }}
-                    </a>
-
-                    <a href="{{ route('customer.register.index') }}" class="theme-btn fs14 fw6">
-                        {{ __('shop::app.header.sign-up') }}
-                    </a>
-                </div>
-            </div>
-        </div>
-    @endguest
 
     @auth('customer')
+        <div class="d-inline-block welcome-content dropdown-toggle account-menu d-flex align-items-center">
+            <div class="welcome-content">
+                <i class="fa-user far px-1"></i>
+                <i class="fa fa-caret-down"></i>
+            </div>
+        </div>
         <div class="dropdown-list">
             <div class="dropdown-label">
                 {{ auth()->guard('customer')->user()->first_name }}
