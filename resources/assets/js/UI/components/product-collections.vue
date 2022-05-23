@@ -5,7 +5,7 @@
                 <div class="col-md-3 col-lg-2 d-none d-md-block">
                     <div class="category-header">
                         <div class="category-title">
-                           {{ (isCategory && !productTitle) ? categoryDetails.name : productTitle}}
+                            {{ (isCategory && !productTitle) ? categoryDetails.name : productTitle }}
                         </div>
                         <div class="category-image">
                             <img :src="productImage" class="w-100" v-if="productImage">
@@ -13,7 +13,7 @@
                         </div>
                         <div class="category-link" v-if="isCategory">
                             <a class="btn btn-outline-light"
-                               :href="`${this.baseUrl}/${categoryDetails.url_path}`" >
+                               :href="`${this.baseUrl}/${categoryDetails.url_path}`">
                                 مشاهده همه
                             </a>
                         </div>
@@ -31,10 +31,12 @@
                             <div
                                 :id="`slide-${index}`"
                                 v-for="(product, index) in productCollections">
-                                <product-card
-                                    :list="list"
-                                    :product="product">
-                                </product-card>
+                                <div class="p-2">
+                                    <product-card
+                                        :list="list"
+                                        :product="product">
+                                    </product-card>
+                                </div>
                             </div>
                         </slick-carousel>
                     </div>
@@ -49,7 +51,7 @@
 
 export default {
     props: {
-        additionalClass:{
+        additionalClass: {
             type: String,
             default: 'purple'
         },
@@ -92,7 +94,7 @@ export default {
             "arrows": false,
             "autoplay": true,
             "speed": 1000,
-            "rtl":(this.localeDirection === 'rtl'),
+            "rtl": (this.localeDirection === 'rtl'),
             "slidesToShow": 5,
             "slidesToScroll": 1,
             "responsive": [
@@ -117,7 +119,7 @@ export default {
                 {
                     "breakpoint": 768,
                     "settings": {
-                        "slidesToShow": 2
+                        "slidesToShow": 3
                     }
                 },
                 {
@@ -168,8 +170,8 @@ export default {
                     } else {
                         this.productCollections = 0;
                     }
-                    if (this.productCollections.length <= 0){
-                        this.hasProduct =false;
+                    if (this.productCollections.length <= 0) {
+                        this.hasProduct = false;
                     }
                     this.isLoading = false;
                 })

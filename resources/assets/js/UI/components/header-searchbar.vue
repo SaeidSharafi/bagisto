@@ -1,13 +1,7 @@
 <template>
     <div class="btn-group full-width force-center">
-        <div
-            class="btn"
-            id="header-search-icon"
-            aria-label="Search"
-            @click="submitForm"
-        >
-            <i class="fs16 fw6 rango-search"></i>
-        </div>
+
+
         <input
             required
             name="term"
@@ -20,7 +14,15 @@
 
         <slot name="image-search"></slot>
 
-
+        <button
+            class="btn"
+            type="button"
+            id="header-search-icon"
+            aria-label="Search"
+            @click="submitForm"
+        >
+            <i class="fs16 fw6 rango-search"></i>
+        </button>
     </div>
 </template>
 

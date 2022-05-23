@@ -1,11 +1,13 @@
 <template>
-    <div class="row">
-        <div class="col-6">
-            <div v-if="hamburger" class="nav-container scrollable">
-                <div class="wrapper" v-if="this.rootCategories">
-                    <div class="greeting drawer-section fw6">
-                        <i class="material-icons">perm_identity</i>
-                        <span>
+    <div class="mobile-header">
+        <div id="modal-blocker"></div>
+        <div class="row">
+            <div class="col-3">
+                <div v-if="hamburger" class="nav-container scrollable">
+                    <div class="wrapper" v-if="this.rootCategories">
+                        <div class="greeting drawer-section fw6">
+                            <i class="material-icons">perm_identity</i>
+                            <span>
                             <slot name="greetings"></slot>
 
                             <i
@@ -15,257 +17,258 @@
                                 cancel
                             </i>
                         </span>
-                    </div>
+                        </div>
 
-                    <ul
-                        type="none"
-                        class="velocity-content"
-                        v-if="headerContent.length > 0"
-                    >
-                        <li
-                            :key="index"
-                            v-for="(content, index) in headerContent"
+                        <ul
+                            type="none"
+                            class="velocity-content"
+                            v-if="headerContent.length > 0"
                         >
-                            <a
-                                class="unset"
-                                v-text="content.title"
-                                :href="`${$root.baseUrl}/${content.page_link}`"
+                            <li
+                                :key="index"
+                                v-for="(content, index) in headerContent"
                             >
-                            </a>
-                        </li>
-                    </ul>
+                                <a
+                                    class="unset"
+                                    v-text="content.title"
+                                    :href="`${$root.baseUrl}/${content.page_link}`"
+                                >
+                                </a>
+                            </li>
+                        </ul>
 
-                    <ul
-                        type="none"
-                        class="category-wrapper"
-                        v-if="rootCategoriesCollection.length > 0"
-                    >
-                        <li
-                            v-for="(
+                        <ul
+                            type="none"
+                            class="category-wrapper"
+                            v-if="rootCategoriesCollection.length > 0"
+                        >
+                            <li
+                                v-for="(
                                 category, index
                             ) in rootCategoriesCollection"
-                            :key="index"
-                        >
-                            <a
-                                class="unset"
-                                :href="`${$root.baseUrl}/${category.slug}`"
+                                :key="index"
                             >
-                                <div class="category-logo">
-                                    <img
-                                        class="category-icon"
-                                        v-if="category.category_icon_url"
-                                        :src="category.category_icon_url"
-                                        alt=""
-                                        width="20"
-                                        height="20"
-                                    />
-                                </div>
+                                <a
+                                    class="unset"
+                                    :href="`${$root.baseUrl}/${category.slug}`"
+                                >
+                                    <div class="category-logo">
+                                        <img
+                                            class="category-icon"
+                                            v-if="category.category_icon_url"
+                                            :src="category.category_icon_url"
+                                            alt=""
+                                            width="20"
+                                            height="20"
+                                        />
+                                    </div>
 
-                                <span v-text="category.name"></span>
-                            </a>
+                                    <span v-text="category.name"></span>
+                                </a>
 
-                            <i
-                                class="rango-arrow-right"
-                                @click="toggleSubcategories(index, $event)"
-                            ></i>
-                        </li>
-                    </ul>
+                                <i
+                                    class="rango-arrow-right"
+                                    @click="toggleSubcategories(index, $event)"
+                                ></i>
+                            </li>
+                        </ul>
 
-                    <slot name="customer-navigation"></slot>
+                        <slot name="customer-navigation"></slot>
 
-                    <ul type="none" class="meta-wrapper">
-                        <slot name="extra-navigation"></slot>
-                    </ul>
-                </div>
-
-                <div class="wrapper" v-else-if="subCategory">
-                    <div class="drawer-section">
-                        <i
-                            class="rango-arrow-left fs24 text-down-4"
-                            @click="toggleSubcategories('root')"
-                        ></i>
-
-                        <h4 class="display-inbl" v-text="subCategory.name"></h4>
-
-                        <i
-                            class="material-icons float-right text-dark"
-                            @click="closeDrawer()"
-                        >
-                            cancel
-                        </i>
+                        <ul type="none" class="meta-wrapper">
+                            <slot name="extra-navigation"></slot>
+                        </ul>
                     </div>
 
-                    <ul type="none">
-                        <li
-                            :key="index"
-                            v-for="(
+                    <div class="wrapper" v-else-if="subCategory">
+                        <div class="drawer-section">
+                            <i
+                                class="rango-arrow-left fs24 text-down-4"
+                                @click="toggleSubcategories('root')"
+                            ></i>
+
+                            <h4 class="display-inbl" v-text="subCategory.name"></h4>
+
+                            <i
+                                class="material-icons float-right text-dark"
+                                @click="closeDrawer()"
+                            >
+                                cancel
+                            </i>
+                        </div>
+
+                        <ul type="none">
+                            <li
+                                :key="index"
+                                v-for="(
                                 nestedSubCategory, index
                             ) in subCategory.children"
-                        >
-                            <a
-                                class="unset"
-                                :href="`${$root.baseUrl}/${subCategory.slug}/${nestedSubCategory.slug}`"
                             >
-                                <div class="category-logo">
-                                    <img
-                                        class="category-icon"
-                                        v-if="
+                                <a
+                                    class="unset"
+                                    :href="`${$root.baseUrl}/${subCategory.slug}/${nestedSubCategory.slug}`"
+                                >
+                                    <div class="category-logo">
+                                        <img
+                                            class="category-icon"
+                                            v-if="
                                             nestedSubCategory.category_icon_url
                                         "
-                                        :src="
+                                            :src="
                                             nestedSubCategory.category_icon_url
                                         "
-                                        alt=""
-                                        width="20"
-                                        height="20"
-                                    />
-                                </div>
+                                            alt=""
+                                            width="20"
+                                            height="20"
+                                        />
+                                    </div>
 
-                                <span v-text="nestedSubCategory.name"></span>
-                            </a>
+                                    <span v-text="nestedSubCategory.name"></span>
+                                </a>
 
-                            <ul
-                                type="none"
-                                class="nested-category"
-                                v-if="
+                                <ul
+                                    type="none"
+                                    class="nested-category"
+                                    v-if="
                                     nestedSubCategory.children &&
                                     nestedSubCategory.children.length > 0
                                 "
-                            >
-                                <li
-                                    :key="`index-${index}`"
-                                    v-for="(
+                                >
+                                    <li
+                                        :key="`index-${index}`"
+                                        v-for="(
                                         thirdLevelCategory, index
                                     ) in nestedSubCategory.children"
-                                >
-                                    <a
-                                        class="unset"
-                                        :href="`${$root.baseUrl}/${subCategory.slug}/${nestedSubCategory.slug}/${thirdLevelCategory.slug}`"
                                     >
-                                        <div class="category-logo">
-                                            <img
-                                                class="category-icon"
-                                                v-if="
+                                        <a
+                                            class="unset"
+                                            :href="`${$root.baseUrl}/${subCategory.slug}/${nestedSubCategory.slug}/${thirdLevelCategory.slug}`"
+                                        >
+                                            <div class="category-logo">
+                                                <img
+                                                    class="category-icon"
+                                                    v-if="
                                                     thirdLevelCategory.category_icon_url
                                                 "
-                                                :src="
+                                                    :src="
                                                     thirdLevelCategory.category_icon_url
                                                 "
-                                                alt=""
-                                                width="20"
-                                                height="20"
-                                            />
-                                        </div>
+                                                    alt=""
+                                                    width="20"
+                                                    height="20"
+                                                />
+                                            </div>
 
-                                        <span
-                                            v-text="thirdLevelCategory.name"
-                                        ></span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="wrapper" v-else-if="languages">
-                    <div class="drawer-section">
-                        <i
-                            class="rango-arrow-left fs24 text-down-4"
-                            @click="toggleMetaInfo('languages')"
-                        ></i>
-
-                        <h4
-                            class="display-inbl"
-                            v-text="__('responsive.header.languages')"
-                        ></h4>
-
-                        <i
-                            class="material-icons float-right text-dark"
-                            @click="closeDrawer()"
-                            >cancel</i
-                        >
+                                            <span
+                                                v-text="thirdLevelCategory.name"
+                                            ></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
                     </div>
 
-                    <ul type="none">
-                        <li v-for="(locale, index) in allLocales" :key="index">
-                            <a class="unset" :href="`?locale=${locale.code}`">
-                                <div class="category-logo">
-                                    <img
-                                        class="category-icon"
-                                        :src="locale.image_url"
-                                        alt=""
-                                        width="20"
-                                        height="20"
-                                        v-if="locale.image_url"
-                                    />
-                                </div>
+                    <div class="wrapper" v-else-if="languages">
+                        <div class="drawer-section">
+                            <i
+                                class="rango-arrow-left fs24 text-down-4"
+                                @click="toggleMetaInfo('languages')"
+                            ></i>
 
-                                <span v-text="locale.name"></span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                            <h4
+                                class="display-inbl"
+                                v-text="__('responsive.header.languages')"
+                            ></h4>
 
-                <div class="wrapper" v-else-if="currencies">
-                    <div class="drawer-section">
-                        <i
-                            class="rango-arrow-left fs24 text-down-4"
-                            @click="toggleMetaInfo('currencies')"
-                        ></i>
-
-                        <h4
-                            class="display-inbl"
-                            v-text="__('shop.general.currencies')"
-                        ></h4>
-
-                        <i
-                            class="material-icons float-right text-dark"
-                            @click="closeDrawer()"
+                            <i
+                                class="material-icons float-right text-dark"
+                                @click="closeDrawer()"
                             >cancel</i
-                        >
-                    </div>
-
-                    <ul type="none">
-                        <li
-                            v-for="(currency, index) in allCurrencies"
-                            :key="index"
-                        >
-                            <a
-                                class="unset"
-                                :href="`?currency=${currency.code}`"
                             >
-                                <span v-text="currency.code"></span>
-                            </a>
-                        </li>
-                    </ul>
+                        </div>
+
+                        <ul type="none">
+                            <li v-for="(locale, index) in allLocales" :key="index">
+                                <a class="unset" :href="`?locale=${locale.code}`">
+                                    <div class="category-logo">
+                                        <img
+                                            class="category-icon"
+                                            :src="locale.image_url"
+                                            alt=""
+                                            width="20"
+                                            height="20"
+                                            v-if="locale.image_url"
+                                        />
+                                    </div>
+
+                                    <span v-text="locale.name"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="wrapper" v-else-if="currencies">
+                        <div class="drawer-section">
+                            <i
+                                class="rango-arrow-left fs24 text-down-4"
+                                @click="toggleMetaInfo('currencies')"
+                            ></i>
+
+                            <h4
+                                class="display-inbl"
+                                v-text="__('shop.general.currencies')"
+                            ></h4>
+
+                            <i
+                                class="material-icons float-right text-dark"
+                                @click="closeDrawer()"
+                            >cancel</i
+                            >
+                        </div>
+
+                        <ul type="none">
+                            <li
+                                v-for="(currency, index) in allCurrencies"
+                                :key="index"
+                            >
+                                <a
+                                    class="unset"
+                                    :href="`?currency=${currency.code}`"
+                                >
+                                    <span v-text="currency.code"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="hamburger-wrapper" @click="toggleHamburger">
+                    <i class="rango-toggle hamburger"></i>
                 </div>
             </div>
+            <div class="col-6">
+                <slot name="logo"></slot>
+            </div>
+            <div class="right-vc-header col-3">
+                <slot name="top-header"></slot>
 
-            <div class="hamburger-wrapper" @click="toggleHamburger">
-                <i class="rango-toggle hamburger"></i>
+                <a class="unset cursor-pointer" @click="openSearchBar">
+                    <i class="material-icons">search</i>
+                </a>
+
+                <a :href="cartRoute" class="unset">
+                    <i class="material-icons text-down-3">shopping_cart</i>
+
+                    <div class="badge-wrapper">
+                        <span class="badge" v-text="updatedCartItemsCount"></span>
+                    </div>
+                </a>
             </div>
 
-            <slot name="logo"></slot>
-        </div>
-
-        <div class="right-vc-header col-6">
-            <slot name="top-header"></slot>
-
-            <a class="unset cursor-pointer" @click="openSearchBar">
-                <i class="material-icons">search</i>
-            </a>
-
-            <a :href="cartRoute" class="unset">
-                <i class="material-icons text-down-3">shopping_cart</i>
-
-                <div class="badge-wrapper">
-                    <span class="badge" v-text="updatedCartItemsCount"></span>
-                </div>
-            </a>
-        </div>
-
-        <div class="right searchbar" v-if="isSearchbar">
-            <slot name="search-bar"></slot>
+            <div class="searchbar mobile" v-if="isSearchbar">
+                <slot name="search-bar"></slot>
+            </div>
         </div>
     </div>
 </template>
@@ -304,8 +307,11 @@ export default {
         hamburger: function (value) {
             if (value) {
                 document.body.classList.add('open-hamburger');
+                var this_this = this;
+                document.addEventListener('outSideNavClick',this.closeDrawer);
             } else {
                 document.body.classList.remove('open-hamburger');
+                document.removeEventListener('outSideNavClick',this.closeDrawer);
             }
         },
 
@@ -326,20 +332,27 @@ export default {
         this.getMiniCartDetails();
 
         this.updateHeaderItemsCount();
-    },
 
+    },
+    mounted() {
+
+
+    },
     methods: {
         openSearchBar: function () {
             this.isSearchbar = !this.isSearchbar;
 
             let footer = $('.footer');
             let homeContent = $('#home-right-bar-container');
+            let mainContent = $('.main-content');
 
             if (this.isSearchbar) {
                 footer[0].style.opacity = '.3';
+                mainContent[0].style.opacity = '.3';
                 homeContent[0].style.opacity = '.3';
             } else {
                 footer[0].style.opacity = '1';
+                mainContent[0].style.opacity = '1';
                 homeContent[0].style.opacity = '1';
             }
         },
@@ -351,7 +364,7 @@ export default {
         closeDrawer: function () {
             $('.nav-container').hide();
 
-            this.toggleHamburger();
+            this.hamburger = false;
             this.rootCategories = true;
         },
 

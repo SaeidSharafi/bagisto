@@ -16,23 +16,13 @@
             display: none !important;
         }
 
-        .toolbar-wrapper .col-4:last-child {
-            right: 0;
-            position: absolute;
-        }
-
 
         @media only screen and (max-width: 992px) {
             .main-content-wrapper .vc-header {
                 box-shadow: unset;
             }
 
-             .toolbar-wrapper .col-4:last-child {
-                left: 175px;
-            }
-
             .toolbar-wrapper .sorter {
-                left: 35px;
                 position: relative;
             }
 
@@ -105,20 +95,26 @@
                             {{ $results->total() }} {{ __('shop::app.search.found-results') }}
                         </h2>
                     @endif
+                    <div class="row remove-padding-margin">
+                        @foreach ($results as $productFlat)
+                            @if ($toolbarHelper->getCurrentMode() == 'grid')
+                                <div class="px-2 my-2 product-card-wrapper">
+                                    @include('shop::products.list.card', [
+                                        'cardClass' => 'category-product-image-container',
+                                        'product' => $productFlat->product,
+                                    ])
+                                </div>
+                            @else
+                                @include('shop::products.list.card', [
+                                    'list' => true,
+                                    'product' => $productFlat->product,
+                                ])
+                            @endif
+                        @endforeach
 
-                    @foreach ($results as $productFlat)
-                        @if ($toolbarHelper->getCurrentMode() == 'grid')
-                            @include('shop::products.list.card', [
-                                'cardClass' => 'category-product-image-container',
-                                'product' => $productFlat->product,
-                            ])
-                        @else
-                            @include('shop::products.list.card', [
-                                'list' => true,
-                                'product' => $productFlat->product,
-                            ])
-                        @endif
-                    @endforeach
+
+                    </div>
+
 
                     @include('ui::datagrid.pagination')
                 @endif
@@ -134,14 +130,14 @@
         Vue.component('image-search-result-component', {
             template: '#image-search-result-component-template',
 
-            data: function() {
+            data: function () {
                 return {
                     searched_terms: [],
                     searchedImageUrl: localStorage.searchedImageUrl,
                 }
             },
 
-            created: function() {
+            created: function () {
                 if (localStorage.searched_terms && localStorage.searched_terms != '') {
                     this.searched_terms = localStorage.searched_terms.split('_');
 

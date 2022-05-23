@@ -312,6 +312,8 @@ return [
 
     'responsive' => [
         'header' => [
+            'done'      => 'تایید',
+            'languages' => 'زبان ها',
             'greeting' => ':customer ! خوش آمدی',
         ]
     ],

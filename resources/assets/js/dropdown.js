@@ -1,10 +1,20 @@
+import Vue from "vue";
+
 $(function() {
+    const event = new Event('outSideNavClick');
     $(document).click(function(e) {
         var target = e.target;
 
         if (! $(target).parents('.dropdown-open').length || $(target).is('li') || $(target).is('a')) {
             $('.dropdown-list').hide();
             $('.dropdown-toggle').removeClass('active');
+        }
+        if (! $(target).parents('.nav-container').length && !$(target).hasClass('nav-container')
+           && ! $(target).parents('.hamburger-wrapper').length && !$(target).hasClass('hamburger-wrapper')
+           && ! $(target).parents('.filter-toggle').length && !$(target).hasClass('filter-toggle')) {
+            console.log(target);
+            // console.log(target);
+            document.dispatchEvent(event);
         }
     });
 
@@ -41,7 +51,7 @@ $(function() {
 
             if (bottomOffset > topOffset || height < bottomOffset) {
                 dropdown.removeClass("bottom");
-                
+
                 if(dropdown.hasClass('top-right')) {
                     dropdown.removeClass('top-right')
                     dropdown.addClass('bottom-right')

@@ -48,17 +48,6 @@
                             ></div>
 
                             <div class="fs18 card-current-price fw6">
-                                <div class="display-inbl">
-                                    <label class="fw5">{{
-                                        __('checkout.qty')
-                                    }}</label>
-                                    <input
-                                        type="text"
-                                        disabled
-                                        :value="item.quantity"
-                                        class="ml5"
-                                    />
-                                </div>
                                 <span class="card-total-price fw6">
                                     {{
                                         isTaxInclusive == '1'

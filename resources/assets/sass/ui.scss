@@ -5,3 +5,21 @@
 .thumb-list{
     list-style: none;
 }
+#modal-blocker{
+    display: none;
+}
+body.open-hamburger{
+    opacity: 1;
+    #modal-blocker{
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #ffffff;
+        opacity: 0.8;
+        z-index: 10;
+    }
+}

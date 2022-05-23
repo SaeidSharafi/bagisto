@@ -18,17 +18,18 @@
 
     {{-- this is default content if js is not loaded --}}
     <div class="row">
-        <div class="col-6">
+        <div class="col-3">
             <div class="hamburger-wrapper">
                 <i class="rango-toggle hamburger"></i>
             </div>
 
+        </div>
+        <div class="col-6">
             <a class="left" href="{{ route('shop.home.index') }}" aria-label="Logo">
                 <img class="logo" src="{{ core()->getCurrentChannel()->logo_url ?? asset('themes/velocity/assets/images/logo-text.png') }}" alt="" />
             </a>
         </div>
-
-        <div class="right-vc-header col-6">
+        <div class="right-vc-header col-3">
             <a class="unset cursor-pointer">
                 <i class="material-icons">search</i>
             </a>
@@ -151,10 +152,8 @@
 
 
     <template v-slot:search-bar>
-        <div class="row">
-            <div class="col-md-12">
+        <div class="w-100">
                 @include('velocity::shop.layouts.particals.search-bar')
-            </div>
         </div>
     </template>
 

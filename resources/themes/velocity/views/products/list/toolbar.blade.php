@@ -70,7 +70,7 @@
                 style="
                     z-index: 1000;
                     color: black;
-                    position: relative;
+                    position: fixed;
                 ">
                 <div class="header drawer-section">
                     <i class="material-icons" @click="toggleLayeredNavigation">keyboard_backspace</i>
@@ -88,7 +88,7 @@
                 @endif
             </div>
 
-            <div class="col-4" @click="toggleLayeredNavigation({event: $event, actionType: 'open'})">
+            <div class="col-4  filter-toggle" @click="toggleLayeredNavigation({event: $event, actionType: 'open'})">
                 <a class="unset">
                     <i class="material-icons">filter_list</i>
                     <span>{{ __('velocity::app.shop.general.filter') }}</span>
@@ -109,25 +109,6 @@
                 </div>
             </div>
 
-            <div class="col-4">
-                @php
-                    $isList = $toolbarHelper->isModeActive('list');
-                @endphp
-
-                <a
-                    class="unset"
-                    href="{{
-                        $isList
-                        ? $toolbarHelper->getModeUrl('grid')
-                        : $toolbarHelper->getModeUrl('list')
-                    }}">
-
-                    <i class="material-icons">
-                        @if ($isList) list @else view_module @endif
-                    </i>
-                    <span>{{ __('velocity::app.shop.general.view') }}</span>
-                </a>
-            </div>
         </div>
     </script>
 
@@ -145,16 +126,24 @@
                     layeredNavigation: function (value) {
                         if (value) {
                             document.body.classList.add('open-hamburger');
+                            document.addEventListener('outSideNavClick',this.closeLayeredNavigation);
                         } else {
                             document.body.classList.remove('open-hamburger');
+                            document.removeEventListener('outSideNavClick',this.closeLayeredNavigation);
                         }
                     }
                 },
+                mounted() {
 
+                },
                 methods: {
                     toggleLayeredNavigation: function ({event, actionType}) {
                         this.layeredNavigation = !this.layeredNavigation;
                     },
+                    closeLayeredNavigation: function (){
+                        console.log("closing navigation");
+                        this.layeredNavigation=false;
+                    }
                 }
             })
         })()

@@ -39,8 +39,7 @@
     {{-- main app --}}
     <div id="app">
         <product-quick-view v-if="$root.quickView"></product-quick-view>
-
-        <div class="main-container-wrapper">
+        <div class="main-container-wrapper main-content-wrapper">
 
             @section('body-header')
                 {{-- top nav which contains currency, locale and login header --}}
@@ -78,20 +77,22 @@
                     </div>
                 </div>
             @show
+            <div class="main-content w-100">
+                <div class="w-100">
+                    @yield('full-width-content-top')
+                </div>
+                <div class="container">
+                    {!! view_render_event('bagisto.shop.layout.full-content.before') !!}
 
-            <div class="w-100">
-                @yield('full-width-content-top')
-            </div>
-            <div class="container">
-                {!! view_render_event('bagisto.shop.layout.full-content.before') !!}
+                    @yield('full-content-wrapper')
 
-                @yield('full-content-wrapper')
+                    {!! view_render_event('bagisto.shop.layout.full-content.after') !!}
+                </div>
+                <div class="w-100">
+                    @yield('full-width-content-bot')
+                </div>
+            </div>
 
-                {!! view_render_event('bagisto.shop.layout.full-content.after') !!}
-            </div>
-            <div class="w-100">
-                @yield('full-width-content-bot')
-            </div>
         </div>
 
         {{-- overlay loader --}}

@@ -113,6 +113,7 @@ Vue.component('go-top', () => import('@inotom/vue-go-top'));
  */
 $(function() {
 
+
     /**
      * Define a mixin object.
      */

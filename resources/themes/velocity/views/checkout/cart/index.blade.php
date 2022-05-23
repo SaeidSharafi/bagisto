@@ -59,7 +59,7 @@
 
                                         @endphp
 
-                                        <div class="card cart-row mb-2 p-2" v-if="!isMobileDevice">
+                                        <div class="card cart-row mb-2 p-2">
                                             <div class="row m-0" >
                                                 <div class="col-2 p-0">
                                                     <a
@@ -174,69 +174,12 @@
                                             </div>
                                         </div>
 
-                                        <div class="row col-12" v-else>
-                                            <a
-                                                title="{{ $product->name }}"
-                                                class="product-image-container col-2"
-                                                href="{{ route('shop.productOrCategory.index', $url_key) }}">
-
-                                                <img
-                                                    src="{{ $productBaseImage['medium_image_url'] }}"
-                                                    class="card-img-top"
-                                                    alt="{{ $product->name }}">
-                                            </a>
-
-                                            <div class="col-10 pr0 item-title">
-                                                <a
-                                                    href="{{ route('shop.productOrCategory.index', $url_key) }}"
-                                                    title="{{ $product->name }}"
-                                                    class="unset col-12 no-padding">
-
-                                                    <span class="fs20 fw6 link-color">{{ $product->name }}</span>
-                                                </a>
-
-                                                @if (isset($item->additional['attributes']))
-                                                    <div class="row col-12 no-padding no-margin">
-
-                                                        @foreach ($item->additional['attributes'] as $attribute)
-                                                            <b>{{ $attribute['attribute_name'] }} : </b>{{ $attribute['option_label'] }}</br>
-                                                        @endforeach
-
-                                                    </div>
-                                                @endif
-
-                                                <div class="col-12 no-padding">
-                                                    @include ('shop::products.price', ['product' => $product])
-                                                </div>
-
-                                                <div class="row col-12 remove-padding-margin actions">
-                                                    <div class="product-quantity col-lg-4 col-6 no-padding">
-                                                        <quantity-changer
-                                                            :control-name="'qty[{{$item->id}}]'"
-                                                            quantity="{{ $item->quantity }}"
-                                                            quantity-text="{{ __('shop::app.products.quantity') }}">
-                                                        </quantity-changer>
-                                                    </div>
-
-                                                    <div class="col-4 cursor-pointer text-down-4">
-                                                        <a href="{{ route('shop.checkout.cart.remove', ['id' => $item->id]) }}" class="unset">
-                                                            <i class="material-icons fs24">delete</i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
 
                                     @endforeach
                                 </div>
 
                                 {!! view_render_event('bagisto.shop.checkout.cart.controls.after', ['cart' => $cart]) !!}
-                                    <a
-                                        class="btn btn-primary light remove-decoration fs16"
-                                        href="{{ route('shop.home.index') }}">
-                                        {{ __('shop::app.checkout.cart.continue-shopping') }}
-                                    </a>
+
 
 
                                 {!! view_render_event('bagisto.shop.checkout.cart.controls.after', ['cart' => $cart]) !!}
