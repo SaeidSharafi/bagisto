@@ -16,6 +16,7 @@ use Webkul\Checkout\Traits\CartCoupons;
 use Webkul\Checkout\Traits\CartTools;
 use Webkul\Checkout\Traits\CartValidators;
 use Webkul\Customer\Repositories\CustomerAddressRepository;
+use Webkul\Customer\Repositories\CustomerRepository;
 use Webkul\Customer\Repositories\WishlistRepository;
 use Webkul\Product\Repositories\ProductRepository;
 use Webkul\Shipping\Facades\Shipping;
@@ -69,6 +70,13 @@ class Cart
     protected $wishlistRepository;
 
     /**
+     * Customer repository instance.
+     *
+     * @var \Webkul\Customer\Repositories\CustomerRepository
+     */
+    protected $customerRepository;
+
+    /**
      * Customer address repository instance.
      *
      * @var \Webkul\Customer\Repositories\CustomerAddressRepository
@@ -84,6 +92,7 @@ class Cart
      * @param  \Webkul\Product\Repositories\ProductRepository           $productRepository
      * @param  \Webkul\Tax\Repositories\TaxCategoryRepository           $taxCategoryRepository
      * @param  \Webkul\Customer\Repositories\WishlistRepository         $wishlistRepository
+     * @param  \Webkul\Customer\Repositories\CustomerRepository  $customerRepository
      * @param  \Webkul\Customer\Repositories\CustomerAddressRepository  $customerAddressRepository
      * @return void
      */
@@ -94,6 +103,7 @@ class Cart
         ProductRepository $productRepository,
         TaxCategoryRepository $taxCategoryRepository,
         WishlistRepository $wishlistRepository,
+        CustomerRepository $customerRepository,
         CustomerAddressRepository $customerAddressRepository
     ) {
         $this->cartRepository = $cartRepository;
@@ -107,6 +117,8 @@ class Cart
         $this->taxCategoryRepository = $taxCategoryRepository;
 
         $this->wishlistRepository = $wishlistRepository;
+
+        $this->customerRepository = $customerRepository;
 
         $this->customerAddressRepository = $customerAddressRepository;
     }
@@ -194,8 +206,18 @@ class Cart
         if ($product->status === 0) {
             return ['info' => __('shop::app.checkout.cart.item.inactive-add')];
         }
-
+        if ($this->customerRepository->hasOrder(auth()->guard('customer')->user()->id,$productId)){
+            return ['info' => __('app.checkout.cart.item.order-exist-add')];
+        }
         $cartProducts = $product->getTypeInstance()->prepareForCart($data);
+
+        $exist =$cart->items()
+            ->where('product_id',$productId)
+            ->orWhere('parent_id',$productId)
+            ->exists();
+        if ($exist){
+            return ['info' => __('app.checkout.cart.item.exist-add')];
+        }
 
         if (is_string($cartProducts)) {
             $this->collectTotals();
@@ -211,12 +233,14 @@ class Cart
             foreach ($cartProducts as $cartProduct) {
                 if (array_key_exists('quantity',$cartProduct) &&
                     $cartProduct['quantity'] > 1){
-                    return ['info' => __('shop::app.checkout.cart.item.inactive-add')];
+                    return ['info' => __('app.checkout.cart.item.exist-add')];
                 }
+
                 //$cartProduct['quantity'] =1;
                 $cartItem = $this->getItemByProduct($cartProduct);
 
                 if (isset($cartProduct['parent_id'])) {
+
                     $cartProduct['parent_id'] = $parentCartItem->id;
                 }
 

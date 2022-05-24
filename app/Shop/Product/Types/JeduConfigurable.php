@@ -272,7 +272,7 @@ class JeduConfigurable extends Configurable
         $price = $childProduct->getTypeInstance()->getFinalPrice();
 
         return [
-            [
+            'parent' =>[
                 'product_id' => $this->product->id,
                 'sku'        => $this->product->sku,
                 'name'       => $this->product->name,
@@ -283,7 +283,8 @@ class JeduConfigurable extends Configurable
                 'total'      => $convertedPrice * $data['quantity'],
                 'base_total' => $price * $data['quantity'],
                 'additional' => $this->getAdditionalOptions($data),
-            ], [
+            ],
+            'variation'=>[
                 'parent_id'  => $this->product->id,
                 'product_id' => (int) $data['selected_configurable_option'],
                 'sku'        => $childProduct->sku,

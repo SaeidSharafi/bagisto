@@ -10,6 +10,14 @@ return [
             ]
         ]
     ],
+    'checkout'=>[
+        'cart' =>[
+            'item' => [
+                'exist-add' =>'امکان ثبت نام بیش از یکبار نمیباشد',
+                'order-exist-add' =>'شما قبلا در این دوره ثبت نام کرده‌اید',
+            ]
+        ]
+    ],
     'velocity'  => [
         'admin'          => [
             'meta-data' => [
