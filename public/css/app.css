@@ -6489,6 +6489,10 @@ readers do not read off random characters that represent icons */
   font-weight: 400;
 }
 
+html {
+  font-size: 8px;
+}
+
 * {
   font-family: "Source Sans Pro", "IRANYEKAN", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -6884,7 +6888,7 @@ img.cover {
 .product-banner .banner-detail {
   padding: 1rem;
   line-height: initial;
-  font-size: 1.5rem;
+  font-size: 1rem;
   position: relative;
 }
 
@@ -7672,6 +7676,11 @@ body.rtl header .mini-cart-container #mini-cart .badge {
   left: 73%;
 }
 
+@media (min-width: 320px) {
+  html {
+    font-size: 10px;
+  }
+}
 @media (min-width: 400px) {
   .product-card-wrapper {
     flex: 0 0 50%;
@@ -7728,6 +7737,10 @@ body.rtl header .mini-cart-container #mini-cart .badge {
 @media (min-width: 992px) {
   .category-banner {
     max-height: 160px;
+  }
+
+  .product-banner .banner-detail {
+    font-size: 1rem;
   }
 }
 @media (min-width: 1200px) {
