@@ -74,6 +74,7 @@ class JeduCustomerController extends Controller
     public function edit()
     {
         $customer = $this->customerRepository->find(auth()->guard('customer')->user()->id);
+        $this->customerRepository->getOrders(auth()->guard('customer')->user()->id);
 
         return view($this->_config['view'], compact('customer'));
     }
