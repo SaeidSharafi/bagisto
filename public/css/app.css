@@ -426,6 +426,9 @@ body.rtl header .vc-small-screen #search-form input {
   left: auto;
   right: -10px;
 }
+.rtl .rango-arrow-left:before {
+  content: "\e908";
+}
 
 /*!
  * Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com

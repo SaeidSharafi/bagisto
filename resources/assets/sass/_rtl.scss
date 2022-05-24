@@ -6,4 +6,9 @@
         left: auto;
         right: -10px;
     }
+    .rango-arrow-left{
+        &:before{
+            content: "";
+        }
+    }
 }
