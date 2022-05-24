@@ -20,6 +20,22 @@
                     </div>
 
                 </div>
+                <div class="d-block d-md-none col-12">
+                    <div class="category-header-vertical">
+                        <div class="category-title">
+                            {{ (isCategory && !productTitle) ? categoryDetails.name : productTitle }}
+                        </div>
+                        <div class="category-line">
+
+                        </div>
+                        <div class="category-link" v-if="isCategory">
+                            <a class="btn btn-outline-light"
+                               :href="`${this.baseUrl}/${categoryDetails.url_path}`">
+                                مشاهده همه
+                            </a>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-12 col-md-9 col-lg-10">
                     <shimmer-component v-if="isLoading"></shimmer-component>
                     <div class="w-100 " :class="localeDirection">
@@ -31,7 +47,7 @@
                             <div
                                 :id="`slide-${index}`"
                                 v-for="(product, index) in productCollections">
-                                <div class="p-2">
+                                <div class="p-2 w-100 d-flex justify-content-center">
                                     <product-card
                                         :list="list"
                                         :product="product">
