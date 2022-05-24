@@ -6639,6 +6639,11 @@ nav#sidebar-level-0 {
   align-items: center;
 }
 
+.sidebar .category-content .category-icon {
+  width: 30px;
+  height: auto;
+}
+
 .rtl .navbar-left {
   left: auto;
   right: 0;
