@@ -17,102 +17,9 @@
 
     @if ($total)
         @if (isset($accordian) && $accordian)
-            <accordian :active="true">
-                {{-- customer ratings --}}
-                <div slot="header" class="col-lg-12 no-padding">
-                    <h3 class="display-inbl">
-                        {{ __('velocity::app.products.customer-rating') }}
-                    </h3>
 
-                    <i class="rango-arrow"></i>
-                </div>
-
-                <div class="row customer-rating" slot="body">
-                    <div class="row full-width text-center mb30">
-                        <div class="col-lg-12 col-xl-6">
-                            <h4 class="col-lg-12 fs16">{{ $avgRatings }} {{ __('shop::app.reviews.star') }}</h4>
-
-                            <star-ratings
-                                :size="24"
-                                :ratings="{{ $avgStarRating }}"
-                            ></star-ratings>
-
-                            <span class="fs16 fw6 display-block">
-                                {{ __('shop::app.reviews.ratingreviews', [
-                                    'rating' => $avgRatings,
-                                    'review' => $total])
-                                }}
-                            </span>
-
-                            @if (core()->getConfigData('catalog.products.review.guest_review') || auth()->guard('customer')->check())
-                                <a href="{{ route('shop.reviews.create', ['slug' => $product->url_key ]) }}">
-                                    <button type="button" class="theme-btn light">{{ __('velocity::app.products.write-your-review') }}</button>
-                                </a>
-                            @endif
-                        </div>
-
-                        <div class="col-lg-12 col-xl-6">
-
-                            @for ($i = 5; $i >= 1; $i--)
-
-                                <div class="row">
-                                    <span class="col-3 no-padding fs16 fw6">{{ $i }} {{ __('shop::app.reviews.star') }}</span>
-
-                                    <div class="col-7 rating-bar" title="{{ $percentageRatings[$i] }}%">
-                                        <div style="width: {{ $percentageRatings[$i] }}%"></div>
-                                    </div>
-
-                                    <span class="col-2 no-padding fs16">{{ $percentageRatings[$i] }} %</span>
-                                </div>
-                            @endfor
-
-                        </div>
-                    </div>
-                </div>
-            </accordian>
         @else
-            <div class="row customer-rating">
-                <div class="row full-width text-center mb30">
-                    <div class="col-lg-12 col-xl-6">
-                        <h3 class="col-lg-12">{{ $avgRatings }} {{ __('shop::app.reviews.star') }}</h3>
 
-                        <star-ratings
-                            :size="24"
-                            :ratings="{{ $avgStarRating }}"
-                        ></star-ratings>
-
-                        <span class="fs16 display-block">
-                            {{ __('shop::app.reviews.ratingreviews', [
-                                'rating' => $avgRatings,
-                                'review' => $total])
-                            }}
-                        </span>
-
-                        @if (core()->getConfigData('catalog.products.review.guest_review') || auth()->guard('customer')->check())
-                            <a href="{{ route('shop.reviews.create', ['slug' => $product->url_key ]) }}">
-                                <button type="button" class="theme-btn light">{{ __('velocity::app.products.write-your-review') }}</button>
-                            </a>
-                        @endif
-                    </div>
-
-                    <div class="col-lg-12 col-xl-6">
-
-                        @for ($i = 5; $i >= 1; $i--)
-
-                            <div class="row">
-                                <span class="col-3 no-padding fs16 fw6">{{ $i }} ستاره</span>
-
-                                <div class="col-7 rating-bar" title="{{ $percentageRatings[$i] }}%">
-                                    <div style="width: {{ $percentageRatings[$i] }}%"></div>
-                                </div>
-
-                                <span class="col-2 no-padding fs16">{{ $percentageRatings[$i] }} %</span>
-                            </div>
-                        @endfor
-
-                    </div>
-                </div>
-            </div>
         @endif
 
         @if (isset($accordian) && $accordian)
@@ -160,9 +67,9 @@
                 </div>
             </accordian>
         @else
-            <h3 class="display-inbl mb20 col-lg-12 no-padding">
+            <h5 class="display-inbl mb20 col-lg-12 no-padding">
                 {{ __('velocity::app.products.reviews-title') }}
-            </h3>
+            </h5>
 
             <div class="customer-reviews">
                 @foreach ($reviews as $review)
@@ -211,9 +118,7 @@
         @if (core()->getConfigData('catalog.products.review.guest_review') || auth()->guard('customer')->check())
             <div class="customer-rating" style="border: none">
                 <div class="row customer-rating col-12 remove-padding-margin">
-                    <h2 class="full-width">
-                        {{ __('shop::app.reviews.write-review') }}
-                    </h2>
+
 
                     <form
                         method="POST"

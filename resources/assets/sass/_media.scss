@@ -29,7 +29,13 @@ body.rtl header .vc-small-screen #search-form {
     }
 
 }
+@media only screen and (max-width: 1192px)
+{
+    #main-category{
+        display: flex!important;
+    }
 
+}
 @media only screen and (max-width: 992px) {
     header .vc-small-screen #search-form {
         margin: 0;
@@ -37,6 +43,9 @@ body.rtl header .vc-small-screen #search-form {
         .btn-toolbar {
             margin: 0;
         }
+    }
+    body.rtl .velocity-divide-page .left{
+
     }
     #sort-by.sorter select{
         left: auto;
@@ -66,10 +75,18 @@ body.rtl header .vc-small-screen #search-form {
             }
         }
     }
+    section.product-extra-detail .extra-attributes .nav-item a.nav-link{
+        font-size: 0.8rem;
+    }
 
 }
 @media only screen and (max-width: 600px){
     .selective-div {
         width: 110px;
+    }
+    #extra-attributesContent {
+        .tab-pane{
+            display: block !important;
+        }
     }
 }

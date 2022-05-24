@@ -47,7 +47,7 @@
         <!--                <span class="category-text">{{ product.category_name }}</span>-->
         <!--            </a>-->
         <!--        </div>-->
-        <a :href="`${baseUrl}/${product.slug}`" :title="product.short_name" class="d-block">
+        <a :href="`${baseUrl}/${product.slug}`" :title="product.short_name" class="d-flex flex-column justify-content-between h-100">
             <div class="product-image-container">
                 <img
                     loading="lazy"
@@ -61,10 +61,10 @@
             <!--            <product-quick-view-btn :quick-view-details="product"></product-quick-view-btn>-->
 
             <div class="card-body">
-                <h2 class="product-name w-100 no-padding">
-                        {{ product.short_name }}
-                </h2>
                 <div class="product-details">
+                    <h2 class="product-name w-100 no-padding">
+                        {{ product.short_name }}
+                    </h2>
                     <div>
                         <i class="far fa-user-circle"></i>
                         <span>{{ product.teacher_name }}</span>

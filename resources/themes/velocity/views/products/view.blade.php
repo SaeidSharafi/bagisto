@@ -236,22 +236,26 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
         </section>
         <section class="product-footer w-100">
             <div class="row">
-                <div class="col-md-9">
-                    <div class="teacher-info px-2 h-100 card-box simple-shadow">
+                <div class="col-md-9 mb-3">
+                    <div class="teacher-info p-2 h-100 card-box simple-shadow">
                         <div class="row h-100 align-items-center">
-                            <div class="col-md-2 col-12">
+                            <div class="col-md-2 col-3">
                                 <div class="teacher-image rounded-circle overflow-hidden">
                                     @if ($teacher['teacher_image'])
                                         <img src="/storage/{{$teacher['teacher_image']}}" class="w-100">
                                     @else
                                         <img src="/images/teacher-sample.jpg" class="w-100">
                                     @endif
-
                                 </div>
+                            </div>
+                            <div class="col-9 d-block d-md-none">
+                                <h6 class="fw6">
+                                    استاد گرامی {{ $teacher['teacher_name'] ?? '' }}
+                                </h6>
                             </div>
                             <div class="col-md-10 col-12">
                                 <div class="w-100">
-                                    <h6 class="fw6">
+                                    <h6 class="d-none d-md-block fw6">
                                         استاد گرامی {{ $teacher['teacher_name'] ?? '' }}
                                     </h6>
                                     <p>

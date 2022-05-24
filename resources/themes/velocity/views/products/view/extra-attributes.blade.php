@@ -2,7 +2,7 @@
 
 
 @if ($customAttributeValues)
-    <ul class="nav nav-tabs nav-fill" id="extra-attributes" role="tablist">
+    <ul class="nav nav-tabs nav-fill d-none d-md-flex" id="extra-attributes" role="tablist">
         <li class="nav-item active" role="presentation">
             <a class="nav-link" id="curriculums-tab" data-toggle="tab"
                href="#curriculums" role="tab" aria-controls="curriculums" aria-selected="true">سرفصل های دوره</a>
@@ -32,30 +32,35 @@
     <div class="tab-content" id="extra-attributesContent">
         @foreach ($customAttributeValues as $attribute)
             <div class="tab-pane {{$loop->first ? 'show active' : ''}}" id="{{$attribute['code']}}" role="tabpanel" aria-labelledby="{{$attribute['code']}}-tab">
-                @if($attribute['code'] == 'portfolio')
-                    @php
-                        $images = json_decode($attribute['value'])
-                    @endphp
-                    <div class="row portfolio-gallery">
-                        @if ($images)
-                            @foreach($images as $image)
-                                <div class="col-md-3 col-6">
-                                    <img src="{{$image->url}}" class="w-100">
-                                </div>
-                            @endforeach
-                        @endif
+                <h5 class="d-block d-md-none border-bottom border-dark pb-2 w-100">{{$attribute['label']}}</h5>
+                <div class="contents pt-2 pt-md-0">
+                    @if($attribute['code'] == 'portfolio')
+                        @php
+                            $images = json_decode($attribute['value'])
+                        @endphp
+                        <div class="row portfolio-gallery">
+                            @if ($images)
+                                @foreach($images as $image)
+                                    <div class="col-md-3 col-6">
+                                        <img src="{{$image->url}}" class="w-100">
+                                    </div>
+                                @endforeach
+                            @endif
 
-                    </div>
-                @else
-                    {!! nl2br($attribute['value'])!!}
-                @endif
-
+                        </div>
+                    @else
+                        {!! nl2br($attribute['value'])!!}
+                    @endif
+                </div>
 
             </div>
         @endforeach
         <div class="tab-pane" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
             {{-- reviews count --}}
-            @include ('shop::products.view.reviews', ['accordian' => false])
+            <h5 class="d-block d-md-none border-bottom border-dark pb-2 w-100">نظرات</h5>
+            <div class="contents pt-2 pt-md-0">
+                @include ('shop::products.view.reviews', ['accordian' => false])
+            </div>
         </div>
     </div>
 @endif

@@ -147,7 +147,7 @@ export default {
                 {
                     "breakpoint": 420,
                     "settings": {
-                        "slidesToShow": 1
+                        "slidesToShow": 2
                     }
                 }
             ]

@@ -25,8 +25,8 @@
 
         </div>
         <div class="col-6">
-            <a class="left" href="{{ route('shop.home.index') }}" aria-label="Logo">
-                <img class="logo" src="{{ core()->getCurrentChannel()->logo_url ?? asset('themes/velocity/assets/images/logo-text.png') }}" alt="" />
+            <a href="{{ route('shop.home.index') }}" aria-label="Logo" class="logo">
+                <img src="{{ core()->getCurrentChannel()->logo_url ?? asset('themes/velocity/assets/images/logo-text.png') }}" alt="" />
             </a>
         </div>
         <div class="right-vc-header col-3">
