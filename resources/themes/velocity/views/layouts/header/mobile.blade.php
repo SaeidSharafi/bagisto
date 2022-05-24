@@ -67,13 +67,6 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('customer.address.index') }}" class="unset">
-                        <i class="icon address text-down-3"></i>
-                        <span>{{ __('velocity::app.shop.general.addresses') }}</span>
-                    </a>
-                </li>
-
-                <li>
                     <a href="{{ route('customer.reviews.index') }}" class="unset">
                         <i class="icon reviews text-down-3"></i>
                         <span>{{ __('velocity::app.shop.general.reviews') }}</span>
@@ -105,12 +98,6 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="{{ route('customer.downloadable_products.index') }}" class="unset">
-                        <i class="icon downloadables text-down-3"></i>
-                        <span>{{ __('velocity::app.shop.general.downloadables') }}</span>
-                    </a>
-                </li>
             </ul>
         @endauth
     </template>

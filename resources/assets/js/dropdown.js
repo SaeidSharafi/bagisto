@@ -9,10 +9,10 @@ $(function() {
             $('.dropdown-list').hide();
             $('.dropdown-toggle').removeClass('active');
         }
-        if (! $(target).parents('.nav-container').length && !$(target).hasClass('nav-container')
-           && ! $(target).parents('.hamburger-wrapper').length && !$(target).hasClass('hamburger-wrapper')
-           && ! $(target).parents('.filter-toggle').length && !$(target).hasClass('filter-toggle')) {
+        if ($(target).is("#modal-blocker")) {
             console.log(target);
+            console.log($(target).closest('div'));
+            console.log($(target).parent().parents('div'));
             // console.log(target);
             document.dispatchEvent(event);
         }

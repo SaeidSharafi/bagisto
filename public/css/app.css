@@ -399,6 +399,11 @@ body.rtl header .vc-small-screen #search-form input {
     left: auto;
     right: 5px;
   }
+
+  .nav-container .wrapper ul li .category-logo, .nav-container .wrapper ul li .language-logo-wrapper {
+    margin-right: 0;
+    margin-left: 5px;
+  }
 }
 .rtl .dropdown-list {
   text-align: right;
