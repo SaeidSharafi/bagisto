@@ -50,5 +50,21 @@ body.rtl header .vc-small-screen #search-form {
         margin-right: 0;
         margin-left: 5px;
     }
+    .nav-container .wrapper ul li .category-logo, .nav-container .wrapper ul li .language-logo-wrapper{
+        height: auto;
+        width: 25px;
+    }
+    .nav-container .wrapper{
+        ul.category-wrapper{
+            li{
+                display: flex;
+                i{
+                    align-self: center;
+                    margin-right: auto;
+                    padding-top: 0;
+                }
+            }
+        }
+    }
 
 }
