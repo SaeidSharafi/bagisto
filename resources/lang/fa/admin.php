@@ -1,8 +1,11 @@
 <?php
 return [
-    'catalog' => [
+    'catalog'  => [
         'products' => [
             'banner' => 'بنر'
         ]
     ],
+    'response' => [
+        'complete-error' => 'امکان تکمیل ثبت نام نمیباشد.'
+    ]
 ];

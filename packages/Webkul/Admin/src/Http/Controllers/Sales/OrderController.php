@@ -36,13 +36,13 @@ class OrderController extends Controller
      *
      * @param  \Webkul\Sales\Repositories\OrderRepository  $orderRepository
      * @param  \Webkul\Sales\Repositories\OrderCommentRepository  $orderCommentRepository
+     *
      * @return void
      */
     public function __construct(
         OrderRepository $orderRepository,
         OrderCommentRepository $orderCommentRepository
-    )
-    {
+    ) {
         $this->middleware('admin');
 
         $this->_config = request('_config');
@@ -70,6 +70,7 @@ class OrderController extends Controller
      * Show the view for the specified resource.
      *
      * @param  int  $id
+     *
      * @return \Illuminate\View\View
      */
     public function view($id)
@@ -83,6 +84,7 @@ class OrderController extends Controller
      * Cancel action for the specified resource.
      *
      * @param  int  $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function cancel($id)
@@ -99,9 +101,36 @@ class OrderController extends Controller
     }
 
     /**
+     * Complete order
+     *
+     * @param  int  $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function complete($id)
+    {
+        $order = $this->orderRepository->find($id);
+        if (!$order) {
+            session()->flash('error', trans('admin.response.complete-error', ['name' => 'Order']));
+
+            return redirect()->back();
+        }
+        if (!$order->canComplete()) {
+            session()->flash('error', trans('admin.response.complete-error', ['name' => 'Order']));
+            return redirect()->back();
+        }
+
+        $this->orderRepository->updateOrderStatus($order, 'completed');
+        session()->flash('success', trans('app.response.complete-success', ['name' => 'Order']));
+        return redirect()->back();
+
+    }
+
+    /**
      * Add comment to the order
      *
      * @param  int  $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function comment($id)

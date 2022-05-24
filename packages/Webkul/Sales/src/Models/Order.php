@@ -264,6 +264,27 @@ class Order extends Model implements OrderContract
     }
 
     /**
+     * Checks if new shipment is allow or not
+     *
+     * @return bool
+     */
+    public function canComplete(): bool
+    {
+        if ($this->status === self::STATUS_FRAUD
+            || $this->status === self::STATUS_COMPLETED) {
+            return false;
+        }
+
+        foreach ($this->items as $item) {
+            if ($item->canShip() && $item->order->status !== self::STATUS_CLOSED) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Checks if new invoice is allow or not
      *
      * @return bool

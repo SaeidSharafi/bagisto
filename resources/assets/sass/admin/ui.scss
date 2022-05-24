@@ -1,4 +1,15 @@
-.checkbox input{
-    left: auto;
-    right: 0;
+body.rtl{
+    .alert-wrapper{
+        text-align: right;
+        right: auto;
+        left: 10px;
+        top: 50px;
+
+        .alert{
+            .icon{
+                right: auto;
+                left: 10px;
+            }
+        }
+    }
 }

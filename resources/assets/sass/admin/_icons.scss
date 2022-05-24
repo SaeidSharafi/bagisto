@@ -9,3 +9,7 @@
     @extend %menu-properties;
     background-image: url("../../images/Icon-Ims.svg");
 }
+.action a {
+    display: flex;
+    align-items: center;
+}

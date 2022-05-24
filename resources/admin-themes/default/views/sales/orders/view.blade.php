@@ -43,8 +43,8 @@
                     </a>
                 @endif
 
-                @if ($order->canShip())
-                    <a href="{{ route('admin.sales.shipments.create', $order->id) }}" class="btn btn-lg btn-primary">
+                @if ($order->canComplete())
+                    <a href="{{ route('admin.sales.orders.complete', $order->id) }}" class="btn btn-lg btn-primary">
                         {{ __('admin::app.sales.orders.shipment-btn-title') }}
                     </a>
                 @endif

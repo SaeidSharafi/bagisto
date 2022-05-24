@@ -165,5 +165,11 @@ class OrderDataGrid extends DataGrid
             'route'  => 'admin.sales.orders.view',
             'icon'   => 'icon eye-icon',
         ]);
+        $this->addAction([
+            'title'  => trans('admin::app.datagrid.complete'),
+            'method' => 'GET',
+            'route'  => 'admin.sales.orders.complete',
+            'icon'   => 'icon completed-icon'
+        ]);
     }
 }

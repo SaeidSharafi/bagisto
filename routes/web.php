@@ -27,6 +27,7 @@ use App\Http\Controllers\Shop\Customer\JeduForgotPassword;
 use App\Http\Controllers\Shop\Customer\JeduLoginRegistrationController;
 use App\Http\Controllers\Shop\Customer\JeduResetPasswordController;
 use App\Http\Controllers\Shop\Customer\JeduSessionController;
+use Webkul\Admin\Http\Controllers\Sales\OrderController;
 use Webkul\Shop\Http\Controllers\OnepageController;
 
 Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
@@ -143,3 +144,9 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
                 ->name('velocity.category.products');
         });
     });
+Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => config('app.admin_url')], function () {
+    Route::prefix('sales')->group(function () {
+        Route::get('/orders/complete/{id}', [OrderController::class, 'complete'])
+            ->name('admin.sales.orders.complete');
+    });
+});
