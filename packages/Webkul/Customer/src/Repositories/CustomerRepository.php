@@ -2,7 +2,6 @@
 
 namespace Webkul\Customer\Repositories;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 use Webkul\Core\Eloquent\Repository;
@@ -24,7 +23,6 @@ class CustomerRepository extends Repository
      * Create customer.
      *
      * @param  array  $attributes
-     *
      * @return mixed
      */
     public function create($attributes)
@@ -42,7 +40,6 @@ class CustomerRepository extends Repository
      * Update customer.
      *
      * @param  array  $attributes
-     *
      * @return mixed
      */
     public function update(array $attributes, $id)
@@ -60,7 +57,6 @@ class CustomerRepository extends Repository
      * Check if customer has order pending or processing.
      *
      * @param  \Webkul\Customer\Models\Customer
-     *
      * @return boolean
      */
     public function checkIfCustomerHasOrderPendingOrProcessing($customer)
@@ -74,7 +70,6 @@ class CustomerRepository extends Repository
      * Check if bulk customers, if they have order pending or processing.
      *
      * @param  array
-     *
      * @return boolean
      */
     public function checkBulkCustomerIfTheyHaveOrderPendingOrProcessing($customerIds)
@@ -91,32 +86,11 @@ class CustomerRepository extends Repository
     }
 
     /**
-     * get customer completed orders
-     *
-     * @param  array
-     *
-     * @return mixed
-     */
-    public function getOrders($customerId)
-    {
-        $orders = DB::table('orders as order')
-            ->addSelect('order.id', 'order.increment_id', 'items.sku','items.product_id','items.parent_id',
-                'order.order_currency_code')
-            ->join('order_items as items','order.id','=','order_id')
-            ->where('customer_id', $customerId)
-            ->where('status', Order::STATUS_COMPLETED)
-        ->get();
-        dd($orders);
-        return $orders->get();
-    }
-
-    /**
      * Upload customer's images.
      *
      * @param  array  $data
      * @param  \Webkul\Customer\Models\Customer  $customer
-     * @param  string  $type
-     *
+     * @param  string $type
      * @return void
      */
     public function uploadImages($data, $customer, $type = 'image')
@@ -125,8 +99,8 @@ class CustomerRepository extends Repository
             $request = request();
 
             foreach ($data[$type] as $imageId => $image) {
-                $file = $type.'.'.$imageId;
-                $dir = 'customer/'.$customer->id;
+                $file = $type . '.' . $imageId;
+                $dir = 'customer/' . $customer->id;
 
                 if ($request->hasFile($file)) {
                     if ($customer->{$type}) {
@@ -151,7 +125,6 @@ class CustomerRepository extends Repository
      * Sync new registered customer data.
      *
      * @param  \Webkul\Customer\Contracts\Customer  $customer
-     *
      * @return mixed
      */
     public function syncNewRegisteredCustomerInformations($customer)

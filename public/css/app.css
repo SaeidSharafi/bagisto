@@ -6871,7 +6871,7 @@ img.cover {
   overflow: hidden;
 }
 .product-banner .banner-image {
-  background: linear-gradient(90deg, #f9c21c -10%, #2b348f 100%) no-repeat center center;
+  background: linear-gradient(90deg, #fcb319 -10%, #2b348f 100%) no-repeat center center;
   background-size: cover;
   height: 100%;
   position: absolute;
@@ -7229,7 +7229,7 @@ section.product-footer .teacher-image img {
   background: #2b348f;
 }
 .carousel-products.yellow {
-  background: #ffb911;
+  background: #fcb319;
 }
 .carousel-products.gray {
   background: #969da1;
