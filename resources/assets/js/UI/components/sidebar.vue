@@ -27,8 +27,8 @@
                         <img
                             v-if="category.category_icon_url"
                             :src="category.category_icon_url"
-                            width="20"
-                            height="20"
+                            width="30"
+                            height="30"
                         />
                     </div>
 
