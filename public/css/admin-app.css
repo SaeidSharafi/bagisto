@@ -69,6 +69,22 @@
   background-image: url("../../images/Icon-Ims.svg");
 }
 
+.action a {
+  display: flex;
+  align-items: center;
+}
+
+body.rtl .alert-wrapper {
+  text-align: right;
+  right: auto;
+  left: 10px;
+  top: 50px;
+}
+body.rtl .alert-wrapper .alert .icon {
+  right: auto;
+  left: 10px;
+}
+
 body,
 a,
 h1, h2, h3, h4, h5, h6,

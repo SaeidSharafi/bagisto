@@ -6921,7 +6921,6 @@ img.cover {
 }
 
 .product-banner {
-  height: 80px;
   color: white;
   overflow: hidden;
 }
@@ -6932,7 +6931,7 @@ img.cover {
   position: absolute;
   top: 0;
   right: 0;
-  z-index: -1;
+  z-index: 0;
   filter: blur(4px);
   width: calc(100% + 10px);
 }
@@ -6944,6 +6943,7 @@ img.cover {
   padding: 1rem;
   line-height: initial;
   font-size: 1.5rem;
+  position: relative;
 }
 
 .filters-extra {
