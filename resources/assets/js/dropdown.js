@@ -41,7 +41,7 @@ $(function() {
     }
 
     function autoDropupDropdown() {
-        dropdown = $(".dropdown-open");
+        let dropdown = $(".dropdown-open");
 
         if (! dropdown.find('.dropdown-list').hasClass('top-left') && ! dropdown.find('.dropdown-list').hasClass('top-right') && dropdown.length) {
             dropdown = dropdown.find('.dropdown-list');
