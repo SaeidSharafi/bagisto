@@ -20,7 +20,6 @@
 
                 <div class="col-lg-7 col-md-12">
 
-
                     <div
                         v-if="showPaymentSection"
                         class="step-content payment"
@@ -38,15 +37,6 @@
                         id="summary-section">
 
                         <review-section :key="reviewComponentKey">
-                            <div slot="summary-section">
-                                <summary-section
-                                    discount="1"
-                                    :key="summaryComponentKey"
-                                    @onApplyCoupon="getOrderSummary"
-                                    @onRemoveCoupon="getOrderSummary"
-                                ></summary-section>
-                            </div>
-
                             <div slot="place-order-btn">
                                 <div class="mb20">
                                     <button
@@ -66,7 +56,18 @@
                 </div>
 
                 <div class="col-lg-4 col-md-12 order-summary-container mr-0 top pt0">
-                    <summary-section :key="summaryComponentKey"></summary-section>
+                    <summary-section
+                        discount="1"
+                        :key="summaryComponentKey">
+                        <div slot="coupon">
+                            <coupon-component
+                                :coupon="current_coupon"
+                                :render-from-vue="render_from_vue"
+                                @onApplyCoupon="ApplyCoupon"
+                                @onRemoveCoupon="RemoveCoupon"></coupon-component>
+                        </div>
+
+                    </summary-section>
 
                     <div class="paypal-button-container mt10"></div>
                 </div>
@@ -118,6 +119,8 @@
                         new_billing_address: false,
                         showShippingSection: false,
                         new_shipping_address: false,
+                        render_from_vue: false,
+                        current_coupon: '',
                         selected_payment_method: '',
                         selected_shipping_method: '',
                         countries: [],
@@ -160,7 +163,6 @@
                             this.current_step = this.step_numbers[response.data.jump_to_section];
                             this.showSummarySection = true;
                             this.showPaymentSection = true;
-                            console.log(paymentHtml)
                             this.getOrderSummary();
 
                             this.$root.hideLoader();
@@ -339,7 +341,6 @@
                                 this.$http.post("{{ route('customer.checkout.exist') }}", {email: this.address.billing.email})
                                     .then(response => {
                                         this.is_customer_exist = response.data ? 1 : 0;
-                                        console.log(this.is_customer_exist);
 
                                         if (response.data)
                                             this.$root.hideLoader();
@@ -543,7 +544,19 @@
                             this.disable_button = true;
                         }
                     },
-
+                    ApplyCoupon: function (coupon) {
+                        console.log("changing")
+                        console.log(coupon)
+                        this.current_coupon = coupon;
+                        this.render_from_vue = true;
+                        this.getOrderSummary();
+                    },
+                    RemoveCoupon: function () {
+                        console.log("changing")
+                        this.current_coupon = null;
+                        this.render_from_vue = true;
+                        this.getOrderSummary();
+                    },
                     handleErrorResponse: function (response, scope) {
                         if (response.status == 422) {
                             serverErrors = response.data.errors;
@@ -656,9 +669,7 @@
 
                 mounted: function () {
 
-                    console.log(this.templateRender)
                     this.templateRender = paymentHtml.render;
-                    console.log(this.templateRender)
                     for (var i in paymentHtml.staticRenderFns) {
                         paymentTemplateRenderFns.push(paymentHtml.staticRenderFns[i]);
                     }
@@ -738,7 +749,6 @@
 
                 mounted: function () {
                     this.templateRender = summaryHtml.render;
-
                     for (var i in summaryHtml.staticRenderFns) {
                         summaryTemplateRenderFns[i] = summaryHtml.staticRenderFns[i];
                     }

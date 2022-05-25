@@ -37,7 +37,10 @@
             template: '#coupon-component-template',
 
             inject: ['$validator'],
-
+            props: {
+                coupon: null,
+                renderFromVue: false,
+            },
             data: function () {
                 return {
                     coupon_code: '',
@@ -47,7 +50,15 @@
                     disable_button: false,
                 }
             },
-
+            mounted() {
+                console.log("**************");
+                console.log(this.coupon);
+                console.log(this.renderFromVue);
+                console.log("**************");
+                if (this.coupon || this.renderFromVue) {
+                    this.applied_coupon = this.coupon;
+                }
+            },
             watch: {
                 coupon_code: function (value) {
                     if (value != '') {
@@ -57,8 +68,8 @@
             },
 
             methods: {
-                applyCoupon: function() {
-                    if (! this.coupon_code.length) {
+                applyCoupon: function () {
+                    if (!this.coupon_code.length) {
                         this.error_message = '{{ __('shop::app.checkout.total.invalid-coupon') }}';
 
                         return;
@@ -74,27 +85,29 @@
                         .post(
                             '{{ route('shop.checkout.cart.coupon.apply') }}', {code}
                         ).then(response => {
-                            if (response.data.success) {
-                                this.$emit('onApplyCoupon');
+                        if (response.data.success) {
+                            console.log("#####");
+                            console.log(this.applied_coupon);
+                            console.log("#####");
+                            this.applied_coupon = this.coupon_code;
+                            this.coupon_code = '';
 
-                                this.applied_coupon = this.coupon_code;
-                                this.coupon_code = '';
+                            window.flashMessages = [{'type': 'alert-success', 'message': response.data.message}];
 
-                                window.flashMessages = [{'type': 'alert-success', 'message': response.data.message}];
+                            this.$root.addFlashMessages();
+                            this.$emit('onApplyCoupon', this.applied_coupon);
 
-                                this.$root.addFlashMessages();
+                            this.redirectIfCartPage();
+                        } else {
+                            this.error_message = response.data.message;
+                        }
 
-                                this.redirectIfCartPage();
-                            } else {
-                                this.error_message = response.data.message;
-                            }
+                        this.disable_button = false;
+                    }).catch(error => {
+                        this.error_message = error.response.data.message;
 
-                            this.disable_button = false;
-                        }).catch(error => {
-                            this.error_message = error.response.data.message;
-
-                            this.disable_button = false;
-                        });
+                        this.disable_button = false;
+                    });
                 },
 
                 removeCoupon: function () {
@@ -102,7 +115,7 @@
 
                     axios
                         .delete('{{ route('shop.checkout.coupon.remove.coupon') }}')
-                        .then(function(response) {
+                        .then(function (response) {
                             self.$emit('onRemoveCoupon')
 
                             self.applied_coupon = '';
@@ -115,17 +128,17 @@
 
                             self.redirectIfCartPage();
                         })
-                        .catch(function(error) {
+                        .catch(function (error) {
                             window.flashMessages = [{'type': 'alert-error', 'message': error.response.data.message}];
 
                             self.$root.addFlashMessages();
                         });
                 },
 
-                redirectIfCartPage: function() {
+                redirectIfCartPage: function () {
                     if (this.route_name != 'shop.checkout.cart.index') return;
 
-                    setTimeout(function() {
+                    setTimeout(function () {
                         window.location.reload();
                     }, 700);
                 }

@@ -43,13 +43,21 @@
             {{ core()->currency($cart->base_grand_total) }}
         </span>
     </div>
-
     <div class="row">
         @php
             $minimumOrderAmount = (float) core()->getConfigData('sales.orderSettings.minimum-order.minimum_order_amount') ?? 0;
         @endphp
         <div class="cart-coupon col-12 p-0">
-            <coupon-component></coupon-component>
+            <div v-if="$slots.coupon" class="styles">
+                <slot name="coupon">
+
+                </slot>
+            </div>
+            <div v-else>
+                <coupon-component></coupon-component>
+            </div>
+
+
         </div>
         <proceed-to-checkout
             href="{{ route('shop.checkout.onepage.index') }}"
