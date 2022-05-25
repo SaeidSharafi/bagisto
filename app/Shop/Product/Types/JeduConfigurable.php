@@ -262,15 +262,20 @@ class JeduConfigurable extends Configurable
         }
 
         $data = $this->getQtyRequest($data);
-
         $childProduct = $this->productRepository->find($data['selected_configurable_option']);
+
 
         if (!$childProduct->haveSufficientQuantity($data['quantity'])) {
             return trans('shop::app.checkout.cart.quantity.inventory_warning');
         }
-
         $price = $childProduct->getTypeInstance()->getFinalPrice();
-
+        $discount = $regular_price=0;
+        if ($childProduct->getTypeInstance()->haveSpecialPrice()) {
+            if ($childProduct->getTypeInstance()->isPercentOffer()) {
+                $discount = $childProduct->getTypeInstance()->getDiscountPercent();
+            }
+            $regular_price =$this->evaluatePrice($childProduct->getTypeInstance()->getMaximamPrice());
+        }
         return [
             'parent' =>[
                 'product_id' => $this->product->id,
@@ -279,9 +284,11 @@ class JeduConfigurable extends Configurable
                 'type'       => $this->product->type,
                 'quantity'   => $data['quantity'],
                 'price'      => $convertedPrice = core()->convertPrice($price),
-                'base_price' => $price,
+                'base_price' => $regular_price,
                 'total'      => $convertedPrice * $data['quantity'],
                 'base_total' => $price * $data['quantity'],
+                'discount_percent' => $discount,
+                'discount_amount' => $regular_price - $price,
                 'additional' => $this->getAdditionalOptions($data),
             ],
             'variation'=>[

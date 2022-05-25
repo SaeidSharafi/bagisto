@@ -250,14 +250,14 @@
             <div class="col-6">
                 <slot name="logo"></slot>
             </div>
-            <div class="right-vc-header col-3">
+            <div class="right-vc-header  d-flex align-items-center justify-content-end  col-3">
                 <slot name="top-header"></slot>
 
-                <a class="unset cursor-pointer" @click="openSearchBar">
+                <a class="unset px-1 cursor-pointer" @click="openSearchBar">
                     <i class="material-icons">search</i>
                 </a>
 
-                <a :href="cartRoute" class="unset">
+                <a :href="cartRoute" class="unset px-1">
                     <i class="material-icons text-down-3">shopping_cart</i>
 
                     <div class="badge-wrapper">

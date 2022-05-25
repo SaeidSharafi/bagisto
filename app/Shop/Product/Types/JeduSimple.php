@@ -32,6 +32,14 @@ class JeduSimple extends Simple
 
     }
 
+    public function getDiscountPercent(){
+        return $this->product->discount_amount;
+    }
+
+    public function isPercentOffer(){
+        return $this->product->action_type === "by_percent";
+    }
+
     public function getProductPriceHtml()
     {
 
@@ -124,5 +132,26 @@ class JeduSimple extends Simple
         }
 
         return $haveSpecialPrice;
+    }
+    /**
+     * Returns additional information for items.
+     *
+     * @param  array  $data
+     * @return array
+     */
+    public function getAdditionalOptions($data)
+    {
+        $discount = $regular_price=0;
+        if ($this->haveSpecialPrice()) {
+            if ($this->isPercentOffer()) {
+                $discount = $this>getDiscountPercent();
+            }
+            $regular_price =$this->evaluatePrice($this->getMaximamPrice());
+        }
+        $data['discount_data'] = [
+            'discount'=>$discount,
+            'regular_price'=>$regular_price,
+        ];
+        return $data;
     }
 }

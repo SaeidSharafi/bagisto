@@ -180,8 +180,11 @@ section.product-extra-detail .extra-attributes .nav-item a.nav-link {
 }
 header {
     .logo{
-        display: block;
+        display: flex !important;
+        align-items: center;
+        height: 100%;
         text-align: center;
+        padding-left: 0;
         img{
             max-width: 150px;
             height: auto;
@@ -1427,6 +1430,14 @@ body.rtl header .mini-cart-container #mini-cart .badge {
     top: -8px;
     left: 73%;
 }
+.small-icon{
+    .material-icons{
+        font-size: 1.2rem;
+    }
+}
+#checkout a.btn-procced {
+    display: none;
+}
 @media (min-width: 320px) {
     html{
         font-size: 10px;
@@ -1462,7 +1473,11 @@ body.rtl header .mini-cart-container #mini-cart .badge {
         flex: 0 0 33.33%;
         max-width: 33.33%;
 
-
+    }
+    .small-icon{
+        .material-icons{
+            font-size: 3rem;
+        }
     }
     .product-card {
         .product-name {
