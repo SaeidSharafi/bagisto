@@ -104,7 +104,10 @@ class CustomerRepository extends Repository
                 'order.order_currency_code')
             ->join('order_items as items', 'order.id', '=', 'order_id')
             ->where('customer_id', $customerId)
-            ->where('status', Order::STATUS_COMPLETED)
+            ->where(function ($query){
+                return $query->where('status', Order::STATUS_COMPLETED)
+                    ->orWhere('status', Order::STATUS_PROCESSING);
+            })
             ->where(function ($query) use ($productId) {
                 $query->where('product_id', $productId)
                     ->orWhere('parent_id', $productId);
