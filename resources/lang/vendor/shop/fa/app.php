@@ -8,9 +8,9 @@ return [
         'my-account' => 'حساب من',
         'profile' => 'مشخصات',
         'address' => 'نشانی',
-        'reviews' => 'بررسی ها',
+        'reviews' => 'نظرات',
         'wishlist' => 'لیست دلخواه',
-        'orders' => 'لیست دوره ها',
+        'orders' => 'گزارشات ثبت نام',
         'downloadable-products' => 'محصولات دانلودی'
     ],
 
@@ -43,7 +43,7 @@ return [
 
     'minicart' => [
         'view-cart' => 'مشاهده سبد خرید',
-        'checkout' => 'وارسی',
+        'checkout' => 'نهایی کردن خرید',
         'cart' => 'سبد خرید',
         'zero' => '0'
     ],
@@ -76,14 +76,14 @@ return [
 
     'reviews' => [
         'title' => 'عنوان',
-        'add-review-page-title' => 'Add بررسی',
-        'write-review' => 'یک بررسی بنویسید',
+        'add-review-page-title' => 'Add نظر',
+        'write-review' => 'یک نظر بنویسید',
         'review-title' => 'عنوان خود را به نقد خود بدهید',
-        'product-review-page-title' => 'بررسی محصول',
-        'rating-reviews' => 'رتبه بندی و بررسی',
+        'product-review-page-title' => 'نظرات محصول',
+        'rating-reviews' => 'امتیازات و نظرات',
         'submit' => 'ارسال',
-        'delete-all' => 'همه بررسی ها با موفقیت حذف شده است',
-        'ratingreviews' => ':rating رتبه بندی ها و :review بررسی ها',
+        'delete-all' => 'همه نظرات با موفقیت حذف شده است',
+        'ratingreviews' => ':rating امتیاز و :review نظر',
         'star' => 'ستاره',
         'percentage' => ':percentage %',
         'id-star' => 'ستاره',
@@ -110,7 +110,7 @@ return [
         ],
 
         'signup-form' => [
-            'page-title' => 'مشتری - فرم ثبت نام',
+            'page-title' => 'فراگیر - فرم ثبت نام',
             'title' => 'ثبت نام',
             'phone' => 'شماره موبایل',
             'firstname' => 'نام',
@@ -134,7 +134,7 @@ return [
             'verified' => 'حساب شما تأیید شده است ، سعی کنید هم اکنون وارد سیستم شوید',
             'verify-failed' => 'ما نمی توانیم حساب نامه شما را تأیید کنیم',
             'dont-have-account' => 'شما با ما حساب ندارید',
-            'customer-registration' => 'ثبت نام مشتری با موفقیت انجام شد'
+            'customer-registration' => 'ثبت نام فراگیر با موفقیت انجام شد'
         ],
 
         'login-text' => [
@@ -143,7 +143,7 @@ return [
         ],
 
         'login-form' => [
-            'page-title' => 'ورود مشتری',
+            'page-title' => 'ورود فراگیر',
             'title' => 'ورود',
             'email' => 'پست الکترونیک',
             'password' => 'کلمه عبور',
@@ -155,7 +155,7 @@ return [
             'button_title' => 'ورود',
             'remember' => 'مرا به خاطر بسپار',
             'footer' => '© حقوق النشر :year Webkul Software ، جميع الحقوق محفوظة',
-            'invalid-creds' => 'لطفا مدارک خود را بررسی کنید و دوباره امتحان کنید',
+            'invalid-creds' => 'کاربری با اطلاعات وارد شده یافت نشد، لطفا مجددا تلاش فرمایید',
             'verify-first' => 'ابتدا حساب ایمیل خود را تأیید کنید',
             'not-activated' => 'فعال سازی شما به دنبال تأیید سرپرست است',
             'resend-verification' => 'مجدداً نامه تأیید را دوباره ارسال کنید'
@@ -165,7 +165,7 @@ return [
             'title' => 'بازیابی رمز عبور',
             'email' => 'پست الکترونیک',
             'submit' => 'ارسال',
-            'page_title' => 'مشتری - فرم رمز عبور را فراموش کرده اید'
+            'page_title' => 'فراگیر - فرم رمز عبور را فراموش کرده اید'
         ],
 
         'reset-password' => [
@@ -178,7 +178,7 @@ return [
         ],
 
         'account' => [
-            'dashboard' => 'مشتری - ویرایش نمایه',
+            'dashboard' => 'فراگیر - ویرایش نمایه',
             'menu' => 'فهرست',
 
             'general' => [
@@ -188,7 +188,7 @@ return [
 
             'profile' => [
                 'index' => [
-                    'page-title' => 'مشتری - پروفایل',
+                    'page-title' => 'فراگیر - پروفایل',
                     'title' => 'مشخصات',
                     'edit' => 'ویرایش کنید',
                 ],
@@ -213,13 +213,13 @@ return [
 
                 'edit-profile' => [
                     'title' => 'ویرایش نمایه',
-                    'page-title' => 'مشتری - ویرایش فرم پروفایل'
+                    'page-title' => 'فراگیر - ویرایش فرم پروفایل'
                 ]
             ],
 
             'address' => [
                 'index' => [
-                    'page-title' => 'مشتری - آدرس',
+                    'page-title' => 'فراگیر - آدرس',
                     'title' => 'نشانی',
                     'add' => 'اضافه کردن آدرس',
                     'edit' => 'ویرایش کنید',
@@ -235,7 +235,7 @@ return [
                 ],
 
                 'create' => [
-                    'page-title' => 'مشتری - فرم آدرس را اضافه کنید',
+                    'page-title' => 'فراگیر - فرم آدرس را اضافه کنید',
                     'company_name' => 'نام شرکت',
                     'first_name' => 'نام',
                     'last_name' => 'نام خانوادگی',
@@ -255,7 +255,7 @@ return [
                 ],
 
                 'edit' => [
-                    'page-title' => 'مشتری - ویرایش آدرس',
+                    'page-title' => 'فراگیر - ویرایش آدرس',
                     'company_name' => 'نام شرکت',
                     'first_name' => 'نام',
                     'last_name' => 'نام خانوادگی',
@@ -277,14 +277,14 @@ return [
 
             'order' => [
                 'index' => [
-                    'page-title' => 'مشتری - سفارشات',
-                    'title' => 'سفارشات',
-                    'order_id' => 'شماره سفارش',
+                    'page-title' => 'فراگیر - گزارشات ثبت نام',
+                    'title' => 'گزارشات ثبت نام',
+                    'order_id' => 'شماره پیگیری',
                     'date' => 'تاریخ',
                     'status' => 'وضعیت',
                     'total' => 'جمع',
-                    'order_number' => 'شماره سفارش',
-                    'processing' => 'در حال پردازش',
+                    'order_number' => 'شماره پیگیری',
+                    'processing' => 'در حال بررسی',
                     'completed' => 'تکمیل شد',
                     'canceled' => 'لغو شد',
                     'closed' => 'بسته شد',
@@ -330,8 +330,8 @@ return [
                     'individual-shipment' => '#:shipment_id حمل و نقل',
                     'print' => 'چاپ',
                     'invoice-id' => 'شناسه فاکتور',
-                    'order-id' => 'شماره سفارش',
-                    'order-date' => 'تاریخ سفارش',
+                    'order-id' => 'شماره پیگیری',
+                    'order-date' => 'تاریخ ثبت نام',
                     'invoice-date' => 'تاریخ فاکتور',
                     'payment-terms' => 'شرایط پرداخت',
                     'bill-to' => 'بیل به',
@@ -348,12 +348,12 @@ return [
             ],
 
             'wishlist' => [
-                'page-title' => 'مشتری - لیست دلخواه',
+                'page-title' => 'فراگیر - لیست دلخواه',
                 'title' => 'لیست دلخواه',
                 'deleteall' => 'حذف همه',
                 'moveall' => 'انتقال همه محصولات به سبد خرید',
                 'move-to-cart' => 'انتقال به سبد خرید',
-                'error' => 'به دلیل مشکلات ناشناخته نمی توان محصول را به لیست دلخواه اضافه کرد ، لطفا بعداً بررسی کنید',
+                'error' => 'به دلیل مشکلات ناشناخته نمی توان محصول را به لیست دلخواه اضافه کرد ، لطفا بعداً تلاش کنید',
                 'add' => 'مورد با موفقیت به لیست دلخواه اضافه شد',
                 'remove' => 'مورد با موفقیت از لیست دلخواه حذف شد',
                 'add-wishlist-text' => 'محصول را به لیست دلخواه اضافه کنید',
@@ -372,7 +372,7 @@ return [
 
             'downloadable_products' => [
                 'title' => 'محصولات دانلودی',
-                'order-id' => 'شماره سفارش',
+                'order-id' => 'شماره پیگیری',
                 'date' => 'تاریخ',
                 'name' => 'عنوان',
                 'status' => 'وضعیت',
@@ -387,12 +387,12 @@ return [
 
             'review' => [
                 'index' => [
-                    'title' => 'بررسی ها',
-                    'page-title' => 'مشتری - بررسی'
+                    'title' => 'نظرات',
+                    'page-title' => 'فراگیر - نظرات'
                 ],
 
                 'view' => [
-                    'page-tile' => '#:id بررسی',
+                    'page-tile' => '#:id نظر',
                 ],
 
                 'delete' => [
@@ -401,7 +401,7 @@ return [
 
                 'delete-all' => [
                     'title' => 'حذف همه',
-                    'confirmation-message' => 'آیا مطمئن هستید که می خواهید همه بررسی ها را حذف کنید؟',
+                    'confirmation-message' => 'آیا مطمئن هستید که می خواهید همه نظرات را حذف کنید؟',
                 ],
             ]
         ]
@@ -415,21 +415,21 @@ return [
         'sort-by' => 'مرتب سازی بر اساس',
         'from-a-z' => 'نام دوره صعودی',
         'from-z-a' => 'نام دوره نزولی',
-        'newest-first' => 'جدیدترین اول',
-        'oldest-first' => 'قدیمی ترها در اولویت',
+        'newest-first' => 'جدیدترین',
+        'oldest-first' => 'قدیمی ترین',
         'cheapest-first' => 'ارزان ترین اول',
         'expensive-first' => 'گران قیمت اول',
         'show' => 'نشان دادن',
         'pager-info' => 'نمایش :showing از :total آیتم',
         'description' => 'شرح',
         'specification' => 'مشخصات',
-        'total-reviews' => ':total بررسی ها',
-        'total-rating' => ':total_rating رتبه بندی ها و :total_reviews بررسی ها',
+        'total-reviews' => ':total نظر',
+        'total-rating' => ':total_rating امتیاز و :total_reviews نظر',
         'by' => 'با :name',
         'up-sell-title' => 'ما محصولات دیگری را پیدا کردید که ممکن است دوست داشته باشید!',
         'related-product-title' => 'محصولات مرتبط',
         'cross-sell-title' => 'گزینه های بیشتر',
-        'reviews-title' => 'رتبه بندی ها و بررسی ها',
+        'reviews-title' => 'امتیاز و نظرات',
         'write-review-btn' => 'نوشتن نظر',
         'choose-option' => 'گزینه ای را انتخاب کنید',
         'sale' => 'فروش',
@@ -486,7 +486,7 @@ return [
             'empty' => 'سبد خرید شما خالی است',
             'update-cart' => 'به روز رسانی سبد خرید',
             'continue-shopping' => 'ادامه خرید',
-            'proceed-to-checkout' => 'ادامه به پرداخت',
+            'proceed-to-checkout' => 'ادامه پرداخت',
             'remove' => 'حذف',
             'remove-link' => 'حذف',
             'move-to-wishlist' => 'انتقال به لیست دلخواه',
@@ -511,7 +511,7 @@ return [
             ],
 
             'quantity-error' => 'مقدار درخواستی در دسترس نیست',
-            'cart-subtotal' => 'سبد فرعی',
+            'cart-subtotal' => 'مجموع خرید',
             'cart-remove-action' => 'آیا واقعاً می خواهید این کار را انجام دهید؟',
             'partial-cart-update' => 'فقط برخی از محصولات (های) به روز شده اند',
             'event' => [
@@ -521,7 +521,7 @@ return [
         ],
 
         'onepage' => [
-            'title' => 'وارسی',
+            'title' => 'پرداخت',
             'information' => 'اطلاعات',
             'shipping' => 'حمل دریایی',
             'payment' => 'پرداخت',
@@ -605,7 +605,7 @@ return [
             'dear' => 'عزیز :customer_name',
             'dear-admin' => 'عزیز :admin_name',
             'greeting' => 'با تشکر از سفارش شما :order_id قرار داده شده در :created_at',
-            'greeting-admin' => 'شماره سفارش :order_id قرار داده شده در :created_at',
+            'greeting-admin' => 'شماره پیگیری :order_id قرار داده شده در :created_at',
             'summary' => 'خلاصه سفارش',
             'shipping-address' => 'آدرس حمل و نقل',
             'billing-address' => 'آدرس قبض',
@@ -679,7 +679,7 @@ return [
         ],
 
         'forget-password' => [
-            'subject' => 'تغییر رمز عبور مشتری',
+            'subject' => 'تغییر رمز عبور فراگیر',
             'dear' => ':name عزیز',
             'info' => 'شما این ایمیل را دریافت می کنید زیرا ما درخواست بازنشانی رمزعبور را برای حساب شما دریافت کردیم',
             'reset-password' => 'تغییر رمز عبور',
@@ -698,20 +698,20 @@ return [
             'new' => [
                 'dear' => ':customer_name عزیز',
                 'username-email' => 'نام کاربری / ایمیل',
-                'subject' => 'ثبت نام مشتری جدید',
-                'password' => 'ثبت نام مشتری جدیدثبت نام مشتری جدید',
+                'subject' => 'ثبت نام فراگیر جدید',
+                'password' => 'ثبت نام فراگیر جدیدثبت نام فراگیر جدید',
                 'summary' => 'حساب شما ایجاد شده است
                                  جزئیات حساب شما در زیر آمده است',
                 'thanks' => 'با تشکر'
             ],
 
             'registration' => [
-                'subject' => 'ثبت نام مشتری جدید',
-                'customer-registration' => 'ثبت نام مشتری با موفقیت انجام شد',
+                'subject' => 'ثبت نام فراگیر جدید',
+                'customer-registration' => 'ثبت نام فراگیر با موفقیت انجام شد',
                 'dear' => ':customer_name عزیز',
                 'dear-admin' => ':admin_name عزیز',
                 'greeting' => '! خوش آمديد و از شما ممنونم كه با ما ثبت نام كرديد',
-                'greeting-admin' => 'شما یک ثبت نام مشتری جدید دارید.',
+                'greeting-admin' => 'شما یک ثبت نام فراگیر جدید دارید.',
                 'summary' => 'اکنون حساب شما با موفقیت ایجاد شده است و می توانید با استفاده از آدرس ایمیل و اعتبار نامه خود وارد شوید. پس از ورود به سیستم ، می توانید به سایر خدمات از جمله بررسی سفارشات گذشته ، لیست های آرزو و ویرایش اطلاعات حساب خود دسترسی پیدا کنید.',
                 'thanks' => 'با تشکر',
             ],
@@ -739,9 +739,9 @@ return [
     ],
 
     'response' => [
-        'create-success' => 'تم إنشاء name: بنجاح',
-        'update-success' => 'تم تحديث name: بنجاح',
-        'delete-success' => 'تم حذف :name بنجاح',
-        'submit-success' => 'تم تقديم name: بنجاح'
+        'create-success' => 'name: با موفقیت ایجاد شد',
+        'update-success' => 'name: با موفقیت ویرایش شد',
+        'delete-success' => 'name: با موفقیت حذف شد',
+        'submit-success' => 'name: با موفقیت ثبت شد',
     ],
 ];

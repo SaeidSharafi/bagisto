@@ -21,7 +21,8 @@
                     @csrf
                 </form>
 
-                <a href="javascript:void(0);" class="theme-btn light unset" onclick="confirm('{{ __('shop::app.customer.account.review.delete-all.confirmation-message') }}') ? document.getElementById('deleteAllReviewForm').submit() : null;">
+                <a href="javascript:void(0);" class="theme-btn light unset"
+                   onclick="confirm('{{ __('shop::app.customer.account.review.delete-all.confirmation-message') }}') ? document.getElementById('deleteAllReviewForm').submit() : null;">
                     {{ __('shop::app.customer.account.review.delete-all.title') }}
                 </a>
             </div>
@@ -33,8 +34,8 @@
     <div class="reviews-container">
         @if (! $reviews->isEmpty())
             @foreach ($reviews as $review)
-                <div class="row col-12 fs16">
-                    <div class="col-12 row">
+                <div class="w-100">
+                    <div class="row">
                         @php
                             $image = productimage()->getProductBaseImage($review->product);
                         @endphp
@@ -43,24 +44,34 @@
                             href="{{ url()->to('/').'/'.$review->product->url_key }}"
                             title="{{ $review->product->name }}"
                             class="col-2 max-sm-img-dimention no-padding">
-                            <img class="media" src="{{ $image['small_image_url'] }}" alt=""/>
+                            <img class="media w-100" src="{{ $image['small_image_url'] }}" alt=""/>
                         </a>
 
                         <div class="col-8">
-                            <div class="product-name">
-                                <a
-                                    class="remove-decoration"
-                                    href="{{ url()->to('/').'/'.$review->product->url_key }}"
-                                    title="{{ $review->product->name }}">
-                                    {{$review->product->name}}
-                                </a>
+                            <div class="w-100 border-bottom">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="product-name fs20 pb-2 ">
+                                            <a
+                                                class="remove-decoration text-dark"
+                                                href="{{ url()->to('/').'/'.$review->product->url_key }}"
+                                                title="{{ $review->product->short_name }}">
+                                                {{$review->product->short_name}}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 small-icon d-flex justify-content-end">
+                                        <star-ratings ratings="{{ $review->rating }}"></star-ratings>
+                                    </div>
+                                </div>
                             </div>
 
-                            <star-ratings ratings="{{ $review->rating }}"></star-ratings>
+                            <div class="p-2">
+                                <h5 class="fw6">{{ $review->title }}</h5>
 
-                            <h5 class="fw6">{{ $review->title }}</h5>
+                                <p>{{ $review->comment }}</p>
+                            </div>
 
-                            <p>{{ $review->comment }}</p>
                         </div>
 
                         <div class="col-2">
@@ -69,7 +80,8 @@
                                 @csrf
                             </form>
 
-                            <a class="unset" href="javascript:void(0);" onclick="confirm('{{ __('shop::app.customer.account.review.delete.confirmation-message') }}') ? document.getElementById('deleteReviewForm').submit() : null;">
+                            <a class="unset" href="javascript:void(0);"
+                               onclick="confirm('{{ __('shop::app.customer.account.review.delete.confirmation-message') }}') ? document.getElementById('deleteReviewForm').submit() : null;">
                                 <span class="rango-delete fs24"></span>
                                 <span class="align-vertical-top">{{ __('shop::app.checkout.cart.remove') }}</span>
                             </a>

@@ -29,11 +29,11 @@
                 <img src="{{ core()->getCurrentChannel()->logo_url ?? asset('themes/velocity/assets/images/logo-text.png') }}" alt="" />
             </a>
         </div>
-        <div class="right-vc-header col-3">
-            <a class="unset cursor-pointer">
+        <div class="right-vc-header d-flex align-items-center justify-content-end col-3">
+            <a class="unset cursor-pointer px-2">
                 <i class="material-icons">search</i>
             </a>
-            <a href="{{ route('shop.checkout.cart.index') }}" class="unset">
+            <a href="{{ route('shop.checkout.cart.index') }}" class="unset px-2">
                 <i class="material-icons text-down-3">shopping_cart</i>
                 <div class="badge-wrapper">
                     <span class="badge">{{ $cartItemsCount }}</span>
@@ -131,8 +131,8 @@
     </template>
 
     <template v-slot:logo>
-        <a class="left" href="{{ route('shop.home.index') }}" aria-label="Logo">
-            <img class="logo" src="{{ core()->getCurrentChannel()->logo_url ?? asset('themes/velocity/assets/images/logo-text.png') }}" alt="" />
+        <a class="logo" href="{{ route('shop.home.index') }}" aria-label="Logo">
+            <img src="{{ core()->getCurrentChannel()->logo_url ?? asset('themes/velocity/assets/images/logo-text.png') }}" alt="" />
         </a>
     </template>
 

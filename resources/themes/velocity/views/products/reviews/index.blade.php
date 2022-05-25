@@ -32,9 +32,7 @@
             @include ('shop::products.view.small-view', ['product' => $product])
 
             <div class="col-lg-7 col-md-12 fs16">
-                <h2 class="full-width mb30">Rating and Reviews</h2>
-
-                @include ('shop::products.view.reviews')
+                <h2 class="full-width mb30">@include ('shop::products.view.reviews')</h2>
             </div>
         </div>
     </div>

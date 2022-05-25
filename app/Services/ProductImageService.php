@@ -47,7 +47,7 @@ class ProductImageService extends \Webkul\Product\ProductImage
             && !count($product->videos)
         ) {
             $images[] = [
-                'small_image_url'    => asset('vendor/webkul/ui/assets/images/product/small-product-placeholder.webp'),
+                'small_image_url'    => asset('images/shop/product/small-product-placeholder.jpg'),
                 'medium_image_url'   => asset('images/shop/product/meduim-product-placeholder.jpg'),
                 'large_image_url'    => asset('images/shop/product/large-product-placeholder.jpg'),
                 'original_image_url' => asset('images/shop/product/large-product-placeholder.jpg'),
@@ -137,7 +137,7 @@ class ProductImageService extends \Webkul\Product\ProductImage
             ];
         }
         return [
-            'small_image_url'    => asset('vendor/webkul/ui/assets/images/product/small-product-placeholder.webp'),
+            'small_image_url'    => asset('images/shop/product/small-product-placeholder.jpg'),
             'medium_image_url'   => asset('images/shop/product/meduim-product-placeholder.jpg'),
             'large_image_url'    => asset('images/shop/product/large-product-placeholder.jpg'),
             'original_image_url' => asset('images/shop/product/large-product-placeholder.jpg'),
