@@ -71,8 +71,14 @@ class CatalogRuleDataGrid extends DataGrid
             'searchable' => false,
             'filterable' => true,
             'closure' => function ($value) {
-                return Carbon::createFromFormat('Y-m-d H:i:s',  $value->created_at)
-                    ->jdate();
+
+                if (!$value->starts_from){
+                    return null;
+                }
+                    return Carbon::createFromFormat('Y-m-d',  $value->starts_from)
+                        ->jdate('j F Y');
+
+
             }
         ]);
 
@@ -84,8 +90,11 @@ class CatalogRuleDataGrid extends DataGrid
             'searchable' => false,
             'filterable' => true,
             'closure' => function ($value) {
-                return Carbon::createFromFormat('Y-m-d H:i:s',  $value->created_at)
-                    ->jdate();
+                if (!$value->ends_till){
+                    return null;
+                }
+                return Carbon::createFromFormat('Y-m-d',  $value->ends_till)
+                    ->jdate('j F Y');
             }
         ]);
 
