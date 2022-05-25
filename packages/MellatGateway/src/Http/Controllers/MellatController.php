@@ -2,6 +2,7 @@
 
 namespace MellatGateway\Http\Controllers;
 
+use Illuminate\Support\Facades\Log;
 use MellatGateway\Exceptions\SendException;
 use MellatGateway\Exceptions\SettleException;
 use MellatGateway\Exceptions\VerifyException;
@@ -46,7 +47,8 @@ class MellatController extends Controller
             $paymentUrl = $send['payment_url'];
             $refID = $send['refID'];
         } catch (SendException $e) {
-            session()->flash('error', $e->getErrorMessage());
+            session()->flash('error', 'خطا در ارتباط با درگاه بانکی');
+            Log::info("send error");
             return redirect()->route('shop.checkout.cart.index');
         }
         //return redirect($paymentUrl);

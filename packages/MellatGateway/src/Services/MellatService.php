@@ -131,7 +131,7 @@ class MellatService
             'userName'       => $username,
             'userPassword'   => $password,
             'orderId'        => $this->orderId,
-            'amount'         => $cart->sub_total,
+            'amount'         => $cart->grand_total,
             'localDate'      => now()->format('Ymd'),
             'localTime'      => now()->format('His'),
             'additionalData' => '',
