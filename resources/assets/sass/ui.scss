@@ -30,3 +30,7 @@ body.open-hamburger{
     image-rendering: crisp-edges;
     -ms-interpolation-mode: nearest-neighbor; /* IE (non-standard property) */
 }
+.go-top > div {
+    right: auto !important;
+    left: 50px !important;
+}

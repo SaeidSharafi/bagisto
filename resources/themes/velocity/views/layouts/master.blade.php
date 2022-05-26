@@ -97,8 +97,9 @@
 
         {{-- overlay loader --}}
         <velocity-overlay-loader></velocity-overlay-loader>
-
-        <go-top bg-color="#26A37C"></go-top>
+        <div class="go-top">
+            <go-top bg-color="#2b348f"></go-top>
+        </div>
     </div>
 
     {{-- footer --}}

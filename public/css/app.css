@@ -99,6 +99,11 @@ body.open-hamburger #modal-blocker {
   /* IE (non-standard property) */
 }
 
+.go-top > div {
+  right: auto !important;
+  left: 50px !important;
+}
+
 .slideshow {
   overflow: hidden;
   position: relative;
@@ -362,6 +367,13 @@ body.open-hamburger #modal-blocker {
 }
 .rtl .rango-arrow-left:before {
   content: "\e908";
+}
+.rtl .grid-container .datagrid-filters .filter-right .dropdown-list {
+  left: 0;
+  right: auto;
+}
+.rtl .grid-container .datagrid-filters .filter-right .control-group {
+  margin-bottom: 0;
 }
 
 /*!

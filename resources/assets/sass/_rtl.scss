@@ -11,4 +11,16 @@
             content: "";
         }
     }
+    .grid-container .datagrid-filters .filter-right {
+
+        .dropdown-list{
+            left: 0;
+            right: auto;
+        }
+        .control-group{
+            margin-bottom: 0;
+        }
+    }
+
+
 }
