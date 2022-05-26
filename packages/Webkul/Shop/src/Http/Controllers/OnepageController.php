@@ -61,20 +61,19 @@ class OnepageController extends Controller
             return redirect()->route('customer.session.index');
         }
 
-        if (auth()->guard('customer')->check() && auth()->guard('customer')->user()->is_suspended) {
-            session()->flash('warning', trans('shop::app.checkout.cart.suspended-account-message'));
+        if (auth()->guard('customer')->check()){
 
-            return redirect()->route('shop.checkout.cart.index');
-        }
-        if (
-            !auth()->guard('customer')->user()->first_name
-            || !auth()->guard('customer')->user()->last_name
-            || !auth()->guard('customer')->user()->national_code
-            || !auth()->guard('customer')->user()->gender
-        ) {
+            if(auth()->guard('customer')->user()->is_suspended) {
+                session()->flash('warning', trans('shop::app.checkout.cart.suspended-account-message'));
 
-            return redirect()->route('customer.profile.edit')
-                ->with('warning', "لطفا پروفایل خود را تکمیل نمایید");
+                return redirect()->route('shop.checkout.cart.index');
+            }
+
+            if (auth()->guard('customer')->user()->incomplete) {
+                return redirect()->route('customer.profile.edit')
+                    ->with('warning', "لطفا پروفایل خود را تکمیل نمایید");
+            }
+
         }
 
         if (Cart::hasError()) {
