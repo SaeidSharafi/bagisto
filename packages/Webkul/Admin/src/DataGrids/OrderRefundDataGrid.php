@@ -22,9 +22,9 @@ class OrderRefundDataGrid extends DataGrid
                 $leftJoin->on('order_address_billing.order_id', '=', 'orders.id')
                          ->where('order_address_billing.address_type', OrderAddress::ADDRESS_TYPE_BILLING);
             })
-            ->addSelect(DB::raw('CONCAT(' . DB::getTablePrefix() . 'order_address_billing.first_name, " ", ' . DB::getTablePrefix() . 'order_address_billing.last_name) as billed_to'));
+            ->addSelect(DB::raw('CONCAT(' . DB::getTablePrefix() . 'orders.customer_first_name, " ", ' . DB::getTablePrefix() . 'orders.customer_last_name) as billed_to'));
 
-        $this->addFilter('billed_to', DB::raw('CONCAT(' . DB::getTablePrefix() . 'order_address_billing.first_name, " ", ' . DB::getTablePrefix() . 'order_address_billing.last_name)'));
+        $this->addFilter('billed_to', DB::raw('CONCAT(' . DB::getTablePrefix() . 'order.customer_first_name, " ", ' . DB::getTablePrefix() . 'order.customer_last_name)'));
         $this->addFilter('id', 'refunds.id');
         $this->addFilter('increment_id', 'orders.increment_id');
         $this->addFilter('state', 'refunds.state');
