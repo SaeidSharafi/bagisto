@@ -341,8 +341,12 @@ class Order extends Model implements OrderContract
             return false;
         }
 
-        $pendingInvoice = $this->invoices->where('state', 'pending')
-            ->first();
+        //$pendingInvoice = $this->invoices->where('state', 'pending')
+        //    ->orWhere('grand_total',0)
+        //    ->first();
+        $pendingInvoice = $this->invoices->filter(function ($value,$key){
+           return $value['state'] === 'pending' || $value['grand_total'] == 0;
+        })->first();
         if ($pendingInvoice) {
             return true;
         }
@@ -367,8 +371,12 @@ class Order extends Model implements OrderContract
             return false;
         }
 
-        $pendingInvoice = $this->invoices->where('state', 'pending')
-            ->first();
+        //$pendingInvoice = $this->invoices->where('state', 'pending')
+        //    ->first();
+        $pendingInvoice = $this->invoices->filter(function ($value,$key){
+            return $value['state'] === 'pending' || $value['grand_total'] == 0;
+        })->first();
+
         if ($pendingInvoice) {
             return false;
         }
