@@ -207,9 +207,12 @@ class Cart
         if ($product->status === 0) {
             return ['info' => __('shop::app.checkout.cart.item.inactive-add')];
         }
-        if ($this->customerRepository->hasOrder(auth()->guard('customer')->user()->id,$productId)){
-            return ['info' => __('app.checkout.cart.item.order-exist-add')];
+        if (auth()->guard('customer')->check()){
+            if ($this->customerRepository->hasOrder(auth()->guard('customer')->user()->id,$productId)){
+                return ['info' => __('app.checkout.cart.item.order-exist-add')];
+            }
         }
+
         $cartProducts = $product->getTypeInstance()->prepareForCart($data);
 
         $exist =$cart->items()
