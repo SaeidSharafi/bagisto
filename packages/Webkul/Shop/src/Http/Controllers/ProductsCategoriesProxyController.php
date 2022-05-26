@@ -4,6 +4,7 @@ namespace Webkul\Shop\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Webkul\Core\Repositories\SliderRepository;
+use Webkul\Customer\Repositories\CustomerRepository;
 use Webkul\Product\Repositories\ProductRepository;
 use Webkul\Category\Repositories\CategoryRepository;
 
@@ -24,6 +25,13 @@ class ProductsCategoriesProxyController extends Controller
     protected $productRepository;
 
     /**
+     * Product repository instance.
+     *
+     * @var \Webkul\Product\Repositories\ProductRepository
+     */
+    protected $customerRepository;
+
+    /**
      * Slider repository instance.
      *
      * @var \Webkul\Core\Repositories\SliderRepository
@@ -35,16 +43,21 @@ class ProductsCategoriesProxyController extends Controller
      *
      * @param  \Webkul\Category\Repositories\CategoryRepository  $categoryRepository
      * @param  \Webkul\Product\Repositories\ProductRepository  $productRepository
+     * @param  \Webkul\Product\Repositories\CustomerRepository  $customerRepository
+     * @param  \Webkul\Product\Repositories\SliderRepository  $sliderRepository
      * @return void
      */
     public function __construct(
         CategoryRepository $categoryRepository,
         ProductRepository $productRepository,
+        CustomerRepository $customerRepository,
         SliderRepository $sliderRepository
     ) {
         $this->categoryRepository = $categoryRepository;
 
         $this->productRepository = $productRepository;
+
+        $this->customerRepository = $customerRepository;
 
         $this->sliderRepository = $sliderRepository;
 
@@ -74,8 +87,13 @@ class ProductsCategoriesProxyController extends Controller
             if ($product = $this->productRepository->findBySlug($slugOrPath)) {
 
                 $customer = auth()->guard('customer')->user();
+                $hasOrder= false;
+                if ($customer){
+                        $hasOrder= (bool) $this->customerRepository->hasOrder($customer->id, $product->id);
 
-                return view($this->_config['product_view'], compact('product', 'customer'));
+                }
+
+                return view($this->_config['product_view'], compact('product', 'customer','hasOrder'));
             }
 
             abort(404);

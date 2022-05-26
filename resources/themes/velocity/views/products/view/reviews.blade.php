@@ -15,61 +15,57 @@
 
 {!! view_render_event('bagisto.shop.products.review.before', ['product' => $product]) !!}
 
-    @if ($total)
-        @if (isset($accordian) && $accordian)
+@if ($total)
 
-        @else
+    @if (isset($accordian) && $accordian)
+        <accordian :title="'{{ __('shop::app.products.total-reviews') }}'" :active="true">
+            {{-- customer reviews --}}
+            <div slot="header" class="col-lg-12 no-padding">
+                <h3 class="display-inbl">
+                    {{ __('velocity::app.products.reviews-title') }}
+                </h3>
 
-        @endif
+                <i class="rango-arrow"></i>
+            </div>
 
-        @if (isset($accordian) && $accordian)
-            <accordian :title="'{{ __('shop::app.products.total-reviews') }}'" :active="true">
-                {{-- customer reviews --}}
-                <div slot="header" class="col-lg-12 no-padding">
-                    <h3 class="display-inbl">
-                        {{ __('velocity::app.products.reviews-title') }}
-                    </h3>
+            <div class="customer-reviews" slot="body">
+                @foreach ($reviews as $review)
+                    <div class="row">
+                        <h4 class="col-lg-12 fs18">{{ $review->title }}</h4>
 
-                    <i class="rango-arrow"></i>
-                </div>
+                        <star-ratings
+                            :ratings="{{ $review->rating }}"
+                            push-class="mr10 fs16 col-lg-12"
+                        ></star-ratings>
 
-                <div class="customer-reviews" slot="body">
-                    @foreach ($reviews as $review)
-                        <div class="row">
-                            <h4 class="col-lg-12 fs18">{{ $review->title }}</h4>
+                        <div class="review-description col-lg-12">
+                            <span>{{ $review->comment }}</span>
+                        </div>
 
-                            <star-ratings
-                                :ratings="{{ $review->rating }}"
-                                push-class="mr10 fs16 col-lg-12"
-                            ></star-ratings>
+                        <div class="col-lg-12 mt5">
+                            <span>{{ __('velocity::app.products.review-by') }} -</span>
 
-                            <div class="review-description col-lg-12">
-                                <span>{{ $review->comment }}</span>
-                            </div>
-
-                            <div class="col-lg-12 mt5">
-                                <span>{{ __('velocity::app.products.review-by') }} -</span>
-
-                                <span class="fs16 fw6">
+                            <span class="fs16 fw6">
                                     {{ $review->name }},
                                 </span>
 
-                                <span>{{ core()->formatDate($review->created_at, 'F d, Y') }}
+                            <span>{{ core()->formatDate($review->created_at, 'F d, Y') }}
                                 </span>
-                            </div>
                         </div>
-                    @endforeach
+                    </div>
+                @endforeach
 
-                    <a
-                        href="{{ route('shop.reviews.index', ['slug' => $product->url_key ]) }}"
-                        class="mb20 link-color"
-                    >{{ __('velocity::app.products.view-all-reviews') }}</a>
-                </div>
-            </accordian>
-        @else
-            <h5 class="display-inbl mb20 col-lg-12 no-padding">
-                {{ __('velocity::app.products.reviews-title') }}
-            </h5>
+                <a
+                    href="{{ route('shop.reviews.index', ['slug' => $product->url_key ]) }}"
+                    class="mb20 link-color"
+                >{{ __('velocity::app.products.view-all-reviews') }}</a>
+            </div>
+        </accordian>
+
+    @else
+        <h5 class="display-inbl mb20 col-lg-12 no-padding">
+            {{ __('velocity::app.products.reviews-title') }}
+        </h5>
 
             <div class="customer-reviews">
                 @foreach ($reviews as $review)
@@ -107,85 +103,99 @@
                         </div>
                     </div>
                 @endforeach
-                    <a
-                        href="{{ route('shop.reviews.index', ['slug' => $product->url_key ]) }}"
-                        class="mb20 link-color"
-                    >{{ __('velocity::app.products.view-all-reviews') }}</a>
+
             </div>
-        @endif
+        <div class="d-flex border-top border-dark mt-3 pt-3">
+            <a
+                href="{{ route('shop.reviews.index', ['slug' => $product->url_key ]) }}"
+                class="btn btn-outline-dark mx-2"
+            >{{ __('velocity::app.products.view-all-reviews') }}</a>
+            @if ($hasOrder)
+                <button type="button" class="btn btn-md btn-primary" @click="showModal('addReview')">
+                    {{ __('shop::app.products.write-review-btn') }}
+                </button>
+            @endif
+        </div>
+    @endif
+@endif
 
-    @else
-        @if (core()->getConfigData('catalog.products.review.guest_review') || auth()->guard('customer')->check())
-            <div class="customer-rating" style="border: none">
-                <div class="row customer-rating col-12 remove-padding-margin">
+@if (core()->getConfigData('catalog.products.review.guest_review') || auth()->guard('customer')->check())
+    @if ($hasOrder)
+        <modal id="addGroup" :is-open="modalIds.addReview">
 
+            <h3 slot="header">{{ __('shop::app.products.write-review-btn') }}</h3>
 
-                    <form
-                        method="POST"
-                        class="review-form"
-                        @submit.prevent="onSubmit"
-                        action="{{ route('shop.reviews.store', $product->product_id ) }}"
-                        enctype="multipart/form-data">
+            <div slot="body">
+                <div class="customer-rating" style="border: none">
+                    <div class="row customer-rating col-12 remove-padding-margin">
+                        <form
+                            method="POST"
+                            class="review-form"
+                            @submit.prevent="onSubmit"
+                            action="{{ route('shop.reviews.store', $product->product_id ) }}"
+                            enctype="multipart/form-data">
 
-                        @csrf
+                            @csrf
 
-                        <div :class="`${errors.has('rating') ? 'has-error' : ''}`">
-                            <label for="title" class="required">
-                                {{ __('admin::app.customers.reviews.rating') }}
-                            </label>
-                            <star-ratings ratings="5" size="24" editable="true"></star-ratings>
-                            <span :class="`control-error ${errors.has('rating') ? '' : 'hide'}`" v-if="errors.has('rating')" v-text="errors.first('rating')"></span>
-                        </div>
-
-                        <div :class="`${errors.has('title') ? 'has-error' : ''}`">
-                            <label for="title" class="required">
-                                {{ __('shop::app.reviews.title') }}
-                            </label>
-                            <input
-                                type="text"
-                                name="title"
-                                class="control"
-                                v-validate="'required'"
-                                value="{{ old('title') }}" />
-
-                            <span :class="`control-error ${errors.has('title') ? '' : 'hide'}`" v-text="errors.first('title')"></span>
-                        </div>
-
-                        @if (core()->getConfigData('catalog.products.review.guest_review') && ! auth()->guard('customer')->user())
-                            <div :class="`${errors.has('name') ? 'has-error' : ''}`">
+                            <div :class="`${errors.has('rating') ? 'has-error' : ''}`">
                                 <label for="title" class="required">
-                                    {{ __('shop::app.reviews.name') }}
+                                    {{ __('admin::app.customers.reviews.rating') }}
                                 </label>
-                                <input  type="text" class="control" name="name" v-validate="'required'" value="{{ old('name') }}">
-                                <span :class="`control-error ${errors.has('name') ? '' : 'hide'}`" v-text="errors.first('name')"></span>
+                                <star-ratings ratings="5" size="24" editable="true"></star-ratings>
+                                <span :class="`control-error ${errors.has('rating') ? '' : 'hide'}`" v-if="errors.has('rating')" v-text="errors.first('rating')"></span>
                             </div>
-                        @endif
 
-                        <div :class="`${errors.has('comment') ? 'has-error' : ''}`">
-                            <label for="comment" class="required">
-                                {{ __('admin::app.customers.reviews.comment') }}
-                            </label>
-                            <textarea
-                                type="text"
-                                class="control"
-                                name="comment"
-                                v-validate="'required'"
-                                value="{{ old('comment') }}">
+                            <div :class="`${errors.has('title') ? 'has-error' : ''}`">
+                                <label for="title" class="required">
+                                    {{ __('shop::app.reviews.title') }}
+                                </label>
+                                <input
+                                    type="text"
+                                    name="title"
+                                    class="control"
+                                    v-validate="'required'"
+                                    value="{{ old('title') }}"/>
+
+                                <span :class="`control-error ${errors.has('title') ? '' : 'hide'}`" v-text="errors.first('title')"></span>
+                            </div>
+
+                            @if (core()->getConfigData('catalog.products.review.guest_review') && ! auth()->guard('customer')->user())
+                                <div :class="`${errors.has('name') ? 'has-error' : ''}`">
+                                    <label for="title" class="required">
+                                        {{ __('shop::app.reviews.name') }}
+                                    </label>
+                                    <input type="text" class="control" name="name" v-validate="'required'" value="{{ old('name') }}">
+                                    <span :class="`control-error ${errors.has('name') ? '' : 'hide'}`" v-text="errors.first('name')"></span>
+                                </div>
+                            @endif
+
+                            <div :class="`${errors.has('comment') ? 'has-error' : ''}`">
+                                <label for="comment" class="required">
+                                    {{ __('admin::app.customers.reviews.comment') }}
+                                </label>
+                                <textarea
+                                    type="text"
+                                    class="control"
+                                    name="comment"
+                                    v-validate="'required'"
+                                    value="{{ old('comment') }}">
                             </textarea>
-                            <span :class="`control-error ${errors.has('comment') ? '' : 'hide'}`" v-text="errors.first('comment')"></span>
-                        </div>
+                                <span :class="`control-error ${errors.has('comment') ? '' : 'hide'}`" v-text="errors.first('comment')"></span>
+                            </div>
 
-                        <div class="submit-btn">
-                            <button
-                                type="submit"
-                                class="theme-btn fs16">
-                                {{ __('velocity::app.products.submit-review') }}
-                            </button>
-                        </div>
-                    </form>
+                            <div class="submit-btn">
+                                <button
+                                    type="submit"
+                                    class="theme-btn fs16">
+                                    {{ __('velocity::app.products.submit-review') }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        @endif
+        </modal>
     @endif
+@endif
 
 {!! view_render_event('bagisto.shop.products.review.after', ['product' => $product]) !!}

@@ -226,7 +226,7 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
             <div class="row align-items-stretch">
                 <div class="col-md-9 ">
                     <div class="extra-attributes card-box simple-shadow h-100">
-                        @include ('shop::products.view.extra-attributes',['active' => true,'customAttributeValues'=>$course_extra])
+                        @include ('shop::products.view.extra-attributes',['active' => true,'customAttributeValues'=>$course_extra,'hasOrder' => $hasOrder])
                     </div>
                 </div>
                 <div class="col-md-3">

@@ -59,7 +59,7 @@
             {{-- reviews count --}}
             <h5 class="d-block d-md-none border-bottom border-dark pb-2 w-100">نظرات</h5>
             <div class="contents pt-2 pt-md-0">
-                @include ('shop::products.view.reviews', ['accordian' => false])
+                @include ('shop::products.view.reviews', ['accordian' => false,'hasOrder' => $hasOrder])
             </div>
         </div>
     </div>
