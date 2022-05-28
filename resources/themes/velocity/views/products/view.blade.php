@@ -105,7 +105,7 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
 @section('full-width-content')
     <div class="product-banner w-100 position-relative">
         <div class="banner-image" style="{{$style}}"></div>
-        <div class="d-flex flex-wrap align-items-center h-100 banner-detail">
+        <div class="d-flex flex-wrap align-items-center h-100 banner-detail container">
             <div class="px-4 font-weight-bold">
                 <span class="course-label"> {{__('shop.course')}}</span>
                 <span class="course-name">{{$product->name}}</span>
