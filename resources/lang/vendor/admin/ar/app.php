@@ -1345,7 +1345,7 @@ return [
         'update-success'            => 'تحديث الاسم بنجاح :name ',
         'delete-success'            => 'حذف الاسم بنجاح :name',
         'delete-failed'             => ':name حدث خطأ أثناء حذف',
-        'last-delete-error'         => 'مطلوب name: واحد على الأقل',
+        'last-delete-error'         => 'مطلوب :name واحد على الأقل',
         'user-define-error'         => 'لا يستطيع حذف نظام :name',
         'attribute-error'           => 'في المنتجات القابلة للتكوين :name يستخدم ',
         'attribute-product-error'   => 'في المنتجات :name  يستخدم ',

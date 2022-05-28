@@ -740,8 +740,8 @@ return [
 
     'response' => [
         'create-success' => 'بنجاح :name تم إنشاء',
-        'update-success' => 'تم تحديث name: بنجاح',
-        'delete-success' => 'تم حذف name: بنجاح',
-        'submit-success' => 'تم تقديم name: بنجاح'
+        'update-success' => 'تم تحديث :name بنجاح',
+        'delete-success' => 'تم حذف :name بنجاح',
+        'submit-success' => 'تم تقديم :name بنجاح'
     ],
 ];

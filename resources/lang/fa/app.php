@@ -1,20 +1,23 @@
 <?php
 return [
     'sms-timer' => 'ارسال مجدد کد تا {} دیگر',
-    'customer'=>[
-        'account' =>[
-            'profile' =>[
-                'national_code' => 'کد ملی',
-                'father_name'=>'نام پدر',
-                'education_field'=>'رشته تحصیلی',
+    'customer'  => [
+        'account' => [
+            'profile' => [
+                'national_code'   => 'کد ملی',
+                'father_name'     => 'نام پدر',
+                'education_field' => 'رشته تحصیلی',
             ]
+        ],
+        'reviews' => [
+            'comment' => 'نظر'
         ]
     ],
-    'checkout'=>[
-        'cart' =>[
+    'checkout'  => [
+        'cart' => [
             'item' => [
-                'exist-add' =>'امکان ثبت نام بیش از یکبار نمیباشد',
-                'order-exist-add' =>'شما قبلا در این دوره ثبت نام کرده‌اید',
+                'exist-add'       => 'امکان ثبت نام بیش از یکبار نمیباشد',
+                'order-exist-add' => 'شما قبلا در این دوره ثبت نام کرده‌اید',
             ]
         ]
     ],

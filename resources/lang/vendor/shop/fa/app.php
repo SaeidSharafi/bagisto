@@ -11,7 +11,7 @@ return [
         'reviews' => 'نظرات',
         'wishlist' => 'لیست دلخواه',
         'orders' => 'گزارشات ثبت نام',
-        'downloadable-products' => 'محصولات دانلودی'
+        'downloadable-products' => 'دوره‌های دانلودی'
     ],
 
     'common' => [
@@ -22,8 +22,8 @@ return [
 
     'home' => [
         'page-title' => 'فروشگاه - خانه',
-        'featured-products' => 'محصولات برجسته',
-        'new-products' => 'محصولات جدید',
+        'featured-products' => 'دوره‌های برجسته',
+        'new-products' => 'دوره‌های جدید',
         'verify-email' => 'حساب ایمیل خود را تأیید کنید',
         'resend-verify-email' => 'ایمیل تایید را دوباره بفرست'
     ],
@@ -38,7 +38,7 @@ return [
         'wishlist' => 'لیست دلخواه',
         'cart' => 'سبد خرید',
         'logout' => 'خروج',
-        'search-text' => 'محصولات را در اینجا جستجو کنید'
+        'search-text' => 'جستجو'
     ],
 
     'minicart' => [
@@ -297,7 +297,7 @@ return [
                     'page-tile' => '#:order_id سفارش',
                     'info' => 'اطلاعات',
                     'placed-on' => 'قرار داده شده در',
-                    'products-ordered' => 'محصولات سفارش داده شده',
+                    'products-ordered' => 'دوره‌های سفارش داده شده',
                     'invoices' => 'صورت حساب',
                     'shipments' => 'روش ارسال',
                     'SKU' => 'واحد نگهداری سهام',
@@ -351,7 +351,7 @@ return [
                 'page-title' => 'فراگیر - لیست دلخواه',
                 'title' => 'لیست دلخواه',
                 'deleteall' => 'حذف همه',
-                'moveall' => 'انتقال همه محصولات به سبد خرید',
+                'moveall' => 'انتقال همه دوره‌ها به سبد خرید',
                 'move-to-cart' => 'انتقال به سبد خرید',
                 'error' => 'به دلیل مشکلات ناشناخته نمی توان محصول را به لیست دلخواه اضافه کرد ، لطفا بعداً تلاش کنید',
                 'add' => 'مورد با موفقیت به لیست دلخواه اضافه شد',
@@ -371,7 +371,7 @@ return [
             ],
 
             'downloadable_products' => [
-                'title' => 'محصولات دانلودی',
+                'title' => 'دوره‌های دانلودی',
                 'order-id' => 'شماره پیگیری',
                 'date' => 'تاریخ',
                 'name' => 'عنوان',
@@ -426,8 +426,8 @@ return [
         'total-reviews' => ':total نظر',
         'total-rating' => ':total_rating امتیاز و :total_reviews نظر',
         'by' => 'با :name',
-        'up-sell-title' => 'ما محصولات دیگری را پیدا کردید که ممکن است دوست داشته باشید!',
-        'related-product-title' => 'محصولات مرتبط',
+        'up-sell-title' => 'ما دوره‌های دیگری را پیدا کردیم که ممکن است دوست داشته باشید!',
+        'related-product-title' => 'دوره‌های مرتبط',
         'cross-sell-title' => 'گزینه های بیشتر',
         'reviews-title' => 'امتیاز و نظرات',
         'write-review-btn' => 'نوشتن نظر',
@@ -458,7 +458,7 @@ return [
         'none' => 'هیچ یک',
         'available-for-order' => 'Available for Order',
         'settings' => 'تنظیمات ها',
-        'compare_options' => 'قابلیت مقایسه محصولات',
+        'compare_options' => 'قابلیت مقایسه دوره‌ها',
         'wishlist-options' => 'قابلیت لیست علاقه مندیها',
         'offers' => 'Buy :qty for :price each and save :discount%',
         'tax-inclusive' => 'Inclusive of all taxes',
@@ -479,7 +479,7 @@ return [
                 'missing_options' =>'نقض یکپارچگی سیستم سبد خرید ، گزینه هایی برای محصول قابل تنظیم وجود ندارد',
                 'missing_links' => 'لینک های قابل بارگیری برای این محصول وجود ندارد',
                 'qty_missing' => 'حداقل یک محصول باید بیش از 1 مقدار داشته باشد.',
-                'qty_impossible' => 'نمی توان بیش از یکی از این محصولات را به سبد خرید اضافه کرد'
+                'qty_impossible' => 'نمی توان بیش از یکی از این دوره‌ها را به سبد خرید اضافه کرد'
             ],
             'create-error' => 'هنگام تهیه نمونه سبد خرید ، با برخی از شماره ها روبرو شد',
             'title' => 'سبد خرید',
@@ -513,7 +513,7 @@ return [
             'quantity-error' => 'مقدار درخواستی در دسترس نیست',
             'cart-subtotal' => 'مجموع خرید',
             'cart-remove-action' => 'آیا واقعاً می خواهید این کار را انجام دهید؟',
-            'partial-cart-update' => 'فقط برخی از محصولات (های) به روز شده اند',
+            'partial-cart-update' => 'فقط برخی از دوره‌ها به روز شده اند',
             'event' => [
                 'expired' => 'This event has been expired.'
             ],
@@ -739,9 +739,9 @@ return [
     ],
 
     'response' => [
-        'create-success' => 'name: با موفقیت ایجاد شد',
-        'update-success' => 'name: با موفقیت ویرایش شد',
-        'delete-success' => 'name: با موفقیت حذف شد',
-        'submit-success' => 'name: با موفقیت ثبت شد',
+        'create-success' => ':name با موفقیت ایجاد شد',
+        'update-success' => ':name با موفقیت ویرایش شد',
+        'delete-success' => ':name با موفقیت حذف شد',
+        'submit-success' => ':name با موفقیت ثبت شد',
     ],
 ];

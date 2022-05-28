@@ -45,7 +45,7 @@
 
                 @if ($order->canComplete())
                     <a href="{{ route('admin.sales.orders.complete', $order->id) }}" class="btn btn-lg btn-primary">
-                        {{ __('admin::app.sales.orders.shipment-btn-title') }}
+                        {{ __('admin.sales.orders.complete') }}
                     </a>
                 @endif
 

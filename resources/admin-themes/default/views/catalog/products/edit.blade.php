@@ -10,7 +10,7 @@
             .content-container .content .page-header .page-title{
                 width: 100%;
             }
-            
+
             .content-container .content .page-header .page-title .control-group {
                 margin-top: 20px!important;
                 width: 100%!important;
@@ -21,12 +21,12 @@
                 margin-top: 10px!important;
                 float: left;
             }
-       }        
+       }
     </style>
 @endpush
 
 @section('content')
-    <div class="content">
+    <div class="content product-edit">
         @php
             $locale = core()->checkRequestedLocaleCodeInRequestedChannel();
             $channel = core()->getRequestedChannelCode();
@@ -94,6 +94,7 @@
                         {!! view_render_event('bagisto.admin.catalog.product.edit_form_accordian.' . $attributeGroup->name . '.before', ['product' => $product]) !!}
 
                         <accordian title="{{ __($attributeGroup->name) }}"
+                                   class="{{$attributeGroup->code}}"
                                    :active="{{$index == 0 ? 'true' : 'false'}}">
                             <div slot="body">
                                 {!! view_render_event('bagisto.admin.catalog.product.edit_form_accordian.' . $attributeGroup->name . '.controls.before', ['product' => $product]) !!}
@@ -132,7 +133,7 @@
 
                                     @if (view()->exists($typeView = 'admin::catalog.products.field-types.' . $attribute->type))
 
-                                        <div class="control-group {{ $attribute->type }} {{ $attribute->enable_wysiwyg ? 'have-wysiwyg' : '' }}"
+                                        <div class="control-group {{ $attribute->code }}  {{ $attribute->type }} {{ $attribute->enable_wysiwyg ? 'have-wysiwyg' : '' }}"
                                              @if ($attribute->type == 'multiselect') :class="[errors.has('{{ $attribute->code }}[]') ? 'has-error' : '']"
                                              @else :class="[errors.has('{{ $attribute->code }}') ? 'has-error' : '']" @endif>
 

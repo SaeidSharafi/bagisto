@@ -13,3 +13,22 @@ body.rtl{
         }
     }
 }
+body:not(.Administrator){
+    .slider-switch, .header-count,
+    .home-page-content, .product-policy, .footer{
+        display: none;
+    }
+}
+.pduct-edit{
+    .control-group{
+        &.product_number,&.tax_category_id, {
+                display: none;
+            }
+    }
+    .channels {
+            &.accordian{
+                display: none;
+            }
+
+    }
+}

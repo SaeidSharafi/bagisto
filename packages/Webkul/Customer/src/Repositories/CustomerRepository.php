@@ -113,7 +113,7 @@ class CustomerRepository extends Repository
                     ->orWhere('parent_id', $productId);
             })
             ->groupBy('product_id')
-            ->exists();
+            ->first();
         return $order;
 
     }

@@ -25,7 +25,7 @@
         {!! view_render_event('bagisto.admin.layout.head') !!}
     </head>
 
-    <body @if (core()->getCurrentLocale() && core()->getCurrentLocale()->direction == 'rtl') class="rtl" @endif style="scroll-behavior: smooth;">
+    <body @if (core()->getCurrentLocale() && core()->getCurrentLocale()->direction == 'rtl') class="rtl {{auth()->guard('admin')->user()->role->name}}" @endif style="scroll-behavior: smooth;">
 
         {!! view_render_event('bagisto.admin.layout.body.before') !!}
 

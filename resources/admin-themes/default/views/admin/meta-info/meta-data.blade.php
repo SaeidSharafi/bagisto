@@ -68,7 +68,7 @@
 
             <accordian :title="'{{ __('velocity::app.admin.meta-data.general') }}'" :active="true">
                 <div slot="body">
-                    <div class="control-group">
+                    <div class="control-group slider-switch">
                         <label style="width:100%;">
                             {{ __('velocity::app.admin.meta-data.activate-slider') }}
                             <span class="locale">[{{ $channel }} - {{ $locale }}]</span>
@@ -87,7 +87,7 @@
                         </label>
                     </div>
 
-                    <div class="control-group">
+                    <div class="control-group sidebar-categories">
                         <label style="width:100%;">
                             {{ __('velocity::app.admin.meta-data.sidebar-categories') }}
                             <span class="locale">[{{ $channel }} - {{ $locale }}]</span>
@@ -102,7 +102,7 @@
                             value="{{ $metaData ? $metaData->sidebar_category_count : '10' }}" />
                     </div>
 
-                    <div class="control-group">
+                    <div class="control-group header-count">
                         <label style="width:100%;">
                             {{ __('velocity::app.admin.meta-data.header_content_count') }}
                             <span class="locale">[{{ $channel }} - {{ $locale }}]</span>
@@ -120,7 +120,7 @@
 
 
 
-                    <div class="control-group">
+                    <div class="control-group home-page-content">
                         <label style="width:100%;">
                             {{ __('velocity::app.admin.meta-data.home-page-content') }}
                             <span class="locale">[{{ $channel }} - {{ $locale }}]</span>
@@ -134,7 +134,7 @@
                         </textarea>
                     </div>
 
-                    <div class="control-group">
+                    <div class="control-group product-policy">
                         <label style="width:100%;">
                             {{ __('velocity::app.admin.meta-data.product-policy') }}
                             <span class="locale">[{{ $channel }} - {{ $locale }}]</span>
@@ -206,7 +206,7 @@
                 </div>
             </accordian>
 
-            <accordian :title="'{{ __('velocity::app.admin.meta-data.footer') }}'" :active="false">
+            <accordian :title="'{{ __('velocity::app.admin.meta-data.footer') }}'" class="footer" :active="false">
                 <div slot="body">
                     <div class="control-group">
                         <label style="width:100%;">

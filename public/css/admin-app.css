@@ -85,6 +85,18 @@ body.rtl .alert-wrapper .alert .icon {
   left: 10px;
 }
 
+body:not(.Administrator) .slider-switch, body:not(.Administrator) .header-count,
+body:not(.Administrator) .home-page-content, body:not(.Administrator) .product-policy, body:not(.Administrator) .footer {
+  display: none;
+}
+
+.pduct-edit .control-group.product_number, .pduct-edit .control-group.tax_category_id {
+  display: none;
+}
+.pduct-edit .channels.accordian {
+  display: none;
+}
+
 body,
 a,
 h1, h2, h3, h4, h5, h6,

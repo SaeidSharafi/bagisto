@@ -166,7 +166,7 @@ class OrderDataGrid extends DataGrid
             'icon'   => 'icon eye-icon',
         ]);
         $this->addAction([
-            'title'  => trans('admin::app.datagrid.complete'),
+            'title'  => trans('admin.datagrid.complete'),
             'method' => 'GET',
             'route'  => 'admin.sales.orders.complete',
             'icon'   => 'icon completed-icon'

@@ -99,7 +99,7 @@ class ReviewController extends Controller
 
         $this->productReviewImageRepository->uploadImages($data, $review);
 
-        session()->flash('success', trans('shop::app.response.submit-success', ['name' => 'Product Review']));
+        session()->flash('success', trans('shop::app.response.submit-success', ['name' => trans('app.customer.reviews.comment')]));
 
         return redirect()->route('shop.productOrCategory.index', $product->url_key);
     }
