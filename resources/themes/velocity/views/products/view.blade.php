@@ -249,15 +249,15 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                                 </div>
                             </div>
                             <div class="col-9 d-block d-md-none">
-                                <h6 class="fw6">
+                                <h5 class="fw6">
                                     استاد گرامی {{ $teacher['teacher_name'] ?? '' }}
-                                </h6>
+                                </h5>
                             </div>
                             <div class="col-md-10 col-12">
                                 <div class="w-100">
-                                    <h6 class="d-none d-md-block fw6">
+                                    <h5 class="d-none d-md-block fw6">
                                         استاد گرامی {{ $teacher['teacher_name'] ?? '' }}
-                                    </h6>
+                                    </h5>
                                     <p>
                                       {{$teacher['teacher_bio'] ?? ''}}
                                     </p>
@@ -269,9 +269,9 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                 </div>
                 <div class="col-md-3">
                     <div class="course-cert card-box simple-shadow">
-                        <h6 class="py-2 text-center fw6">
+                        <h5 class="py-2 text-center fw6">
                             نمونه گواهی دوره
-                        </h6>
+                        </h5>
                         <div class="w-100 p-3">
                         <img src="/images/sample-cert.jpg" class="w-100">
                         </div>

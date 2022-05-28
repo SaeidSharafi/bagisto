@@ -10,9 +10,10 @@
 @import "~@fortawesome/fontawesome-free/scss/solid";
 @import "~@fortawesome/fontawesome-free/scss/brands";
 
-html{
+html {
     font-size: 8px;
 }
+
 * {
     font-family: 'Source Sans Pro', 'IRANYEKAN', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -79,10 +80,11 @@ a:hover {
     text-align: right;
 }
 
-.account-content .account-layout{
-    .account-head{
+.account-content .account-layout {
+    .account-head {
         justify-content: start;
-        .account-heading{
+
+        .account-heading {
             font-size: 1.6rem;
 
         }
@@ -186,23 +188,36 @@ nav .logo {
     background: $main-bg;
     height: 55px;
 }
-section.product-extra-detail .extra-attributes .nav-item a.nav-link {
-    padding: 0.5rem 0.25rem;
-    font-size: 0.9rem;
+
+.product-description {
+    min-height: 200px;
 }
+
+section.product-extra-detail {
+    .extra-attributes {
+        min-height: 400px;
+        .nav-item a.nav-link {
+            padding: 0.5rem 0.25rem;
+            font-size: 1.4rem;
+        }
+    }
+}
+
 header {
-    .logo{
+    .logo {
         display: flex !important;
         align-items: center;
         height: 100%;
         text-align: center;
         padding-left: 0;
-        img{
+
+        img {
             max-width: 150px;
             height: auto;
         }
 
     }
+
     .main-nav {
         height: 50px;
 
@@ -289,11 +304,13 @@ header {
             }
         }
     }
-    .category-list-container{
-        li{
+
+    .category-list-container {
+        li {
             font-size: 1.2rem;
         }
     }
+
     #search-form {
         width: 100%;
         background: $main-bg;
@@ -474,8 +491,9 @@ img.cover {
         max-width: 500px;
     }
 }
-.carousel-pagination{
-    ul{
+
+.carousel-pagination {
+    ul {
         padding: 0;
         display: flex;
         justify-content: center;
@@ -494,13 +512,15 @@ img.cover {
             width: 10px;
             height: 10px;
             background-color: #727272;
-            &.is-active{
+
+            &.is-active {
                 background-color: $main-color;
             }
         }
     }
 
 }
+
 .category-carousel {
     &.sticky-header {
         top: 50px;
@@ -538,7 +558,8 @@ header {
             line-height: 2rem;
             align-items: center;
             height: 100%;
-            .fa-user{
+
+            .fa-user {
                 font-size: 2rem;
             }
         }
@@ -602,8 +623,9 @@ header {
         position: sticky;
         height: auto;
         top: 55px;
-        ul.navigation{
-            li{
+
+        ul.navigation {
+            li {
                 font-size: 1.6rem;
             }
         }
@@ -645,6 +667,7 @@ section.product-detail {
             width: 100%;
         }
     }
+
     .info {
         .availability button {
             border: none;
@@ -760,7 +783,7 @@ section.product-footer {
     flex-direction: column;
 
     span.final-price {
-        font-size: 1.6rem;
+        font-size: 2rem;
         line-height: initial;
         color: #000000;
     }
@@ -769,10 +792,10 @@ section.product-footer {
         display: flex;
         width: 100%;
         justify-content: flex-start;
-        font-size: 0.9rem;
+        font-size: 1.2rem;
 
         & > span {
-            font-size: 0.9rem;
+            font-size: 1.2rem;
             font-weight: 600;
         }
 
@@ -783,7 +806,7 @@ section.product-footer {
         }
 
         .discount-amount {
-            padding: 2px 14px;
+            padding: 0 9px;
             background-color: #f05153;
             color: #fff;
             border-radius: 12px;
@@ -808,12 +831,13 @@ section.product-footer {
         }
 
         table.full-specifications {
-            font-size: 0.8rem;
-            font-weight: bold;
+            font-size: 1.2rem;
+
 
             td {
                 &:first-child {
                     width: 135px;
+                    font-weight: 800;
                 }
 
                 padding: 5px 0;
@@ -831,7 +855,7 @@ section.product-footer {
     .add-to-cart-btn {
         button.theme-btn {
             background-color: #ff0000 !important;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             border-radius: 10px;
         }
     }
@@ -843,6 +867,33 @@ section.product-footer {
     border: none;
     aspect-ratio: 182/246;
 
+    &.horizontal {
+        aspect-ratio: auto;
+        flex-direction: row;
+
+        .product-image-container {
+            img {
+                aspect-ratio: auto;
+                max-width: 80px;
+                object-fit: cover;
+            }
+
+        }
+
+        .product-price {
+            height: auto;
+
+            .discount {
+                .discount-amount {
+                    font-size: 1rem;
+                }
+            }
+
+            .final-price {
+                font-size: 1.4rem;
+            }
+        }
+    }
 
     .card-body {
         padding: 0.5rem;
@@ -1090,7 +1141,6 @@ section.product-footer {
 .rounded {
     border-radius: 10px !important;
 }
-
 
 
 .prodcut-images-main {
@@ -1451,6 +1501,7 @@ header {
     .mini-cart-container {
         #mini-cart {
             height: 100%;
+
             &.dropdown-toggle {
                 &::after {
                     display: none;
@@ -1478,12 +1529,14 @@ header {
                 position: relative;
                 color: rgba(0, 0, 0, .83);
                 display: inline-block;
-                .icons-shop{
+
+                .icons-shop {
                     display: flex;
                     font-size: 2rem;
                     align-items: center;
                     height: 100%;
                     line-height: 2rem;
+
                     .fa-caret-down {
                         font-size: 1.2rem;
                     }
@@ -1498,19 +1551,23 @@ body.rtl header .mini-cart-container #mini-cart .badge {
     top: 14%;
     left: 73%;
 }
-.small-icon{
-    .material-icons{
+
+.small-icon {
+    .material-icons {
         font-size: 1.2rem;
     }
 }
+
 #checkout a.btn-procced {
     display: none;
 }
+
 @media (min-width: 320px) {
-    html{
+    html {
         font-size: 10px;
     }
 }
+
 @media(min-width: 400px) {
     .product-card-wrapper {
         -ms-flex: 0 0 50%;
@@ -1542,13 +1599,13 @@ body.rtl header .mini-cart-container #mini-cart .badge {
         max-width: 33.33%;
 
     }
-    .small-icon{
-        .material-icons{
+    .small-icon {
+        .material-icons {
             font-size: 3rem;
         }
     }
     .product-card {
-               .product-price {
+        .product-price {
             .discount {
                 justify-content: flex-end;
             }

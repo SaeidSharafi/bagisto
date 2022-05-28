@@ -115,6 +115,10 @@ body.open-hamburger #modal-blocker {
   font-size: 1.4rem;
 }
 
+.h5, h5 {
+  font-size: 1.4rem;
+}
+
 .slideshow {
   overflow: hidden;
   position: relative;
@@ -6689,9 +6693,16 @@ nav .logo {
   height: 55px;
 }
 
+.product-description {
+  min-height: 200px;
+}
+
+section.product-extra-detail .extra-attributes {
+  min-height: 400px;
+}
 section.product-extra-detail .extra-attributes .nav-item a.nav-link {
   padding: 0.5rem 0.25rem;
-  font-size: 0.9rem;
+  font-size: 1.4rem;
 }
 
 header .logo {
@@ -7171,7 +7182,7 @@ section.product-footer .teacher-image img {
   flex-direction: column;
 }
 .product-price span.final-price {
-  font-size: 1.6rem;
+  font-size: 2rem;
   line-height: initial;
   color: #000000;
 }
@@ -7179,10 +7190,10 @@ section.product-footer .teacher-image img {
   display: flex;
   width: 100%;
   justify-content: flex-start;
-  font-size: 0.9rem;
+  font-size: 1.2rem;
 }
 .product-price .discount > span {
-  font-size: 0.9rem;
+  font-size: 1.2rem;
   font-weight: 600;
 }
 .product-price .discount .regular-price {
@@ -7191,7 +7202,7 @@ section.product-footer .teacher-image img {
   color: #000;
 }
 .product-price .discount .discount-amount {
-  padding: 2px 14px;
+  padding: 0 9px;
   background-color: #f05153;
   color: #fff;
   border-radius: 12px;
@@ -7207,14 +7218,14 @@ section.product-footer .teacher-image img {
   padding-bottom: 0.5rem;
 }
 .product-info .attributes table.full-specifications {
-  font-size: 0.8rem;
-  font-weight: bold;
+  font-size: 1.2rem;
 }
 .product-info .attributes table.full-specifications td {
   padding: 5px 0;
 }
 .product-info .attributes table.full-specifications td:first-child {
   width: 135px;
+  font-weight: 800;
 }
 .product-info .attributes .variations label {
   font-size: 0.9rem;
@@ -7222,7 +7233,7 @@ section.product-footer .teacher-image img {
 }
 .product-info .add-to-cart-btn button.theme-btn {
   background-color: #ff0000 !important;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   border-radius: 10px;
 }
 
@@ -7231,6 +7242,25 @@ section.product-footer .teacher-image img {
   direction: rtl;
   border: none;
   aspect-ratio: 182/246;
+}
+.product-card.vertical {
+  aspect-ratio: auto;
+  flex-direction: row;
+}
+.product-card.vertical .product-image-container img {
+  aspect-ratio: auto;
+  max-width: 80px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.product-card.vertical .product-price {
+  height: auto;
+}
+.product-card.vertical .product-price .discount .discount-amount {
+  font-size: 1rem;
+}
+.product-card.vertical .product-price .final-price {
+  font-size: 1.4rem;
 }
 .product-card .card-body {
   padding: 0.5rem;

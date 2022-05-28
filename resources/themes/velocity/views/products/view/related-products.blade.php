@@ -1,26 +1,29 @@
 <?php
 $relatedProducts = $product->related_products()->get();
+$relatedProducts_array = $relatedProducts->chunk(4)->reverse();
 ?>
 
 
 
 @if ($relatedProducts->count())
     <div class="related-products card-box simple-shadow h-100">
-        <h6 class="fw6 text-center py-3">
+        <h5 class="fw6 text-center py-3">
             دوره‌های مرتبط
-        </h6>
+        </h5>
         <product-collections-slot
             :slides-to-show=1
             additional-class="related-carousel"
             product-id="related-carousel"
             locale-direction="{{ $direction }}"
-            :count={{ $relatedProducts->count() }}>
-            @foreach ($relatedProducts as $index => $relatedProduct)
-                <div slot="slide-{{ $index }}" class="related-slide">
-                    @include ('shop::products.list.card', [
-                               'product' => $relatedProduct,
-                               'addToCartBtnClass' => 'small-padding',
-                           ])
+            :count={{ $relatedProducts_array->count() }}>
+            @foreach ($relatedProducts_array as $index => $relatedProduct_3)
+                <div slot="slide-{{ $index+1 }}" class="related-slide">
+                    @foreach($relatedProduct_3 as $relatedProduct)
+                        @include ('shop::products.list.card-horizontal', [
+                                   'product' => $relatedProduct,
+                                   'addToCartBtnClass' => 'small-padding',
+                               ])
+                    @endforeach
                 </div>
 
             @endforeach

@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Listeners\Category;
-use App\Listeners\Order;
+use App\Listeners\OrderListener;
 use App\Listeners\Product;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
@@ -20,10 +20,13 @@ class EventServiceProvider extends ServiceProvider
     protected $listen
         = [
             'sales.order.comment.create.after' => [
-                [Order::class, 'sendOrderCommentSms']
+                [OrderListener::class, 'sendOrderCommentSms']
             ],
             'checkout.order.save.after' => [
-                [Order::class, 'sendNewOrderSms']
+                [OrderListener::class, 'sendNewOrderSms']
+            ],
+            'sales.order.update-status.after' => [
+                [OrderListener::class, 'changeImsRegistrationStatus']
             ]
         ];
     // protected $listen = [

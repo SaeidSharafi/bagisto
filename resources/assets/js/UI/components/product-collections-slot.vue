@@ -4,7 +4,7 @@
             v-bind="sliderSetting">
             <slot
                 v-for="index in count"
-                :name="`slide-${parseInt(index) - 1}`" :class="1">
+                :name="`slide-${index}`" :data-text="`slide-${index}`">
             </slot>
 
         </slick-carousel>
@@ -46,12 +46,15 @@ export default {
             "dots": false,
             "arrows": true,
             "autoplay": true,
-            "speed": 4000,
+            "autoplaySpeed": 5000,
+            "speed": 1000,
             "rtl": (this.localeDirection === 'rtl'),
             "slidesToShow": this.slidesToShow,
             "slidesToScroll": 1,
+            'initialSlide':1,
 
         }
+        console.dir(this.count);
         if (this.slidesToShow !== 1) {
             this.sliderSetting.responsive = [
                 {
