@@ -80,7 +80,7 @@
                                                         <a
                                                             href="{{ route('shop.productOrCategory.index', $url_key) }}"
                                                             title="{{ $product->name }}"
-                                                            class="unset col-12 no-padding fs20 fw6 text-black">
+                                                            class="unset col-12 no-padding fw6 text-black">
                                                             {{ $product->name }}
                                                         </a>
                                                     </div>
@@ -193,7 +193,7 @@
                 {!! view_render_event('bagisto.shop.checkout.cart.summary.after', ['cart' => $cart]) !!}
 
                     @if ($cart)
-                        <div class="col-lg-4 col-md-12 m-0 pt-0 row order-summary-container">
+                        <div class="col-lg-4 col-md-12 m-0 pt-0 row order-summary-container px-0">
                             @include('shop::checkout.total.summary', ['cart' => $cart])
 
                         </div>

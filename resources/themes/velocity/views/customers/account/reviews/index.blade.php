@@ -51,7 +51,7 @@
                             <div class="w-100 border-bottom">
                                 <div class="row">
                                     <div class="col-6">
-                                        <div class="product-name fs20 pb-2 ">
+                                        <div class="product-name pb-2 ">
                                             <a
                                                 class="remove-decoration text-dark"
                                                 href="{{ url()->to('/').'/'.$review->product->url_key }}"

@@ -1,6 +1,8 @@
 var slideshowDuration = 4000;
 
 
+
+
 function slideshowSwitch(slideshow, index, auto) {
     if (slideshow.data('wait')) return;
 
@@ -231,6 +233,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     div.css('height', width);
     $('.slide').addClass('is-loaded');
+    $(document).ready(function() {
+
+        $(window).scroll(function(){
+            let top = $('.product-description');
+
+            if ($(window).scrollTop() > top.offset().top) {
+                $('.sticky-price').removeClass('out');
+                $('nav div').removeClass('visible-title');
+                let height = $('.sticky-price').outerHeight();
+                $('.footer').css("padding-bottom",height+"px")
+            }
+            else {
+                $('.sticky-price').addClass('out');
+                $('nav div').addClass('visible-title');
+                $('.footer').css("padding-bottom","0px")
+            }
+        });
+    });
+
 });
 window.addEventListener('resize',() =>{
     console.log("resize");

@@ -7142,7 +7142,7 @@ section.product-extra-detail .extra-attributes .tab-pane .portfolio-gallery img 
 section.product-extra-detail .related-products .related-slide {
   display: none;
   padding: 0 0.375rem;
-  max-width: 250px;
+  max-width: 90%;
 }
 section.product-extra-detail .related-products .related-carousel .slick-slide > div {
   display: flex;
@@ -7207,6 +7207,8 @@ section.product-footer .teacher-image img {
   color: #fff;
   border-radius: 12px;
   font-weight: 600;
+  display: flex;
+  align-items: center;
 }
 .product-price.checkout .discount {
   justify-content: end;
@@ -7231,10 +7233,37 @@ section.product-footer .teacher-image img {
   font-size: 0.9rem;
   font-weight: bold;
 }
+.product-info .add-to-cart-btn {
+  float: none !important;
+}
 .product-info .add-to-cart-btn button.theme-btn {
   background-color: #ff0000 !important;
   font-size: 1.2rem;
   border-radius: 10px;
+}
+
+.product-info.sticky-price {
+  position: fixed;
+  width: 100vw;
+  padding: 10px;
+  background: #fff;
+  left: 0;
+  bottom: 0;
+  opacity: 1;
+  transition: bottom 400ms ease-in-out, opacity 700ms ease-in-out;
+  z-index: 9;
+}
+.product-info.sticky-price .container {
+  min-height: auto !important;
+  display: block;
+}
+.product-info.sticky-price.out {
+  bottom: -100px;
+  opacity: 0;
+}
+.product-info.sticky-price .product-actions {
+  display: flex;
+  justify-content: end;
 }
 
 .product-card {
@@ -7243,23 +7272,23 @@ section.product-footer .teacher-image img {
   border: none;
   aspect-ratio: 182/246;
 }
-.product-card.vertical {
+.product-card.horizontal {
   aspect-ratio: auto;
   flex-direction: row;
 }
-.product-card.vertical .product-image-container img {
+.product-card.horizontal .product-image-container img {
   aspect-ratio: auto;
   max-width: 80px;
   -o-object-fit: cover;
      object-fit: cover;
 }
-.product-card.vertical .product-price {
+.product-card.horizontal .product-price {
   height: auto;
 }
-.product-card.vertical .product-price .discount .discount-amount {
+.product-card.horizontal .product-price .discount .discount-amount {
   font-size: 1rem;
 }
-.product-card.vertical .product-price .final-price {
+.product-card.horizontal .product-price .final-price {
   font-size: 1.4rem;
 }
 .product-card .card-body {
@@ -7466,19 +7495,12 @@ section.product-footer .teacher-image img {
 .prodcut-images-main {
   height: 350px;
 }
-.prodcut-images-main .main-image {
-  display: none;
+.prodcut-images-main .slick-slider div {
   height: 100%;
 }
-.prodcut-images-main .main-image.is-active {
-  display: flex;
-  align-items: center;
-}
-.prodcut-images-main .main-image > img {
-  width: 100%;
-  -o-object-fit: scale-down;
-     object-fit: scale-down;
-  max-height: 100%;
+.prodcut-images-main .slick-slider .main-image img {
+  max-height: 350px;
+  margin: 0 auto;
 }
 @media only screen and (max-width: 992px) {
   .prodcut-images-main .main-image {
@@ -7640,6 +7662,10 @@ section.product-footer .teacher-image img {
 /***
  * Cart
  */
+.order-summary-container {
+  max-width: initial !important;
+}
+
 .checkout-process .order-summary-container .theme-btn {
   display: inline-block;
 }
@@ -7670,6 +7696,9 @@ section.product-footer .teacher-image img {
   margin: 0 auto;
 }
 
+.cart-details .cart-content .product-details-content .row {
+  font-size: 1.4rem;
+}
 .cart-details .cart-row * {
   line-height: initial !important;
 }
@@ -7690,12 +7719,15 @@ section.product-footer .teacher-image img {
   max-width: 110px;
 }
 .cart-details .cart-row .item-details {
-  font-size: 0.8rem !important;
+  font-size: 1.2rem !important;
   color: #6e6e6e;
   font-weight: 600;
 }
 .cart-details .cart-row .product-price {
   align-items: end;
+}
+.cart-details .cart-row .product-price span.regular-price {
+  font-size: 1.2rem;
 }
 .cart-details .cart-row .product-price span.final-price {
   font-size: 1.6rem;
@@ -7970,6 +8002,10 @@ body.rtl header .vc-small-screen #search-form input {
 
   section.product-extra-detail .extra-attributes .nav-item a.nav-link {
     font-size: 0.8rem;
+  }
+
+  #home-right-bar-container {
+    top: 0;
   }
 }
 @media only screen and (max-width: 600px) {

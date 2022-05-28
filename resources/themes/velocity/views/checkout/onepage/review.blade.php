@@ -23,7 +23,7 @@
 
                             {!! view_render_event('bagisto.shop.checkout.name.before', ['item' => $item]) !!}
 
-                                <div class="row fs20">
+                                <div class="row">
                                     <span class="col-12 fw6">{{ $item->product->name }}</span>
                                 </div>
 

@@ -323,32 +323,44 @@
                             });
 
                             // let priceLabelElement = document.querySelector('.price-label');
-                            let productDiscount = document.querySelector('.discount');
-                            let discountAmount = document.querySelector('.discount-amount');
-                            let priceElement = document.querySelector('.final-price');
-                            let regularPriceElement = document.querySelector('.regular-price');
+                            let productDiscounts = document.querySelectorAll('.discount');
+                            let discountAmounts = document.querySelectorAll('.discount-amount');
+                            let priceElements = document.querySelectorAll('.final-price');
+                            let regularPriceElements = document.querySelectorAll('.regular-price');
                             // console.log(priceLabelElement);
                             if (this.childAttributes.length === selectedOptionCount) {
                                 // priceLabelElement.style.display = 'none';
-                                if(productDiscount && discountAmount){
-                                    productDiscount.classList.add('d-none');
+                                if(productDiscounts && discountAmounts){
+                                    productDiscounts.forEach((el) => {
+                                        el.classList.add('d-none');
+                                    });
+                                    for(const productDiscount of productDiscounts){
+                                        productDiscount.classList.add('d-none');
+                                    }
                                     if(this.config.variant_prices[this.simpleProduct].final_price.discount){
-                                        productDiscount.classList.remove('d-none');
-                                        discountAmount.innerHTML=this.config.variant_prices[this.simpleProduct].final_price.discount;
+                                        productDiscounts.forEach((el) => {
+                                            el.classList.add('d-none');
+                                        });
+                                        for(const discountAmount of discountAmounts) {
+                                            discountAmount.innerHTML = this.config.variant_prices[this.simpleProduct].final_price.discount;
+                                        }
                                     }
                                 }
-                                priceElement.innerHTML = this.config.variant_prices[this.simpleProduct].final_price.formated_price;
-
-                                if (regularPriceElement) {
-                                    regularPriceElement.innerHTML = this.config.variant_prices[this.simpleProduct].regular_price.formated_price;
+                                for(const priceElement of priceElements) {
+                                    priceElement.innerHTML = this.config.variant_prices[this.simpleProduct].final_price.formated_price;
+                                }
+                                if (regularPriceElements) {
+                                    for(const regularPriceElement of regularPriceElements) {
+                                        regularPriceElement.innerHTML = this.config.variant_prices[this.simpleProduct].regular_price.formated_price;
+                                    }
                                 }
 
                                 eventBus.$emit('configurable-variant-selected-event', this.simpleProduct)
                             } else {
                                 // priceLabelElement.style.display = 'inline-block';
-
-                                priceElement.innerHTML = this.config.regular_price.formated_price;
-
+                                for(const priceElement of priceElements) {
+                                    priceElement.innerHTML = this.config.regular_price.formated_price;
+                                }
                                 eventBus.$emit('configurable-variant-selected-event', 0)
                             }
                         },

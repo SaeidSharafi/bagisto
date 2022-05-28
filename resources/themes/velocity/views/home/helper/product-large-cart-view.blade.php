@@ -54,7 +54,7 @@
 
                 <div class="button-row mt10 card-bottom-container">
                     <button class="btn btn-add-to-cart">
-                        <span class="rango-cart-1 fs20"></span>
+                        <span class="rango-cart-1"></span>
                         <span class="fs14 align-vertical-top fw6">ADD TO CART</span>
                     </button>
                     {{-- <span class="rango-exchange fs24"></span> --}}

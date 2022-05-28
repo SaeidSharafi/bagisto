@@ -134,81 +134,111 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                         <div class="row">
                             {{-- product-gallery --}}
                             <div class="col-md-6">
-                                <div class="px-3">
-                                @include ('shop::products.view.gallery',['images' => $images])
+                                <div class="px-3 asdasd">
+                                    @include ('shop::products.view.gallery',['images' => $images])
                                 </div>
                             </div>
 
                             {{-- right-section --}}
                             <div class="product-info col-md-6">
                                 <div class="pt-4 px-3">
-                                {{-- product-info-section --}}
-                                <div class="attributes">
-                                    @include ('shop::products.view.attributes',['active' => true,'customAttributeValues'=>$course_details])
-                                    @include ('shop::products.view.stock', ['product' => $product])
-                                </div>
-                                <div class="row info align-items-end pt-4">
+                                    {{-- product-info-section --}}
+                                    <div class="attributes">
+                                        @include ('shop::products.view.attributes',['active' => true,'customAttributeValues'=>$course_details])
+                                        @include ('shop::products.view.stock', ['product' => $product])
+                                    </div>
+                                    <div class="row info align-items-end pt-4">
 
-                                    <div class="col-md-6 col-12 price">
-                                        @include ('shop::products.price', ['product' => $product])
+                                        <div class="col-6 price">
+                                            @include ('shop::products.price', ['product' => $product])
 
-                                        @if (Webkul\Tax\Helpers\Tax::isTaxInclusive() && $product->getTypeInstance()->getTaxCategory())
-                                            <span>
+                                            @if (Webkul\Tax\Helpers\Tax::isTaxInclusive() && $product->getTypeInstance()->getTaxCategory())
+                                                <span>
                                                     {{ __('velocity::app.products.tax-inclusive') }}
                                                 </span>
+                                            @endif
+                                        </div>
+
+                                        @if (count($product->getTypeInstance()->getCustomerGroupPricingOffers()) > 0)
+                                            <div class="col-12">
+                                                @foreach ($product->getTypeInstance()->getCustomerGroupPricingOffers() as $offers)
+                                                    {{ $offers }} </br>
+                                                @endforeach
+                                            </div>
                                         @endif
+
+                                        <div class="col-6 product-actions">
+                                            @if (core()->getConfigData('catalog.products.storefront.buy_now_button_display'))
+                                                @include ('shop::products.buy-now', [
+                                                    'product' => $product,
+                                                ])
+                                            @endif
+
+                                            @include ('shop::products.add-to-cart', [
+                                                'form' => false,
+                                                'product' => $product,
+                                                'showCartIcon' => false,
+                                                'showCompare' => core()->getConfigData('general.content.shop.compare_option') == "1"
+                                                                ? true : false,
+                                            ])
+                                        </div>
                                     </div>
 
-                                    @if (count($product->getTypeInstance()->getCustomerGroupPricingOffers()) > 0)
-                                        <div class="col-12">
-                                            @foreach ($product->getTypeInstance()->getCustomerGroupPricingOffers() as $offers)
-                                            {{ $offers }} </br>
-                                            @endforeach
+                                    {!! view_render_event('bagisto.shop.products.view.short_description.before', ['product' => $product]) !!}
+
+
+                                    {!! view_render_event('bagisto.shop.products.view.short_description.after', ['product' => $product]) !!}
+
+
+                                    {!! view_render_event('bagisto.shop.products.view.quantity.before', ['product' => $product]) !!}
+
+                                    @if ($product->getTypeInstance()->showQuantityBox() && false)
+                                        <div>
+                                            <quantity-changer quantity-text="{{ __('shop::app.products.quantity') }}"></quantity-changer>
                                         </div>
+                                    @else
+                                        <input type="hidden" name="quantity" value="1">
                                     @endif
 
-                                    <div class="col-md-6 product-actions">
-                                        @if (core()->getConfigData('catalog.products.storefront.buy_now_button_display'))
-                                            @include ('shop::products.buy-now', [
-                                                'product' => $product,
-                                            ])
-                                        @endif
+                                    {!! view_render_event('bagisto.shop.products.view.quantity.after', ['product' => $product]) !!}
 
-                                        @include ('shop::products.add-to-cart', [
-                                            'form' => false,
-                                            'product' => $product,
-                                            'showCartIcon' => false,
-                                            'showCompare' => core()->getConfigData('general.content.shop.compare_option') == "1"
-                                                            ? true : false,
-                                        ])
-                                    </div>
+                                    @include ('shop::products.view.configurable-options')
+
+                                    @include ('shop::products.view.downloadable')
+
+                                    @include ('shop::products.view.grouped-products')
+
+                                    @include ('shop::products.view.bundle-options')
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-info sticky-price out d-block d-md-none">
+                        <div class="container">
+                            <div class="options mb-3">
+                            @include ('shop::products.view.configurable-options')
+                            </div>
+                            <div class="row info align-items-end">
+
+                                <div class="col-6 price">
+                                    @include ('shop::products.price', ['product' => $product])
+
+                                    @if (Webkul\Tax\Helpers\Tax::isTaxInclusive() && $product->getTypeInstance()->getTaxCategory())
+                                        <span>
+                                                    {{ __('velocity::app.products.tax-inclusive') }}
+                                                </span>
+                                    @endif
                                 </div>
 
-                                {!! view_render_event('bagisto.shop.products.view.short_description.before', ['product' => $product]) !!}
+                                <div class="col-6 product-actions">
 
-
-                                {!! view_render_event('bagisto.shop.products.view.short_description.after', ['product' => $product]) !!}
-
-
-                                {!! view_render_event('bagisto.shop.products.view.quantity.before', ['product' => $product]) !!}
-
-                                @if ($product->getTypeInstance()->showQuantityBox() && false)
-                                    <div>
-                                        <quantity-changer quantity-text="{{ __('shop::app.products.quantity') }}"></quantity-changer>
-                                    </div>
-                                @else
-                                    <input type="hidden" name="quantity" value="1">
-                                @endif
-
-                                {!! view_render_event('bagisto.shop.products.view.quantity.after', ['product' => $product]) !!}
-
-                                @include ('shop::products.view.configurable-options')
-
-                                @include ('shop::products.view.downloadable')
-
-                                @include ('shop::products.view.grouped-products')
-
-                                @include ('shop::products.view.bundle-options')
+                                    @include ('shop::products.add-to-cart', [
+                                        'form' => false,
+                                        'product' => $product,
+                                        'showCartIcon' => false,
+                                        'showCompare' => core()->getConfigData('general.content.shop.compare_option') == "1"
+                                                        ? true : false,
+                                    ])
                                 </div>
                             </div>
                         </div>
@@ -230,7 +260,7 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                     </div>
                 </div>
                 <div class="col-md-3">
-                        @include('shop::products.view.related-products')
+                    @include('shop::products.view.related-products')
                 </div>
             </div>
         </section>
@@ -259,7 +289,7 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                                         استاد گرامی {{ $teacher['teacher_name'] ?? '' }}
                                     </h5>
                                     <p>
-                                      {{$teacher['teacher_bio'] ?? ''}}
+                                        {{$teacher['teacher_bio'] ?? ''}}
                                     </p>
                                 </div>
                             </div>
@@ -273,7 +303,7 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                             نمونه گواهی دوره
                         </h5>
                         <div class="w-100 p-3">
-                        <img src="/images/sample-cert.jpg" class="w-100">
+                            <img src="/images/sample-cert.jpg" class="w-100">
                         </div>
                     </div>
                 </div>

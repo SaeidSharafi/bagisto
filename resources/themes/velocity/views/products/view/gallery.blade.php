@@ -34,39 +34,45 @@
 
 <script type="text/x-template" id="product-gallery-template">
     <div class="product-image-gallery">
-        <div class="prodcut-images-main">
-            <div class="main-image"
-                 :class="[`img-main-${index}` ,index == 0 ? 'is-active' : '']"
-                 v-for="(image, index) in images" v-bind:key="index">
-                <video v-if="image.type == 'video'" width="100%" preload="none" controls>
-                    <source :src="image.large_image_url" type="video/mp4">
-                </video>
-                <img loading="lazy" v-else
-                     :src="image.large_image_url">
-            </div>
+        <div class="prodcut-images-main asd" :title="images.length">
+
+            <slick-carousel
+                ref="galleryCarousel"
+                style="max-height: 350px"
+                id="product-gallery-carousel"
+                v-bind="sliderSetting"
+                @beforeChange="changeThumb"
+                v-if="images.length">
+                <div
+                    :id="`slide-${index}`"
+                    :class="`main-image img-main-${index}`"
+                    v-bind:key="index"
+                    v-for="(image, index) in images">
+                    <video v-if="image.type == 'video'" width="100%" preload="none" controls>
+                        <source :src="image.large_image_url" type="video/mp4">
+                    </video>
+                    <img loading="lazy" v-else
+                         :src="image.large_image_url">
+                </div>
+            </slick-carousel>
         </div>
+
         <div class="carousel-pagination d-md-none" v-if="thumbs.length > 1">
             <ul>
                 <li v-for="(thumb, index) in thumbs" v-bind:key="index" @click="showImage(index)"
-                    :class="`carousel-dot ${'dot-'+index} ${index === 0 ? 'is-active' : ''}`" >
+                    :class="`carousel-dot ${'dot-'+index} ${index === 0 ? 'is-active' : ''}`">
 
                 </li>
             </ul>
         </div>
         <ul class="thumb-list w-100 row ltr d-none d-md-block">
-            <li class="arrow left px-1" @click="scroll('prev')" v-if="thumbs.length > 4">
-                <i class="fas fa-chevron-left fs24"></i>
-            </li>
-
-            <carousel-component
-                slides-per-page="4"
-                :id="galleryCarouselId"
-                pagination-enabled="true"
-                navigation-enabled="hide"
-                add-class="product-gallery"
-                :slides-count="thumbs.length">
-
-                <slide :slot="`slide-${index}`" v-for="(thumb, index) in thumbs" v-bind:key="index">
+            <slick-carousel
+                ref="galleryCarousel"
+                style="max-height: 350px"
+                id="product-gallery-carousel"
+                v-bind="thumbnailSetting"
+                v-if="thumbs.length">
+                <div v-for="(thumb, index) in thumbs" v-bind:key="index">
                     <li
                         @click="showImage(index)"
                         :class="`thumb-frame ${index + 1 == 4 ? '' : 'mr5'} ${thumb.large_image_url == currentLargeImageUrl ? 'active' : ''} ${'thumb-'+index} ${index == 0 ? 'is-active' : ''}`"
@@ -82,12 +88,9 @@
                              :style="`background-image: url(${thumb.small_image_url})`">
                         </div>
                     </li>
-                </slide>
-            </carousel-component>
+                </div>
+            </slick-carousel>
 
-            <li class="arrow right px-1" @click="scroll('next')" v-if="thumbs.length > 4">
-                <i class="fas fa-chevron-right fs24"></i>
-            </li>
         </ul>
     </div>
 </script>
@@ -111,6 +114,31 @@
                         counter: {
                             up: 0,
                             down: 0,
+                        },
+                        sliderSetting: {
+                            "dots": false,
+                            "arrows": false,
+                            "autoplay": false,
+                            "infinite": false,
+                            "autoplaySpeed": 5000,
+                            "speed": 1000,
+                            "rtl": true,
+                            "slidesToShow": 1,
+                            "slidesToScroll": 1,
+                            'initialSlide': 0,
+
+                        }, thumbnailSetting: {
+                            "dots": false,
+                            "arrows": true,
+                            "autoplay": false,
+                            "infinite": false,
+                            "autoplaySpeed": 5000,
+                            "speed": 1000,
+                            "rtl": true,
+                            "slidesToShow": 4,
+                            "slidesToScroll": 4,
+                            'initialSlide': 0,
+
                         }
                     }
                 },
@@ -173,6 +201,34 @@
                             productImage.src = this.currentOriginalImageUrl;
                         }
                     },
+                    goToImage: function (move) {
+                        let productImage = $('.img-main-' + this.currentLargeImageIndex);
+                        let thumb = $('.thumb-' + this.currentLargeImageIndex);
+                        let pagination = $('.dot-' + this.currentLargeImageIndex);
+                        productImage.removeClass("is-active");
+                        thumb.removeClass("is-active");
+                        pagination.removeClass("is-active");
+                        let index = this.currentLargeImageIndex + 1;
+                        if (move == 'prev') {
+                            index = this.currentLargeImageIndex - 1;
+                            console.log('prev' + index);
+                        }
+                        if (index >= this.images.length) {
+                            index = 0;
+                        }
+                        if (index < 0) {
+                            index = this.images.length - 1;
+                        }
+                        console.log(move);
+                        console.log(index);
+                        this.currentLargeImageIndex = index;
+                        productImage = $('.img-main-' + index);
+                        thumb = $('.thumb-' + index);
+                        pagination = $('.dot-' + index);
+                        productImage.addClass("is-active");
+                        thumb.addClass("is-active");
+                        pagination.addClass("is-active");
+                    },
                     showImage: function (index) {
                         let productImage = $('.img-main-' + this.currentLargeImageIndex);
                         let thumb = $('.thumb-' + this.currentLargeImageIndex);
@@ -184,6 +240,7 @@
                         productImage = $('.img-main-' + index);
                         thumb = $('.thumb-' + index);
                         pagination = $('.dot-' + index);
+                        this.$refs.galleryCarousel.goTo(index);
                         productImage.addClass("is-active");
                         thumb.addClass("is-active");
                         pagination.addClass("is-active");
@@ -194,6 +251,20 @@
                         if (navigation && (navigation = navigation[0])) {
                             navigation.click();
                         }
+                    }, changeThumb: function (oldSlideIndex,newSlideIndex) {
+                        console.log("start nav: " + newSlideIndex);
+                        console.log("calc nav: " + (this.images.length - newSlideIndex - 1));
+                        let navigateTo = (this.images.length - newSlideIndex - 1);
+                        console.log("result: " + navigateTo);
+                        let thumb = $('.thumb-' + this.currentLargeImageIndex);
+                        let pagination = $('.dot-' + this.currentLargeImageIndex);
+                        thumb.removeClass("is-active");
+                        pagination.removeClass("is-active");
+                        this.currentLargeImageIndex = navigateTo;
+                        thumb = $('.thumb-' + navigateTo);
+                        pagination = $('.dot-' + navigateTo);
+                        thumb.addClass("is-active");
+                        pagination.addClass("is-active");
                     },
                 }
             });

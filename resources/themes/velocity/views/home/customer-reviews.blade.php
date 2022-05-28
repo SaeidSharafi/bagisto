@@ -16,13 +16,13 @@
                         <div class="review-info">
                             <div class="customer-info">
                                 <div class="align-vertical-top">
-                                    <span class="customer-name fs20 display-inbl">
+                                    <span class="customer-name display-inbl">
                                         {{ strtoupper(substr( $review['name'], 0, 1 )) }}
                                     </span>
                                 </div>
 
                                 <div>
-                                    <h3 class="fs20 fw6 no-margin display-block">
+                                    <h3 class="fw6 no-margin display-block">
                                         {{ $review['name'] }}
                                     </h3>
 

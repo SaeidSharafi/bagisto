@@ -50,7 +50,7 @@
             </div>
 
             <div class="searched-terms">
-                <h3 class="fw6 fs20 mb-4">
+                <h3 class="fw6 mb-4">
                     {{ __('shop::app.search.analysed-keywords') }}
                 </h3>
 

@@ -106,7 +106,9 @@ body.rtl header .vc-small-screen #search-form {
     section.product-extra-detail .extra-attributes .nav-item a.nav-link {
         font-size: 0.8rem;
     }
-
+    #home-right-bar-container{
+        top: 0;
+    }
 }
 
 @media only screen and (max-width: 600px) {
