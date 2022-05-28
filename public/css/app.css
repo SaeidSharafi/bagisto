@@ -344,11 +344,11 @@ body.open-hamburger #modal-blocker {
   z-index: -1;
 }
 .filter.dark {
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 .filter.grad {
-  background: linear-gradient(90deg, #530564 10%, #f9c21c 100%);
-  opacity: 0.5;
+  background: linear-gradient(90deg, #fcb319 -10%, #2b348f 100%);
+  opacity: 0.7;
   filter: brightness(80%);
 }
 
@@ -367,6 +367,10 @@ body.open-hamburger #modal-blocker {
 
 .z-index-1 {
   z-index: 1;
+}
+
+.z-index-2 {
+  z-index: 2;
 }
 
 .rtl .dropdown-list {
@@ -6927,6 +6931,7 @@ img.cover {
   line-height: initial;
   font-size: 1.6rem;
   position: relative;
+  z-index: 2;
 }
 
 .filters-extra {

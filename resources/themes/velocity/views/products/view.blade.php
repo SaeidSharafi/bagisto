@@ -116,7 +116,7 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
             </div>
         </div>
         @if($product->banner)
-            <div class="filter grad"></div>
+            <div class="filter grad z-index-1"></div>
         @endif
     </div>
 @endsection
