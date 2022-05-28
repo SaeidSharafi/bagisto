@@ -121,6 +121,9 @@ class OrderItem extends Model implements OrderItemContract
      */
     public function getQtyToCancelAttribute()
     {
+        if ($this->price == 0){
+            return $this->qty_ordered - $this->qty_canceled;
+        }
         return $this->qty_ordered - $this->qty_canceled - $this->qty_invoiced;
     }
 

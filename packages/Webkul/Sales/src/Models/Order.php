@@ -352,6 +352,7 @@ class Order extends Model implements OrderContract
         }
 
         foreach ($this->items as $item) {
+
             if ($item->canCancel() && $item->order->status !== self::STATUS_CLOSED) {
                 return true;
             }
