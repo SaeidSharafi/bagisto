@@ -117,11 +117,17 @@
             @endif
         </div>
     @endif
+@else
+    @if ($hasOrder)
+        <button type="button" class="btn btn-md btn-primary" @click="showModal('addReview')">
+            {{ __('shop::app.products.write-review-btn') }}
+        </button>
+    @endif
 @endif
 
 @if (core()->getConfigData('catalog.products.review.guest_review') || auth()->guard('customer')->check())
     @if ($hasOrder)
-        <modal id="addGroup" :is-open="modalIds.addReview">
+        <modal id="addReview" :is-open="modalIds.addReview">
 
             <h3 slot="header">{{ __('shop::app.products.write-review-btn') }}</h3>
 
