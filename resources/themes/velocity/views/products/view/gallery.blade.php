@@ -45,7 +45,15 @@
                      :src="image.large_image_url">
             </div>
         </div>
-        <ul class="thumb-list col-12 row ltr">
+        <div class="carousel-pagination d-md-none" v-if="thumbs.length > 1">
+            <ul>
+                <li v-for="(thumb, index) in thumbs" v-bind:key="index" @click="showImage(index)"
+                    :class="`carousel-dot ${'dot-'+index} ${index === 0 ? 'is-active' : ''}`" >
+
+                </li>
+            </ul>
+        </div>
+        <ul class="thumb-list w-100 row ltr d-none d-md-block">
             <li class="arrow left px-1" @click="scroll('prev')" v-if="thumbs.length > 4">
                 <i class="fas fa-chevron-left fs24"></i>
             </li>
@@ -53,7 +61,7 @@
             <carousel-component
                 slides-per-page="4"
                 :id="galleryCarouselId"
-                pagination-enabled="hide"
+                pagination-enabled="true"
                 navigation-enabled="hide"
                 add-class="product-gallery"
                 :slides-count="thumbs.length">
@@ -168,13 +176,17 @@
                     showImage: function (index) {
                         let productImage = $('.img-main-' + this.currentLargeImageIndex);
                         let thumb = $('.thumb-' + this.currentLargeImageIndex);
+                        let pagination = $('.dot-' + this.currentLargeImageIndex);
                         productImage.removeClass("is-active");
                         thumb.removeClass("is-active");
+                        pagination.removeClass("is-active");
                         this.currentLargeImageIndex = index;
                         productImage = $('.img-main-' + index);
                         thumb = $('.thumb-' + index);
+                        pagination = $('.dot-' + index);
                         productImage.addClass("is-active");
                         thumb.addClass("is-active");
+                        pagination.addClass("is-active");
                     },
                     scroll: function (navigateTo) {
                         let navigation = $(`#${this.galleryCarouselId} .VueCarousel-navigation .VueCarousel-navigation-${navigateTo}`);

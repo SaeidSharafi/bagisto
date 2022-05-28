@@ -2,8 +2,10 @@
     <div :class="`dropdown ${cartItems.length > 0 ? 'disable-active' : 'disable-active'}`">
         <div class="dropdown-toggle btn btn-link" id="mini-cart" :class="{'cursor-not-allowed': ! cartItems.length}">
             <div class="mini-cart-content">
-                <i class="material-icons-outlined text-down-3">shopping_cart</i>
+                <div class="icons-shop">
+                <i class="fa fa-shopping-cart"></i>
                 <i class="fa fa-caret-down"></i>
+                </div>
                 <div class="badge-container">
                     <span class="badge" v-text="cartItems.length" v-if="cartItems.length != 0"></span>
                 </div>

@@ -7,7 +7,7 @@
     @auth('customer')
         <div class="d-inline-block welcome-content dropdown-toggle account-menu d-flex align-items-center">
             <div class="welcome-content">
-                <i class="fa-user far px-1"></i>
+                <i class="fa-user fa px-1"></i>
                 <i class="fa fa-caret-down"></i>
             </div>
         </div>
