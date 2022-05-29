@@ -445,7 +445,7 @@
                         }
                     },
                     applyFilter: function (e) {
-                        console.log(e);
+                        // console.log(e);
                         this.datetimeValue = e;
                         this.getResponse();
                     },
@@ -677,8 +677,8 @@
                                         obj.label = label;
 
                                         this.filters.push(obj);
-                                        console.log("sort_exists");
-                                        console.log(this.filters);
+                                        // console.log("sort_exists");
+                                        // console.log(this.filters);
                                         obj = {};
 
                                         this.makeURL();
@@ -694,8 +694,8 @@
                                             this.filters[j].cond = condition;
                                             this.filters[j].val = encodeURIComponent(response);
                                             this.filters[j].label = label;
-                                            console.log("loop");
-                                            console.log(this.filters);
+                                            // console.log("loop");
+                                            // console.log(this.filters);
                                             this.makeURL();
                                         }
                                     }
@@ -711,8 +711,8 @@
                                         obj.cond = condition;
                                         obj.val = encodeURIComponent(response);
                                         obj.label = label;
-                                        console.log("search_found");
-                                        console.log(obj);
+                                        // console.log("search_found");
+                                        // console.log(obj);
                                         this.filters.push(obj);
 
                                         obj = {};
@@ -731,8 +731,8 @@
                                     }
 
                                 }
-                                console.log("else");
-                                console.log(obj);
+                                // console.log("else");
+                                // console.log(obj);
                                 this.filters.push(obj);
 
                                 obj = {};

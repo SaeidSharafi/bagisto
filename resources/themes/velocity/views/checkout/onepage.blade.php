@@ -545,14 +545,14 @@
                         }
                     },
                     ApplyCoupon: function (coupon) {
-                        console.log("changing")
-                        console.log(coupon)
+                        // console.log("changing")
+                        // console.log(coupon)
                         this.current_coupon = coupon;
                         this.render_from_vue = true;
                         this.getOrderSummary();
                     },
                     RemoveCoupon: function () {
-                        console.log("changing")
+                        // console.log("changing")
                         this.current_coupon = null;
                         this.render_from_vue = true;
                         this.getOrderSummary();

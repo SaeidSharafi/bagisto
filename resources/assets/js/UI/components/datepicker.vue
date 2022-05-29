@@ -47,11 +47,11 @@ export default {
         }
     },
     mounted() {
-        window.console.log(this.maxDate)
+        // window.console.log(this.maxDate)
     },
     methods: {
         dateChanged(event){
-            console.log(event);
+            // console.log(event);
             this.selectedDate=event;
             this.$emit("onDateChange",event)
         }

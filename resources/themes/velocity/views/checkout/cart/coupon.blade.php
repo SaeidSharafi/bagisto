@@ -51,10 +51,10 @@
                 }
             },
             mounted() {
-                console.log("**************");
-                console.log(this.coupon);
-                console.log(this.renderFromVue);
-                console.log("**************");
+                // console.log("**************");
+                // console.log(this.coupon);
+                // console.log(this.renderFromVue);
+                // console.log("**************");
                 if (this.coupon || this.renderFromVue) {
                     this.applied_coupon = this.coupon;
                 }
@@ -86,9 +86,9 @@
                             '{{ route('shop.checkout.cart.coupon.apply') }}', {code}
                         ).then(response => {
                         if (response.data.success) {
-                            console.log("#####");
-                            console.log(this.applied_coupon);
-                            console.log("#####");
+                            // console.log("#####");
+                            // console.log(this.applied_coupon);
+                            // console.log("#####");
                             this.applied_coupon = this.coupon_code;
                             this.coupon_code = '';
 

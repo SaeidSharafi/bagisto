@@ -174,7 +174,7 @@
                         configure: function (attribute, value) {
 
                             this.simpleProduct = this.getSelectedProductId(attribute, value);
-                            console.log(this.simpleProduct);
+                            // console.log(this.simpleProduct);
                             if (value) {
                                 attribute.selectedIndex = this.getSelectedIndex(attribute, value);
 
@@ -219,10 +219,10 @@
                             });
 
                             if (matchedOptions[0] != undefined && matchedOptions[0].allowedProducts != undefined) {
-                                console.log("matchedOptions: " + this.config.parent);
+                                // console.log("matchedOptions: " + this.config.parent);
                                 return matchedOptions[0].allowedProducts[0];
                             } else {
-                                console.log("parent: " + this.config.parent);
+                                // console.log("parent: " + this.config.parent);
                                 return this.config.parent;
                             }
 
@@ -366,9 +366,9 @@
                         },
 
                         changeProductImages: function () {
-                            console.log(galleryImages);
+                            // console.log(galleryImages);
                             galleryImages.splice(0, galleryImages.length)
-                            console.log(galleryImages);
+                            // console.log(galleryImages);
                             this.galleryImages.forEach(function (image) {
                                 galleryImages.push(image)
                             });

@@ -38,9 +38,9 @@ function slideshowSwitch(slideshow, index, auto) {
                 slideshow.find('.pagination').trigger('check');
                 slideshow.data('wait', false);
                 if (auto) {
-                    console.log("Auto");
+                    // console.log("Auto");
                     timeout = setTimeout(function () {
-                        console.log("Next2");
+                        // console.log("Next2");
                         slideshowNext(slideshow, false, true);
                     }, slideshowDuration);
                     slideshow.data('timeout', timeout);
@@ -215,7 +215,7 @@ $(document).on('vue-loaded', function () {
     */
 
     var timeout = setTimeout(function () {
-        console.log("Next");
+        // console.log("Next");
         slideshowNext(slideshow, false, true);
     }, slideshowDuration);
 
@@ -253,7 +253,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 window.addEventListener('resize', () => {
-    console.log("resize");
+    // console.log("resize");
     let div = $('.slideshow');
     let width = div.width() / 3;
     div.css('height', width);

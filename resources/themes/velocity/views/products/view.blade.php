@@ -386,12 +386,12 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
 
             methods: {
                 onSubmit: function (event) {
-                    console.log(event.target.parent);
+                    // console.log(event.target.parent);
                     if (event.target.getAttribute('type') != 'submit')
                         return;
 
                     event.preventDefault();
-                    console.log(event.target.getAttribute('type'));
+                    // console.log(event.target.getAttribute('type'));
 
                     this.$validator.validateAll('form-buy').then(result => {
                         console.log(result);

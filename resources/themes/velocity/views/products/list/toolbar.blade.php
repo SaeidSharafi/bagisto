@@ -141,7 +141,7 @@
                         this.layeredNavigation = !this.layeredNavigation;
                     },
                     closeLayeredNavigation: function (){
-                        console.log("closing navigation");
+                        // console.log("closing navigation");
                         this.layeredNavigation=false;
                     }
                 }

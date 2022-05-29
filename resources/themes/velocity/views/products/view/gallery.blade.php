@@ -211,7 +211,7 @@
                         let index = this.currentLargeImageIndex + 1;
                         if (move == 'prev') {
                             index = this.currentLargeImageIndex - 1;
-                            console.log('prev' + index);
+                            // console.log('prev' + index);
                         }
                         if (index >= this.images.length) {
                             index = 0;
@@ -219,8 +219,8 @@
                         if (index < 0) {
                             index = this.images.length - 1;
                         }
-                        console.log(move);
-                        console.log(index);
+                        // console.log(move);
+                        // console.log(index);
                         this.currentLargeImageIndex = index;
                         productImage = $('.img-main-' + index);
                         thumb = $('.thumb-' + index);
@@ -252,10 +252,10 @@
                             navigation.click();
                         }
                     }, changeThumb: function (oldSlideIndex,newSlideIndex) {
-                        console.log("start nav: " + newSlideIndex);
-                        console.log("calc nav: " + (this.images.length - newSlideIndex - 1));
+                        // console.log("start nav: " + newSlideIndex);
+                        // console.log("calc nav: " + (this.images.length - newSlideIndex - 1));
                         let navigateTo = (this.images.length - newSlideIndex - 1);
-                        console.log("result: " + navigateTo);
+                        // console.log("result: " + navigateTo);
                         let thumb = $('.thumb-' + this.currentLargeImageIndex);
                         let pagination = $('.dot-' + this.currentLargeImageIndex);
                         thumb.removeClass("is-active");

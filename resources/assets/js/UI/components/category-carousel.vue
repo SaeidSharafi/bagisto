@@ -115,7 +115,7 @@
 
             formatCategories: function (categories) {
                 let slicedCategories = categories;
-                console.log(slicedCategories);
+                // console.log(slicedCategories);
                 let categoryCount = this.categoryCount ? this.categoryCount : 9;
 
                 if (
