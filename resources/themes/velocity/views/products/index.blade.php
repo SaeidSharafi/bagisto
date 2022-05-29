@@ -135,7 +135,7 @@
                         </template>
 
                         <div class="product-list empty" v-else>
-                            <h2>{{ __('shop::app.products.whoops') }}</h2>
+{{--                            <h2>{{ __('shop::app.products.whoops') }}</h2>--}}
                             <p>{{ __('shop::app.products.empty') }}</p>
                         </div>
                     </div>

@@ -74,7 +74,7 @@
 
                         </div>
 
-                        <div class="col-2">
+                        <div class="col-2 review-ops">
                             <form id="deleteReviewForm" action="{{ route('customer.review.delete', $review->id) }}" method="post">
                                 @method('delete')
                                 @csrf

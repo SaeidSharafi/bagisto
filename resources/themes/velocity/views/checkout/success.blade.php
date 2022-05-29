@@ -13,14 +13,14 @@
                 {{ __('shop::app.checkout.success.order-id-info', ['order_id' => $order->increment_id]) }}
             </p>
 
-            <p class="row col-12">
+            <p class="row col-12 info">
                 {{ __('shop::app.checkout.success.info') }}
             </p>
 
             {{ view_render_event('bagisto.shop.checkout.continue-shopping.before', ['order' => $order]) }}
                 <div class="row col-12 mt15">
                     <span class="mb30 mr10">
-                        <a href="{{ route('shop.home.index') }}" class="theme-btn remove-decoration">
+                        <a href="{{ route('customer.orders.index') }}" class="theme-btn remove-decoration">
                             {{ __('shop::app.checkout.cart.continue-shopping') }}
                         </a>
                     </span>

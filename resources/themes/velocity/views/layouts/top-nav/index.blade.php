@@ -5,7 +5,7 @@ if ($velocityMetaData){
     $advertisement_path = asset('/storage/' .$advertisement);
     }
 @endphp
-<div class="w-100 d-none d-md-block">
+<div class="w-100 d-none d-md-block top-bar-gif">
         <div style="height: 60px;">
             <img class="w-100"
                  src="{{ $advertisement_path ??  asset('images/top.gif')}}"

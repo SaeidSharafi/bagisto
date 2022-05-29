@@ -10,11 +10,11 @@
             <div class="d-flex w-100 auth-box">
 
                 <div class="body m-0 w-100 card">
-                    <h4 class="fw6">
+                    <h5 class="fw6">
                         {{ __('velocity::app.customer.forget-password.recover-password')}}
-                    </h4>
+                    </h5>
 
-                    <p class="fs16">
+                    <p class="label">
                         {{ __('velocity::app.customer.forget-password.recover-password-text')}}
                     </p>
 

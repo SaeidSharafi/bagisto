@@ -15,13 +15,13 @@
 
                 <div class="body m-0 w-100 card">
                     <div class="form-header">
-                        <p class="fs24">
+                        <h5 class="">
                             @if ($type === "login_by_password")
                             {{ __('velocity::app.customer.login-form.form-login-text')}}
                             @else
                                 {{ __('shop::app.customer.login-form.form-otp-text')}}
                             @endif
-                        </p>
+                        </h5>
                     </div>
 
                     <form
@@ -48,16 +48,16 @@
 
                                 <span class="control-error" v-if="errors.has('password')" v-text="errors.first('password')"></span>
                                 </div>
-                                <a class="d-block mb-2" href="{{route('customer.session.index',['token'=>request()->input('token'),'type' => 'login_by_otp'])}}">
+                                <a class="label d-block mb-2" href="{{route('customer.session.index',['token'=>request()->input('token'),'type' => 'login_by_otp'])}}">
                                     {{__('shop::app.customer.login-form.otp-link')}}
                                 </a>
-                                <a href="{{ route('customer.forgot-password.create') }}" >
+                                <a class="label" href="{{ route('customer.forgot-password.create') }}" >
                                     {{ __('shop::app.customer.login-form.forgot_pass') }}
                                 </a>
 
                             @else
                                 <div class="mb-2">
-                                <label for="otp" class="pb-3">
+                                <label for="otp" class="label pb-3">
                                     {{ __('shop::app.customer.login-form.otp',['phone' => $phone]) }}
                                 </label>
 
@@ -69,13 +69,15 @@
                                     value="{{ old('otp') }}"
                                     data-vv-as="&quot;{{ __('shop::app.customer.login-form.otp_field') }}&quot;"/>
                                 </div>
-                                <span class="control-error" v-if="errors.has('otp')" v-text="errors.first('otp')"></span>
+                                <span class="control-error " v-if="errors.has('otp')" v-text="errors.first('otp')"></span>
+                            <div class="label">
                                 <sms-timer http-request="{{route('sms.resend')}}"
                                            resend-text="ارسال مجدد"
                                            timer-text="{{__('app.sms-timer')}}"
                                            phone="{{$phone}}"
                                            time="{{$otp_expire}}">
                                 </sms-timer>
+                            </div>
                             @endif
 
 

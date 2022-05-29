@@ -14,7 +14,7 @@
                         {{ __('velocity::app.customer.signup-form.become-user')}}
                     </h5>
 
-                    <p class="fs16">
+                    <p class="label">
                         {{ __('velocity::app.customer.signup-form.form-sginup-text')}}
                     </p>
 
@@ -60,7 +60,7 @@
                             {{ __('app.velocity.auth-form.authenticate-submit') }}
                         </button>
                     </form>
-                    <p class="fs13 pt-3 text-center">
+                    <p class="foot-note pt-3 text-center">
                         ورود شما به معنای پذیرش
                         <a href="#" class="text-nowrap">شرایط جهاد دانشگاهی قزوین</a>
                         و

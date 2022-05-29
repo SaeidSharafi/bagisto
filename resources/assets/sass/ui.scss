@@ -1,3 +1,15 @@
+::-webkit-scrollbar{
+    width: 8px;
+    height: auto;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #c0c2c5;
+    border-radius: 16px;
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background-color: #f0f0f1;
+}
 .checkbox input{
     left: auto;
     right: 0;
@@ -6,6 +18,9 @@
     list-style: none;
 }
 #modal-blocker{
+    display: none;
+}
+#search-blocker{
     display: none;
 }
 body.open-hamburger{
@@ -21,6 +36,21 @@ body.open-hamburger{
         background: #ffffff;
         opacity: 0.8;
         z-index: 10;
+    }
+}
+body.open-search{
+    opacity: 1;
+    #search-blocker{
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #ffffff;
+        opacity: 0.8;
+        z-index: 0;
     }
 }
 .img-crisp {
@@ -47,4 +77,13 @@ body.open-hamburger{
 }
 .h5, h5 {
     font-size: 1.4rem;
+}
+.h1, h1{
+    font-size: 1.6rem;
+}
+.h3, h3{
+    font-size: 1.4rem;
+}
+.top-bar-gif{
+   position: relative;
 }

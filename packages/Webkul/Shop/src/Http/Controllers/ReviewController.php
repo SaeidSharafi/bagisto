@@ -2,6 +2,7 @@
 
 namespace Webkul\Shop\Http\Controllers;
 
+use Webkul\Customer\Repositories\CustomerRepository;
 use Webkul\Product\Repositories\ProductRepository;
 use Webkul\Product\Repositories\ProductReviewRepository;
 use Webkul\Product\Repositories\ProductReviewImageRepository;
@@ -29,24 +30,30 @@ class ReviewController extends Controller
      */
     protected $productReviewImageRepository;
 
+
+    protected $customerRepository;
+
     /**
      * Create a new controller instance.
      *
      * @param  \Webkul\Product\Repositories\ProductRepository  $productRepository
      * @param  \Webkul\Product\Repositories\ProductReviewRepository  $productReviewRepository
      * @param  \Webkul\Product\Repositories\ProductReviewImageRepository  $productReviewImageRepository
+     * @param  \Webkul\Customer\Repositories\CustomerRepository  $customerRepository
      * @return void
      */
     public function __construct(
         ProductRepository $productRepository,
         ProductReviewRepository $productReviewRepository,
-        ProductReviewImageRepository $productReviewImageRepository
+        ProductReviewImageRepository $productReviewImageRepository,
+        CustomerRepository $customerRepository
     ) {
         $this->productRepository = $productRepository;
 
         $this->productReviewRepository = $productReviewRepository;
 
         $this->productReviewImageRepository = $productReviewImageRepository;
+        $this->customerRepository = $customerRepository;
 
         parent::__construct();
     }
@@ -113,8 +120,13 @@ class ReviewController extends Controller
     public function show($slug)
     {
         $product = $this->productRepository->findBySlugOrFail($slug);
+        $customer = auth()->guard('customer')->user();
+        $hasOrder= false;
+        if ($customer){
+            $hasOrder= (bool) $this->customerRepository->hasOrder($customer->id, $product->id);
 
-        return view($this->_config['view'], compact('product'));
+        }
+        return view($this->_config['view'], compact('product','hasOrder'));
     }
 
     /**

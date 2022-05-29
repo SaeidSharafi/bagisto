@@ -42,7 +42,7 @@
                             <span>{{ $review->comment }}</span>
                         </div>
 
-                        <div class="col-lg-12 mt5">
+                        <div class="col-lg-12 mt5 review-meta">
                             <span>{{ __('velocity::app.products.review-by') }} -</span>
 
                             <span class="fs16 fw6">
@@ -63,22 +63,25 @@
         </accordian>
 
     @else
-        <h5 class="display-inbl mb20 col-lg-12 no-padding">
+        <h4 class="display-inbl mb20 col-lg-12 no-padding section-title">
             {{ __('velocity::app.products.reviews-title') }}
-        </h5>
+        </h4>
 
             <div class="customer-reviews">
                 @foreach ($reviews as $review)
-                    <div class="row">
-                        <h4 class="col-lg-12 fs18">{{ $review->title }}</h4>
-
-                        <star-ratings
-                            :ratings="{{ $review->rating }}"
-                            push-class="mr10 fs16 col-lg-12"
-                        ></star-ratings>
+                    <div class="row d-flex pb-0 pt-2 border-bottom">
+                        <div class="col-7 review-title">
+                            <h4 class="w-100">{{ $review->title }}</h4>
+                        </div>
+                        <div class="col-5">
+                            <star-ratings
+                                :ratings="{{ $review->rating }}"
+                                push-class="w-100"
+                            ></star-ratings>
+                        </div>
 
                         <div class="review-description col-lg-12">
-                            <span>{{ $review->comment }}</span>
+                            <p class="m-0">{{ $review->comment }}</p>
                         </div>
 
                         <div class="image col-lg-12">
@@ -89,7 +92,7 @@
                             @endif
                         </div>
 
-                        <div class="col-lg-12 mt5">
+                        <div class="col-lg-12 mt5  review-meta">
                             @if ("{{ $review->name }}")
                                 <span>{{ __('velocity::app.products.review-by') }} -</span>
 
@@ -105,7 +108,7 @@
                 @endforeach
 
             </div>
-        <div class="d-flex border-top border-dark mt-3 pt-3">
+        <div class="d-flex border-top border-dark mt-3 pt-3 view-all">
             <a
                 href="{{ route('shop.reviews.index', ['slug' => $product->url_key ]) }}"
                 class="btn btn-outline-dark mx-2"

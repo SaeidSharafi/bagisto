@@ -31,12 +31,15 @@
         </div>
         <div class="right-vc-header d-flex align-items-center justify-content-end col-3">
             <a class="unset cursor-pointer px-2">
-                <i class="material-icons">search</i>
+                <i class="fa fa-search"></i>
             </a>
             <a href="{{ route('shop.checkout.cart.index') }}" class="unset px-2">
-                <i class="material-icons text-down-3">shopping_cart</i>
+                <div class="icons-shop">
+                    <i class="fa fa-shopping-cart"></i>
+                </div>
+
                 <div class="badge-wrapper">
-                    <span class="badge">{{ $cartItemsCount }}</span>
+                    <span class="badge" v-text="updatedCartItemsCount"></span>
                 </div>
             </a>
         </div>

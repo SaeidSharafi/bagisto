@@ -14,7 +14,7 @@
                         {{ __('velocity::app.customer.verify-form.verify')}}
                     </h5>
 
-                    <p class="fs16">
+                    <p class="label">
                         {{ __('app.velocity.otp-form.forgotpassword-text',['phone'=>$phone])}}
                     </p>
                     {!! view_render_event('bagisto.shop.customers.signup.before') !!}
@@ -44,7 +44,7 @@
 
                         {!! view_render_event('bagisto.shop.customers.signup_form_controls.ver_code.after') !!}
 
-                        <div class="control-group" id="smstimer">
+                        <div class="label control-group" id="smstimer">
                             <sms-timer http-request="{{route('sms.resend')}}"
                                        resend-text="ارسال مجدد"
                                        timer-text="{{__('app.sms-timer')}}"

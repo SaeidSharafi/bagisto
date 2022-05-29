@@ -13,9 +13,9 @@
                 <div class="d-flex w-100 auth-box py-4">
 
                     <div class="body m-0 w-100 card">
-                        <h4 class="fw6 mb-3">
+                        <h5 class="fw6 mb-3">
                             {{ __('shop::app.customer.reset-password.title')}}
-                        </h4>
+                        </h5>
                         {!! view_render_event('bagisto.shop.customers.forget_password.before') !!}
 
                         <form

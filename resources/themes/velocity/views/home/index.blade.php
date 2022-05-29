@@ -52,7 +52,7 @@
         <div class="w-100 d-none d-md-block">
             @include('shop::home.slider')
         </div>
-        <div class="row align-items-stretch justify-content-center featured-slider">
+        <div class="row align-items-stretch justify-content-center featured-slider m-0">
             <div class="col-6 col-md-5 col-lg-4">
                 <div class="slider-side">
                     <div class="item w-100 position-relative rounded overflow-hidden"

@@ -79,7 +79,7 @@
 
                 @if ($cart->haveStockableItems())
                     <div class="mt10 mb10" v-if="address.billing.address_id">
-                        <span class="checkbox fs16 display-inbl">
+                        <span class="checkbox display-inbl">
                             <input
                                 type="checkbox"
                                 id="billing[use_for_shipping]"

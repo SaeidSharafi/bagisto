@@ -1,7 +1,7 @@
 <section class="qoutes overflow-hidden">
-    <h4>
+    <h5>
         درباره ما چه میگویند
-    </h4>
+    </h5>
     <div class="container">
         <qoutes locale-direction="{{ $direction }}"></qoutes>
     </div>

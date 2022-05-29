@@ -14,7 +14,7 @@
                         {{ __('velocity::app.customer.signup-form.become-user')}}
                     </h5>
 
-                    <p class="fs16">
+                    <p class="label">
                         {{ __('velocity::app.customer.signup-form.form-sginup-text')}}
                     </p>
 

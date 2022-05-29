@@ -19,7 +19,7 @@
                             <img src="{{ $productBaseImage['medium_image_url'] }}" alt="" />
                         </div>
 
-                        <div class="col-7 no-padding fs16">
+                        <div class="col-7 no-padding">
 
                             {!! view_render_event('bagisto.shop.checkout.name.before', ['item' => $item]) !!}
 

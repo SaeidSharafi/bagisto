@@ -1,6 +1,7 @@
 <template>
     <div class="mobile-header">
         <div id="modal-blocker"></div>
+        <div id="search-blocker"></div>
         <div class="row">
             <div class="col-3">
                 <div v-if="hamburger" class="nav-container scrollable">
@@ -18,24 +19,8 @@
                             </i>
                         </span>
                         </div>
+                        <slot name="customer-navigation"></slot>
 
-                        <ul
-                            type="none"
-                            class="velocity-content"
-                            v-if="headerContent.length > 0"
-                        >
-                            <li
-                                :key="index"
-                                v-for="(content, index) in headerContent"
-                            >
-                                <a
-                                    class="unset"
-                                    v-text="content.title"
-                                    :href="`${$root.baseUrl}/${content.page_link}`"
-                                >
-                                </a>
-                            </li>
-                        </ul>
 
                         <ul
                             type="none"
@@ -72,12 +57,20 @@
                                 ></i>
                             </li>
                         </ul>
-
-                        <slot name="customer-navigation"></slot>
-
+                        <ul
+                            type="none"
+                            class="velocity-content">
+                            <li >
+                                <a class="unset"  :href="`${$root.baseUrl}/#`" target="_self">درباره ما</a>
+                            </li>
+                            <li >
+                                <a class="unset" :href="`${$root.baseUrl}/#`" target="_self">گواهی نامه</a>
+                            </li>
+                        </ul>
                         <ul type="none" class="meta-wrapper">
                             <slot name="extra-navigation"></slot>
                         </ul>
+
                     </div>
 
                     <div class="wrapper" v-else-if="subCategory">
@@ -254,11 +247,13 @@
                 <slot name="top-header"></slot>
 
                 <a class="unset px-1 cursor-pointer" @click="openSearchBar">
-                    <i class="material-icons">search</i>
+                    <i class="fa fa-search"></i>
                 </a>
 
                 <a :href="cartRoute" class="unset px-1">
-                    <i class="material-icons text-down-3">shopping_cart</i>
+                    <div class="icons-shop">
+                        <i class="fa fa-shopping-cart"></i>
+                    </div>
 
                     <div class="badge-wrapper">
                         <span class="badge" v-text="updatedCartItemsCount"></span>
@@ -341,26 +336,27 @@ export default {
     methods: {
         openSearchBar: function () {
             this.isSearchbar = !this.isSearchbar;
-
-            let footer = $('.footer');
-            let homeContent = $('#home-right-bar-container');
-            let mainContent = $('.main-content');
-
+            let topbar = $('.top-bar-gif');
             if (this.isSearchbar) {
-                footer[0].style.opacity = '.3';
-                mainContent[0].style.opacity = '.3';
-                homeContent[0].style.opacity = '.3';
+                topbar[0].style.zIndex=11;
+                document.addEventListener('outSideNavClick',this.closeSearchbar);
+                document.body.classList.add('open-search');
             } else {
-                footer[0].style.opacity = '1';
-                mainContent[0].style.opacity = '1';
-                homeContent[0].style.opacity = '1';
+                topbar[0].style.zIndex=0;
+                document.body.classList.remove('open-search');
+                document.removeEventListener('outSideNavClick',this.closeSearchbar);
             }
         },
 
         toggleHamburger: function () {
             this.hamburger = !this.hamburger;
         },
-
+        closeSearchbar: function () {
+            this.isSearchbar = false;
+            let topbar = $('.top-bar-gif');
+            topbar[0].style.zIndex=0;
+            document.body.classList.remove('open-search');
+        },
         closeDrawer: function () {
             $('.nav-container').hide();
 

@@ -83,7 +83,7 @@
                 <h2 class="fw6 col-12">{{ __('shop::app.search.no-results') }}</h2>
             @else
                 @if ($results->isEmpty())
-                    <h2 class="fw6 col-12">{{ __('shop::app.products.whoops') }}</h2>
+{{--                    <h2 class="fw6 col-12">{{ __('shop::app.products.whoops') }}</h2>--}}
                     <span class="col-12">{{ __('shop::app.search.no-results') }}</span>
                 @else
                     @if ($results->total() == 1)

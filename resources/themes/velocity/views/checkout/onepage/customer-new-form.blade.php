@@ -218,7 +218,7 @@
 
         @auth('customer')
             <div class="mb10">
-                <span class="checkbox fs16 display-inbl no-margin">
+                <span class="checkbox display-inbl no-margin">
                     <input
                         type="checkbox"
                         id="shipping[save_as_address]"
@@ -469,7 +469,7 @@
 
         @if ($cart->haveStockableItems())
             <div class="mb10">
-                <span class="checkbox fs16 display-inbl no-margin">
+                <span class="checkbox display-inbl no-margin">
                     <input
                         type="checkbox"
                         id="billing[use_for_shipping]"
@@ -486,7 +486,7 @@
 
         @auth('customer')
             <div class="mb10">
-                <span class="checkbox fs16 display-inbl no-margin">
+                <span class="checkbox display-inbl no-margin">
                     <input
                         type="checkbox"
                         id="billing[save_as_address]"

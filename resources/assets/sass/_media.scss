@@ -73,14 +73,17 @@ body.rtl header .vc-small-screen #search-form {
             .greeting {
 
             }
-            ul{
-                li{
+
+            ul {
+                li {
                     font-size: 1.2rem;
                 }
             }
+
             .vc-customer-options {
                 li {
                     font-size: 1.4rem;
+
                     i.icon {
                         font-size: 1.7rem;
                         display: block;
@@ -103,10 +106,19 @@ body.rtl header .vc-small-screen #search-form {
             }
         }
     }
+    .main-content-wrapper .vc-header > div.vc-small-screen .right-vc-header .badge-wrapper {
+        left: -7px;
+        position: relative;
+        top: -24px;
+
+        .badge {
+            padding: 0.2em 0.4em;
+        }
+    }
     section.product-extra-detail .extra-attributes .nav-item a.nav-link {
         font-size: 0.8rem;
     }
-    #home-right-bar-container{
+    #home-right-bar-container {
         top: 0;
     }
 }

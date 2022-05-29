@@ -19,7 +19,7 @@
 
     {!! view_render_event('bagisto.shop.customers.account.orders.list.before') !!}
 
-        <div class="account-items-list">
+        <div class="account-items-list customer-orders">
             <div class="account-table-content">
 
                 {!! app('Webkul\Shop\DataGrids\OrderDataGrid')->render() !!}
