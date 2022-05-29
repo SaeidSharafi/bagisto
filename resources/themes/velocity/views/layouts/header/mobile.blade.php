@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="badge-wrapper">
-                    <span class="badge" v-text="updatedCartItemsCount"></span>
+                    <span class="badge" v-text="{{$cartItemsCount}}"></span>
                 </div>
             </a>
         </div>

@@ -213,7 +213,7 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                             </div>
                         </div>
                     </div>
-                    <div class="product-info sticky-price out d-block d-md-none">
+                    <div class="product-info sticky-price out d-block d-md-none" v-if="isMobile()">
                         <div class="container">
                             <div class="options mb-3">
                             @include ('shop::products.view.configurable-options')
