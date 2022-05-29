@@ -231,7 +231,11 @@
 
                                     <li v-if='datetimeCondition != null'>
                                         <div class="control-group">
-                                            <input class="control" v-model="datetimeValue" type="date">
+                                            <p-date-picker
+                                                auto-submit
+                                                :popover="false"
+                                                @onDateChange="applyFilter($event)"
+                                                :initial-value="datetimeValue"></p-date-picker>
                                         </div>
                                     </li>
 
@@ -308,7 +312,7 @@
                         datetimeCondition: null,
                         stringValue: null,
                         booleanValue: null,
-                        datetimeValue: '2000-01-01',
+                        datetimeValue: '{{now()->format("Y-m-d")}}',
                         numberValue: 0,
                         stringConditionSelect: false,
                         booleanConditionSelect: false,
@@ -394,7 +398,11 @@
                             }
                         }
                     },
-
+                    applyFilter: function (e){
+                        console.log(e);
+                      this.datetimeValue=  e;
+                      this.getResponse();
+                    },
                     nullify: function () {
                         this.stringCondition = null;
                         this.datetimeCondition = null;
