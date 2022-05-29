@@ -52,6 +52,40 @@ class OrderDataGrid extends DataGrid
     }
 
     /**
+     * Prepare data for json response.
+     *
+     * @return array
+     */
+    public function prepareData()
+    {
+        return [
+            'index'             => $this->index,
+            'records'           => $this->collection,
+            'columns'           => $this->completeColumnDetails,
+            'actions'           => $this->actions,
+            'enableActions'     => $this->enableAction,
+            'massActions'       => $this->massActions,
+            'enableMassActions' => $this->enableMassAction,
+            'paginated'         => $this->paginate,
+            'itemsPerPage'      => $this->itemsPerPage,
+            'extraFilters'      => array_merge($this->getExtraFilters(), [
+                'status' => [
+                    'processing'      => trans('shop::app.customer.account.order.index.processing'),
+                    'completed'       => trans('shop::app.customer.account.order.index.completed'),
+                    'canceled'        => trans('shop::app.customer.account.order.index.canceled'),
+                    'closed'          => trans('shop::app.customer.account.order.index.closed'),
+                    'pending'         => trans('shop::app.customer.account.order.index.pending'),
+                    'pending_payment' => trans('shop::app.customer.account.order.index.pending-payment'),
+                    'fraud'           => trans('shop::app.customer.account.order.index.fraud'),
+                ]
+            ]),
+            'translations'      => $this->getTranslations(),
+
+        ];
+    }
+
+
+    /**
      * Add columns.
      *
      * @return void
@@ -110,7 +144,7 @@ class OrderDataGrid extends DataGrid
         $this->addColumn([
             'index'      => 'status',
             'label'      => trans('admin::app.datagrid.status'),
-            'type'       => 'string',
+            'type'       => 'select',
             'sortable'   => true,
             'searchable' => true,
             'filterable' => true,

@@ -17,15 +17,14 @@
             $channel = 'all';
         }
     }
+
 @endphp
 
 <div class="table">
     <datagrid-filters></datagrid-filters>
-
     @if (isset($results['paginated']) && $results['paginated'])
         @include('ui::datagrid.pagination', ['results' => $results['records']])
     @endif
-
     @push('scripts')
         <script type="text/x-template" id="datagrid-filters">
             <div class="grid-container">
@@ -33,62 +32,62 @@
                 <div class="datagrid-filters">
                     <div class="filter-left">
                         @if (isset($results['extraFilters']['channels']))
-                        <div class="dropdown-filters per-page">
-                            <div class="control-group">
-                                <select class="control" id="channel-switcher" name="channel"
-                                        onchange="reloadPage('channel', this.value)">
-                                    <option value="all" {{ ! isset($channel) ? 'selected' : '' }}>
-                                        {{ __('admin::app.admin.system.all-channels') }}
-                                    </option>
-                                    @foreach ($results['extraFilters']['channels'] as $channelModel)
-                                        <option
-                                            value="{{ $channelModel->code }}"
-                                            {{ (isset($channel) && ($channelModel->code) == $channel) ? 'selected' : '' }}>
-                                            {{ core()->getChannelName($channelModel) }}
+                            <div class="dropdown-filters per-page">
+                                <div class="control-group">
+                                    <select class="control" id="channel-switcher" name="channel"
+                                            onchange="reloadPage('channel', this.value)">
+                                        <option value="all" {{ ! isset($channel) ? 'selected' : '' }}>
+                                            {{ __('admin::app.admin.system.all-channels') }}
                                         </option>
-                                    @endforeach
-                                </select>
+                                        @foreach ($results['extraFilters']['channels'] as $channelModel)
+                                            <option
+                                                value="{{ $channelModel->code }}"
+                                                {{ (isset($channel) && ($channelModel->code) == $channel) ? 'selected' : '' }}>
+                                                {{ core()->getChannelName($channelModel) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                        </div>
                         @endif
 
                         @if (isset($results['extraFilters']['locales']))
-                        <div class="dropdown-filters per-page">
-                            <div class="control-group">
-                                <select class="control" id="locale-switcher" name="locale"
-                                        onchange="reloadPage('locale', this.value)">
-                                    <option value="all" {{ ! isset($locale) ? 'selected' : '' }}>
-                                        {{ __('admin::app.admin.system.all-locales') }}
-                                    </option>
-                                    @foreach ($locales as $localeModel)
-                                        <option
-                                            value="{{ $localeModel->code }}" {{ (isset($locale) && ($localeModel->code) == $locale) ? 'selected' : '' }}>
-                                            {{ $localeModel->name }}
+                            <div class="dropdown-filters per-page">
+                                <div class="control-group">
+                                    <select class="control" id="locale-switcher" name="locale"
+                                            onchange="reloadPage('locale', this.value)">
+                                        <option value="all" {{ ! isset($locale) ? 'selected' : '' }}>
+                                            {{ __('admin::app.admin.system.all-locales') }}
                                         </option>
-                                    @endforeach
-                                </select>
+                                        @foreach ($locales as $localeModel)
+                                            <option
+                                                value="{{ $localeModel->code }}" {{ (isset($locale) && ($localeModel->code) == $locale) ? 'selected' : '' }}>
+                                                {{ $localeModel->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                        </div>
                         @endif
 
                         @if (isset($results['extraFilters']['customer_groups']))
-                        <div class="dropdown-filters per-page">
-                            <div class="control-group">
-                                <select class="control" id="customer-group-switcher" name="customer_group"
-                                        onchange="reloadPage('customer_group', this.value)">
-                                    <option value="all" {{ ! isset($customer_group) ? 'selected' : '' }}>
-                                        {{ __('admin::app.admin.system.all-customer-groups') }}
-                                    </option>
-                                    @foreach ($results['extraFilters']['customer_groups'] as $customerGroupModel)
-                                        <option
-                                            value="{{ $customerGroupModel->id }}"
-                                            {{ (isset($customer_group) && ($customerGroupModel->id) == $customer_group) ? 'selected' : '' }}>
-                                            {{ $customerGroupModel->name }}
+                            <div class="dropdown-filters per-page">
+                                <div class="control-group">
+                                    <select class="control" id="customer-group-switcher" name="customer_group"
+                                            onchange="reloadPage('customer_group', this.value)">
+                                        <option value="all" {{ ! isset($customer_group) ? 'selected' : '' }}>
+                                            {{ __('admin::app.admin.system.all-customer-groups') }}
                                         </option>
-                                    @endforeach
-                                </select>
+                                        @foreach ($results['extraFilters']['customer_groups'] as $customerGroupModel)
+                                            <option
+                                                value="{{ $customerGroupModel->id }}"
+                                                {{ (isset($customer_group) && ($customerGroupModel->id) == $customer_group) ? 'selected' : '' }}>
+                                                {{ $customerGroupModel->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                        </div>
                         @endif
                     </div>
                 </div>
@@ -97,12 +96,12 @@
                     <div class="filter-left">
                         <div class="search-filter">
                             <input type="search" id="search-field" class="control"
-                                placeholder="{{ __('ui::app.datagrid.search') }}" v-model="searchValue"
-                                v-on:keyup.enter="searchCollection(searchValue)"/>
+                                   placeholder="{{ __('ui::app.datagrid.search') }}" v-model="searchValue"
+                                   v-on:keyup.enter="searchCollection(searchValue)"/>
 
                             <div class="icon-wrapper">
                                 <span class="icon search-icon search-btn"
-                                    v-on:click="searchCollection(searchValue)"></span>
+                                      v-on:click="searchCollection(searchValue)"></span>
                             </div>
                         </div>
                     </div>
@@ -116,7 +115,7 @@
 
                                 <select id="perPage" name="perPage" class="control" v-model="perPage"
                                         v-on:change="paginate">
-                                    <option v-for="index in this.perPageProduct" :key="index" :value="index"> @{{ index }} </option>
+                                    <option v-for="index in this.perPageProduct" :key="index" :value="index"> @{{ index }}</option>
                                 </select>
                             </div>
                         </div>
@@ -136,8 +135,14 @@
                                             <select class="filter-column-select control" v-model="filterColumn"
                                                     v-on:change="getColumnOrAlias(filterColumn)">
                                                 <option selected disabled>{{ __('ui::app.datagrid.column') }}</option>
+
                                                 @foreach($results['columns'] as $column)
                                                     @if(isset($column['filterable']) && $column['filterable'])
+                                                        @php
+                                                            if($column['type'] === 'select'){
+                                                                $options = $column['options'];
+                                                            }
+                                                        @endphp
                                                         <option value="{{ $column['index'] }}">
                                                             {{ $column['label'] }}
                                                         </option>
@@ -147,6 +152,29 @@
                                         </div>
                                     </li>
 
+                                    {{-- suitable for boolean columns --}}
+                                    <li v-if='selectConditionSelect'>
+                                        <div class="control-group">
+                                            <select class="control" v-model="selectCondition">
+
+                                                <option selected
+                                                        disabled>{{ __('ui::app.datagrid.condition') }}</option>
+                                                <option value="eq">{{ __('ui::app.datagrid.equals') }}</option>
+                                                <option value="neqs">{{ __('ui::app.datagrid.nequals') }}</option>
+                                            </select>
+                                        </div>
+
+                                    </li>
+                                    <li v-if='selectCondition != null'>
+                                        <div class="control-group">
+                                            <select class="control" v-model="selectValue">
+                                                <option selected disabled>{{ __('ui::app.datagrid.value') }}</option>
+                                                @foreach($options as $key=>$option)
+                                                    <option value="{{$key}}">{{$option}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </li>
                                     {{-- suitable for string columns --}}
                                     <li v-if='stringConditionSelect'>
                                         <div class="control-group">
@@ -165,8 +193,8 @@
                                     <li v-if='stringCondition != null'>
                                         <div class="control-group">
                                             <input type="text" class="control response-string"
-                                                placeholder="{{ __('ui::app.datagrid.value-here') }}"
-                                                v-model="stringValue"/>
+                                                   placeholder="{{ __('ui::app.datagrid.value-here') }}"
+                                                   v-model="stringValue"/>
                                         </div>
                                     </li>
 
@@ -188,7 +216,8 @@
 
                                     <li v-if='numberCondition != null'>
                                         <div class="control-group">
-                                            <input type="text" class="control response-number" v-on:input="filterNumberInput" placeholder="{{ __('ui::app.datagrid.numeric-value-here') }}"  v-model="numberValue"/>
+                                            <input type="text" class="control response-number" v-on:input="filterNumberInput"
+                                                   placeholder="{{ __('ui::app.datagrid.numeric-value-here') }}" v-model="numberValue"/>
                                         </div>
                                     </li>
 
@@ -306,14 +335,17 @@
                         columnOrAlias: '',
                         type: null,
                         columns: @json($results['columns']),
+                        selectCondition: null,
                         stringCondition: null,
                         booleanCondition: null,
                         numberCondition: null,
                         datetimeCondition: null,
+                        selectValue: null,
                         stringValue: null,
                         booleanValue: null,
                         datetimeValue: '{{now()->format("Y-m-d")}}',
                         numberValue: 0,
+                        selectConditionSelect: false,
                         stringConditionSelect: false,
                         booleanConditionSelect: false,
                         numberConditionSelect: false,
@@ -349,8 +381,19 @@
                                 this.type = this.columns[column].type;
 
                                 switch (this.type) {
+                                    case 'select': {
+                                        this.selectConditionSelect = true;
+                                        this.stringConditionSelect = false;
+                                        this.datetimeConditionSelect = false;
+                                        this.booleanConditionSelect = false;
+                                        this.numberConditionSelect = false;
+
+                                        this.nullify();
+                                        break;
+                                    }
                                     case 'string': {
                                         this.stringConditionSelect = true;
+                                        this.selectConditionSelect = false;
                                         this.datetimeConditionSelect = false;
                                         this.booleanConditionSelect = false;
                                         this.numberConditionSelect = false;
@@ -360,6 +403,7 @@
                                     }
                                     case 'datetime': {
                                         this.datetimeConditionSelect = true;
+                                        this.selectConditionSelect = false;
                                         this.stringConditionSelect = false;
                                         this.booleanConditionSelect = false;
                                         this.numberConditionSelect = false;
@@ -369,6 +413,7 @@
                                     }
                                     case 'boolean': {
                                         this.booleanConditionSelect = true;
+                                        this.selectConditionSelect = false;
                                         this.datetimeConditionSelect = false;
                                         this.stringConditionSelect = false;
                                         this.numberConditionSelect = false;
@@ -378,6 +423,7 @@
                                     }
                                     case 'number': {
                                         this.numberConditionSelect = true;
+                                        this.selectConditionSelect = false;
                                         this.booleanConditionSelect = false;
                                         this.datetimeConditionSelect = false;
                                         this.stringConditionSelect = false;
@@ -387,7 +433,7 @@
                                     }
                                     case 'price': {
                                         this.numberConditionSelect = true;
-                                        this.booleanConditionSelect = false;
+                                        this.selectConditionSelect = false;
                                         this.datetimeConditionSelect = false;
                                         this.stringConditionSelect = false;
 
@@ -398,23 +444,24 @@
                             }
                         }
                     },
-                    applyFilter: function (e){
+                    applyFilter: function (e) {
                         console.log(e);
-                      this.datetimeValue=  e;
-                      this.getResponse();
+                        this.datetimeValue = e;
+                        this.getResponse();
                     },
                     nullify: function () {
+                        this.selectCondition = null;
                         this.stringCondition = null;
                         this.datetimeCondition = null;
                         this.booleanCondition = null;
                         this.numberCondition = null;
                     },
 
-                    filterNumberInput: function(e){
+                    filterNumberInput: function (e) {
                         this.numberValue = e.target.value.replace(/[^0-9\,\.]+/g, '');
                     },
 
-                    getResponse: function() {
+                    getResponse: function () {
                         label = '';
 
                         for (let colIndex in this.columns) {
@@ -439,6 +486,8 @@
                             if (indexConditions) {
                                 this.formURL(this.columnOrAlias, this.numberCondition, this.numberValue, label);
                             }
+                        } else if (this.type === 'select') {
+                            this.formURL(this.columnOrAlias, this.selectCondition, this.selectValue, label);
                         } else if (this.type === 'boolean') {
                             this.formURL(this.columnOrAlias, this.booleanCondition, this.booleanValue, label);
                         } else if (this.type === 'datetime') {
@@ -555,7 +604,12 @@
                                                 filterRepeated = true;
 
                                                 this.filters[j].val = response;
+                                                if (this.filters[j].column in this.extraFilters) {
+                                                    if (this.filters[j].val in this.extraFilters[this.filters[j].column]) {
+                                                        this.filters[j].prettyValue = this.extraFilters[this.filters[j].column][this.filters[j].val];
+                                                    }
 
+                                                }
                                                 this.makeURL();
                                             }
                                         }
@@ -566,7 +620,12 @@
                                         obj.cond = condition;
                                         obj.val = response;
                                         obj.label = label;
+                                        if (column in this.extraFilters) {
+                                            if (response in this.extraFilters[column]) {
+                                                obj.prettyValue = this.extraFilters[column][obj.val];
+                                            }
 
+                                        }
                                         this.filters.push(obj);
                                         obj = {};
 
@@ -618,7 +677,8 @@
                                         obj.label = label;
 
                                         this.filters.push(obj);
-
+                                        console.log("sort_exists");
+                                        console.log(this.filters);
                                         obj = {};
 
                                         this.makeURL();
@@ -634,7 +694,8 @@
                                             this.filters[j].cond = condition;
                                             this.filters[j].val = encodeURIComponent(response);
                                             this.filters[j].label = label;
-
+                                            console.log("loop");
+                                            console.log(this.filters);
                                             this.makeURL();
                                         }
                                     }
@@ -650,7 +711,8 @@
                                         obj.cond = condition;
                                         obj.val = encodeURIComponent(response);
                                         obj.label = label;
-
+                                        console.log("search_found");
+                                        console.log(obj);
                                         this.filters.push(obj);
 
                                         obj = {};
@@ -663,7 +725,14 @@
                                 obj.cond = condition;
                                 obj.val = encodeURIComponent(response);
                                 obj.label = label;
+                                if ('translation' in this.extraFilters) {
+                                    if (obj.val in this.extraFilters['translation']) {
+                                        obj.prettyValue = this.extraFilters['translation'][obj.val];
+                                    }
 
+                                }
+                                console.log("else");
+                                console.log(obj);
                                 this.filters.push(obj);
 
                                 obj = {};
@@ -679,7 +748,7 @@
                     makeURL: function () {
                         newParams = '';
 
-                        for(let i = 0; i < this.filters.length; i++) {
+                        for (let i = 0; i < this.filters.length; i++) {
                             if (this.filters[i].column == 'status' || this.filters[i].column == 'value_per_locale' || this.filters[i].column == 'value_per_channel' || this.filters[i].column == 'is_unique') {
                                 if (this.filters[i].val.includes("True")) {
                                     this.filters[i].val = 1;
@@ -778,10 +847,18 @@
                                     }
                                     break;
                                 default:
+
                                     for (let colIndex in this.columns) {
                                         if (this.columns[colIndex].index === obj.column) {
                                             obj.label = this.columns[colIndex].label;
+                                            if (this.columns[colIndex].type === 'select') {
+                                                if ('translation' in this.extraFilters) {
+                                                    if (obj.val in this.extraFilters['translation']) {
+                                                        obj.prettyValue = this.extraFilters['translation'][obj.val];
+                                                    }
 
+                                                }
+                                            }
                                             if (this.columns[colIndex].type === 'boolean') {
                                                 if (obj.val === '1') {
                                                     obj.val = '{{ __('ui::app.datagrid.true') }}';

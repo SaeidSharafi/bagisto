@@ -214,6 +214,44 @@
                                         </div>
                                     </li>
 
+                                    <li v-if='selectConditionSelect'>
+                                        <div class="control-group">
+                                            <select
+                                                class="control"
+                                                v-model="selectCondition"
+                                            >
+                                                <option
+                                                    v-text="
+                                                        translations.condition
+                                                    "
+                                                    selected
+                                                    disabled
+                                                ></option>
+
+                                                <option
+                                                    v-text="translations.equals"
+                                                    value="eq"
+                                                ></option>
+
+                                                <option
+                                                    v-text="
+                                                        translations.nequals
+                                                    "
+                                                    value="neqs"
+                                                ></option>
+                                            </select>
+                                        </div>
+
+                                    </li>
+                                    <li v-if='selectCondition != null'>
+                                        <div class="control-group" :data-text="filterColumn">
+                                            <select class="control" v-model="selectValue">
+                                                <option v-text="translations.value" selected disabled></option>
+                                                <option v-for="(option, optionKey) in this.extraFilters[filterColumn]"
+                                                :value="optionKey">{{option}}</option>
+                                            </select>
+                                        </div>
+                                    </li>
                                     <li v-if="stringConditionSelect">
                                         <div class="control-group">
                                             <select
@@ -827,14 +865,17 @@ export default {
             filters: [],
             columnOrAlias: '',
             type: null,
+            selectCondition: null,
             stringCondition: null,
             booleanCondition: null,
             numberCondition: null,
             datetimeCondition: null,
+            selectValue: null,
             stringValue: null,
             booleanValue: null,
             datetimeValue: '2000-01-01',
             numberValue: 0,
+            selectConditionSelect: false,
             stringConditionSelect: false,
             booleanConditionSelect: false,
             numberConditionSelect: false,
@@ -845,7 +886,7 @@ export default {
 
     mounted: function() {
         this.getCsrf();
-
+        console.log("mounted");
         this.makeURL();
     },
 
@@ -860,7 +901,7 @@ export default {
                 .then(function(response) {
                     if (response.status === 200) {
                         let results = response.data;
-
+                        console.log(results);
                         self.initResponseProps(results);
 
                         self.initDatagrid();
@@ -876,7 +917,6 @@ export default {
         analyzeDatagridsInfo: function() {
             if (!this.isDataLoaded && this.url === `${this.src}?v=1`) {
                 let datagridInfo = this.getCurrentDatagridInfo();
-
                 if (datagridInfo) {
                     /**
                      * Will check this later. Don't remove it.
@@ -888,7 +928,6 @@ export default {
                 }
             } else {
                 let datagridsInfo = this.getDatagridsInfo();
-
                 if (datagridsInfo && datagridsInfo.length > 0) {
                     if (this.isCurrentDatagridInfoExists()) {
                         datagridsInfo = datagridsInfo.map(datagrid => {
@@ -946,6 +985,7 @@ export default {
         },
 
         updateDatagridsInfo: function(info) {
+
             localStorage.setItem(
                 this.getDatagridsInfoStorageKey(),
                 JSON.stringify(info)
@@ -1024,9 +1064,21 @@ export default {
                     this.type = this.columns[column].type;
                     console.log(this.type);
                     switch (this.type) {
+                        case 'select': {
+                            this.selectConditionSelect = true;
+                            this.stringConditionSelect = false;
+                            this.datetimeConditionSelect = false;
+                            this.booleanConditionSelect = false;
+                            this.numberConditionSelect = false;
+
+                            this.nullify();
+                            break;
+                        }
+
                         case 'string': {
                             this.stringConditionSelect = true;
                             this.datetimeConditionSelect = false;
+                            this.selectConditionSelect = false;
                             this.booleanConditionSelect = false;
                             this.numberConditionSelect = false;
 
@@ -1037,6 +1089,7 @@ export default {
                         case 'datetime': {
                             this.datetimeConditionSelect = true;
                             this.stringConditionSelect = false;
+                            this.selectConditionSelect = false;
                             this.booleanConditionSelect = false;
                             this.numberConditionSelect = false;
 
@@ -1048,6 +1101,7 @@ export default {
                             this.booleanConditionSelect = true;
                             this.datetimeConditionSelect = false;
                             this.stringConditionSelect = false;
+                            this.selectConditionSelect = false;
                             this.numberConditionSelect = false;
 
                             this.nullify();
@@ -1057,6 +1111,7 @@ export default {
                         case 'number': {
                             this.numberConditionSelect = true;
                             this.booleanConditionSelect = false;
+                            this.selectConditionSelect = false;
                             this.datetimeConditionSelect = false;
                             this.stringConditionSelect = false;
 
@@ -1067,6 +1122,7 @@ export default {
                         case 'price': {
                             this.numberConditionSelect = true;
                             this.booleanConditionSelect = false;
+                            this.selectConditionSelect = false;
                             this.datetimeConditionSelect = false;
                             this.stringConditionSelect = false;
 
@@ -1079,6 +1135,7 @@ export default {
         },
 
         nullify: function() {
+            this.selectCondition = null;
             this.stringCondition = null;
             this.datetimeCondition = null;
             this.booleanCondition = null;
@@ -1126,7 +1183,9 @@ export default {
                         label
                     );
                 }
-            } else if (this.type === 'boolean') {
+            } else if (this.type === 'select') {
+                this.formURL(this.columnOrAlias, this.selectCondition, this.selectValue, label);
+            }else if (this.type === 'boolean') {
                 this.formURL(
                     this.columnOrAlias,
                     this.booleanCondition,
@@ -1264,7 +1323,7 @@ export default {
                 if (this.filters.length > 0) {
                     if (column !== 'sort' && column !== 'search') {
                         let filterRepeated = false;
-
+                        console.log("filterRepeated");
                         for (let j = 0; j < this.filters.length; j++) {
                             if (this.filters[j].column === column) {
                                 if (
@@ -1283,7 +1342,12 @@ export default {
                                     filterRepeated = true;
 
                                     this.filters[j].val = response;
+                                    if (this.filters[j].column in this.extraFilters) {
+                                        if (this.filters[j].val in this.extraFilters[this.filters[j].column]) {
+                                            this.filters[j].prettyValue = this.extraFilters[this.filters[j].column][this.filters[j].val];
+                                        }
 
+                                    }
                                     this.makeURL();
                                 }
                             }
@@ -1397,6 +1461,12 @@ export default {
                     obj.val = encodeURIComponent(response);
                     obj.label = label;
 
+                    if (column in this.extraFilters) {
+                        if (obj.val in this.extraFilters[column]) {
+                            obj.prettyValue = this.extraFilters[column][obj.val];
+                        }
+
+                    }
                     this.filters.push(obj);
 
                     obj = {};
@@ -1516,7 +1586,16 @@ export default {
                         for (let colIndex in this.columns) {
                             if (this.columns[colIndex].index === obj.column) {
                                 obj.label = this.columns[colIndex].label;
+                                console.log(obj);
+                                console.log(this.extraFilters);
+                                if (this.columns[colIndex].type === 'select') {
+                                    if (obj.label in this.extraFilters) {
+                                        if (obj.val in this.extraFilters['translation']) {
+                                            obj.prettyValue = this.extraFilters['translation'][obj.val];
+                                        }
 
+                                    }
+                                }
                                 if (this.columns[colIndex].type === 'boolean') {
                                     if (obj.val === '1') {
                                         obj.val = this.translations.true;
