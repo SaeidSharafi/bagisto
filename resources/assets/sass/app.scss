@@ -234,6 +234,7 @@ header {
     .logo {
         display: flex !important;
         align-items: center;
+        justify-content: center;
         height: 100%;
         text-align: center;
         padding-left: 0;
@@ -241,6 +242,7 @@ header {
         img {
             max-width: 150px;
             height: auto;
+            object-fit: contain;
         }
 
     }
@@ -1564,6 +1566,17 @@ section.product-footer {
         }
     }
 }
+.top-bar-gif{
+    position: relative;
+    height: 25px;
+    display: flex;
+    overflow: hidden;
+
+    img{
+        height: 100%;
+        object-fit: cover;
+    }
+}
 .customer-reviews{
     .stars{
         .material-icons{
@@ -1763,6 +1776,9 @@ body.rtl header .mini-cart-container #mini-cart .badge {
 }
 
 @media(min-width: 768px) {
+    .top-bar-gif{
+        height: 35px;
+    }
     .product-card-wrapper {
         -ms-flex: 0 0 33.33%;
         flex: 0 0 33.33%;
@@ -1852,7 +1868,9 @@ body.rtl header .mini-cart-container #mini-cart .badge {
     .product-banner {
 
     }
-
+    .top-bar-gif{
+        height: 45px;
+    }
 }
 
 @media(min-width: 1200px) {

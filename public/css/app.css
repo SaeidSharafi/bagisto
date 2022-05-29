@@ -162,10 +162,6 @@ body.open-search #search-blocker {
   font-size: 1.4rem;
 }
 
-.top-bar-gif {
-  position: relative;
-}
-
 .slideshow {
   overflow: hidden;
   position: relative;
@@ -6777,6 +6773,7 @@ section.product-extra-detail .extra-attributes .nav-item a.nav-link {
 header .logo {
   display: flex !important;
   align-items: center;
+  justify-content: center;
   height: 100%;
   text-align: center;
   padding-left: 0;
@@ -6784,6 +6781,8 @@ header .logo {
 header .logo img {
   max-width: 150px;
   height: auto;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 header .main-nav {
   height: 50px;
@@ -7848,6 +7847,18 @@ section.product-footer .teacher-image img {
   font-size: 1.4rem !important;
 }
 
+.top-bar-gif {
+  position: relative;
+  height: 25px;
+  display: flex;
+  overflow: hidden;
+}
+.top-bar-gif img {
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
 .customer-reviews .stars .material-icons {
   font-size: 1.4rem !important;
 }
@@ -8007,6 +8018,10 @@ body.rtl header .mini-cart-container #mini-cart .badge {
   }
 }
 @media (min-width: 768px) {
+  .top-bar-gif {
+    height: 35px;
+  }
+
   .product-card-wrapper {
     flex: 0 0 33.33%;
     max-width: 33.33%;
@@ -8074,6 +8089,10 @@ body.rtl header .mini-cart-container #mini-cart .badge {
 @media (min-width: 992px) {
   .category-banner {
     max-height: 160px;
+  }
+
+  .top-bar-gif {
+    height: 45px;
   }
 }
 @media (min-width: 1200px) {
