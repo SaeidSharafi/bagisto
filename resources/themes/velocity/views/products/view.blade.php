@@ -133,14 +133,14 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
 
                         <div class="row">
                             {{-- product-gallery --}}
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-lg-5">
                                 <div class="px-3 asdasd">
                                     @include ('shop::products.view.gallery',['images' => $images])
                                 </div>
                             </div>
 
                             {{-- right-section --}}
-                            <div class="product-info col-md-6">
+                            <div class="product-info col-md-6 col-lg-7">
                                 <div class="pt-4 px-3">
                                     {{-- product-info-section --}}
                                     <div class="attributes">

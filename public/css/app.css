@@ -7573,6 +7573,9 @@ section.product-footer .teacher-image img {
 .prodcut-images-main .slick-slider .main-image img {
   max-height: 350px;
   margin: 0 auto;
+  width: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 @media only screen and (max-width: 992px) {
   .prodcut-images-main .main-image {
@@ -7587,6 +7590,57 @@ section.product-footer .teacher-image img {
 }
 .prodcut-images-main .video-container video {
   transform: translateY(-50%);
+}
+
+body.rtl .product-detail .thumb-list {
+  left: auto;
+  margin-right: 0;
+  overflow: inherit;
+}
+body.rtl .product-detail .thumb-list.is-rtl .slick-list {
+  direction: rtl;
+}
+body.rtl .product-detail .thumb-list .slick-track[data-v-e4caeaf8] {
+  display: flex;
+  align-items: stretch;
+}
+body.rtl .product-detail .thumb-list .slick-track[data-v-e4caeaf8] .slick-slide[data-v-e4caeaf8] {
+  height: auto;
+}
+body.rtl .product-detail .thumb-list .slick-track[data-v-e4caeaf8] .slick-slide[data-v-e4caeaf8] > div {
+  display: flex;
+  height: 100%;
+}
+body.rtl .product-detail .thumb-list .slick-track[data-v-e4caeaf8] .slick-slide[data-v-e4caeaf8] > div [id*=thumb-] {
+  height: 100%;
+  padding: 2px;
+}
+body.rtl .product-detail .thumb-list .slick-track[data-v-e4caeaf8] .slick-slide[data-v-e4caeaf8] > div [id*=thumb-] .thumb-frame {
+  height: 100%;
+}
+body.rtl .product-detail .thumb-list .slick-next, body.rtl .product-detail .thumb-list .slick-prev {
+  height: 100%;
+  z-index: 3;
+  background-color: rgba(150, 150, 150, 0.52);
+}
+body.rtl .product-detail .thumb-list .slick-prev {
+  border-radius: 5px 0 0 5px;
+  left: -10px;
+}
+body.rtl .product-detail .thumb-list .slick-prev:before {
+  content: "\f053";
+}
+body.rtl .product-detail .thumb-list .slick-next {
+  border-radius: 0 5px 5px 0;
+  right: -10px;
+}
+body.rtl .product-detail .thumb-list .slick-next:before {
+  content: "\f054";
+}
+body.rtl .product-detail .thumb-list .slick-prev:before, body.rtl .product-detail .thumb-list .slick-next:before {
+  color: #5c5c5c;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
 }
 
 @media only screen and (max-width: 992px) {

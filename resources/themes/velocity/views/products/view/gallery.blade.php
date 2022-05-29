@@ -65,14 +65,15 @@
                 </li>
             </ul>
         </div>
-        <ul class="thumb-list w-100 row ltr d-none d-md-block">
+        <ul :class="`thumb-list w-100 row ltr d-none d-md-block ${thumbs.length < 5 ? 'is-rtl' : ''}`">
             <slick-carousel
-                ref="galleryCarousel"
+                ref="thumbsCarousel"
                 style="max-height: 350px"
                 id="product-gallery-carousel"
                 v-bind="thumbnailSetting"
                 v-if="thumbs.length">
-                <div v-for="(thumb, index) in thumbs" v-bind:key="index">
+                <div v-for="(thumb, index) in thumbs" v-bind:key="index"
+                     :id="`thumb-${index}`">
                     <li
                         @click="showImage(index)"
                         :class="`thumb-frame ${index + 1 == 4 ? '' : 'mr5'} ${thumb.large_image_url == currentLargeImageUrl ? 'active' : ''} ${'thumb-'+index} ${index == 0 ? 'is-active' : ''}`"
@@ -111,6 +112,7 @@
                         currentLargeImageIndex: 0,
                         currentOriginalImageUrl: '',
                         currentType: '',
+                        usingThumb: false,
                         counter: {
                             up: 0,
                             down: 0,
@@ -201,49 +203,28 @@
                             productImage.src = this.currentOriginalImageUrl;
                         }
                     },
-                    goToImage: function (move) {
-                        let productImage = $('.img-main-' + this.currentLargeImageIndex);
-                        let thumb = $('.thumb-' + this.currentLargeImageIndex);
-                        let pagination = $('.dot-' + this.currentLargeImageIndex);
-                        productImage.removeClass("is-active");
-                        thumb.removeClass("is-active");
-                        pagination.removeClass("is-active");
-                        let index = this.currentLargeImageIndex + 1;
-                        if (move == 'prev') {
-                            index = this.currentLargeImageIndex - 1;
-                            // console.log('prev' + index);
-                        }
-                        if (index >= this.images.length) {
-                            index = 0;
-                        }
-                        if (index < 0) {
-                            index = this.images.length - 1;
-                        }
-                        // console.log(move);
-                        // console.log(index);
-                        this.currentLargeImageIndex = index;
-                        productImage = $('.img-main-' + index);
-                        thumb = $('.thumb-' + index);
-                        pagination = $('.dot-' + index);
-                        productImage.addClass("is-active");
-                        thumb.addClass("is-active");
-                        pagination.addClass("is-active");
-                    },
                     showImage: function (index) {
-                        let productImage = $('.img-main-' + this.currentLargeImageIndex);
-                        let thumb = $('.thumb-' + this.currentLargeImageIndex);
-                        let pagination = $('.dot-' + this.currentLargeImageIndex);
-                        productImage.removeClass("is-active");
-                        thumb.removeClass("is-active");
-                        pagination.removeClass("is-active");
-                        this.currentLargeImageIndex = index;
-                        productImage = $('.img-main-' + index);
-                        thumb = $('.thumb-' + index);
-                        pagination = $('.dot-' + index);
-                        this.$refs.galleryCarousel.goTo(index);
-                        productImage.addClass("is-active");
-                        thumb.addClass("is-active");
-                        pagination.addClass("is-active");
+                        console.log(index);
+                        this.usingThumb = true;
+                        this.$refs.galleryCarousel.goTo(this.images.length - index - 1,true);
+                        // return;
+                        // this.usingThumb = true;
+                        // let productImage = $('.img-main-' + this.currentLargeImageIndex);
+                        // let thumb = $('.thumb-' + this.currentLargeImageIndex);
+                        // let pagination = $('.dot-' + this.currentLargeImageIndex);
+                        // productImage.removeClass("is-active");
+                        // thumb.removeClass("is-active");
+                        // pagination.removeClass("is-active");
+                        // this.currentLargeImageIndex = index;
+                        // productImage = $('.img-main-' + index);
+                        // thumb = $('.thumb-' + index);
+                        // pagination = $('.dot-' + index);
+                        // console.log(index);
+                        // console.log(this.$refs.galleryCarousel);
+                        // this.$refs.galleryCarousel.goTo(index,true);
+                        // productImage.addClass("is-active");
+                        // thumb.addClass("is-active");
+                        // pagination.addClass("is-active");
                     },
                     scroll: function (navigateTo) {
                         let navigation = $(`#${this.galleryCarouselId} .VueCarousel-navigation .VueCarousel-navigation-${navigateTo}`);
@@ -252,19 +233,33 @@
                             navigation.click();
                         }
                     }, changeThumb: function (oldSlideIndex,newSlideIndex) {
-                        // console.log("start nav: " + newSlideIndex);
-                        // console.log("calc nav: " + (this.images.length - newSlideIndex - 1));
+                        console.log(oldSlideIndex,newSlideIndex);
+                        // this.$refs.galleryCarousel.goTo(4);
+                        $('[class*="thumb-"]').removeClass("is-active");
+                        $('[class*="dot-"]').removeClass("is-active");
                         let navigateTo = (this.images.length - newSlideIndex - 1);
-                        // console.log("result: " + navigateTo);
-                        let thumb = $('.thumb-' + this.currentLargeImageIndex);
-                        let pagination = $('.dot-' + this.currentLargeImageIndex);
-                        thumb.removeClass("is-active");
-                        pagination.removeClass("is-active");
-                        this.currentLargeImageIndex = navigateTo;
-                        thumb = $('.thumb-' + navigateTo);
-                        pagination = $('.dot-' + navigateTo);
+                        let thumb = $('.thumb-' + (navigateTo));
+                        let pagination = $('.dot-' + (navigateTo));
                         thumb.addClass("is-active");
                         pagination.addClass("is-active");
+
+                        // if(this.usingThumb){
+                        //     this.usingThumb = false;
+                        //     return;
+                        // }
+                        // // console.log("start nav: " + newSlideIndex);
+                        // // console.log("calc nav: " + (this.images.length - newSlideIndex - 1));
+                        // let navigateTo = (this.images.length - newSlideIndex - 1);
+                        // // console.log("result: " + navigateTo);
+                        // let thumb = $('.thumb-' + this.currentLargeImageIndex);
+                        // let pagination = $('.dot-' + this.currentLargeImageIndex);
+                        // thumb.removeClass("is-active");
+                        // pagination.removeClass("is-active");
+                        // this.currentLargeImageIndex = navigateTo;
+                        // thumb = $('.thumb-' + navigateTo);
+                        // pagination = $('.dot-' + navigateTo);
+                        // thumb.addClass("is-active");
+                        // pagination.addClass("is-active");
                     },
                 }
             });
