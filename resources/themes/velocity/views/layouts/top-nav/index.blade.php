@@ -1,6 +1,7 @@
 @php
     if ($velocityMetaData){
         $advertisement =optional(collect(json_decode($velocityMetaData->advertisement, true))->first())[1];
+        $advertisement_path =null;
         if ($advertisement)
         $advertisement_path = asset('/storage/' .$advertisement);
         }
