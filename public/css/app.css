@@ -6685,6 +6685,9 @@ a:hover {
 .account-content .account-layout .sale-container th {
   font-size: 1.4rem;
 }
+.account-content .account-layout .sale-container span.qty-row {
+  display: block;
+}
 .account-content .account-layout .sale-container .table.overflow-x {
   overflow-x: scroll;
 }

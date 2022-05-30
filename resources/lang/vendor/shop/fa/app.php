@@ -334,13 +334,13 @@ return [
                     'order-date' => 'تاریخ ثبت نام',
                     'invoice-date' => 'تاریخ فاکتور',
                     'payment-terms' => 'شرایط پرداخت',
-                    'bill-to' => 'بیل به',
+                    'bill-to' => 'فراگیر',
                     'ship-to' => 'حمل به',
                     'contact' => 'تماس',
                     'refunds' => 'برگشت داده شده',
                     'individual-refund' => '#:refund_id بازپرداخت',
-                    'adjustment-refund' => 'بازپرداخت تنظیم',
-                    'adjustment-fee' => 'هزینه تنظیم',
+                    'adjustment-refund' => 'اضافه بازپرداخت',
+                    'adjustment-fee' => 'جریمه بازپرداخت',
                     'tracking-number' => 'Tracking Number',
                     'cancel-btn-title' => 'لغو',
                     'cancel-confirm-msg' => 'آیا از لغو این سفارش اطمینان دارید؟'
@@ -674,8 +674,8 @@ return [
             'heading' => '#:order_id للطلب #:refund_id أموالك المستردة',
             'subject' => '#:order_id رد أموال لطلبك',
             'summary' => 'خلاصه بازپرداخت',
-            'adjustment-refund' => 'بازپرداخت تنظیم',
-            'adjustment-fee' => 'هزینه تنظیم'
+            'adjustment-refund' => 'اضافه بازپرداخت',
+            'adjustment-fee' => 'جریمه بازپرداخت'
         ],
 
         'forget-password' => [
