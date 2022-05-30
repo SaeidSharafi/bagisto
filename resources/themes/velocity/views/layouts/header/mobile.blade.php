@@ -24,7 +24,7 @@
                     <i class="fa fa- fa-bars"></i>
                 </div>
                 @guest('customer')
-                <div class="login-wrapper pr-2">
+                <div class="login-wrapper pr-3">
                     <a class="unset" href="{{ route('customer.auth.create') }}">
                         <i class="fa fa-sign-in-alt"></i>
                     </a>
@@ -39,7 +39,7 @@
             </a>
         </div>
         <div class="right-vc-header d-flex align-items-center justify-content-end col-3">
-            <a class="unset cursor-pointer px-2">
+            <a class="unset cursor-pointer px-3">
                 <i class="fa fa-search"></i>
             </a>
             <a href="{{ route('shop.checkout.cart.index') }}" class="unset px-2">

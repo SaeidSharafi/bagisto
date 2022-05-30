@@ -151,7 +151,7 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
 
                                     <div class="row price-section no-gutters info align-items-end pt-4">
 
-                                        <div class="col-6 price">
+                                        <div class="col-6 price order-2 order-md-0">
                                             @include ('shop::products.price', ['product' => $product])
 
                                             @if (Webkul\Tax\Helpers\Tax::isTaxInclusive() && $product->getTypeInstance()->getTaxCategory())

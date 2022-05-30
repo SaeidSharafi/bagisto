@@ -240,7 +240,7 @@
                     <div class="hamburger-wrapper pl-2" @click="toggleHamburger">
                         <i class="fa fa- fa-bars"></i>
                     </div>
-                    <div class="login-wrapper pr-2">
+                    <div class="login-wrapper pr-3">
                         <slot name="login-link"></slot>
                     </div>
                 </div>
@@ -251,7 +251,7 @@
             <div class="right-vc-header  d-flex align-items-center justify-content-end  col-3">
                 <slot name="top-header"></slot>
 
-                <a class="unset px-1 cursor-pointer" @click="openSearchBar">
+                <a class="unset px-3 cursor-pointer" @click="openSearchBar">
                     <i class="fa fa-search"></i>
                 </a>
 
