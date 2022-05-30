@@ -306,6 +306,7 @@ class Cart
             $cartData['customer_first_name'] = auth()->guard()->user()->first_name;
             $cartData['customer_last_name'] = auth()->guard()->user()->last_name;
             $cartData['customer_email'] = auth()->guard()->user()->email;
+            $cartData['customer_phone'] = auth()->guard()->user()->phone;
         } else {
             $cartData['is_guest'] = 1;
         }
@@ -694,6 +695,7 @@ class Cart
     public function prepareDataForOrder(): array
     {
         $data = $this->toArray();
+
         $finalData = [
             'cart_id'               => $this->getCart()->id,
             'customer_id'           => $data['customer_id'],

@@ -2,6 +2,9 @@
 
 namespace Webkul\Checkout\Traits;
 
+use App\Shop\Cart;
+use Illuminate\Support\Facades\Log;
+
 /**
  * Cart tools. In this trait, you will get all sorted collections of
  * methods which can be used to manipulate cart and its items.
@@ -14,7 +17,7 @@ trait CartTools
     /**
      * Save cart for guest.
      *
-     * @param  \Webkul\Checkout\Contracts\Cart  $cart
+     * @param  Cart  $cart
      * @return void
      */
     public function putCart($cart)
@@ -31,6 +34,7 @@ trait CartTools
      */
     public function mergeCart(): void
     {
+
         if (session()->has('cart')) {
             $cart = $this->cartRepository->findOneWhere([
                 'customer_id' => auth()->guard()->user()->id,
@@ -43,6 +47,17 @@ trait CartTools
              * When the logged in customer is not having any of the cart instance previously and are active.
              */
             if (! $cart) {
+
+                foreach ($guestCart->items as $guestCartItem) {
+                    try {
+                        if ($this->customerRepository->hasOrder(auth()->guard('customer')->user()->id,$guestCartItem->product_id)){
+                            $guestCartItem->delete();
+                            session()->flash('info' , __('app.checkout.cart.item.order-exist-add'));
+                        }
+                    } catch (\Exception $e) {
+                        report($e);
+                    }
+                }
                 $this->cartRepository->update([
                     'customer_id'         => auth()->guard()->user()->id,
                     'is_guest'            => 0,
@@ -61,6 +76,7 @@ trait CartTools
                     $this->addProduct($guestCartItem->product_id, $guestCartItem->additional);
                 } catch (\Exception $e) {
                     //Ignore exception
+                    report($e);
                 }
             }
 
