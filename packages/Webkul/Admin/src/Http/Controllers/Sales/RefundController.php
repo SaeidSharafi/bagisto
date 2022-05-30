@@ -44,6 +44,7 @@ class RefundController extends Controller
      * @param  \Webkul\Sales\Repositories\OrderRepository  $orderRepository
      * @param  \Webkul\Sales\Repositories\OrderItemRepository  $orderItemRepository
      * @param  \Webkul\Sales\Repositories\RefundRepository  $refundRepository
+     *
      * @return void
      */
     public function __construct(
@@ -80,6 +81,7 @@ class RefundController extends Controller
      * Show the form for creating a new resource.
      *
      * @param  int  $orderId
+     *
      * @return \Illuminate\Http\View
      */
     public function create($orderId)
@@ -93,13 +95,14 @@ class RefundController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  int  $orderId
+     *
      * @return \Illuminate\Http\Response
      */
     public function store($orderId)
     {
         $order = $this->orderRepository->findOrFail($orderId);
 
-        if (! $order->canRefund()) {
+        if (!$order->canRefund()) {
             session()->flash('error', trans('admin::app.sales.refunds.creation-error'));
 
             return redirect()->back();
@@ -111,13 +114,12 @@ class RefundController extends Controller
 
         $data = request()->all();
 
-        if (! $data['refund']['shipping']) {
-            $data['refund']['shipping'] = 0;
-        }
+        $data['refund']['shipping'] = 0;
+        $totals['shipping']['price'] = 0;
 
         $totals = $this->refundRepository->getOrderItemsRefundSummary($data['refund']['items'], $orderId);
 
-        if (! $totals) {
+        if (!$totals) {
             session()->flash('error', trans('admin::app.sales.refunds.invalid-qty'));
 
             return redirect()->back();
@@ -125,16 +127,18 @@ class RefundController extends Controller
 
         $maxRefundAmount = $totals['grand_total']['price'] - $order->refunds()->sum('base_adjustment_refund');
 
-        $refundAmount = $totals['grand_total']['price'] - $totals['shipping']['price'] + $data['refund']['shipping'] + $data['refund']['adjustment_refund'] - $data['refund']['adjustment_fee'];
+        $refundAmount = $totals['grand_total']['price'] + $data['refund']['adjustment_refund']
+            - $data['refund']['adjustment_fee'];
 
-        if (! $refundAmount) {
+        if (!$refundAmount) {
             session()->flash('error', trans('admin::app.sales.refunds.invalid-refund-amount-error'));
 
             return redirect()->back();
         }
 
         if ($refundAmount > $maxRefundAmount) {
-            session()->flash('error', trans('admin::app.sales.refunds.refund-limit-error', ['amount' => core()->formatBasePrice($maxRefundAmount)]));
+            session()->flash('error', trans('admin::app.sales.refunds.refund-limit-error',
+                ['amount' => core()->formatBasePrice($maxRefundAmount)]));
 
             return redirect()->back();
         }
@@ -150,13 +154,14 @@ class RefundController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  int  $orderId
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateQty($orderId)
     {
         $data = $this->refundRepository->getOrderItemsRefundSummary(request()->all(), $orderId);
 
-        if (! $data) {
+        if (!$data) {
             return response('');
         }
 
@@ -167,6 +172,7 @@ class RefundController extends Controller
      * Show the view for the specified resource.
      *
      * @param  int  $id
+     *
      * @return \Illuminate\Http\View
      */
     public function view($id)
