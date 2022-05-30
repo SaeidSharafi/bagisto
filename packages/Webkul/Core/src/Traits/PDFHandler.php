@@ -32,18 +32,19 @@ trait PDFHandler
             'margin_top'     => '20',
             'margin_bottom'  => '20',
             'margin_footer'  => '2',
+            'tempDir'        => base_path().'/storage/mpdf/tmp',
             'languageToFont' => new FarsiLanguageToFontImplementation(),
             'fontDir'        => [
                 base_path().'/public/fonts/IranYekan/ttf',
             ],
             'fontdata'       => [
-                    'iranyekan' => [
-                        'R' => 'iranyekanwebregularfanum.ttf',
-                        'I' => 'iranyekanwebregularfanum.ttf',
-                        'useOTL' => 0xFF,
-                    ]
-                ],
-            'default_font' => 'iranyekan',
+                'iranyekan' => [
+                    'R'      => 'iranyekanwebregularfanum.ttf',
+                    'I'      => 'iranyekanwebregularfanum.ttf',
+                    'useOTL' => 0xFF,
+                ]
+            ],
+            'default_font'   => 'iranyekan',
             'direction'      => 'rtl'
         ]);
         $document->autoScriptToLang = true;

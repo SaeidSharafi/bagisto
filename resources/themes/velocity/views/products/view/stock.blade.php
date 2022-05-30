@@ -24,7 +24,7 @@
 
         </div>
     </div>
-
+</div>
 </div>
 
 {!! view_render_event('bagisto.shop.products.view.stock.after', ['product' => $product]) !!}

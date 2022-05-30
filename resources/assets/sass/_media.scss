@@ -115,11 +115,36 @@ body.rtl header .vc-small-screen #search-form {
             padding: 0.2em 0.4em;
         }
     }
+    .main-content-wrapper .vc-header > div.vc-small-screen {
+        .hamburger-wrapper {
+            height: 50px;
+            display: flex;
+            align-items: center;
+        }
+
+        .login-wrapper {
+            height: 50px;
+            display: flex;
+            align-items: center;
+
+            i {
+                transform: scaleX(-1);
+            }
+        }
+    }
     section.product-extra-detail .extra-attributes .nav-item a.nav-link {
         font-size: 0.8rem;
     }
     #home-right-bar-container {
         top: 0;
+    }
+    .nav-container .wrapper .greeting {
+        &> i {
+            font-size: 1.6rem;
+        }
+        span{
+            font-size: 1.6rem;
+        }
     }
 }
 

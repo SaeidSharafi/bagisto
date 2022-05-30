@@ -241,7 +241,7 @@ return [
         'expiration-date'  => 'تاریخ ایجاد شده',
         'edit'             => 'ویرایش کنید',
         'delete'           => 'حذف',
-        'view'             => 'چشم انداز',
+        'view'             => 'مشاهده',
         'rtl'              => 'RTL',
         'ltr'              => 'LTR',
         'update-status'    => 'وضعیت به روز رسانی',

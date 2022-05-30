@@ -7,7 +7,7 @@
                 <div v-if="hamburger" class="nav-container scrollable">
                     <div class="wrapper" v-if="this.rootCategories">
                         <div class="greeting drawer-section fw6">
-                            <i class="material-icons">perm_identity</i>
+                            <i class="fa fa-user-alt"></i>
                             <span>
                             <slot name="greetings"></slot>
 
@@ -20,7 +20,16 @@
                         </span>
                         </div>
                         <slot name="customer-navigation"></slot>
-
+                        <ul
+                            type="none"
+                            class="velocity-content">
+                            <li>
+                                <a class="unset" :href="`${$root.baseUrl}/#`" target="_self">درباره ما</a>
+                            </li>
+                            <li>
+                                <a class="unset" :href="`${$root.baseUrl}/#`" target="_self">گواهی نامه</a>
+                            </li>
+                        </ul>
 
                         <ul
                             type="none"
@@ -57,20 +66,10 @@
                                 ></i>
                             </li>
                         </ul>
-                        <ul
-                            type="none"
-                            class="velocity-content">
-                            <li >
-                                <a class="unset"  :href="`${$root.baseUrl}/#`" target="_self">درباره ما</a>
-                            </li>
-                            <li >
-                                <a class="unset" :href="`${$root.baseUrl}/#`" target="_self">گواهی نامه</a>
-                            </li>
-                        </ul>
-                        <ul type="none" class="meta-wrapper">
-                            <slot name="extra-navigation"></slot>
-                        </ul>
 
+                        <ul type="none" class="meta-wrapper" v-if="hasExtraSlot()">
+                            <slot name="extranavigation"></slot>
+                        </ul>
                     </div>
 
                     <div class="wrapper" v-else-if="subCategory">
@@ -234,10 +233,16 @@
                             </li>
                         </ul>
                     </div>
-                </div>
 
-                <div class="hamburger-wrapper" @click="toggleHamburger">
-                    <i class="rango-toggle hamburger"></i>
+
+                </div>
+                <div class="w-100 d-flex align-items-center">
+                    <div class="hamburger-wrapper pl-2" @click="toggleHamburger">
+                        <i class="fa fa- fa-bars"></i>
+                    </div>
+                    <div class="login-wrapper pr-2">
+                        <slot name="login-link"></slot>
+                    </div>
                 </div>
             </div>
             <div class="col-6">
@@ -303,10 +308,10 @@ export default {
             if (value) {
                 document.body.classList.add('open-hamburger');
                 var this_this = this;
-                document.addEventListener('outSideNavClick',this.closeDrawer);
+                document.addEventListener('outSideNavClick', this.closeDrawer);
             } else {
                 document.body.classList.remove('open-hamburger');
-                document.removeEventListener('outSideNavClick',this.closeDrawer);
+                document.removeEventListener('outSideNavClick', this.closeDrawer);
             }
         },
 
@@ -331,20 +336,19 @@ export default {
     },
     mounted() {
 
-
     },
     methods: {
         openSearchBar: function () {
             this.isSearchbar = !this.isSearchbar;
             let topbar = $('.top-bar-gif');
             if (this.isSearchbar) {
-                topbar[0].style.zIndex=11;
-                document.addEventListener('outSideNavClick',this.closeSearchbar);
+                topbar[0].style.zIndex = 11;
+                document.addEventListener('outSideNavClick', this.closeSearchbar);
                 document.body.classList.add('open-search');
             } else {
-                topbar[0].style.zIndex=0;
+                topbar[0].style.zIndex = 0;
                 document.body.classList.remove('open-search');
-                document.removeEventListener('outSideNavClick',this.closeSearchbar);
+                document.removeEventListener('outSideNavClick', this.closeSearchbar);
             }
         },
 
@@ -354,7 +358,7 @@ export default {
         closeSearchbar: function () {
             this.isSearchbar = false;
             let topbar = $('.top-bar-gif');
-            topbar[0].style.zIndex=0;
+            topbar[0].style.zIndex = 0;
             document.body.classList.remove('open-search');
         },
         closeDrawer: function () {
@@ -363,7 +367,10 @@ export default {
             this.hamburger = false;
             this.rootCategories = true;
         },
-
+        hasExtraSlot() {
+            console.log(this.$slots);
+            return !!this.$slots.extranavigation;
+        },
         toggleSubcategories: function (index, event) {
             if (index == 'root') {
                 this.rootCategories = true;

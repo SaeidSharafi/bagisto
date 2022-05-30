@@ -143,11 +143,13 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                             <div class="product-info col-md-6 col-lg-7">
                                 <div class="pt-4 px-3">
                                     {{-- product-info-section --}}
-                                    <div class="attributes">
+                                    <div class="attributes asd">
                                         @include ('shop::products.view.attributes',['active' => true,'customAttributeValues'=>$course_details])
                                         @include ('shop::products.view.stock', ['product' => $product])
                                     </div>
-                                    <div class="row info align-items-end pt-4">
+                                    @include ('shop::products.view.configurable-options')
+
+                                    <div class="row price-section no-gutters info align-items-end pt-4">
 
                                         <div class="col-6 price">
                                             @include ('shop::products.price', ['product' => $product])
@@ -202,7 +204,6 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
 
                                     {!! view_render_event('bagisto.shop.products.view.quantity.after', ['product' => $product]) !!}
 
-                                    @include ('shop::products.view.configurable-options')
 
                                     @include ('shop::products.view.downloadable')
 
@@ -220,16 +221,6 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                             </div>
                             <div class="row info align-items-end">
 
-                                <div class="col-6 price">
-                                    @include ('shop::products.price', ['product' => $product])
-
-                                    @if (Webkul\Tax\Helpers\Tax::isTaxInclusive() && $product->getTypeInstance()->getTaxCategory())
-                                        <span>
-                                                    {{ __('velocity::app.products.tax-inclusive') }}
-                                                </span>
-                                    @endif
-                                </div>
-
                                 <div class="col-6 product-actions">
 
                                     @include ('shop::products.add-to-cart', [
@@ -240,6 +231,16 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                                                         ? true : false,
                                     ])
                                 </div>
+                                <div class="col-6 price ">
+                                    @include ('shop::products.price', ['product' => $product])
+
+                                    @if (Webkul\Tax\Helpers\Tax::isTaxInclusive() && $product->getTypeInstance()->getTaxCategory())
+                                        <span>
+                                                    {{ __('velocity::app.products.tax-inclusive') }}
+                                                </span>
+                                    @endif
+                                </div>
+
                             </div>
                         </div>
                     </div>

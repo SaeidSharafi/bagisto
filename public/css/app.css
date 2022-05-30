@@ -166,6 +166,10 @@ body.open-search #search-blocker {
   font-size: 1.2rem;
 }
 
+.tabs ul {
+  padding-right: 0;
+}
+
 .slideshow {
   overflow: hidden;
   position: relative;
@@ -6646,13 +6650,13 @@ a:hover {
 }
 
 .account-content .account-layout .account-heading {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
 }
 .account-content .account-layout .account-head {
   justify-content: start;
 }
 .account-content .account-layout .account-head .account-heading {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
 }
 .account-content .account-layout .reviews-container .product-name {
   font-size: 1.4rem;
@@ -6668,6 +6672,21 @@ a:hover {
 }
 .account-content .account-layout .customer-orders .filter-left {
   display: none;
+}
+.account-content .account-layout .sale-container {
+  font-size: 1.2rem;
+}
+.account-content .account-layout .sale-container .tabs ul {
+  font-size: 1.4rem;
+}
+.account-content .account-layout .sale-container .tabs-content .sale-section .section-title {
+  font-size: 1.4rem;
+}
+.account-content .account-layout .sale-container th {
+  font-size: 1.4rem;
+}
+.account-content .account-layout .sale-container .table.overflow-x {
+  overflow-x: scroll;
 }
 .account-content .account-layout .table table tr {
   border: none !important;
@@ -7051,12 +7070,17 @@ img.cover {
   background-color: #2b348f;
 }
 
+.mobile-header i {
+  font-size: 1.6rem;
+}
+
 .category-carousel.sticky-header {
   top: 50px;
   background-color: #000000;
 }
 .category-carousel .category-item {
   padding: 0.5rem 0.9rem;
+  max-width: 167px;
 }
 .category-carousel .category-item .category-text {
   color: #000000;
@@ -7135,7 +7159,7 @@ header .mini-cart-container > .dropdown #mini-cart {
   top: 55px;
 }
 .velocity-divide-page .customer-sidebar ul.navigation li {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
 }
 
 section.product-detail {
@@ -7286,6 +7310,16 @@ section.product-footer .teacher-image img {
   justify-content: end;
 }
 
+.product-info .price-section {
+  max-width: 350px;
+}
+.product-info .price-section .product-actions {
+  display: flex;
+  justify-content: end;
+}
+.product-info .attributes > div:not(.header) {
+  max-width: 350px;
+}
 .product-info .attributes .header {
   border-bottom: 1px solid #000;
   width: 100%;
@@ -7335,7 +7369,10 @@ section.product-footer .teacher-image img {
 }
 .product-info.sticky-price .product-actions {
   display: flex;
-  justify-content: end;
+  justify-content: start;
+}
+.product-info.sticky-price .product-price {
+  align-items: end;
 }
 
 .product-card {
@@ -7732,7 +7769,7 @@ body.rtl .product-detail .thumb-list .slick-prev:before, body.rtl .product-detai
   display: flex;
   flex-flow: column;
   padding: 10px;
-  font-size: 1rem;
+  font-size: 1.2rem;
   background-color: #1f256a;
 }
 .teacher-card .teahcer-info span.teacher-honorific {
@@ -8055,6 +8092,11 @@ body.rtl header .mini-cart-container #mini-cart .badge {
   display: none;
 }
 
+#cart-modal-content {
+  right: auto;
+  left: 0;
+}
+
 @media (min-width: 320px) {
   html {
     font-size: 10px;
@@ -8097,6 +8139,9 @@ body.rtl header .mini-cart-container #mini-cart .badge {
     margin-top: -20px;
   }
 
+  .account-content .account-layout .sale-container .table.overflow-x {
+    overflow-x: initial;
+  }
   .account-content .account-layout .customer-orders {
     font-size: 1.4rem;
   }
@@ -8154,6 +8199,11 @@ body.rtl header .mini-cart-container #mini-cart .badge {
   }
 }
 @media (min-width: 1200px) {
+  #cart-modal-content {
+    right: 0;
+    left: auto;
+  }
+
   .product-card-wrapper {
     flex: 0 0 20%;
     max-width: 20%;
@@ -8269,12 +8319,33 @@ body.rtl header .vc-small-screen #search-form input {
     padding: 0.2em 0.4em;
   }
 
+  .main-content-wrapper .vc-header > div.vc-small-screen .hamburger-wrapper {
+    height: 50px;
+    display: flex;
+    align-items: center;
+  }
+  .main-content-wrapper .vc-header > div.vc-small-screen .login-wrapper {
+    height: 50px;
+    display: flex;
+    align-items: center;
+  }
+  .main-content-wrapper .vc-header > div.vc-small-screen .login-wrapper i {
+    transform: scaleX(-1);
+  }
+
   section.product-extra-detail .extra-attributes .nav-item a.nav-link {
     font-size: 0.8rem;
   }
 
   #home-right-bar-container {
     top: 0;
+  }
+
+  .nav-container .wrapper .greeting > i {
+    font-size: 1.6rem;
+  }
+  .nav-container .wrapper .greeting span {
+    font-size: 1.6rem;
   }
 }
 @media only screen and (max-width: 600px) {

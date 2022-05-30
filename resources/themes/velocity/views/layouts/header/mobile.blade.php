@@ -5,7 +5,7 @@
 
 <mobile-header
     is-customer="{{ auth()->guard('customer')->check() ? 'true' : 'false' }}"
-    heading= "{{ __('velocity::app.menu-navbar.text-category') }}"
+    heading="{{ __('velocity::app.menu-navbar.text-category') }}"
     :header-content="{{ json_encode(app('Webkul\Velocity\Repositories\ContentRepository')->getAllContents()) }}"
     category-count="{{ $velocityMetaData ? $velocityMetaData->sidebar_category_count : 10 }}"
     cart-items-count="{{ $cartItemsCount }}"
@@ -19,14 +19,23 @@
     {{-- this is default content if js is not loaded --}}
     <div class="row">
         <div class="col-3">
-            <div class="hamburger-wrapper">
-                <i class="rango-toggle hamburger"></i>
-            </div>
+            <div class="w-100 d-flex align-items-center">
+                <div class="hamburger-wrapper pl-2">
+                    <i class="fa fa- fa-bars"></i>
+                </div>
+                @guest('customer')
+                <div class="login-wrapper pr-2">
+                    <a class="unset" href="{{ route('customer.auth.create') }}">
+                        <i class="fa fa-sign-in-alt"></i>
+                    </a>
 
+                </div>
+                @endguest
+            </div>
         </div>
         <div class="col-6">
             <a href="{{ route('shop.home.index') }}" aria-label="Logo" class="logo">
-                <img src="{{ core()->getCurrentChannel()->logo_url ?? asset('themes/velocity/assets/images/logo-text.png') }}" alt="" />
+                <img src="{{ core()->getCurrentChannel()->logo_url ?? asset('themes/velocity/assets/images/logo-text.png') }}" alt=""/>
             </a>
         </div>
         <div class="right-vc-header d-flex align-items-center justify-content-end col-3">
@@ -46,11 +55,6 @@
     </div>
 
     <template v-slot:greetings>
-        @guest('customer')
-            <a class="unset" href="{{ route('customer.auth.create') }}">
-                {{ __('velocity::app.responsive.header.greeting', ['customer' => 'Guest']) }}
-            </a>
-        @endguest
 
         @auth('customer')
             <a class="unset" href="{{ route('customer.profile.index') }}">
@@ -58,7 +62,13 @@
             </a>
         @endauth
     </template>
-
+    @guest('customer')
+    <template v-slot:login-link>
+        <a class="unset d-flex" href="{{ route('customer.auth.create') }}">
+            <i class="fa fa-sign-in-alt"></i>
+        </a>
+    </template>
+    @endguest
     <template v-slot:customer-navigation>
         @auth('customer')
             <ul type="none" class="vc-customer-options">
@@ -105,9 +115,10 @@
         @endauth
     </template>
 
-    <template v-slot:extra-navigation>
+    <template v-slot:extraNavigation>
+        @auth('customer')
         <li>
-            @auth('customer')
+
                 <form id="customerLogout" action="{{ route('customer.session.destroy') }}" method="POST">
                     @csrf
 
@@ -120,30 +131,22 @@
                     onclick="event.preventDefault(); document.getElementById('customerLogout').submit();">
                     {{ __('shop::app.header.logout') }}
                 </a>
-            @endauth
 
-            @guest('customer')
-                <a
-                    class="unset"
-                    href="{{ route('customer.auth.create') }}">
-                    <span>{{ __('shop::app.customer.login-form.title') }}</span>
-                </a>
-            @endguest
+
         </li>
-
+        @endauth
     </template>
 
     <template v-slot:logo>
         <a class="logo" href="{{ route('shop.home.index') }}" aria-label="Logo">
-            <img src="{{ core()->getCurrentChannel()->logo_url ?? asset('themes/velocity/assets/images/logo-text.png') }}" alt="" />
+            <img src="{{ core()->getCurrentChannel()->logo_url ?? asset('themes/velocity/assets/images/logo-text.png') }}" alt=""/>
         </a>
     </template>
 
 
-
     <template v-slot:search-bar>
         <div class="w-100">
-                @include('velocity::shop.layouts.particals.search-bar')
+            @include('velocity::shop.layouts.particals.search-bar')
         </div>
     </template>
 
