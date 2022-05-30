@@ -10,6 +10,7 @@
     category-count="{{ $velocityMetaData ? $velocityMetaData->sidebar_category_count : 10 }}"
     cart-items-count="{{ $cartItemsCount }}"
     cart-route="{{ route('shop.checkout.cart.index') }}"
+    class="mobile-header"
     :locale="{{ json_encode(core()->getCurrentLocale()) }}"
     :all-locales="{{ json_encode(core()->getCurrentChannel()->locales) }}"
     :currency="{{ json_encode(core()->getCurrentCurrency()) }}"
