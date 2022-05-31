@@ -104,7 +104,7 @@
                     <tr>
                         <th class="is-default">{{ __('admin::app.catalog.products.is-default') }}</th>
                         <th class="sku">{{ __('admin::app.catalog.products.sku') }}</th>
-                        <th>{{ __('admin::app.catalog.products.name') }}</th>
+                        <th>{{ __('admin.catalog.products.product_number') }}</th>
                         <th>{{ __('admin::app.catalog.products.images') }}</th>
                         <th class="qty">{{ __('admin::app.catalog.products.qty') }}</th>
                         <th class="price">{{ __('admin::app.catalog.products.price') }}</th>
@@ -163,19 +163,19 @@
 
             <td>
                 <div
-                    :class="['control-group', errors.has(variantInputName + '[name]') ? 'has-error' : '']">
+                    :class="['control-group', errors.has(variantInputName + '[product_number]') ? 'has-error' : '']">
                     <input
                         class="control"
                         type="text"
-                        :name="[variantInputName + '[name]']"
-                        v-model="variant.name"
+                        :name="[variantInputName + '[product_number]']"
+                        v-model="variant.product_number"
                         v-validate="'required'"
-                        data-vv-as="&quot;{{ __('admin::app.catalog.products.name') }}&quot;"/>
+                        data-vv-as="&quot;{{ __('admin::app.catalog.products.product_number') }}&quot;"/>
 
                     <span
                         class="control-error"
-                        v-text="errors.first(variantInputName + '[name]')"
-                        v-if="errors.has(variantInputName + '[name]')">
+                        v-text="errors.first(variantInputName + '[product_number]')"
+                        v-if="errors.has(variantInputName + '[product_number]')">
                     </span>
                 </div>
 
@@ -270,7 +270,7 @@
                         v-model="variant.price"
                         v-validate="'required'"
                         data-vv-as="&quot;{{ __('admin::app.catalog.products.price') }}&quot;"
-                        step="any"/>
+                        step="1"/>
 
                     <span
                         class="control-error"
@@ -324,7 +324,7 @@
 
         let super_attributes = @json(app('\Webkul\Product\Repositories\ProductRepository')->getSuperAttributes($product));
         let variants = @json($product->variants);
-
+console.table(variants);
         Vue.component('variant-form', {
             data: function () {
                 return {
@@ -494,7 +494,7 @@
 
             mounted () {
                 let self = this;
-
+                this.variant.price = Math.floor(this.variant.price);
                 self.variant.images.forEach(function(image) {
                     self.items.push(image)
                     self.imageCount++;

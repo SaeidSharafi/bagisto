@@ -2,7 +2,8 @@
 return [
     'catalog'  => [
         'products' => [
-            'banner' => 'بنر'
+            'banner' => 'بنر',
+            'product_number' => 'کد دوره'
         ]
     ],
     'sales' =>[

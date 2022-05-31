@@ -208,7 +208,6 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = $this->productRepository->with(['variants', 'variants.inventories'])->findOrFail($id);
-
         $categories = $this->categoryRepository->getCategoryTree();
 
         $inventorySources = $this->inventorySourceRepository->findWhere(['status' => 1]);
@@ -226,10 +225,17 @@ class ProductController extends Controller
     public function update(ProductForm $request, $id)
     {
         $data = request()->all();
+
         Cache::forget('featured_products');
         Cache::forget('new_products');
         Cache::forget('free_products');
         $multiselectAttributeCodes = [];
+
+        if ($data['variants']){
+            foreach ($data['variants'] as $key => $variant){
+                $data['variants'][$key]['name'] =$data['name'];
+            }
+        }
 
         $productAttributes = $this->productRepository->findOrFail($id);
 

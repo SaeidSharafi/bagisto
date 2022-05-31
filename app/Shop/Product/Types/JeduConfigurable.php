@@ -10,7 +10,7 @@ use App\Services\CatalogRuleProductPriceService;
 class JeduConfigurable extends Configurable
 {
 
-    protected $fillableTypes = ['sku', 'name', 'url_key', 'short_description', 'description', 'price', 'status'];
+    protected $fillableTypes = ['sku','name',  'product_number', 'url_key', 'short_description', 'description', 'price', 'status'];
 
     /**
      * Get product minimal price.
@@ -21,7 +21,7 @@ class JeduConfigurable extends Configurable
     {
         $discount = $regular_price = '';
         if ($offer = $this->getOfferPrice()) {
-            $discount ='%';
+            $discount = '%';
             if ($offer['action_type'] === "by_percent") {
                 $discount = core()->formatPercent($offer['discount_amount']);
             }
@@ -238,9 +238,9 @@ class JeduConfigurable extends Configurable
     public function getTypeValidationRules()
     {
         return [
-            'variants.*.name'  => 'required',
-            'variants.*.sku'   => 'required',
-            'variants.*.price' => 'required',
+            'variants.*.product_number' => 'required',
+            'variants.*.sku'            => 'required',
+            'variants.*.price'          => 'required',
         ];
     }
 
@@ -264,34 +264,33 @@ class JeduConfigurable extends Configurable
         $data = $this->getQtyRequest($data);
         $childProduct = $this->productRepository->find($data['selected_configurable_option']);
 
-
         if (!$childProduct->haveSufficientQuantity($data['quantity'])) {
             return trans('shop::app.checkout.cart.quantity.inventory_warning');
         }
         $price = $childProduct->getTypeInstance()->getFinalPrice();
-        $discount = $regular_price=0;
+        $discount = $regular_price = 0;
         if ($childProduct->getTypeInstance()->haveSpecialPrice()) {
             if ($childProduct->getTypeInstance()->isPercentOffer()) {
                 $discount = $childProduct->getTypeInstance()->getDiscountPercent();
             }
-            $regular_price =$this->evaluatePrice($childProduct->getTypeInstance()->getMaximamPrice());
+            $regular_price = $this->evaluatePrice($childProduct->getTypeInstance()->getMaximamPrice());
         }
         return [
-            'parent' =>[
-                'product_id' => $this->product->id,
-                'sku'        => $this->product->sku,
-                'name'       => $this->product->name,
-                'type'       => $this->product->type,
-                'quantity'   => $data['quantity'],
-                'price'      => $convertedPrice = core()->convertPrice($price),
-                'base_price' => $regular_price,
-                'total'      => $convertedPrice * $data['quantity'],
-                'base_total' => $price * $data['quantity'],
+            'parent'    => [
+                'product_id'       => $this->product->id,
+                'sku'              => $this->product->sku,
+                'name'             => $this->product->name,
+                'type'             => $this->product->type,
+                'quantity'         => $data['quantity'],
+                'price'            => $convertedPrice = core()->convertPrice($price),
+                'base_price'       => $regular_price,
+                'total'            => $convertedPrice * $data['quantity'],
+                'base_total'       => $price * $data['quantity'],
                 'discount_percent' => $discount,
-                'discount_amount' => $regular_price - $price,
-                'additional' => $this->getAdditionalOptions($data),
+                'discount_amount'  => $regular_price - $price,
+                'additional'       => $this->getAdditionalOptions($data),
             ],
-            'variation'=>[
+            'variation' => [
                 'parent_id'  => $this->product->id,
                 'product_id' => (int) $data['selected_configurable_option'],
                 'sku'        => $childProduct->sku,
@@ -304,4 +303,5 @@ class JeduConfigurable extends Configurable
             ],
         ];
     }
+
 }
