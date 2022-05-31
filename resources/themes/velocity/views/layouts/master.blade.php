@@ -38,7 +38,7 @@
 <div id="wrapper">
     {{-- main app --}}
     <div id="app">
-        <product-quick-view v-if="$root.quickView"></product-quick-view>
+
         <div class="main-container-wrapper main-content-wrapper">
 
             @section('body-header')
