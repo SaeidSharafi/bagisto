@@ -5,6 +5,8 @@ return [
     'create'        => 'ايجاد كردن',
     'update'        => 'به روز رسانی',
     'delete'        => 'حذف',
+    'copy-of'       => 'Copy of ',
+    'copy-of-slug'  => 'copy-of-',
     'failed'        => 'ناموفق',
     'store'         => 'فروشگاه',
     'image'         => 'تصویر',
