@@ -65,7 +65,7 @@ class MellatController extends Controller
     {
         session()->flash('error', 'پرداخت ناموفق');
 
-        return redirect()->route('shop.checkout.cart.index');
+        return redirect()->route('shop.checkout.onepage.index');
     }
 
     /**
