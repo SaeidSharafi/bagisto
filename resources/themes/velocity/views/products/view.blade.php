@@ -59,17 +59,17 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
 
     <meta name="twitter:card" content="summary_large_image"/>
 
-    <meta name="twitter:title" content="{{ $product->name }}"/>
+{{--    <meta name="twitter:title" content="{{ $product->name }}"/>--}}
 
-    <meta name="twitter:description" content="{{ $product->description }}"/>
+{{--    <meta name="twitter:description" content="{{ $product->description }}"/>--}}
 
     <meta name="twitter:image:alt" content=""/>
 
-    <meta name="twitter:image" content="{{ $productBaseImage['medium_image_url'] }}"/>
+{{--    <meta name="twitter:image" content="{{ $productBaseImage['medium_image_url'] }}"/>--}}
 
     <meta property="og:type" content="og:product"/>
 
-    <meta property="og:title" content="{{ $product->name }}"/>
+{{--    <meta property="og:title" content="{{ $product->name }}"/>--}}
 
     <meta property="og:image" content="{{ $productBaseImage['medium_image_url'] }}"/>
 
@@ -170,19 +170,10 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                                         @endif
 
                                         <div class="col-6 product-actions">
-                                            @if (core()->getConfigData('catalog.products.storefront.buy_now_button_display'))
+
                                                 @include ('shop::products.buy-now', [
                                                     'product' => $product,
                                                 ])
-                                            @endif
-
-                                            @include ('shop::products.add-to-cart', [
-                                                'form' => false,
-                                                'product' => $product,
-                                                'showCartIcon' => false,
-                                                'showCompare' => core()->getConfigData('general.content.shop.compare_option') == "1"
-                                                                ? true : false,
-                                            ])
                                         </div>
                                     </div>
 

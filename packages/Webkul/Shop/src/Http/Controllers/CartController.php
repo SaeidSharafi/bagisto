@@ -90,6 +90,7 @@ class CartController extends Controller
                 }
             }
         } catch (\Exception $e) {
+            throw($e);
             session()->flash('warning', __($e->getMessage()));
 
             $product = $this->productRepository->find($id);
