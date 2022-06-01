@@ -123,14 +123,14 @@ trait CartTools
      */
     public function deactivateCurrentCartIfBuyNowIsActive()
     {
-        //if (request()->get('is_buy_now')) {
+        if (request()->get('is_buy_now')) {
             if ($deactivatedCart = $this->getCart()) {
                 session()->put('deactivated_cart_id', $deactivatedCart->id);
 
                 $this->deleteCart();
             }
 
-        //}
+        }
     }
 
     /**
