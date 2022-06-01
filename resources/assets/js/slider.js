@@ -235,7 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         $(window).scroll(function () {
             let top = $('.product-description');
-            if (top) {
+            if (top.length) {
                 if ($(window).scrollTop() > top.offset().top) {
                     $('.sticky-price').removeClass('out');
                     $('nav div').removeClass('visible-title');

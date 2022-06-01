@@ -60,7 +60,7 @@ $(function() {
      * file then update this path also for mobile.
      */
     let velocityJSPath = 'js/velocity.js';
-    loadDynamicScript(`${baseUrl}/${velocityJSPath}`, () => {});
+    // loadDynamicScript(`${baseUrl}/${velocityJSPath}`, () => {});
     // if (
     //     isMobile() &&
     //     removeTrailingSlash(baseUrl) === removeTrailingSlash(window.location.href)

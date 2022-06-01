@@ -2,6 +2,8 @@
 
 <script type="text/javascript" src="{{ asset(mix('/js/velocity-core.js')) }}"></script>
 
+<script type="text/javascript" src="{{ asset(mix('/js/velocity.js')) }}"></script>
+
 <script type="text/javascript" src="{{ asset(mix('/js/components.js')) }}"></script>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js"></script>
