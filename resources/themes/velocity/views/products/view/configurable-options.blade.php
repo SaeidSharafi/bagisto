@@ -334,12 +334,12 @@
                                     productDiscounts.forEach((el) => {
                                         el.classList.add('d-none');
                                     });
-                                    for(const productDiscount of productDiscounts){
-                                        productDiscount.classList.add('d-none');
-                                    }
+                                    // for(const productDiscount of productDiscounts){
+                                    //     productDiscount.classList.add('d-none');
+                                    // }
                                     if(this.config.variant_prices[this.simpleProduct].final_price.discount){
                                         productDiscounts.forEach((el) => {
-                                            el.classList.add('d-none');
+                                            el.classList.remove('d-none');
                                         });
                                         for(const discountAmount of discountAmounts) {
                                             discountAmount.innerHTML = this.config.variant_prices[this.simpleProduct].final_price.discount;
