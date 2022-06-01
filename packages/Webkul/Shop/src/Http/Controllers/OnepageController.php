@@ -62,9 +62,9 @@ class OnepageController extends Controller
             return redirect()->route('customer.session.index');
         }
 
-        if (auth()->guard('customer')->check()){
+        if (auth()->guard('customer')->check()) {
 
-            if(auth()->guard('customer')->user()->is_suspended) {
+            if (auth()->guard('customer')->user()->is_suspended) {
                 session()->flash('warning', trans('shop::app.checkout.cart.suspended-account-message'));
 
                 return redirect()->route('shop.checkout.cart.index');
@@ -163,8 +163,15 @@ class OnepageController extends Controller
      */
     public function getPaymentMethods()
     {
-        return response()->json(Payment::getSupportedPaymentMethods());
+        Cart::collectTotals();
+
+        $cart = Cart::getCart();
+        return response()->json(
+            array_merge(Payment::getSupportedPaymentMethods(),
+                ['review_html' => view('shop::checkout.onepage.review', compact('cart'))->render()])
+        );
     }
+
 
     /**
      * Saves shipping method.
@@ -202,8 +209,8 @@ class OnepageController extends Controller
         $cart = Cart::getCart();
 
         return response()->json([
-            'jump_to_section' => 'review',
-            'html'            => view('shop::checkout.onepage.review', compact('cart'))->render(),
+            'jump_to_section' => 'checkout',
+            'html'            => view('shop::checkout.onepage.checkout', compact('cart'))->render(),
         ]);
     }
 

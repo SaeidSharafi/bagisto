@@ -8,10 +8,15 @@
         </div>
 
         <div slot="body">
-            <div class="cart-item-list cart-details pt-0">
+            <div class="cart-item-list cart-details pt-0 border-0">
                 @foreach ($cart->items as $item)
                     @php
-                        $productBaseImage = $item->product->getTypeInstance()->getBaseImage($item);
+                    $product = $item->product;
+
+                        if ($item->type == 'configurable'){
+                        $product = $item->children->first()->product;
+                        }
+    $productBaseImage = $item->product->getTypeInstance()->getBaseImage($item);
                     @endphp
                 <div class="card cart-row mb-2 py-2">
                     <div class="row col-12 no-padding">
@@ -24,7 +29,7 @@
                             {!! view_render_event('bagisto.shop.checkout.name.before', ['item' => $item]) !!}
 
                                 <div class="row">
-                                    <span class="col-12 fw6">{{ $item->product->name }}</span>
+                                    <span class="col-12 fw6">{{ $product->name }}</span>
                                 </div>
 
                             {!! view_render_event('bagisto.shop.checkout.name.after', ['item' => $item]) !!}
@@ -45,35 +50,13 @@
                             {!! view_render_event('bagisto.shop.checkout.options.after', ['item' => $item]) !!}
                         </div>
                         <div class="product-price checkout fs18 col-3 pl-0">
-                            {!!  $item->product->getTypeInstance()->getPriceHtml()!!}
+                            {!!  $product->getTypeInstance()->getPriceHtml()!!}
                         </div>
                     </div>
                 </div>
                 @endforeach
             </div>
 
-            <div class="order-description row fs16 cart-details">
-                <div class="col-lg-4 col-md-12">
-
-
-                    <div class="payment mb20">
-                        <div class="decorator">
-                            <i class="icon payment-icon"></i>
-                        </div>
-
-                        <div class="text">
-                            <h4 class="fw6 fs18">
-                                {{ core()->getConfigData('sales.paymentmethods.' . $cart->payment->method . '.title') }}
-                            </h4>
-
-                            <span>{{ __('shop::app.customer.account.order.view.payment-method') }}</span>
-                        </div>
-                    </div>
-
-                    <slot name="place-order-btn"></slot>
-                </div>
-
-            </div>
         </div>
     </accordian>
 </div>
