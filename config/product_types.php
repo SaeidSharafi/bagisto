@@ -13,4 +13,11 @@ return [
         'class' => 'App\Shop\Product\Types\JeduConfigurable',
         'sort'  => 2,
     ],
+
+    'template' => [
+        'key'   => 'template',
+        'name'  => 'Template',
+        'class' => \App\Shop\Product\Types\JeduTemplate::class,
+        'sort'  => 3,
+    ],
 ];

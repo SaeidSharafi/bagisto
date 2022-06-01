@@ -579,7 +579,7 @@ class ProductRepository extends Repository
      *
      * @param  int  $sourceProductId (The id of the product that should be copied.)
      */
-    public function copy(Product $originalProduct): Product
+    public function copy(Product $originalProduct,$data=null,$keepSKU = false): Product
     {
         $this->fillOriginalProduct($originalProduct);
 
@@ -590,7 +590,7 @@ class ProductRepository extends Repository
         DB::beginTransaction();
 
         try {
-            $copiedProduct = $this->persistCopiedProduct($originalProduct);
+            $copiedProduct = $this->persistCopiedProduct($originalProduct,$data,$keepSKU);
 
             $this->persistAttributeValues($originalProduct, $copiedProduct);
 
@@ -689,17 +689,36 @@ class ProductRepository extends Repository
      * @param  $originalProduct
      * @return \Webkul\Product\Models\Product
      */
-    private function persistCopiedProduct($originalProduct): Product
+    private function persistCopiedProduct($originalProduct,$data=null,$keepSKU = false): Product
     {
+
+        $fill = array_merge($data,[
+            // the sku and url_key needs to be unique and should be entered again newly by the admin
+            'sku' => $keepSKU ? $originalProduct->sku : 'temporary-sku-' . substr(md5(microtime()), 0, 6),
+        ]);
         $copiedProduct = $originalProduct
             ->replicate()
             ->fill([
-                // the sku and url_key needs to be unique and should be entered again newly by the admin
-                'sku' => 'temporary-sku-' . substr(md5(microtime()), 0, 6),
+                $fill
             ]);
-
         $copiedProduct->save();
 
+        if (isset($data['super_attributes'])) {
+            $super_attributes = [];
+
+            foreach ($data['super_attributes'] as $attributeCode => $attributeOptions) {
+                $attribute = $this->attributeRepository->findOneByField('code', $attributeCode);
+
+                $super_attributes[$attribute->id] = $attributeOptions;
+
+                $copiedProduct->super_attributes()->attach($attribute->id);
+            }
+            \Log::info("super_attributes => {$attributeCode}:",$attributeOptions);
+            foreach (array_permutation($super_attributes) as $permutation) {
+                \Log::info("createVariant => {$attributeCode}:",$permutation);
+                $copiedProduct->getTypeInstance()->createVariant($copiedProduct, $permutation);
+            }
+        }
         return $copiedProduct;
     }
 

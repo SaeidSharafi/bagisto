@@ -70,7 +70,7 @@ class ProductForm extends FormRequest
 
         $maxVideoFileSize = (core()->getConfigData('catalog.products.attribute.file_attribute_upload_size')) ? core()->getConfigData('catalog.products.attribute.file_attribute_upload_size') : '2048';
 
-        $this->rules = array_merge($product->getTypeInstance()->getTypeValidationRules(), [
+        $this->rules = array_replace_recursive([
             'sku'                => ['required', 'unique:products,sku,' . $this->id, new Slug],
             'url_key'            => ['required', new ProductCategoryUniqueSlug('product_flat', $this->id)],
             'images.files.*'     => ['nullable', 'mimes:bmp,jpeg,jpg,png,webp'],
@@ -80,7 +80,7 @@ class ProductForm extends FormRequest
             'special_price_from' => ['nullable', 'date'],
             'special_price_to'   => ['nullable', 'date', 'after_or_equal:special_price_from'],
             'special_price'      => ['nullable', new Decimal, 'lt:price'],
-        ]);
+        ],$product->getTypeInstance()->getTypeValidationRules());
 
         foreach ($product->getEditableAttributes() as $attribute) {
             if (in_array($attribute->code, ['sku', 'url_key']) || $attribute->type == 'boolean') {
@@ -119,7 +119,6 @@ class ProductForm extends FormRequest
 
             $this->rules[$attribute->code] = $validations;
         }
-
         return $this->rules;
     }
 

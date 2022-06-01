@@ -47,6 +47,10 @@
                                             $productBaseImage = $item->product->getTypeInstance()->getBaseImage($item);
                                             $product = $item->product;
 
+                                            if ($item->type == 'configurable'){
+                                            $product = $item->children->first()->product;
+                                            }
+
                                             $productPrice = $product->getTypeInstance()->getProductPrices();
 
                                             if (is_null ($product->url_key)) {
@@ -60,7 +64,7 @@
                                         @endphp
 
                                         <div class="card cart-row mb-2 p-2">
-                                            <div class="row m-0" >
+                                            <div class="row m-0">
                                                 <div class="col-2 p-0">
                                                     <a
                                                         title="{{ $product->name }}"
@@ -156,14 +160,14 @@
                                                             </a>
                                                         </div>
                                                         <div>
-                                                        {!!  $product->getTypeInstance()->getPriceHtml()!!}
+                                                            {!!  $product->getTypeInstance()->getPriceHtml()!!}
                                                         </div>
                                                     </div>
-{{--                                                <span class="card-current-price fw6 mr10">--}}
+                                                    {{--                                                <span class="card-current-price fw6 mr10">--}}
 
-{{--                                                    {{ core()->currency( $item->base_total) }}--}}
+                                                    {{--                                                    {{ core()->currency( $item->base_total) }}--}}
 
-{{--                                                </span>--}}
+                                                    {{--                                                </span>--}}
                                                 </div>
 
                                                 @if (! cart()->isItemHaveQuantity($item))
@@ -173,7 +177,6 @@
                                                 @endif
                                             </div>
                                         </div>
-
 
                                     @endforeach
                                 </div>
@@ -192,25 +195,25 @@
 
                 {!! view_render_event('bagisto.shop.checkout.cart.summary.after', ['cart' => $cart]) !!}
 
-                    @if ($cart)
-                        <div class="col-lg-4 col-md-12 m-0 pt-0 row order-summary-container px-0">
-                            @include('shop::checkout.total.summary', ['cart' => $cart])
+                @if ($cart)
+                    <div class="col-lg-4 col-md-12 m-0 pt-0 row order-summary-container px-0">
+                        @include('shop::checkout.total.summary', ['cart' => $cart])
 
-                        </div>
-                    @else
-                        <div class="fs16 col-12 empty-cart-message">
-                            {{ __('shop::app.checkout.cart.empty') }}
-                        </div>
+                    </div>
+                @else
+                    <div class="fs16 col-12 empty-cart-message">
+                        {{ __('shop::app.checkout.cart.empty') }}
+                    </div>
 
-                        <a
-                            class="fs16 mt15 col-12 remove-decoration continue-shopping"
-                            href="{{ route('shop.home.index') }}">
+                    <a
+                        class="fs16 mt15 col-12 remove-decoration continue-shopping"
+                        href="{{ route('shop.home.index') }}">
 
-                            <button type="button" class="theme-btn light mr15 float-right unset">
-                                {{ __('shop::app.checkout.cart.continue-shopping') }}
-                            </button>
-                        </a>
-                    @endif
+                        <button type="button" class="theme-btn light mr15 float-right unset">
+                            {{ __('shop::app.checkout.cart.continue-shopping') }}
+                        </button>
+                    </a>
+                @endif
 
                 {!! view_render_event('bagisto.shop.checkout.cart.summary.after', ['cart' => $cart]) !!}
 
@@ -230,7 +233,7 @@
 
                 methods: {
                     removeLink(message) {
-                        if (! confirm(message))
+                        if (!confirm(message))
                             event.preventDefault();
                     }
                 }

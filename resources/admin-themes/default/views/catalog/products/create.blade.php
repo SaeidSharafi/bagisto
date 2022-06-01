@@ -43,6 +43,7 @@
 
                 @php
                     $familyId = request()->input('family');
+                    $templateId = request()->input('product_template_id');
                 @endphp
 
                 {!! view_render_event('bagisto.admin.catalog.product.create_form_accordian.general.before') !!}
@@ -56,7 +57,7 @@
                                                         <select class="control" v-validate="'required'" id="type" name="type" {{ $familyId ? 'disabled' : '' }} data-vv-as="&quot;{{ __('admin::app.catalog.products.product-type') }}&quot;">
                                 @foreach($productTypes as $key => $productType)
                                     <option value="{{ $key }}" {{ request()->input('type') == $productType['key'] ? 'selected' : '' }}>
-                                   {{ __('admin::app.catalog.products.'.strtolower($productType['name'])) }}
+                                   {{ __('admin.catalog.products.'.strtolower($productType['name'])) }}
 
                                     </option>
                                  @endforeach
@@ -67,6 +68,24 @@
                             @endif
 
                             <span class="control-error" v-if="errors.has('type')">@{{ errors.first('type') }}</span>
+                        </div>
+
+                        <div class="control-group" :class="[errors.has('product_template_id') ? 'has-error' : '']">
+                            <label for="product_template_id">{{ __('admin.catalog.products.product_template') }}</label>
+
+                            <select class="control" id="product_template_id" name="product_template_id" {{ $familyId ? 'disabled' : '' }} data-vv-as="&quot;{{ __('admin::app.catalog.products.familiy') }}&quot;">
+                                <option value="">{{ __('velocity::app.admin.contents.select') }}</option>
+
+                            @foreach ($templates as $template)
+
+                                    <option value="{{ $template->id }}" {{ ($templateId == $template->id ||old('product_template_id') == $template->id) ? 'selected' : '' }}>{{ $template->name }}</option>
+                                @endforeach
+                            </select>
+                            @if ($templateId)
+                                <input type="hidden" name="product_template_id" value="{{ $templateId }}"/>
+                            @endif
+
+                            <span class="control-error" v-if="errors.has('product_template_id')">@{{ errors.first('product_template_id') }}</span>
                         </div>
 
                         <div class="control-group" :class="[errors.has('attribute_family_id') ? 'has-error' : '']">
