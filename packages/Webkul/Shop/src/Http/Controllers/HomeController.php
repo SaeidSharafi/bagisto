@@ -2,6 +2,8 @@
 
 namespace Webkul\Shop\Http\Controllers;
 
+use Webkul\Product\Repositories\ProductFlatRepository;
+use Webkul\Product\Repositories\ProductRepository;
 use Webkul\Shop\Http\Controllers\Controller;
 use Webkul\Core\Repositories\SliderRepository;
 use Webkul\Product\Repositories\SearchRepository;
@@ -23,19 +25,30 @@ class HomeController extends Controller
     protected $searchRepository;
 
     /**
+     * Product repository instance.
+     *
+     * @var \Webkul\Core\Repositories\ProductFlatRepository
+     */
+    protected $productFlatRepository;
+
+    /**
      * Create a new controller instance.
      *
      * @param  \Webkul\Core\Repositories\SliderRepository  $sliderRepository
      * @param  \Webkul\Product\Repositories\SearchRepository  $searchRepository
+     * @param  \Webkul\Product\Repositories\ProductFlatRepository  $productFlatRepository
      * @return void
      */
     public function __construct(
         SliderRepository $sliderRepository,
-        SearchRepository $searchRepository
+        SearchRepository $searchRepository,
+        ProductFlatRepository $productFlatRepository
     ) {
         $this->sliderRepository = $sliderRepository;
 
         $this->searchRepository = $searchRepository;
+
+        $this->productFlatRepository = $productFlatRepository;
 
         parent::__construct();
     }
@@ -48,8 +61,9 @@ class HomeController extends Controller
     public function index()
     {
         $sliderData = $this->sliderRepository->getActiveSliders();
+        $special_product = $this->productFlatRepository->findOneWhere(['featured' => 1]);
 
-        return view($this->_config['view'], compact('sliderData'));
+        return view($this->_config['view'], compact('sliderData','special_product'));
     }
 
     /**

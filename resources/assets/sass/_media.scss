@@ -126,10 +126,21 @@ body.rtl header .vc-small-screen #search-form {
             height: 50px;
             display: flex;
             align-items: center;
-
+            a{
+                align-items: center;
+                border: 1px solid #e0e0e2;
+                padding: 3px 6px;
+                border-radius: 5px;
+                line-height: normal;
+            }
             i {
                 transform: scaleX(-1);
             }
+        }
+        .search-wrapper{
+            height: 50px;
+            display: flex;
+            align-items: center;
         }
     }
     section.product-extra-detail .extra-attributes .nav-item a.nav-link {

@@ -24,14 +24,7 @@
                 <div class="hamburger-wrapper pl-2">
                     <i class="fa fa- fa-bars"></i>
                 </div>
-                @guest('customer')
-                <div class="login-wrapper pr-3">
-                    <a class="unset" href="{{ route('customer.auth.create') }}">
-                        <i class="fa fa-sign-in-alt"></i>
-                    </a>
 
-                </div>
-                @endguest
             </div>
         </div>
         <div class="col-6">
@@ -40,18 +33,19 @@
             </a>
         </div>
         <div class="right-vc-header d-flex align-items-center justify-content-end col-3">
-            <a class="unset cursor-pointer px-3">
-                <i class="fa fa-search"></i>
-            </a>
-            <a href="{{ route('shop.checkout.cart.index') }}" class="unset px-2">
-                <div class="icons-shop">
-                    <i class="fa fa-shopping-cart"></i>
+            @guest('customer')
+                <div class="login-wrapper pl-1">
+                    <a class="unset d-flex" href="{{ route('customer.auth.create') }}">
+                        <i class="fa fa-sign-in-alt pr-2"></i>ورود
+                    </a>
                 </div>
+            @endguest
 
-                <div class="badge-wrapper">
-                    <span class="badge" v-text="{{$cartItemsCount}}"></span>
-                </div>
-            </a>
+            <div class="search-wrapper pr-3">
+                <a class="unset cursor-pointer">
+                    <i class="fa fa-search"></i>
+                </a>
+            </div>
         </div>
     </div>
 
@@ -64,11 +58,11 @@
         @endauth
     </template>
     @guest('customer')
-    <template v-slot:login-link>
-        <a class="unset d-flex" href="{{ route('customer.auth.create') }}">
-            <i class="fa fa-sign-in-alt"></i>
-        </a>
-    </template>
+        <template v-slot:login-link>
+            <a class="unset d-flex" href="{{ route('customer.auth.create') }}">
+                <i class="fa fa-sign-in-alt pr-2"></i>ورود
+            </a>
+        </template>
     @endguest
     <template v-slot:customer-navigation>
         @auth('customer')
@@ -118,7 +112,7 @@
 
     <template v-slot:extraNavigation>
         @auth('customer')
-        <li>
+            <li>
 
                 <form id="customerLogout" action="{{ route('customer.session.destroy') }}" method="POST">
                     @csrf
@@ -134,7 +128,7 @@
                 </a>
 
 
-        </li>
+            </li>
         @endauth
     </template>
 

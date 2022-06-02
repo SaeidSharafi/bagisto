@@ -3,6 +3,7 @@
 namespace App\Models\Shop;
 
 use App\Traits\hasOTP;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Notifications\Notifiable;
 
 class JeduCustomer extends \Webkul\Customer\Models\Customer
@@ -41,12 +42,14 @@ class JeduCustomer extends \Webkul\Customer\Models\Customer
         return $this->phone;
     }
 
-    public function getIncompleteAttribute()
+    public function incomplete() : Attribute
     {
-        return (!$this->first_name
-        || !$this->last_name
-        || !$this->national_code
-        || !$this->gender);
+        return Attribute::make(
+            get: fn () => (!$this->first_name
+                || !$this->last_name
+                || !$this->national_code
+                || !$this->gender),
+        );
     }
 
     //TODO use this function for asking extra info

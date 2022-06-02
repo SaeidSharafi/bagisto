@@ -27,9 +27,14 @@ button,
 select {
     font-family: 'Source Sans Pro', 'IRANYEKAN', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
+.farsi-number,
+.farsi-number *{
+    font-family: 'IRANYEKAN', 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
+}
 body {
     background: $main-bg;
+    line-height: normal;
 }
 
 dl, ol, ul {
@@ -431,6 +436,7 @@ img.cover {
 
             &:last-child {
                 background: #060606;
+                background-position: center center;
             }
         }
 
@@ -457,7 +463,7 @@ img.cover {
             left: 0;
             right: 0;
             padding: 10px;
-            background: linear-gradient(0deg, black, transparent);
+            background: linear-gradient(0deg, black,rgba(0,0,0,0.74));
 
             .title {
                 display: block;

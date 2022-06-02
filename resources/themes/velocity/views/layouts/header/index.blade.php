@@ -30,23 +30,6 @@
                 <div class="left-wrapper d-flex">
                     @include('velocity::layouts.top-nav.login-section')
 
-                    {!! view_render_event('bagisto.shop.layout.header.wishlist.before') !!}
-
-                    @include('velocity::layouts.particals.wishlist', ['isText' => false])
-
-                    {!! view_render_event('bagisto.shop.layout.header.wishlist.after') !!}
-
-                    {!! view_render_event('bagisto.shop.layout.header.compare.before') !!}
-
-                    @include('velocity::layouts.particals.compare', ['isText' => false])
-
-                    {!! view_render_event('bagisto.shop.layout.header.compare.after') !!}
-
-                    {!! view_render_event('bagisto.shop.layout.header.cart-item.before') !!}
-
-                    @include('shop::checkout.cart.mini-cart', ['isText' => false])
-
-                    {!! view_render_event('bagisto.shop.layout.header.cart-item.after') !!}
                 </div>
             </div>
             <div class="col-lg-3 col-md-12">

@@ -9,6 +9,7 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js"></script>
 
 <script type="text/javascript" src="{{ asset(mix('/js/slider.js')) }}"></script>
+<script type="text/javascript" src="{{ asset(mix('/js/scripts.js')) }}"></script>
 
 <script type="text/javascript">
     (() => {
@@ -28,6 +29,43 @@
 
         /* add translations */
         window._translations = @json($velocityHelper->jsonTranslations());
+
+
+        let timerElement = document.getElementById("countdown-timer");
+        console.log(timerElement.dataset);
+        if (!timerElement) {
+            return;
+        }
+
+        var date = timerElement.dataset.countdown;
+        var countDownDate = new Date(date).getTime();
+        console.log(date,countDownDate);
+
+        var x = setInterval(function () {
+            let timerElement = document.getElementById("countdown-timer");
+            // Get today's date and time
+            var now = new Date().getTime();
+
+            // Find the distance between now and the count down date
+            var distance = countDownDate - now;
+
+            // Time calculations for days, hours, minutes and seconds
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            timerElement.innerHTML = "EXPIRED";
+            // Display the result in the element with id="demo"
+            timerElement.innerHTML = days + ":" + ("0" + hours).slice(-2) + ":"
+                + ("0" + minutes).slice(-2) + ":" + ("0" + seconds).slice(-2);
+
+            // If the count down is finished, write some text
+            if (distance < 0) {
+                clearInterval(x);
+                timerElement.innerHTML = "EXPIRED";
+            }
+        }, 1000);
     })();
 
     /**

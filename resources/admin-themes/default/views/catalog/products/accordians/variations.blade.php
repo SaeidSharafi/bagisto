@@ -101,25 +101,25 @@
         <div class="table" style="margin-top: 20px; overflow-x: auto;">
             <table>
                 <thead>
-                    <tr>
-                        <th class="is-default">{{ __('admin::app.catalog.products.is-default') }}</th>
-                        <th class="sku">{{ __('admin::app.catalog.products.sku') }}</th>
-                        <th>{{ __('admin.catalog.products.product_number') }}</th>
-                        <th>{{ __('admin::app.catalog.products.images') }}</th>
-                        <th class="qty">{{ __('admin::app.catalog.products.qty') }}</th>
-                        <th class="price">{{ __('admin::app.catalog.products.price') }}</th>
-                        <th class="status">{{ __('admin::app.catalog.products.status') }}</th>
-                        <th class="actions"></th>
-                    </tr>
+                <tr>
+                    <th class="is-default">{{ __('admin::app.catalog.products.is-default') }}</th>
+                    <th class="sku">{{ __('admin::app.catalog.products.sku') }}</th>
+                    <th>{{ __('admin.catalog.products.product_number') }}</th>
+                    <th>{{ __('admin::app.catalog.products.images') }}</th>
+                    <th class="qty">{{ __('admin::app.catalog.products.qty') }}</th>
+                    <th class="price">{{ __('admin::app.catalog.products.price') }}</th>
+                    <th class="status">{{ __('admin::app.catalog.products.status') }}</th>
+                    <th class="actions"></th>
+                </tr>
                 </thead>
 
                 <tbody>
-                    <variant-item
-                        v-for='(variant, index) in variants'
-                        :key="index"
-                        :index="index"
-                        :variant="variant" @onRemoveVariant="removeVariant($event)">
-                    </variant-item>
+                <variant-item
+                    v-for='(variant, index) in variants'
+                    :key="index"
+                    :index="index"
+                    :variant="variant" @onRemoveVariant="removeVariant($event)">
+                </variant-item>
                 </tbody>
             </table>
         </div>
@@ -169,8 +169,8 @@
                         type="text"
                         :name="[variantInputName + '[product_number]']"
                         v-model="variant.product_number"
-                        v-validate="'required'"
-                        data-vv-as="&quot;{{ __('admin::app.catalog.products.product_number') }}&quot;"/>
+                        v-validate="'required|checkForSku'"
+                        data-vv-as="&quot;{{ __('admin.catalog.products.product_number') }}&quot;"/>
 
                     <span
                         class="control-error"
@@ -238,7 +238,7 @@
                         <ul>
                             <li v-for='(inventorySource, index) in inventorySources'>
                                 <div class="control-group"
-                                    :class="[errors.has(variantInputName + '[inventories][' + inventorySource.id + ']') ? 'has-error' : '']">
+                                     :class="[errors.has(variantInputName + '[inventories][' + inventorySource.id + ']') ? 'has-error' : '']">
                                     <label v-text="inventorySource.name"></label>
 
                                     <input
@@ -320,11 +320,12 @@
                 'variant-list',
                 'variant-item'
             ];
+            console.log("sku document");
         });
 
         let super_attributes = @json(app('\Webkul\Product\Repositories\ProductRepository')->getSuperAttributes($product));
         let variants = @json($product->variants);
-console.table(variants);
+        let paretn_sku = null;
         Vue.component('variant-form', {
             data: function () {
                 return {
@@ -338,7 +339,6 @@ console.table(variants);
             created: function () {
                 this.resetModel();
             },
-
             methods: {
                 addVariant: function (formScope) {
                     this.$validator.validateAll(formScope).then((result) => {
@@ -451,7 +451,6 @@ console.table(variants);
                     index++;
                 }
             },
-
             methods: {
                 removeVariant: function (variant) {
                     let index = this.variants.indexOf(variant)
@@ -480,22 +479,56 @@ console.table(variants);
                     images: {},
                     imageData: [],
                     new_image: [],
+                    parentSKU: [],
                 }
             },
-
             created: function () {
                 let self = this;
+                console.log("sku listener");
+                const dictionary = {
+                    en: {
+                        messages:{
+                            checkForSku: () => 'Course Code must be from Parent SKU'
+                        }
+                    },
+                    fa: {
+                        messages: {
+                            checkForSku: 'کد دوره با کد دوره والد همسان نمیباشد.'
+                        }
+                    }
+                };
+                self.$validator.localize(dictionary);
+                self.$validator.extend('checkForSku', {
+                    getMessage(field, val) {
+                        console.log("field");
+                        return 'SKU must be from Parent SKU';
+                    },
 
+                    validate(value, field) {
+                        if (!self.parentSKU) {
+                            return true;
+                        }
+                        console.log(self.parentSKU);
+                        console.log(value);
+                        console.log(self.parentSKU.includes(value));
+                        return (self.parentSKU.includes(value));
+
+                    }
+                });
                 this.inventorySources.forEach(function (inventorySource) {
                     self.inventories[inventorySource.id] = self.sourceInventoryQty(inventorySource.id)
                     self.totalQty += parseInt(self.inventories[inventorySource.id]);
                 })
             },
-
-            mounted () {
+            mounted() {
                 let self = this;
+                this.parentSKU =  document.querySelector('#sku').value;
+                document.querySelector('#sku').addEventListener('change', (event) => {
+                    self.parentSKU = event.target.value.split("-");
+                });
+
                 this.variant.price = Math.floor(this.variant.price);
-                self.variant.images.forEach(function(image) {
+                self.variant.images.forEach(function (image) {
                     self.items.push(image)
                     self.imageCount++;
 
@@ -561,7 +594,7 @@ console.table(variants);
                     }
                 },
 
-                createFileType: function() {
+                createFileType: function () {
                     let self = this;
 
                     this.imageCount++;
@@ -571,7 +604,7 @@ console.table(variants);
                     this.imageData[this.imageData.length] = '';
                 },
 
-                removeImage (image) {
+                removeImage(image) {
                     let index = this.items.indexOf(image);
 
                     Vue.delete(this.items, index);
@@ -579,7 +612,7 @@ console.table(variants);
                     Vue.delete(this.imageData, index);
                 },
 
-                addImageView: function($event, index) {
+                addImageView: function ($event, index) {
                     let ref = "imageInput" + index;
                     let imageInput = this.$refs[ref][0];
 
@@ -595,7 +628,7 @@ console.table(variants);
                     }
                 },
 
-                readFile: function(image, index) {
+                readFile: function (image, index) {
                     let reader = new FileReader();
 
                     reader.onload = (e) => {

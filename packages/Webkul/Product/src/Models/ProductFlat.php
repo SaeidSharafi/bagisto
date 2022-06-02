@@ -2,6 +2,8 @@
 
 namespace Webkul\Product\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
 use Webkul\Attribute\Repositories\AttributeRepository;
@@ -220,6 +222,19 @@ class ProductFlat extends Model implements ProductFlatContract
     {
         return $this->product->attribute_family;
     }
+
+    /**
+     * Retrieve product special offer time.
+     *
+     * @return string
+     */
+    public function specialOfferTimeLeft() : Attribute
+    {
+        return Attribute::make(
+            get: fn () => Carbon::parse($this->special_price_to)->diff(Carbon::now())->format('%d:%H:%I:%S'),
+        );
+    }
+
 
     /**
      * Retrieve product attributes.

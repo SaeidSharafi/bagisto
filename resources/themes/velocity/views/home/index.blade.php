@@ -56,23 +56,39 @@
             <div class="col-6 col-md-5 col-lg-4">
                 <div class="slider-side">
                     <div class="item w-100 position-relative rounded overflow-hidden"
-                    style="background-image: url('{{asset("/images/temp/futur-gold.png")}}');">
+                         style="background-image: url('{{asset("/images/temp/futur-gold.png")}}');">
                         <div class="overlay-img">آینده طلاسازی</div>
                     </div>
                 </div>
             </div>
             <div class="col-6 col-md-5 col-lg-4">
                 <div class="slider-side">
-                    <div class="item w-100 rounded overflow-hidden"
-                         style="background-image: url('{{asset("/images/temp/special-discount.png")}}');">
+                    @if ($special_product)
+                        <a href="/{{$special_product->url_key}}" class="d-block h-100">
+                            <div class="item w-100 rounded overflow-hidden farsi-number"
+                                 style="background-image: url('{{asset("/images/temp/special-discount.png")}}');">
 
-                        <div class="item-details">
-                            <span class="title">دوره تعمیرات موبایل</span>
-                            <span class="timer">
-                        ۰۱:۰۰:۲۰:۱۰
-                    </span>
+                                <div class="item-details">
+                                    <span class="title">{{$special_product->short_name}}</span>
+
+                                    <span class="timer" id="countdown-timer" data-countdown="{{$special_product->special_price_to}} 00:00:00">
+                                    {{$special_product->specialOfferTimeLeft}}
+                                </span>
+                                </div>
+                            </div>
+                        </a>
+                    @else
+
+                        <div class="item w-100 rounded overflow-hidden farsi-number"
+                             style="background-image: url('{{asset("/images/temp/special-discount.png")}}');">
+
+                            <div class="item-details">
+                                <span class="title">بزودی</span>
+                                <span class="timer">۰۰:۰۰:۰۰:۰۰</span>
+                            </div>
                         </div>
-                    </div>
+                    @endif
+
                 </div>
             </div>
         </div>

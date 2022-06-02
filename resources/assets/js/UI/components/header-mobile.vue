@@ -240,9 +240,6 @@
                     <div class="hamburger-wrapper pl-2" @click="toggleHamburger">
                         <i class="fa fa- fa-bars"></i>
                     </div>
-                    <div class="login-wrapper pr-3">
-                        <slot name="login-link"></slot>
-                    </div>
                 </div>
             </div>
             <div class="col-6">
@@ -250,20 +247,14 @@
             </div>
             <div class="right-vc-header  d-flex align-items-center justify-content-end  col-3">
                 <slot name="top-header"></slot>
-
-                <a class="unset px-3 cursor-pointer" @click="openSearchBar">
-                    <i class="fa fa-search"></i>
-                </a>
-
-                <a :href="cartRoute" class="unset px-1">
-                    <div class="icons-shop">
-                        <i class="fa fa-shopping-cart"></i>
-                    </div>
-
-                    <div class="badge-wrapper">
-                        <span class="badge" v-text="updatedCartItemsCount"></span>
-                    </div>
-                </a>
+                <div class="login-wrapper pl-1">
+                    <slot name="login-link"></slot>
+                </div>
+                <div class="search-wrapper pr-3">
+                    <a class="unset cursor-pointer" @click="openSearchBar">
+                        <i class="fa fa-search"></i>
+                    </a>
+                </div>
             </div>
 
             <div class="searchbar mobile" v-if="isSearchbar">
