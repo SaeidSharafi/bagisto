@@ -118,9 +118,11 @@
 
                                 <div class="section-content">
                                     @foreach ($transactionDeatilsData as $key => $data)
-                                        <div class="row">
+                                        <div class="row align-items-start" style=" align-items: flex-start;display: flex;justify-content: start;">
                                             <span class="title">
-                                                {{ $key }}
+                                                {{ __('admin.sales.transactions.'.$key) }}
+                                                <br>
+                                                <span class="d-block" style="font-size: 10px;"> {{ $key }}</span>
                                             </span>
 
                                             <span class="value">

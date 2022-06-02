@@ -214,11 +214,11 @@
                                     <thead>
                                         <tr>
                                             <th>{{ __('admin::app.sales.orders.SKU') }}</th>
+                                            <th>{{ __('admin.sales.orders.product_number') }}</th>
                                             <th>{{ __('admin::app.sales.orders.product-name') }}</th>
                                             <th>{{ __('admin::app.sales.orders.price') }}</th>
                                             <th>{{ __('admin::app.sales.orders.qty') }}</th>
                                             <th>{{ __('admin::app.sales.orders.subtotal') }}</th>
-                                            <th>{{ __('admin::app.sales.orders.tax-amount') }}</th>
                                             <th>{{ __('admin::app.sales.orders.discount-amount') }}</th>
                                             <th>{{ __('admin::app.sales.orders.grand-total') }}</th>
                                         </tr>
@@ -229,6 +229,7 @@
                                         @foreach ($refund->items as $item)
                                             <tr>
                                                 <td>{{ $item->child ? $item->child->sku : $item->sku }}</td>
+                                                <td>{{ $item->child ? $item->child->product_number : $item->product_number }}</td>
 
                                                 <td>
                                                     {{ $item->name }}

@@ -286,12 +286,11 @@
                                             <thead>
                                                 <tr>
                                                     <th>{{ __('admin::app.sales.orders.SKU') }}</th>
+                                                    <th>{{ __('admin.sales.orders.product_number') }}</th>
                                                     <th>{{ __('admin::app.sales.orders.product-name') }}</th>
                                                     <th>{{ __('admin::app.sales.orders.price') }}</th>
                                                     <th>{{ __('admin::app.sales.orders.item-status') }}</th>
                                                     <th>{{ __('admin::app.sales.orders.subtotal') }}</th>
-                                                    <th>{{ __('admin::app.sales.orders.tax-percent') }}</th>
-                                                    <th>{{ __('admin::app.sales.orders.tax-amount') }}</th>
                                                     @if ($order->base_discount_amount > 0)
                                                         <th>{{ __('admin::app.sales.orders.discount-amount') }}</th>
                                                     @endif
@@ -307,7 +306,9 @@
                                                         <td>
                                                             {{ $item->getTypeInstance()->getOrderedItem($item)->sku }}
                                                         </td>
-
+                                                        <td>
+                                                            {{ $item->getTypeInstance()->getOrderedItem($item)->product_number }}
+                                                        </td>
                                                         <td>
                                                             {{ $item->name }}
 
@@ -348,9 +349,6 @@
 
                                                         <td>{{ core()->formatBasePrice($item->base_total) }}</td>
 
-                                                        <td>{{ $item->tax_percent }}%</td>
-
-                                                        <td>{{ core()->formatBasePrice($item->base_tax_amount) }}</td>
 
                                                         @if ($order->base_discount_amount > 0)
                                                             <td>{{ core()->formatBasePrice($item->base_discount_amount) }}</td>

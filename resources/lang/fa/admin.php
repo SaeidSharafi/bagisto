@@ -18,8 +18,15 @@ return [
     ],
     'sales' =>[
         'orders'=>[
+            'product_number' =>'کد دوره',
             'complete' => 'تایید ثبت نام'
-        ]
+        ],
+        'transactions' => [
+            'transaction_id' => 'کد یکتای پداختی',
+            'SaleReferenceId' => 'کد مرجع فروش',
+            'CardHolderPan' => 'شماره کارت پرداخت کننده',
+            'CardHolderInfo' => 'اطلاعات پرداخت کننده',
+        ],
     ],
     'datagrid' =>[
         'complete'=> 'تایید ثبت نام'

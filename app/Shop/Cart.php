@@ -755,6 +755,7 @@ class Cart
         //}
 
         foreach ($data['items'] as $item) {
+
             $finalData['items'][] = $this->prepareDataForOrderItem($item);
         }
 
@@ -779,6 +780,7 @@ class Cart
         $finalData = [
             'product'              => $this->productRepository->find($data['product_id']),
             'sku'                  => $data['sku'],
+            'product_number'       => $data['product_number'],
             'type'                 => $data['type'],
             'name'                 => $data['name'],
             'weight'               => $data['weight'],

@@ -10,7 +10,10 @@ use App\Services\CatalogRuleProductPriceService;
 class JeduConfigurable extends Configurable
 {
 
-    protected $fillableTypes = ['sku','name',  'product_number', 'url_key', 'short_description', 'description', 'price', 'status'];
+    protected $fillableTypes
+        = [
+            'sku', 'name', 'product_number', 'url_key', 'short_description', 'description', 'price', 'status'
+        ];
 
     /**
      * Get product minimal price.
@@ -279,6 +282,7 @@ class JeduConfigurable extends Configurable
             'parent'    => [
                 'product_id'       => $this->product->id,
                 'sku'              => $this->product->sku,
+                'product_number'   => $this->product->product_number,
                 'name'             => $this->product->name,
                 'type'             => $this->product->type,
                 'quantity'         => $data['quantity'],
@@ -291,12 +295,13 @@ class JeduConfigurable extends Configurable
                 'additional'       => $this->getAdditionalOptions($data),
             ],
             'variation' => [
-                'parent_id'  => $this->product->id,
-                'product_id' => (int) $data['selected_configurable_option'],
-                'sku'        => $childProduct->sku,
-                'name'       => $childProduct->name,
-                'type'       => $childProduct->type,
-                'additional' => [
+                'parent_id'      => $this->product->id,
+                'product_id'     => (int) $data['selected_configurable_option'],
+                'sku'            => $childProduct->sku,
+                'product_number' => $childProduct->product_number,
+                'name'           => $childProduct->name,
+                'type'           => $childProduct->type,
+                'additional'     => [
                     'product_id' => (int) $data['selected_configurable_option'],
                     'parent_id'  => $this->product->id,
                 ],

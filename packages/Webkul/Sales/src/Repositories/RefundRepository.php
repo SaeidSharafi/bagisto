@@ -43,7 +43,7 @@ class RefundRepository extends Repository
      *
      * @param  \Webkul\Sales\Repositories\OrderRepository  $orderRepository
      * @param  \Webkul\Sales\Repositories\OrderItemRepository  $orderItemRepository
-     * @param  \Webkul\Sales\Repositories\RefundItemRepository   $refundItemRepository
+     * @param  \Webkul\Sales\Repositories\RefundItemRepository  $refundItemRepository
      * @param  \Webkul\Sales\Repositories\DownloadableLinkPurchasedRepository  $downloadableLinkPurchasedRepository
      * @param  \Illuminate\Container\Container  $app
      */
@@ -79,6 +79,7 @@ class RefundRepository extends Repository
      * Create refund.
      *
      * @param  array  $data
+     *
      * @return \Webkul\Sales\Contracts\Refund
      */
     public function create(array $data)
@@ -92,6 +93,7 @@ class RefundRepository extends Repository
 
             $totalQty = array_sum($data['refund']['items']);
 
+
             $refund = parent::create([
                 'order_id'               => $order->id,
                 'total_qty'              => $totalQty,
@@ -99,16 +101,19 @@ class RefundRepository extends Repository
                 'base_currency_code'     => $order->base_currency_code,
                 'channel_currency_code'  => $order->channel_currency_code,
                 'order_currency_code'    => $order->order_currency_code,
-                'adjustment_refund'      => core()->convertPrice($data['refund']['adjustment_refund'], $order->order_currency_code),
+                'adjustment_refund'      => core()->convertPrice($data['refund']['adjustment_refund'],
+                    $order->order_currency_code),
                 'base_adjustment_refund' => $data['refund']['adjustment_refund'],
-                'adjustment_fee'         => core()->convertPrice($data['refund']['adjustment_fee'], $order->order_currency_code),
+                'adjustment_fee'         => core()->convertPrice($data['refund']['adjustment_fee'],
+                    $order->order_currency_code),
                 'base_adjustment_fee'    => $data['refund']['adjustment_fee'],
-                'shipping_amount'        => core()->convertPrice($data['refund']['shipping'], $order->order_currency_code),
+                'shipping_amount'        => core()->convertPrice($data['refund']['shipping'],
+                    $order->order_currency_code),
                 'base_shipping_amount'   => $data['refund']['shipping'],
             ]);
 
             foreach ($data['refund']['items'] as $itemId => $qty) {
-                if (! $qty) {
+                if (!$qty) {
                     continue;
                 }
 
@@ -123,6 +128,7 @@ class RefundRepository extends Repository
                     'order_item_id'        => $orderItem->id,
                     'name'                 => $orderItem->name,
                     'sku'                  => $orderItem->sku,
+                    'product_number'       => $orderItem->product_number,
                     'qty'                  => $qty,
                     'price'                => $orderItem->price,
                     'base_price'           => $orderItem->base_price,
@@ -163,7 +169,9 @@ class RefundRepository extends Repository
                             'additional'           => $childOrderItem->additional,
                         ]);
 
-                        if ($childOrderItem->getTypeInstance()->isStockable() || $childOrderItem->getTypeInstance()->showQuantityBox()) {
+                        if ($childOrderItem->getTypeInstance()->isStockable()
+                            || $childOrderItem->getTypeInstance()->showQuantityBox()
+                        ) {
                             $this->refundItemRepository->returnQtyToProductInventory($childOrderItem, $finalQty);
                         }
 
@@ -171,7 +179,9 @@ class RefundRepository extends Repository
                     }
 
                 } else {
-                    if ($orderItem->getTypeInstance()->isStockable() || $orderItem->getTypeInstance()->showQuantityBox()) {
+                    if ($orderItem->getTypeInstance()->isStockable()
+                        || $orderItem->getTypeInstance()->showQuantityBox()
+                    ) {
                         $this->refundItemRepository->returnQtyToProductInventory($orderItem, $qty);
                     }
                 }
@@ -205,6 +215,7 @@ class RefundRepository extends Repository
      * Collect totals.
      *
      * @param  \Webkul\Sales\Contracts\Refund  $refund
+     *
      * @return \Webkul\Sales\Contracts\Refund
      */
     public function collectTotals($refund)
@@ -224,8 +235,10 @@ class RefundRepository extends Repository
             $refund->base_discount_amount += $refundItem->base_discount_amount;
         }
 
-        $refund->grand_total = $refund->sub_total + $refund->tax_amount + $refund->shipping_amount + $refund->adjustment_refund - $refund->adjustment_fee - $refund->discount_amount;
-        $refund->base_grand_total = $refund->base_sub_total + $refund->base_tax_amount + $refund->base_shipping_amount + $refund->base_adjustment_refund - $refund->base_adjustment_fee - $refund->base_discount_amount;
+        $refund->grand_total = $refund->sub_total + $refund->tax_amount + $refund->shipping_amount
+            + $refund->adjustment_refund - $refund->adjustment_fee - $refund->discount_amount;
+        $refund->base_grand_total = $refund->base_sub_total + $refund->base_tax_amount + $refund->base_shipping_amount
+            + $refund->base_adjustment_refund - $refund->base_adjustment_fee - $refund->base_discount_amount;
 
         $refund->save();
 
@@ -237,6 +250,7 @@ class RefundRepository extends Repository
      *
      * @param  array  $data
      * @param  integer  $orderId
+     *
      * @return array|bool
      */
     public function getOrderItemsRefundSummary($data, $orderId)
@@ -252,7 +266,7 @@ class RefundRepository extends Repository
         ];
 
         foreach ($data as $orderItemId => $qty) {
-            if (! $qty) {
+            if (!$qty) {
                 continue;
             }
 
@@ -269,9 +283,11 @@ class RefundRepository extends Repository
             $summary['tax']['price'] += ($orderItem->tax_amount / $orderItem->qty_ordered) * $qty;
         }
 
-        $summary['shipping']['price'] += $order->base_shipping_invoiced - $order->base_shipping_refunded - $order->base_shipping_discount_amount;
+        $summary['shipping']['price'] += $order->base_shipping_invoiced - $order->base_shipping_refunded
+            - $order->base_shipping_discount_amount;
 
-        $summary['grand_total']['price'] += $summary['subtotal']['price'] + $summary['tax']['price'] + $summary['shipping']['price'] - $summary['discount']['price'];
+        $summary['grand_total']['price'] += $summary['subtotal']['price'] + $summary['tax']['price']
+            + $summary['shipping']['price'] - $summary['discount']['price'];
 
         $summary['subtotal']['formated_price'] = core()->formatBasePrice($summary['subtotal']['price']);
 
