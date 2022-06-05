@@ -101,7 +101,14 @@ class OnepageController extends Controller
         }
 
         Cart::collectTotals();
-
+        if($cart->base_grand_total){
+            Cart::savePaymentMethod(['method' => 'mellat']);
+            $order = $this->orderRepository->create(Cart::prepareDataForOrder());
+            $order = $this->orderRepository->update(['status' => 'processing'],
+                $order->id);
+            session()->flash('order', $order);
+            return redirect()->route('shop.checkout.success');
+        }
         return view($this->_config['view'], compact('cart'));
     }
 
