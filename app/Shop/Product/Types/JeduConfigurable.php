@@ -35,7 +35,8 @@ class JeduConfigurable extends Configurable
                 .'<span class=discount-amount>'.$discount.'</span>'
                 .'</div>'
                 .'<span class="final-price">'
-                .core()->currency($this->evaluatePrice($offer['price']))
+                .(($offer['price'] != 0) ? core()->currency($this->evaluatePrice($offer['price']))
+                    : __('app.product.free'))
                 .'</span>';
         }
         if (core()->getCurrentLocale()
@@ -46,11 +47,13 @@ class JeduConfigurable extends Configurable
                 .'<span class=discount-amount></span>'
                 .'</div>'
                 .'<span class="final-price">'
-                .core()->currency($this->evaluatePrice($this->getMaximamPrice()))
+                .(($this->getMaximamPrice() != 0) ?
+                    (core()->currency($this->evaluatePrice($this->getMaximamPrice()))) : __('app.product.free'))
                 .'</span>';
         }
         return '<span class="final-price">'
-            .core()->currency($this->evaluatePrice($this->getMinimalPrice()))
+            .(($this->getMinimalPrice() != 0) ? core()->currency($this->evaluatePrice($this->getMinimalPrice()))
+                : __('app.product.free'))
             .'</span>';
 
     }
@@ -58,7 +61,7 @@ class JeduConfigurable extends Configurable
     /**
      * Get product offer price.
      *
-     * @return float
+     * @return array
      */
     public function getOfferPrice()
     {

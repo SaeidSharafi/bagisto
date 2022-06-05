@@ -26,6 +26,9 @@ return [
             ]
         ]
     ],
+    'product'=>[
+        'free'=> 'رایگان'
+    ],
     'velocity'  => [
         'admin'          => [
             'meta-data' => [

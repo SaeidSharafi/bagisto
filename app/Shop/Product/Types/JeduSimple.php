@@ -12,31 +12,38 @@ class JeduSimple extends Simple
     {
 
         if ($this->haveSpecialPrice()) {
-            $discount='%';
+            $discount = '%';
             if ($this->product->action_type === "by_percent") {
                 $discount = core()->formatPercent($this->product->discount_amount);
             }
             return '<div class="discount"><span class="regular-price">'
-                .core()->currencyNoSymbole($this->evaluatePrice($this->product->price))
-                .'</span>'
-                .'<span class=discount-amount>'.$discount.'</span>'
-                .'</div>'
-                .'<span class="final-price">'
-                .core()->currency($this->evaluatePrice($this->product->special_price))
+            .core()->currencyNoSymbole($this->evaluatePrice($this->product->price))
+            .'</span>'
+            .'<span class=discount-amount>'.$discount.'</span>'
+            .'</div>'
+            .'<span class="final-price">'
+            .(($this->product->special_price)
+                ? core()->currency($this->evaluatePrice($this->product->special_price))
+                : __('app.product.free'))
                 .'</span>';
 
         }
+
         return '<span class="final-price">'
-            .core()->currency($this->evaluatePrice($this->product->price))
+        .(($this->product->price != 0)
+            ? core()->currency($this->evaluatePrice($this->product->price))
+            : __('app.product.free'))
             .'</span>';
 
     }
 
-    public function getDiscountPercent(){
+    public function getDiscountPercent()
+    {
         return $this->product->discount_amount;
     }
 
-    public function isPercentOffer(){
+    public function isPercentOffer()
+    {
         return $this->product->action_type === "by_percent";
     }
 
@@ -133,24 +140,26 @@ class JeduSimple extends Simple
 
         return $haveSpecialPrice;
     }
+
     /**
      * Returns additional information for items.
      *
      * @param  array  $data
+     *
      * @return array
      */
     public function getAdditionalOptions($data)
     {
-        $discount = $regular_price=0;
+        $discount = $regular_price = 0;
         if ($this->haveSpecialPrice()) {
             if ($this->isPercentOffer()) {
-                $discount = $this>getDiscountPercent();
+                $discount = $this > getDiscountPercent();
             }
-            $regular_price =$this->evaluatePrice($this->getMaximamPrice());
+            $regular_price = $this->evaluatePrice($this->getMaximamPrice());
         }
         $data['discount_data'] = [
-            'discount'=>$discount,
-            'regular_price'=>$regular_price,
+            'discount'      => $discount,
+            'regular_price' => $regular_price,
         ];
         return $data;
     }
