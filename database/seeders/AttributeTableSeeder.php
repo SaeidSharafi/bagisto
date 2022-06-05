@@ -688,6 +688,25 @@ class AttributeTableSeeder extends Seeder
                 'created_at'          => $now,
                 'updated_at'          => $now,
                 'is_comparable'       => '0',
+            ], [
+                'id'                  => '36',
+                'code'                => 'moodle_id',
+                'admin_name'          => 'کد دوره در moodle',
+                'type'                => 'text',
+                'validation'          => NULL,
+                'position'            => '2',
+                'is_required'         => '0',
+                'is_unique'           => '1',
+                'value_per_locale'    => '0',
+                'value_per_channel'   => '0',
+                'is_filterable'       => '0',
+                'is_configurable'     => '0',
+                'is_user_defined'     => '0',
+                'is_visible_on_front' => '0',
+                'use_in_flat'         => '1',
+                'created_at'          => $now,
+                'updated_at'          => $now,
+                'is_comparable'       => '0',
             ]
         ]);
 
@@ -867,6 +886,11 @@ class AttributeTableSeeder extends Seeder
                 'locale'       => 'fa',
                 'name'         => 'نمونه‌کار فراگیر',
                 'attribute_id' => '35',
+            ], [
+                'id'           => '36',
+                'locale'       => 'fa',
+                'name'         => 'کد دوره در moodle',
+                'attribute_id' => '36',
             ]
         ]);
     }

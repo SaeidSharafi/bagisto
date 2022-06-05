@@ -7,6 +7,11 @@ return [
                 'national_code'   => 'کد ملی',
                 'father_name'     => 'نام پدر',
                 'education_field' => 'رشته تحصیلی',
+            ],
+            'moodle'=>[
+                'index'=>[
+                'page-title' => 'دوره های مجازی'
+                ]
             ]
         ],
         'reviews' => [

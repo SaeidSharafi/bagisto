@@ -26,7 +26,7 @@ class EventServiceProvider extends ServiceProvider
                 [OrderListener::class, 'sendNewOrderSms']
             ],
             'sales.order.update-status.after' => [
-                [OrderListener::class, 'changeImsRegistrationStatus']
+                [OrderListener::class, 'UpdateRegistration']
             ]
         ];
     // protected $listen = [

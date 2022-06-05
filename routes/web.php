@@ -21,6 +21,7 @@
  * group.
  */
 
+use App\Http\Controllers\MoodleController;
 use App\Http\Controllers\Shop\API\JeduShopController;
 use App\Http\Controllers\Shop\Customer\JeduCustomerController;
 use App\Http\Controllers\Shop\Customer\JeduForgotPassword;
@@ -29,6 +30,8 @@ use App\Http\Controllers\Shop\Customer\JeduResetPasswordController;
 use App\Http\Controllers\Shop\Customer\JeduSessionController;
 use Webkul\Admin\Http\Controllers\Sales\OrderController;
 use Webkul\Shop\Http\Controllers\OnepageController;
+use Diglactic\Breadcrumbs\Breadcrumbs;
+use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
 Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
     function () {
@@ -131,6 +134,13 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
                     Route::post('profile/edit', [JeduCustomerController::class, 'update'])->defaults('_config', [
                         'redirect' => 'customer.profile.index'
                     ])->name('customer.profile.store');
+
+                    /**
+                     * Moodle
+                     */
+                    Route::get('moodle', [MoodleController::class,'index'])->defaults('_config', [
+                        'view' => 'shop::customers.account.profile.index'
+                    ])->name('customer.moodle.index');
                 });
 
                 //Route::redirect('login',route('customer.register.index'));
@@ -149,4 +159,10 @@ Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => conf
         Route::get('/orders/complete/{id}', [OrderController::class, 'complete'])
             ->name('admin.sales.orders.complete');
     });
+});
+
+Breadcrumbs::for('customer.moodle.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('customer.profile.index');
+
+    $trail->push(trans('app.customer.account.moodle.index.page-title'), route('customer.moodle.index'));
 });
