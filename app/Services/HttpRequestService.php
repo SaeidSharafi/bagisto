@@ -19,7 +19,7 @@ class HttpRequestService
     const REGISTERED = 1;
     const CANCELED = 2;
 
-    public function __construct($order,$operation)
+    public function __construct($order, $operation)
     {
         $this->order = $order;
         $this->operation = $operation;
@@ -44,7 +44,7 @@ class HttpRequestService
             return "unnecssary update";
         }
         $customer = $this->order->customer;
-        if ($customer->incomplete){
+        if ($customer->incomplete) {
             return "customer profile incomplete";
         }
 
@@ -78,10 +78,16 @@ class HttpRequestService
             'details'      => $comments,
         ];
 
-
         foreach ($this->order->items as $item) {
+
+            $product_number = $item->product_number;
+
+            if ($item->type === 'configurable'){
+                $product_number = $item->product_number ?: $item->child->product_number;
+            }
+
             $registration = [
-                'course_id' => $item->sku,
+                'course_id' => $product_number,
                 'payment'   => [
                     'pay'  => $item->price - $item->discount_amount,
                     'bill' => "{$this->order->increment_id}-{$item->id}",
