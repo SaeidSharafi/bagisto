@@ -63,7 +63,7 @@
             </div>
             <div class="col-6 col-md-5 col-lg-4">
                 <div class="slider-side">
-                    @if ($special_product)
+                    @if (!empty($special_product))
                         <a href="/{{$special_product->url_key}}" class="d-block h-100">
                             <div class="item w-100 rounded overflow-hidden farsi-number"
                                  style="background-image: url('{{asset("/images/temp/special-discount.png")}}');">
