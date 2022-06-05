@@ -169,7 +169,7 @@
                         type="text"
                         :name="[variantInputName + '[product_number]']"
                         v-model="variant.product_number"
-                        v-validate="'required|checkForSku'"
+                        v-validate="'checkForSku'"
                         data-vv-as="&quot;{{ __('admin.catalog.products.product_number') }}&quot;"/>
 
                     <span

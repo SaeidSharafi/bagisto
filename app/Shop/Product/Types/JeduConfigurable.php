@@ -241,7 +241,7 @@ class JeduConfigurable extends Configurable
     public function getTypeValidationRules()
     {
         return [
-            'variants.*.product_number' => 'required',
+            'variants.*.product_number' => 'present',
             'variants.*.sku'            => 'required',
             'variants.*.price'          => 'required',
         ];
