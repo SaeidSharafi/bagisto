@@ -12,7 +12,6 @@
         <span></span>
     </div>
     {!! view_render_event('bagisto.shop.customers.account.profile.edit.before', ['customer' => $customer]) !!}
-
     <form
         method="POST"
         @submit.prevent="onSubmit"
@@ -31,7 +30,7 @@
                 </label>
 
                 <div class="w-100 mb-3">
-                    <input value="{{ $customer->first_name }}" name="first_name" type="text" v-validate="'required'" data-vv-as="&quot;{{ __('shop::app.customer.account.profile.fname') }}&quot;" />
+                    <input value="{{old('first_name') ?? $customer->first_name }}" name="first_name" type="text" v-validate="'required'" data-vv-as="&quot;{{ __('shop::app.customer.account.profile.fname') }}&quot;" />
                     <span class="control-error" v-if="errors.has('first_name')" v-text="errors.first('first_name')"></span>
                     <span class="control-error" v-if="{{ $errors->has('first_name') }}" v-text="'{{$errors->first('first_name')}}'"></span>
 
@@ -46,7 +45,7 @@
                 </label>
 
                 <div class="w-100 mb-3">
-                    <input value="{{ $customer->last_name }}" name="last_name" type="text" v-validate="'required'" data-vv-as="&quot;{{ __('shop::app.customer.account.profile.lname') }}&quot;" />
+                    <input value="{{old('last_name') ??  $customer->last_name }}" name="last_name" type="text" v-validate="'required'" data-vv-as="&quot;{{ __('shop::app.customer.account.profile.lname') }}&quot;" />
                     <span class="control-error" v-if="errors.has('last_name')" v-text="errors.first('last_name')"></span>
                     <span class="control-error" v-if="{{ $errors->has('last_name') }}" v-text="'{{$errors->first('last_name')}}'"></span>
                 </div>
@@ -58,7 +57,7 @@
                 </label>
 
                 <div class="w-100 mb-3">
-                    <input value="{{ $customer->national_code }}" name="national_code" type="text"
+                    <input value="{{ old('national_code') ??$customer->national_code }}" name="national_code" type="text"
                            v-validate="'required|min:10|max:10'" data-vv-as="&quot;{{ __('app.customer.account.profile.national_code') }}&quot;" />
                     <span class="control-error" v-if="errors.has('national_code')" v-text="errors.first('national_code')"></span>
                     <span class="control-error" v-if="{{ $errors->has('national_code') }}" v-text="'{{$errors->first('national_code')}}'"></span>
@@ -73,21 +72,23 @@
                 </label>
 
                 <div class="w-100 mb-3">
+                    @php
+                        $selectedGender = old('gender') ?? $customer->gender;
+                    @endphp
                     <select
                         name="gender"
                         v-validate="'required'"
                         class="control styled-select"
                         data-vv-as="&quot;{{ __('shop::app.customer.account.profile.gender') }}&quot;">
-
                         <option value=""
-                            @if ($customer->gender == "")
+                            @if ($selectedGender)
                                 selected="selected"
                             @endif>
                             {{ __('admin::app.customers.customers.select-gender') }}
                         </option>
                         <option
                             value="Male"
-                            @if ($customer->gender == "Male")
+                            @if ($selectedGender)
                                 selected="selected"
                             @endif>
                             {{ __('velocity::app.shop.gender.male') }}
@@ -95,7 +96,7 @@
 
                         <option
                             value="Female"
-                            @if ($customer->gender == "Female")
+                            @if ($selectedGender)
                                 selected="selected"
                             @endif>
                             {{ __('velocity::app.shop.gender.female') }}
@@ -118,7 +119,6 @@
                 </label>
 
                 <div class="w-100 mb-3">
-
                     <p-date-picker name="date_of_birth"
                                    id="date_of_birth"
                                    max-date="{{now()->subDay()}}"
