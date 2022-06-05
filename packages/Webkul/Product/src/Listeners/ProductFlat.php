@@ -56,6 +56,7 @@ class ProductFlat
     protected $fillableAttributeCodes = [
         'sku',
         'name',
+        'product_number',
         'price',
         'weight',
         'status',
@@ -149,9 +150,9 @@ class ProductFlat
                     $table->dropColumn($attribute->code . '_label');
                 }
             });
-            
+
             $this->productFlatRepository->updateAttributeColumn( $attribute , $this );
-            
+
         }
     }
 
