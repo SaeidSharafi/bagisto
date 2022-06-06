@@ -223,6 +223,10 @@ class AttributeGroupTableSeeder extends Seeder
                 'attribute_id'        => '35',
                 'attribute_group_id'  => '8',
                 'position'            => '5',
+            ], [
+                'attribute_id'        => '36',
+                'attribute_group_id'  => '1',
+                'position'            => '2',
             ]
         ]);
 
