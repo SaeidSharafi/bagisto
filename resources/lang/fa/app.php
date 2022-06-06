@@ -49,5 +49,8 @@ return [
         'reset-password' => [
             'confirm-password' => 'تکرار کلمه عبور',
         ]
+    ],
+    'response' =>[
+        'complete-success' => 'ثبت نام با موفقیت تایید شد'
     ]
 ];
