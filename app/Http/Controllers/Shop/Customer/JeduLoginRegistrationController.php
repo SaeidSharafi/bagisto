@@ -29,10 +29,6 @@ class JeduLoginRegistrationController
             return redirect()->route('customer.profile.index');
         }
 
-        if(!session()->has('url.intended'))
-        {
-            session(['url.intended' => url()->previous()]);
-        }
         return view($this->_config['view']);
     }
 
