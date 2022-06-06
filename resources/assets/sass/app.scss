@@ -158,7 +158,9 @@ nav#top {
 nav#sidebar-level-0 {
     margin-top: -1px;
 }
-
+.full-description{
+    font-size: 1.1rem;
+}
 .main-content-wrapper {
     display: block;
     margin-bottom: 0;
@@ -246,16 +248,6 @@ nav .logo {
     min-height: 200px;
 }
 
-section.product-extra-detail {
-    .extra-attributes {
-        min-height: 400px;
-
-        .nav-item a.nav-link {
-            padding: 0.5rem 0.25rem;
-            font-size: 1.4rem;
-        }
-    }
-}
 
 header {
     .logo {
@@ -752,20 +744,24 @@ section.product-detail {
     }
 }
 
+
 section.product-extra-detail {
     margin-top: 40px;
 
     .extra-attributes {
-
+        min-height: 400px;
         .nav-item {
             margin: auto 6px;
 
             a {
                 color: $blue-gray;
-                font-size: 1rem;
+                font-size: 1.3rem;
                 font-weight: 600;
                 line-height: initial;
                 border-bottom: 2px solid;
+                &.nav-link{
+                    padding: 0.5rem 0.25rem;
+                }
             }
 
             &.active {
@@ -778,7 +774,7 @@ section.product-extra-detail {
 
         .tab-pane {
             padding: 1rem;
-            font-size: 0.9rem;
+            font-size: 1.1rem;
             font-weight: 500;
             line-height: initial;
 
@@ -1894,6 +1890,14 @@ body.rtl header .mini-cart-container #mini-cart .badge {
     right: auto;
     left: 0;
 }
+.teacher-info{
+    h5{
+        font-size: 1.3rem;
+    }
+    p{
+        font-size: 1.1rem;
+    }
+}
 
 @media (min-width: 320px) {
     html {
@@ -1926,8 +1930,34 @@ body.rtl header .mini-cart-container #mini-cart .badge {
 }
 
 @media(min-width: 768px) {
+    .teacher-info{
+        h5{
+            font-size: 1.4rem;
+        }
+        p{
+            font-size: 1.3rem;
+        }
+    }
+
+    section.product-extra-detail {
+        .extra-attributes {
+            .nav-item {
+                a {
+                    font-size: 1.4rem;
+                }
+            }
+
+            .tab-pane {
+                font-size: 1.2rem;
+
+            }
+        }
+    }
     .top-bar-gif {
         height: 35px;
+    }
+    .full-description{
+        font-size: 1.2rem;
     }
     .product-card-wrapper {
         -ms-flex: 0 0 33.33%;
