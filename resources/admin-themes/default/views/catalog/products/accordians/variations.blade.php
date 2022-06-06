@@ -171,7 +171,11 @@
                         v-model="variant.product_number"
                         v-validate="'checkForSku'"
                         data-vv-as="&quot;{{ __('admin.catalog.products.product_number') }}&quot;"/>
-
+                    <span
+                        class="control-error parent-sku"
+                        id="parent-sku"
+                        v-if="errors.has(variantInputName + '[product_number]')">
+                    </span>
                     <span
                         class="control-error"
                         v-text="errors.first(variantInputName + '[product_number]')"
@@ -500,13 +504,16 @@
                 self.$validator.localize(dictionary);
                 self.$validator.extend('checkForSku', {
                     getMessage(field, val) {
-                        console.log("field");
                         return 'SKU must be from Parent SKU';
                     },
 
                     validate(value, field) {
                         if (!self.parentSKU) {
                             return true;
+                        }
+                        let skuparent = document.querySelector('#parent-sku');
+                        if(skuparent){
+                            skuparent.innerHTML = self.parentSKU;
                         }
                         console.log(self.parentSKU);
                         console.log(value);
