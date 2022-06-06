@@ -31,7 +31,7 @@ return [
     'locale-based'  => 'Locale based',
     'channel-based' => 'Channel based',
     'status'        => 'Status',
-    'select-option' => 'Select option',
+    'select-option' => 'Select Option',
     'category'      => 'Category',
 
     'common' => [
@@ -39,11 +39,12 @@ return [
         'country'         => 'Country',
         'state'           => 'State',
         'true'            => 'True',
-        'false'           => 'False'
+        'false'           => 'False',
     ],
 
     'layouts' => [
         'app-version'              => 'Version : :version',
+        'account-title'            => 'Account',
         'my-account'               => 'My Account',
         'logout'                   => 'Logout',
         'visit-shop'               => 'Visit Shop',
@@ -84,6 +85,7 @@ return [
         'cms'                      => 'CMS',
         'transactions'             => 'Transactions',
         'newsletter-subscriptions' => 'Newsletter Subscriptions',
+        'mode'                     => 'Mode',
     ],
 
     'acl' => [
@@ -156,7 +158,7 @@ return [
         'order-count'               => ':count Orders',
         'revenue'                   => 'Revenue :total',
         'stock-threshold'           => 'Stock Threshold',
-        'qty-left'                  => ':qty Left'
+        'qty-left'                  => ':qty Left',
     ],
 
     'datagrid' => [
@@ -165,7 +167,7 @@ return [
             'delete-success' => 'Selected :resource were successfully deleted',
             'partial-action' => 'Some actions were not performed due restricted system constraints on :resource',
             'update-success' => 'Selected :resource were successfully updated',
-            'no-resource'    => 'The resource provided for insufficient for the action'
+            'no-resource'    => 'The resource provided for insufficient for the action',
         ],
 
         'id'               => 'ID',
@@ -258,15 +260,18 @@ return [
     ],
 
     'account' => [
-        'title'            => 'My Account',
-        'save-btn-title'   => 'Save',
-        'general'          => 'General',
-        'name'             => 'Name',
-        'email'            => 'Email',
-        'password'         => 'Password',
-        'confirm-password' => 'Confirm Password',
-        'change-password'  => 'Change Account Password',
-        'current-password' => 'Current Password'
+        'title'                => 'My Account',
+        'save-btn-title'       => 'Save',
+        'general'              => 'General',
+        'upload-image-info'    => 'Upload a Profile Image (100px x 100px) in PNG or JPG Format',
+        'remove-image'         => 'Remove Image',
+        'image-upload-message' => 'Only images (.jpeg, .jpg, .png, ..) are allowed.',
+        'name'                 => 'Name',
+        'email'                => 'Email',
+        'password'             => 'Password',
+        'confirm-password'     => 'Confirm Password',
+        'change-password'      => 'Change Account Password',
+        'current-password'     => 'Current Password',
     ],
 
     'users' => [
@@ -277,7 +282,7 @@ return [
             'password'         => 'Password',
             'confirm-password' => 'Confirm Password',
             'back-link-title'  => 'Back to Sign In',
-            'submit-btn-title' => 'Send Password Reset Email'
+            'submit-btn-title' => 'Send Password Reset Email',
         ],
 
         'reset-password' => [
@@ -286,7 +291,7 @@ return [
             'password'         => 'Password',
             'confirm-password' => 'Confirm Password',
             'back-link-title'  => 'Back to Sign In',
-            'submit-btn-title' => 'Reset Password'
+            'submit-btn-title' => 'Reset Password',
         ],
 
         'roles' => [
@@ -300,7 +305,7 @@ return [
             'access-control'  => 'Access Control',
             'permissions'     => 'Permissions',
             'custom'          => 'Custom',
-            'all'             => 'All'
+            'all'             => 'All',
         ],
 
         'users' => [
@@ -326,7 +331,7 @@ return [
             'password-match'       => 'Current password does not match.',
             'account-save'         => 'Account changes saved successfully.',
             'login-error'          => 'Please check your credentials and try again.',
-            'activate-warning'     => 'Your account is yet to be activated, please contact administrator.'
+            'activate-warning'     => 'Your account is yet to be activated, please contact administrator.',
         ],
 
         'sessions' => [
@@ -335,8 +340,8 @@ return [
             'password'                   => 'Password',
             'forget-password-link-title' => 'Forget Password ?',
             'remember-me'                => 'Remember Me',
-            'submit-btn-title'           => 'Sign In'
-        ]
+            'submit-btn-title'           => 'Sign In',
+        ],
     ],
 
     'sales' => [
@@ -407,35 +412,39 @@ return [
             'notify-customer'              => 'Notify Customer',
             'customer-notified'            => ':date | Customer <b>Notified</b>',
             'customer-not-notified'        => ':date | Customer <b>Not Notified</b>',
-            'transactions'                 => 'Transactions'
+            'transactions'                 => 'Transactions',
         ],
 
         'invoices' => [
-            'title'          => 'Invoices',
-            'id'             => 'ID',
-            'invoice'        => 'Invoice',
-            'invoice-id'     => 'Invoice ID',
-            'date'           => 'Invoice Date',
-            'order-id'       => 'Order ID',
-            'customer-name'  => 'Customer Name',
-            'status'         => 'Status',
-            'amount'         => 'Amount',
-            'action'         => 'Action',
-            'add-title'      => 'Create Invoice',
-            'save-btn-title' => 'Save Invoice',
-            'qty'            => 'Qty',
-            'qty-ordered'    => 'Qty Ordered',
-            'qty-to-invoice' => 'Qty to Invoice',
-            'view-title'     => 'Invoice #:invoice_id',
-            'bill-to'        => 'Bill to',
-            'ship-to'        => 'Ship to',
-            'print'          => 'Print',
-            'order-date'     => 'Order Date',
-            'creation-error' => 'Order invoice creation is not allowed.',
-            'product-error'  => 'Invoice can not be created without products.',
-            'status-overdue' => 'Overdue',
-            'status-pending' => 'Pending Payment',
-            'status-paid'    => 'Paid',
+            'title'                  => 'Invoices',
+            'id'                     => 'ID',
+            'invoice'                => 'Invoice',
+            'invoice-id'             => 'Invoice ID',
+            'date'                   => 'Invoice Date',
+            'order-id'               => 'Order ID',
+            'customer-name'          => 'Customer Name',
+            'status'                 => 'Status',
+            'amount'                 => 'Amount',
+            'action'                 => 'Action',
+            'add-title'              => 'Create Invoice',
+            'save-btn-title'         => 'Save Invoice',
+            'send-duplicate-invoice' => 'Send Duplicate Invoice',
+            'send'                   => 'Send',
+            'invoice-sent'           => 'Invoice sent successfully!',
+            'qty'                    => 'Qty',
+            'qty-ordered'            => 'Qty Ordered',
+            'qty-to-invoice'         => 'Qty to Invoice',
+            'view-title'             => 'Invoice #:invoice_id',
+            'bill-to'                => 'Bill to',
+            'ship-to'                => 'Ship to',
+            'print'                  => 'Print',
+            'order-date'             => 'Order Date',
+            'invalid-qty'            => 'We found an invalid quantity to invoice items.',
+            'creation-error'         => 'Order invoice creation is not allowed.',
+            'product-error'          => 'Invoice can not be created without products.',
+            'status-overdue'         => 'Overdue',
+            'status-pending'         => 'Pending Payment',
+            'status-paid'            => 'Paid',
         ],
 
         'shipments' => [
@@ -485,7 +494,7 @@ return [
             'status'                      => 'Status',
             'action'                      => 'Action',
             'view-title'                  => 'Refund #:refund_id',
-            'invalid-refund-amount-error' => 'Refund amount should be non zero.'
+            'invalid-refund-amount-error' => 'Refund amount should be non zero.',
 
         ],
 
@@ -507,9 +516,9 @@ return [
             'response'            => [
                 'invoice-missing'   => 'This invoice id does not exist',
                 'transaction-saved' => 'The transaction has been saved',
-                'already-paid'      => 'This invoice has already been paid'
-            ]
-        ]
+                'already-paid'      => 'This invoice has already been paid',
+            ],
+        ],
     ],
 
     'catalog' => [
@@ -521,8 +530,16 @@ return [
             'save-btn-title'                => 'Save Product',
             'general'                       => 'General',
             'product-type'                  => 'Product Type',
-            'simple'                        => 'Simple',
-            'configurable'                  => 'Configurable',
+            'type'                          => [
+                'simple'                        => 'Simple',
+                'booking'                       => 'Booking',
+                'bundle'                        => 'Bundle',
+                'downloadable'                  => 'Downloadable',
+                'grouped'                       => 'Grouped',
+                'virtual'                       => 'Virtual',            
+                'configurable'                  => 'Configurable',
+
+            ],            
             'familiy'                       => 'Attribute Family',
             'sku'                           => 'SKU',
             'configurable-attributes'       => 'Configurable Attributes',
@@ -595,6 +612,7 @@ return [
             'save'                          => 'Save',
             'cancel'                        => 'Cancel',
             'saved-inventory-message'       => 'Product inventory saved successfully.',
+            'image-size'                    => 'Image resolution should be like 640px X 640px',
         ],
 
         'attributes' => [
@@ -607,6 +625,7 @@ return [
             'type'                        => 'Attribute Type',
             'text'                        => 'Text',
             'textarea'                    => 'Textarea',
+            'enable-wysiwyg'              => 'Enable Wysiwyg Editor',
             'price'                       => 'Price',
             'boolean'                     => 'Boolean',
             'select'                      => 'Select',
@@ -646,12 +665,12 @@ return [
             'image'                       => 'Image',
             'file'                        => 'File',
             'checkbox'                    => 'Checkbox',
-            'use_in_flat'                 => "Create in Product Flat Table",
-            'is_comparable'               => "Attribute is comparable",
+            'use_in_flat'                 => 'Create in Product Flat Table',
+            'is_comparable'               => 'Attribute is comparable',
             'default_null_option'         => 'Create default empty option',
             'validation-messages'         => [
-                'max-size' => 'The image size must be less than 600 KB'
-            ]
+                'max-size' => 'The image size must be less than 600 KB',
+            ],
         ],
         'families'   => [
             'title'                => 'Families',
@@ -669,7 +688,7 @@ return [
             'type'                 => 'Type',
             'add-attribute-title'  => 'Add Attributes',
             'search'               => 'Search',
-            'group-exist-error'    => 'Group with same name already exists.'
+            'group-exist-error'    => 'Group with same name already exists.',
         ],
         'categories' => [
             'title'                    => 'Categories',
@@ -690,6 +709,7 @@ return [
             'description'              => 'Description',
             'parent-category'          => 'Parent Category',
             'seo'                      => 'Search Engine Optimization',
+            'products'                 => 'Products',
             'slug'                     => 'Slug',
             'meta_title'               => 'Meta Title',
             'meta_description'         => 'Meta Description',
@@ -697,7 +717,9 @@ return [
             'image'                    => 'Image',
             'filterable-attributes'    => 'Filterable Attributes',
             'attributes'               => 'Attributes',
-        ]
+            'image-size'               => 'Image resolution should be like 300px X 168px',
+            'image-size-logo'          => 'Image resolution should be like 20px X 20px',
+        ],
     ],
 
     'configuration' => [
@@ -721,8 +743,8 @@ return [
             'select-taxrates' => 'Select Tax Rates',
             'edit'            => [
                 'title'             => 'Edit Tax Category',
-                'edit-button-title' => 'Edit Tax Category'
-            ]
+                'edit-button-title' => 'Edit Tax Category',
+            ],
         ],
 
         'tax-rates' => [
@@ -741,7 +763,7 @@ return [
             'tax_rate'       => 'Rate',
             'edit'           => [
                 'title'             => 'Edit Tax Rate',
-                'edit-button-title' => 'Edit Rate'
+                'edit-button-title' => 'Edit Rate',
             ],
             'zip_code'       => 'Zip Code',
         ],
@@ -752,9 +774,9 @@ return [
                 'save-btn-title' => 'Save',
                 'description'    => 'Description',
                 'active'         => 'Active',
-                'status'         => 'Status'
-            ]
-        ]
+                'status'         => 'Status',
+            ],
+        ],
     ],
 
     'settings' => [
@@ -778,7 +800,7 @@ return [
             'save-btn-title' => 'Save Country',
             'general'        => 'General',
             'code'           => 'Code',
-            'name'           => 'Name'
+            'name'           => 'Name',
         ],
         'currencies'        => [
             'title'             => 'Currencies',
@@ -796,9 +818,9 @@ return [
         ],
         'exchange_rates'    => [
             'title'                    => 'Exchange Rates',
-            'add-title'                => 'Add Exchange Rate',
+            'add-title'                => 'Add',
             'edit-title'               => 'Edit Exchange Rate',
-            'save-btn-title'           => 'Save Exchange Rate',
+            'save-btn-title'           => 'Save',
             'general'                  => 'General',
             'source_currency'          => 'Source Currency',
             'target_currency'          => 'Target Currency',
@@ -812,9 +834,10 @@ return [
         ],
         'inventory_sources' => [
             'title'             => 'Inventory Sources',
+            'add'               => 'Add',
             'add-title'         => 'Add Inventory Source',
             'edit-title'        => 'Edit Inventory Source',
-            'save-btn-title'    => 'Save Inventory Source',
+            'save-btn-title'    => 'Save',
             'general'           => 'General',
             'code'              => 'Code',
             'name'              => 'Name',
@@ -874,7 +897,9 @@ return [
             'seo-keywords'           => 'Meta keywords',
             'maintenance-mode'       => 'Maintenance Mode',
             'maintenance-mode-text'  => 'Message',
-            'allowed-ips'            => 'Allowed IPs'
+            'allowed-ips'            => 'Allowed IPs',
+            'logo-size'              => 'Image resolution should be like 192px X 50px',
+            'favicon-size'           => 'Image resolution should be like 16px X 16px',
         ],
 
         'sliders' => [
@@ -895,10 +920,12 @@ return [
             'delete-fail'     => 'Slider item successfully deleted',
             'expired-at'      => 'Expire Date',
             'sort-order'      => 'Sort Order',
+            'image-size'      => 'Image resolution should be like 1920px X 550px',
         ],
 
         'tax-categories' => [
             'title'           => 'Tax Categories',
+            'create'          => 'Create',
             'add-title'       => 'Create Tax Category',
             'edit-title'      => 'Edit Tax Category',
             'save-btn-title'  => 'Save Tax Category',
@@ -910,14 +937,14 @@ return [
             'select-taxrates' => 'Select Tax Rates',
             'edit'            => [
                 'title'             => 'Edit Tax Category',
-                'edit-button-title' => 'Edit Tax Category'
+                'edit-button-title' => 'Edit Tax Category',
             ],
             'create-success'  => 'New Tax Category Created',
             'create-error'    => 'Error, While Creating Tax Category',
             'update-success'  => 'Successfully Updated Tax Category',
             'update-error'    => 'Error While Updating Tax Category',
             'atleast-one'     => 'Cannot Delete The Last Tax Category',
-            'delete'          => 'Tax Category Successfully Deleted'
+            'delete'          => 'Tax Category Successfully Deleted',
         ],
 
         'tax-rates'   => [
@@ -936,7 +963,7 @@ return [
             'tax_rate'       => 'Rate',
             'edit'           => [
                 'title'             => 'Edit Tax Rate',
-                'edit-button-title' => 'Edit Rate'
+                'edit-button-title' => 'Edit Rate',
             ],
             'zip_code'       => 'Zip Code',
             'create-success' => 'Tax Rate Created Successfully',
@@ -944,11 +971,11 @@ return [
             'update-success' => 'Tax Rate Updated Successfully',
             'update-error'   => 'Error! Tax Rate Cannot Be Updated',
             'delete'         => 'Tax Rate Deleted Successfully',
-            'atleast-one'    => 'Cannot Delete Last Tax Rate'
+            'atleast-one'    => 'Cannot Delete Last Tax Rate',
         ],
         'development' => [
             'title' => 'Development',
-        ]
+        ],
     ],
 
     'customers' => [
@@ -960,7 +987,7 @@ return [
             'code'            => 'Code',
             'name'            => 'Name',
             'is_user_defined' => 'User Defined',
-            'yes'             => 'Yes'
+            'yes'             => 'Yes',
         ],
 
         'addresses' => [
@@ -998,7 +1025,7 @@ return [
             'title'      => 'Add Note',
             'save-note'  => 'Save Note',
             'enter-note' => 'Enter Note',
-            'help-title' => 'Add Note On This Customer'
+            'help-title' => 'Add Note On This Customer',
         ],
 
         'customers' => [
@@ -1007,6 +1034,7 @@ return [
             'title'                     => 'Customers',
             'first_name'                => 'First Name',
             'last_name'                 => 'Last Name',
+            'select-gender'             => 'Select Gender',
             'gender'                    => 'Gender',
             'email'                     => 'Email',
             'date_of_birth'             => 'Date of Birth',
@@ -1029,7 +1057,10 @@ return [
             'mass-update-success'       => 'Customers updated successfully',
             'status'                    => 'Status',
             'active'                    => 'Active',
-            'inactive'                  => 'Inactive'
+            'inactive'                  => 'Inactive',
+            'is-suspended'              => 'Is Suspended',
+            'suspend'                   => 'Suspend',
+            'suspended'                 => 'Suspended',
         ],
 
         'reviews' => [
@@ -1040,7 +1071,7 @@ return [
             'comment'     => 'Comment',
             'pending'     => 'Pending',
             'approved'    => 'Approve',
-            'disapproved' => 'Disapprove'
+            'disapproved' => 'Disapprove',
         ],
 
         'subscribers' => [
@@ -1055,13 +1086,13 @@ return [
             'delete-failed'  => 'Error! Subscriber cannot be deleted',
             'update-failed'  => 'Error! You cannot unsubscribe the subscriber',
             'delete'         => 'Subscriber was successfully deleted',
-            'delete-failed'  => 'Error! Subscriber cannot be deleted'
+            'delete-failed'  => 'Error! Subscriber cannot be deleted',
         ],
 
         'orders' => [
             'list'  => ':customer_name\'s orders List',
-            'title' => 'Orders'
-        ]
+            'title' => 'Orders',
+        ],
     ],
 
     'promotions' => [
@@ -1197,7 +1228,7 @@ return [
             'buy-x-get-y-free'             => 'Buy X Get Y Free',
             'discount-amount'              => 'Discount Amount',
             'mass-delete-success'          => 'All the selected index of coupons have been deleted successfully.',
-        ]
+        ],
     ],
 
     'marketing' => [
@@ -1258,8 +1289,8 @@ return [
             'create-success' => 'Event created successfully.',
             'update-success' => 'Event updated successfully.',
             'delete-success' => 'Event deleted successfully.',
-            'edit-error'     => 'Can not edit this event.'
-        ]
+            'edit-error'     => 'Can not edit this event.',
+        ],
     ],
 
     'error' => [
@@ -1271,31 +1302,31 @@ return [
             'page-title' => '404 Page not found',
             'name'       => '404',
             'title'      => 'Page Not found',
-            'message'    => 'The Page you are looking for does not exist or have been moved. Navigate using sidemenu.'
+            'message'    => 'The Page you are looking for does not exist or have been moved. Navigate using sidemenu.',
         ],
         '403' => [
             'page-title' => '403 forbidden Error',
             'name'       => '403',
             'title'      => 'Forbidden error',
-            'message'    => 'You do not have permission to access this page'
+            'message'    => 'You do not have permission to access this page',
         ],
         '500' => [
             'page-title' => '500 Internal Server Error',
             'name'       => '500',
             'title'      => 'Internal Server Error',
-            'message'    => 'The Server Encountered an internal error.'
+            'message'    => 'The Server Encountered an internal error.',
         ],
         '401' => [
             'page-title' => '401 Unauthorized Error',
             'name'       => '401',
             'title'      => 'Unauthorized Error',
-            'message'    => 'The request has not been applied because it lacks valid authentication credentials for the target resource.'
+            'message'    => 'The request has not been applied because it lacks valid authentication credentials for the target resource.',
         ],
 
         'tinymce' => [
             'http-error'    => 'HTTP error.',
             'invalid-json'  => 'Invalid JSON.',
-            'upload-failed' => 'Image upload failed due to a XHR Transport error.'
+            'upload-failed' => 'Image upload failed due to a XHR Transport error.',
         ],
     ],
 
@@ -1314,7 +1345,7 @@ return [
         'allowed-type'     => 'Allowed Type :',
         'file-type'        => 'csv, xls, xlsx.',
         'no-records'       => 'Nothing to export',
-        'illegal-format'   => 'Error! This type of format is either not supported or its illegal format'
+        'illegal-format'   => 'Error! This type of format is either not supported or its illegal format',
     ],
 
     'cms' => [
@@ -1347,15 +1378,16 @@ return [
             'one-col'          => '<div class="mt-10">Use class: <b>"static-container one-column"</b> for one column layout.</div>',
             'two-col'          => '<div class="mt-10">Use class: <b>"static-container two-column"</b> for two column layout.</div>',
             'three-col'        => '<div class="mt-10">Use class: <b>"static-container three-column"</b> for three column layout.</div>',
-            'helper-classes'   => 'Helper Classes'
-        ]
+            'helper-classes'   => 'Helper Classes',
+        ],
     ],
 
     'response' => [
-        'being-used'                => 'This resource :name is getting used in :source',
+        'being-used'                => 'This :name is getting used in :source',
         'product-copied'            => 'The Product has been copied',
         'error-while-copying'       => 'Something went wrong while trying to copy the product',
         'product-can-not-be-copied' => 'Products of type :type can not be copied',
+        'cannot-change'             => 'Cannot change the :name.',
         'cannot-delete-default'     => 'Cannot delete the default channel',
         'create-success'            => ':name created successfully.',
         'update-success'            => ':name updated successfully.',
@@ -1373,7 +1405,13 @@ return [
         'cancel-success'            => ':name canceled successfully.',
         'cancel-error'              => ':name can not be canceled.',
         'already-taken'             => 'The :name has already been taken.',
-        'order-pending'             => 'Cannot delete :name account because some Order(s) are pending or processing state.'
+        'order-pending'             => 'Cannot delete :name account because some Order(s) are pending or processing state.',
+        'something-went-wrong'      => 'Something went wrong!',
+    ],
+
+    'validations' => [
+        'slug-being-used' => 'This slug is getting used in either categories or products.',
+        'slug-reserved'   => 'This slug is reserved.',
     ],
 
     'footer' => [
@@ -1389,34 +1427,17 @@ return [
                 'registration'                                     => 'Send a confirmation e-mail after customer registration',
                 'customer-registration-confirmation-mail-to-admin' => 'Send a confirmation e-mail to admin after customer registration',
                 'customer'                                         => 'Send the customer account credentials after registration',
-                'new-order'                                        => 'Send a confirmation email to the customer after placing a new order',
-                'new-admin'                                        => 'Send a confirmation email to the admin after placing a new order',
-                'new-invoice'                                      => 'Send a notification e-mail after creating a new invoice',
-                'new-refund'                                       => 'Send a notification e-mail after creating a refund',
-                'new-shipment'                                     => 'Send a notification e-mail after creating a shipment',
-                'new-inventory-source'                             => 'Send a notification e-email after creating a new inventory source',
-                'cancel-order'                                     => 'Send a notification after canceling an order'
+                'new-order'                                        => 'Send a confirmation e-mail to the customer after placing a new order',
+                'new-admin'                                        => 'Send a confirmation e-mail to the admin after placing a new order',
+                'new-invoice'                                      => 'Send a notification e-mail to the customer after creating a new invoice',
+                'new-refund'                                       => 'Send a notification e-mail to the customer after creating a refund',
+                'new-shipment'                                     => 'Send a notification e-mail to the customer after creating a shipment',
+                'new-inventory-source'                             => 'Send a notification e-mail to the inventory source after creating a shipment',
+                'cancel-order'                                     => 'Send a notification after canceling an order',
             ],
 
         ],
-        'sms'    => [
-            'sms'                => 'SMS',
-            'notification_label' => 'Notifications',
-            'notifications'      => [
-                'verification'                                     => 'Send a verification sms after customer registration',
-                'registration'                                     => 'Send a confirmation sms after customer registration',
-                'customer-registration-confirmation-mail-to-admin' => 'Send a confirmation sms to admin after customer registration',
-                'customer'                                         => 'Send the customer account credentials after registration',
-                'new-order'                                        => 'Send a confirmation sms to the customer after placing a new order',
-                'new-admin'                                        => 'Send a confirmation sms to the admin after placing a new order',
-                'new-invoice'                                      => 'Send a notification sms after creating a new invoice',
-                'new-refund'                                       => 'Send a notification sms after creating a refund',
-                'new-shipment'                                     => 'Send a notification sms after creating a shipment',
-                'new-inventory-source'                             => 'Send a notification sms after creating a new inventory source',
-                'cancel-order'                                     => 'Send a notification after canceling an order'
-            ],
 
-        ],
         'system' => [
             'catalog'                               => 'Catalog',
             'homepage'                              => 'Homepage configuration',
@@ -1434,6 +1455,8 @@ return [
             'stock-options'                         => 'Stock Options',
             'allow-backorders'                      => 'Allow Backorders',
             'customer'                              => 'Customer',
+            'wishlist'                              => 'Wishlist',
+            'wishlist-share'                        => 'Enable Sharing',
             'settings'                              => 'Settings',
             'address'                               => 'Address',
             'street-lines'                          => 'Lines in a Street Address',
@@ -1443,10 +1466,12 @@ return [
             'flate-rate-shipping'                   => 'Flat Rate Shipping',
             'shipping'                              => 'Shipping',
             'origin'                                => 'Origin',
+            'requirements'                          => 'Requirements',
             'country'                               => 'Country',
             'state'                                 => 'State',
             'zip'                                   => 'Zip',
             'city'                                  => 'City',
+            'information'                           => 'Information',
             'street-address'                        => 'Street Address',
             'title'                                 => 'Title',
             'description'                           => 'Description',
@@ -1463,8 +1488,6 @@ return [
             'newsletter-subscription'               => 'Allow Newsletter Subscription',
             'email'                                 => 'Email Verification',
             'email-verification'                    => 'Allow Email Verification',
-            'sms'                                   => 'SMS Verification',
-            'sms-verification'                      => 'Allow SMS Verification',
             'sort_order'                            => 'Sort Order',
             'general'                               => 'General',
             'footer'                                => 'Footer',
@@ -1473,7 +1496,6 @@ return [
             'footer-toggle'                         => 'Toggle footer',
             'locale-options'                        => 'Unit Options',
             'weight-unit'                           => 'Weight Unit',
-            'sms-settings'                          => 'SMS Settings',
             'email-settings'                        => 'Email Settings',
             'email-sender-name'                     => 'Email Sender Name',
             'email-sender-name-tip'                 => 'This name will be displayed in the customers inbox',
@@ -1511,6 +1533,9 @@ return [
             'invoice-slip-design'                   => 'Invoice Slip Design',
             'logo'                                  => 'Logo',
             'default'                               => 'Default',
+            'invoice-reminders'                     => 'Invoice Reminders',
+            'maximum-limit-of-reminders'            => 'Maximum limit of reminders',
+            'interval-between-reminders'            => 'Interval between reminders',
             'sandbox'                               => 'Sandbox',
             'all-channels'                          => 'All Channels',
             'all-locales'                           => 'All Locales',
@@ -1568,7 +1593,54 @@ return [
             'generate-invoice'                      => 'Automatically generate the invoice after placing an order',
             'set-invoice-status'                    => 'Set the invoice status after creating the invoice to',
             'set-order-status'                      => 'Set the order status after creating the invoice to',
-            'generate-invoice-applicable'           => 'Applicable if automatic generate invoice is enabled'
-        ]
-    ]
+            'generate-invoice-applicable'           => 'Applicable if automatic generate invoice is enabled',
+            'records-found'                         => 'Record(s) found',
+            'logo-size'                             => 'Image resolution should be like 112px X 41px',
+            'favicon-size'                          => 'Image resolution should be like 16px X 16px',
+            'invoice-logo-size'                     => 'Image resolution should be like 192px X 50px',
+        ],
+    ],
+
+    'api' => [
+        'system' => [
+            'api'                    => 'API',
+            'basic-configuration'    => 'Basic Configuration',
+            'customer-configuration' => 'Customer Configuration',
+            'username'               => 'Username',
+            'password'               => 'Password',
+            'login-after-register'   => 'Login After Register',
+            'info-login'             => 'Info: Customer must be login after registration API.',
+        ],
+        'auth'   => [
+            'invalid-auth'       => 'Warning: You are not authorized to use APIs.',
+            'required-token'     => 'Warning: token parameter is required.',
+            'invalid-store'      => 'Warning: You are requesting an invalid store.',
+            'login-required'     => 'Warning: Customer login is needed to add the product to compare list.',
+            'resource-not-found' => 'Warning: Requested :resource not found in the record.',
+        ],
+    ],
+
+    'notification' => [
+        'notification-title'          => 'Notification',
+        'title-plural'                => 'Notifications',
+        'status'                      => [
+            'all'        => 'All',
+            'pending'    => 'Pending',
+            'processing' => 'Processing',
+            'canceled'   => 'Canceled',
+            'closed'     => 'Closed',
+            'completed'  => 'Completed',
+        ],
+        'view-all'                    => 'View All Notifications',
+        'no-record'                   => 'No Record Found',
+        'read-all'                    => 'Mark as Read',
+        'notification-marked-success' => 'Notification Marked Successfully',
+        'order-status-messages'       => [
+            'completed'  => 'Order Completed',
+            'closed'     => 'Order Closed',
+            'canceled'   => 'Order Canceled',
+            'pending'    => 'Order Pending',
+            'processing' => 'Order Processing',
+        ],
+    ],
 ];
