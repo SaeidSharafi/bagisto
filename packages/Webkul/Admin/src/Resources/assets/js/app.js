@@ -73,7 +73,7 @@ Vue.component(
 );
 Vue.component(
     'notification-list',
-    require('./components/datepicker').default
+    require('./components/navigation/notification-list').default
 );
 Vue.component(
     'p-date-picker',
