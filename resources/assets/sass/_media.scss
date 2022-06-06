@@ -159,7 +159,7 @@ body.rtl header .vc-small-screen #search-form {
     }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 375px) {
     .selective-div {
         width: 110px;
     }
@@ -168,4 +168,26 @@ body.rtl header .vc-small-screen #search-form {
             display: block !important;
         }
     }
+}
+@media only screen and (max-width: 600px) {
+.main-content-wrapper .vc-header > div.vc-small-screen {
+    .hamburger-wrapper {
+        height: 50px;
+        display: flex;
+        align-items: center;
+    }
+
+    .login-wrapper {
+        font-size: 1.3rem;
+        a{
+            padding: 3px 3px;
+        }
+
+    }
+    .search-wrapper{
+        height: 50px;
+        display: flex;
+        align-items: center;
+    }
+}
 }
