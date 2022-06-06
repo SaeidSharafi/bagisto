@@ -101,7 +101,7 @@ class OnepageController extends Controller
         }
 
         Cart::collectTotals();
-        if($cart->base_grand_total){
+        if($cart->base_grand_total == 0){
             Cart::savePaymentMethod(['method' => 'mellat']);
             $order = $this->orderRepository->create(Cart::prepareDataForOrder());
             $order = $this->orderRepository->update(['status' => 'processing'],
