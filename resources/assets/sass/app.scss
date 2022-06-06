@@ -750,6 +750,9 @@ section.product-extra-detail {
 
     .extra-attributes {
         min-height: 400px;
+        h5{
+            font-size: 1.3rem;
+        }
         .nav-item {
             margin: auto 6px;
 
@@ -1941,6 +1944,9 @@ body.rtl header .mini-cart-container #mini-cart .badge {
 
     section.product-extra-detail {
         .extra-attributes {
+            h5{
+                font-size: 1.4rem;
+            }
             .nav-item {
                 a {
                     font-size: 1.4rem;
