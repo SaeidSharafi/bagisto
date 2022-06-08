@@ -49,6 +49,17 @@
 
                     {!! view_render_event('bagisto.admin.customers.create.last_name.after') !!}
 
+                    <div class="control-group" :class="[errors.has('national_code') ? 'has-error' : '']">
+                        <label for="national_code">
+                            {{ __('app.customer.account.profile.national_code') }}
+                        </label>
+
+                            <input value="{{ old('national_code')}}" name="national_code" type="text"
+                                   class="control" v-validate="'required|numeric|min:10|max:10'" data-vv-as="&quot;{{ __('app.customer.account.profile.national_code') }}&quot;" />
+                            <span class="control-error" v-if="errors.has('national_code')" v-text="errors.first('national_code')"></span>
+                    </div>
+
+
                     <div class="control-group" :class="[errors.has('email') ? 'has-error' : '']">
                         <label for="email" class="required">{{ __('shop::app.customer.signup-form.email') }}</label>
                         <input type="email" class="control" id="email" name="email" v-validate="'required|email'" value="{{ old('email') }}" data-vv-as="&quot;{{ __('shop::app.customer.signup-form.email') }}&quot;">
@@ -61,9 +72,8 @@
                         <label for="gender" class="required">{{ __('admin::app.customers.customers.gender') }}</label>
                         <select name="gender" class="control" id="gender" v-validate="'required'" data-vv-as="&quot;{{ __('admin::app.customers.customers.gender') }}&quot;">
                             <option value="">{{ __('admin::app.customers.customers.select-gender') }}</option>
-                            <option value="{{ __('admin::app.customers.customers.male') }}">{{ __('admin::app.customers.customers.male') }}</option>
-                            <option value="{{ __('admin::app.customers.customers.female') }}">{{ __('admin::app.customers.customers.female') }}</option>
-                            <option value="{{ __('admin::app.customers.customers.other') }}">{{ __('admin::app.customers.customers.other') }}</option>
+                            <option value="Male">{{ __('admin::app.customers.customers.male') }}</option>
+                            <option value="Female">{{ __('admin::app.customers.customers.female') }}</option>
                         </select>
                         <span class="control-error" v-if="errors.has('gender')">@{{ errors.first('gender') }}</span>
                     </div>
@@ -72,7 +82,15 @@
 
                     <div class="control-group" :class="[errors.has('date_of_birth') ? 'has-error' : '']">
                         <label for="dob">{{ __('admin::app.customers.customers.date_of_birth') }}</label>
-                        <input type="date" class="control" id="dob" name="date_of_birth" v-validate="" value="{{ old('date_of_birth') }}" placeholder="{{ __('admin::app.customers.customers.date_of_birth_placeholder') }}" data-vv-as="&quot;{{ __('admin::app.customers.customers.date_of_birth') }}&quot;">
+                        <div class="control">
+                        <p-date-picker name="date_of_birth"
+                                       id="date_of_birth"
+                                       max-date="{{now()->subDay()}}"
+                                       initial-value="{{  old('date_of_birth')}}"
+                                       v-validate=""
+                                       data-vv-as="&quot;{{ __('admin::app.customers.customers.date_of_birth') }}&quot;"
+                                       placeholder="{{ __('admin::app.customers.customers.date_of_birth') }}"></p-date-picker>
+                        </div>
                         <span class="control-error" v-if="errors.has('date_of_birth')">@{{ errors.first('date_of_birth') }}</span>
                     </div>
 
@@ -86,11 +104,45 @@
 
                     {!! view_render_event('bagisto.admin.customers.create.phone.after') !!}
 
+                    <div class="control-group"  :class="[errors.has('father_name') ? 'has-error' : '']">
+                        <label for="father_name">{{ __('app.customer.account.profile.father_name') }}</label>
+
+                            <input name="father_name" class="control" type="text" value="{{ old('father_name') }}" data-vv-as="&quot;{{ __('app.customer.account.profile.father_name') }}&quot;" />
+                            <span class="control-error" v-if="errors.has('father_name')" v-text="errors.first('father_name')"></span>
+                            <span class="control-error" v-if="{{ $errors->has('father_name') }}" v-text="'{{$errors->first('father_name')}}'"></span>
+
+                    </div>
+
+                    <div  class="control-group"  :class="[errors.has('education_field') ? 'has-error' : '']">
+                        <label for="education_field">
+                            {{ __('app.customer.account.profile.education_field') }}
+                        </label>
+
+                            <input value="{{old('education_field') }}" name="education_field" type="text"
+                                   class="control" data-vv-as="&quot;{{ __('app.customer.account.profile.education_field') }}&quot;" />
+                            <span class="control-error" v-if="errors.has('education_field')" v-text="errors.first('education_field')"></span>
+                            <span class="control-error" v-if="{{ $errors->has('education_field') }}" v-text="'{{$errors->first('education_field')}}'"></span>
+
+                    </div>
+                    <div class="control-group">
+                        <label for="is_moodle_user" class="required">{{ __('admin::app.customers.customers.is_moodle_user') }}</label>
+
+                        <label class="switch">
+                            <input
+                                type="checkbox"
+                                id="is_moodle_user"
+                                name="is_moodle_user">
+
+                            <span class="slider round"></span>
+                        </label>
+
+                        <span class="control-error" v-if="errors.has('status')">@{{ errors.first('status') }}</span>
+                    </div>
                     <div class="control-group">
                         <label for="customerGroup" >{{ __('admin::app.customers.customers.customer_group') }}</label>
                         <select  class="control" id="customerGroup" name="customer_group_id">
                         @foreach ($customerGroup as $group)
-                            <option value="{{ $group->id }}"> {{ $group->name}} </>
+                                <option value="{{ $group->id }}"> {{ $group->name}} </option>
                         @endforeach
                         </select>
                     </div>

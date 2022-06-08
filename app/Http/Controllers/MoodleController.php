@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\MoodleFormatService;
 use App\Services\MoodleService;
 use Webkul\Product\Repositories\ProductFlatRepository;
 use Webkul\Sales\Repositories\OrderRepository;
@@ -77,9 +78,15 @@ class MoodleController extends Controller
         if (!$customer) {
             $customer = $this->currentCustomer->refresh();
         }
-        //$base_url = "https://lms.jedu.ir/auth/userkey/login.php?key={$customer->moodle_login_key}";
-        $base_url = env("MOODLE_ADDRESS");
 
-        return view('shop::customers.account.moodle.index', compact('base_url', 'customer', 'products'));
+        $enrollments = MoodleService::getUserCourses($customer);
+        if ($enrollments) {
+            $enrollments = MoodleFormatService::formatUserCourses($enrollments, $customer, $products);
+        }
+
+        $products = MoodleFormatService::formatProduct($products, $customer);
+
+
+        return view('shop::customers.account.moodle.index', compact('products', 'enrollments'));
     }
 }

@@ -21,18 +21,30 @@
 
     <div class="account-items-list customer-orders">
         <div class="account-table-content">
-            @foreach($products as $product)
-                <div class="product-card card">
-                    <div class="px-2 my-2 product-card-wrapper">
-                        @include('shop::customers.account.moodle.card', [
-                            'cardClass' => 'category-product-image-container',
-                            'product' => $product,
-                            'base_url' => $base_url
-                        ])
-                    </div>
-                </div>
-            @endforeach
+            <div class="row remove-padding-margin">
+                @foreach($products as $product)
 
+                    @include('shop::customers.account.moodle.card', [
+                        'cardClass' => 'category-product-image-container',
+                        'item' => $product
+                    ])
+
+                @endforeach
+            </div>
+            @if ($enrollments)
+
+                <div class="account-heading pt-4 pb-2">
+                    دوره های سامانه مجازی
+                </div>
+                <div class="row remove-padding-margin">
+                    @foreach($enrollments as $enrollment)
+                        @include('shop::customers.account.moodle.card', [
+                      'cardClass' => 'category-product-image-container',
+                      'item' => $enrollment
+                  ])
+                    @endforeach
+                </div>
+            @endif
         </div>
     </div>
 

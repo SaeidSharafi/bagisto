@@ -159,6 +159,16 @@ Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => conf
         Route::get('/orders/complete/{id}', [OrderController::class, 'complete'])
             ->name('admin.sales.orders.complete');
     });
+
+    Route::prefix('customers')->group(function () {
+        Route::get('/upload', [\App\Http\Controllers\Admin\CustomerController::class, 'index'])
+            ->name('admin.customers.bulk.index');
+    });
+
+    Route::prefix('customers')->group(function () {
+        Route::post('/upload', [\App\Http\Controllers\Admin\CustomerController::class, 'uploadCSV'])
+            ->name('admin.customers.bulk.upload');
+    });
 });
 
 Breadcrumbs::for('customer.moodle.index', function (BreadcrumbTrail $trail) {

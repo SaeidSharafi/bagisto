@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Shop\JeduCustomer;
 use Illuminate\Support\Facades\Http;
 use Webkul\Customer\Contracts\Customer;
 use Webkul\Sales\Models\Order;
@@ -25,7 +26,7 @@ class MoodleService
             return null;
         }
 
-        if ($customer->incomplet) {
+        if ($customer->incomplete) {
             \Log::error("AUTH TOKEN EMPTY");
             return null;
         }
@@ -61,7 +62,7 @@ class MoodleService
         return null;
     }
 
-    public static function createUser(Customer $customer)
+    public static function createUser(JeduCustomer $customer)
     {
         $token = env('MOODLE_CORE_TOKEN', '');
         $functionname = 'core_user_create_users';
@@ -69,17 +70,22 @@ class MoodleService
 
         if (!$root) {
             \Log::error("MOODLE ADDRESS EMPTY");
-            return;
+            return false;
         }
 
         if (!$token) {
             \Log::error("AUTH TOKEN EMPTY");
-            return;
+            return false;
         }
 
-        if ($customer->incomplet) {
-            \Log::error("AUTH TOKEN EMPTY");
-            return;
+        if ($customer->incomplete) {
+            \Log::error("USER IS INCOMPLETE");
+            return false;
+        }
+        $user = self::getUser($customer->national_code);
+        if ($user) {
+            \Log::info("USER Already Exist");
+            return true;
         }
         //$user1 = new stdClass();
         $data['users'][] = [
@@ -103,7 +109,7 @@ class MoodleService
             if ($body) {
                 if (array_key_exists('exception',$body)){
                     \Log::error("createUser user failed:", $body);
-                    return null;
+                    return false;
                 }
                 \Log::info("createUser user response:", $body);
             }
@@ -114,6 +120,68 @@ class MoodleService
         return $body;
     }
 
+    /**
+     * @param  Array  $customers
+     *
+     * @return mixed|void|null
+     */
+    public static function createUsers($customers)
+    {
+        $token = env('MOODLE_CORE_TOKEN', '');
+        $functionname = 'core_user_create_users';
+        $root = env('MOODLE_ADDRESS', '');
+
+        if (!$root) {
+            \Log::error("MOODLE ADDRESS EMPTY");
+            return;
+        }
+
+        if (!$token) {
+            \Log::error("AUTH TOKEN EMPTY");
+            return;
+        }
+
+
+        $data['users'] =[];
+        $url = $root.'/webservice/rest/server.php'.'?wstoken='.$token.'&wsfunction='.$functionname
+            .'&moodlewsrestformat=json';
+        foreach ($customers as $customer){
+
+            if (!$customer['is_moodle_user']){
+                continue;
+            }
+
+            $data['users'][] = [
+                'firstname' => $customer['first_name'],
+                'lastname'  => $customer['last_name'],
+                'username'  => $customer['national_code'],
+                'password'  => self::generateRandomString(8),
+                'email'     => $customer['email'] ?: $customer['national_code']."@jedu.ir",
+            ];
+        }
+
+
+        $body = null;
+
+        try {
+            $response = Http::asForm()
+                ->post($url, $data)
+                ->throw();
+
+            $body = json_decode($response->body(), true, 512, JSON_THROW_ON_ERROR);
+            if ($body) {
+                if (array_key_exists('exception',$body)){
+                    \Log::error("createUser user failed:", $body);
+                    return null;
+                }
+                \Log::info("createUser user response:", $body);
+            }
+
+        } catch (\Exception $exception) {
+            report($exception);
+        }
+        return $body;
+    }
     public static function updateUser(Customer $customer)
     {
         $token = env('MOODLE_CORE_TOKEN', '');
@@ -130,7 +198,7 @@ class MoodleService
             return;
         }
 
-        if ($customer->incomplet) {
+        if ($customer->incomplete) {
             \Log::error("AUTH TOKEN EMPTY");
             return;
         }
@@ -342,6 +410,56 @@ class MoodleService
         return null;
     }
 
+    public static function getUserCourses(JeduCustomer $customer)
+    {
+        $token = env('MOODLE_CORE_TOKEN', '');
+        $functionname = 'joomdle_my_courses';
+        $root = env('MOODLE_ADDRESS', '');
+
+        if (!$root) {
+            \Log::error("MOODLE ADDRESS EMPTY");
+            return false;
+        }
+
+        if (!$token) {
+            \Log::error("AUTH TOKEN EMPTY");
+            return false;
+        }
+
+        if ($customer->incomplete) {
+            \Log::error("USER IS INCOMPLETE");
+            return false;
+        }
+
+        //$user1 = new stdClass();
+        $data = [
+            'order_by_cat'  => 1,
+            'username'  => $customer->national_code,
+        ];
+
+        $url = $root.'/webservice/rest/server.php'.'?wstoken='.$token.'&wsfunction='.$functionname
+            .'&moodlewsrestformat=json';
+        $body = null;
+
+        try {
+            $response = Http::asForm()
+                ->post($url, $data)
+                ->throw();
+
+            $body = json_decode($response->body(), true, 512, JSON_THROW_ON_ERROR);
+            if ($body) {
+                if (array_key_exists('exception',$body)){
+                    \Log::error("get user courses failed:", $body);
+                    return false;
+                }
+                \Log::info("createUser user response:", $body);
+            }
+
+        } catch (\Exception $exception) {
+            report($exception);
+        }
+        return $body;
+    }
     protected static function generateRandomString($length = 25) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
@@ -352,4 +470,6 @@ class MoodleService
         $randomString .="1aA!";
         return $randomString;
     }
+
+
 }

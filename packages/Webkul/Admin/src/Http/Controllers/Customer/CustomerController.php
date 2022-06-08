@@ -2,6 +2,8 @@
 
 namespace Webkul\Admin\Http\Controllers\Customer;
 
+use App\Rules\Nationalcode;
+use App\Services\MoodleService;
 use Mail;
 use Webkul\Admin\DataGrids\CustomerDataGrid;
 use Webkul\Admin\DataGrids\CustomerOrderDataGrid;
@@ -118,7 +120,11 @@ class CustomerController extends Controller
             'gender'        => 'required',
             'email'         => 'required|unique:customers,email',
             'date_of_birth' => 'date|before:today',
+            'phone' => 'unique:customers',
+            'national_code' => ['unique:customers',new Nationalcode()]
         ]);
+
+        $data['is_moodle_user'] = ! isset($data['is_moodle_user']) ? 0 : 1;
 
         $data = request()->all();
 
@@ -129,6 +135,10 @@ class CustomerController extends Controller
         $data['is_verified'] = 1;
 
         $customer = $this->customerRepository->create($data);
+        \Log::info("customer data {$customer->incomplete}");
+        if ($customer->is_moodle_user){
+            MoodleService::createUser($customer);
+        }
 
         try {
             $configKey = 'emails.general.notifications.emails.general.notifications.customer';
@@ -174,6 +184,8 @@ class CustomerController extends Controller
             'gender'        => 'required',
             'email'         => 'required|unique:customers,email,' . $id,
             'date_of_birth' => 'date|before:today',
+            'phone' => 'unique:customers,phone,'.$id,
+            'national_code' => ['unique:customers,national_code,'.$id,new Nationalcode()]
         ]);
 
         $data = request()->all();
@@ -182,7 +194,14 @@ class CustomerController extends Controller
 
         $data['is_suspended'] = ! isset($data['is_suspended']) ? 0 : 1;
 
-        $this->customerRepository->update($data, $id);
+        $data['is_moodle_user'] = ! isset($data['is_moodle_user']) ? 0 : 1;
+
+       $customer = $this->customerRepository->update($data, $id);
+        \Log::info("customer data {$customer->incomplete}");
+        if ($customer->is_moodle_user){
+            MoodleService::createUser($customer);
+        }
+
 
         session()->flash('success', trans('admin::app.response.update-success', ['name' => 'Customer']));
 

@@ -2,6 +2,7 @@
 
 namespace App\Models\Shop;
 
+use App\Models\MoodleEnrolment;
 use App\Traits\hasOTP;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Notifications\Notifiable;
@@ -28,6 +29,8 @@ class JeduCustomer extends \Webkul\Customer\Models\Customer
         'father_name',
         'education_field',
         'status',
+        'is_moodle_user',
+        'moodle_synch',
     ];
     protected $casts = [
         'date_of_birth' => 'date:Y/m/d',
@@ -52,6 +55,9 @@ class JeduCustomer extends \Webkul\Customer\Models\Customer
         );
     }
 
+    public function moodle_enrolments(){
+        return $this->hasMany(MoodleEnrolment::class);
+    }
     //TODO use this function for asking extra info
     public function extra_info()
     {

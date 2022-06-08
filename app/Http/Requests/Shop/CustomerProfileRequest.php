@@ -36,7 +36,7 @@ class CustomerProfileRequest extends FormRequest
             'oldpassword'           => 'present',
             'password_confirmation' => 'required_with:password',
             'image.*'               => 'mimes:bmp,jpeg,jpg,png,webp',
-            'phone'                 => 'numeric',
+            'phone'                 => 'required|numeric|unique:customers,phone,'.$id,
             'national_code'         => ['required', new Nationalcode],
             'father_name'           => 'nullable',
             'education_field'       => 'nullable',

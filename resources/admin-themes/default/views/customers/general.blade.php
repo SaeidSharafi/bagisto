@@ -44,6 +44,16 @@
 
                     <span class="control-error" v-if="errors.has('last_name')">@{{ errors.first('last_name') }}</span>
                 </div>
+                <div class="control-group" :class="[errors.has('national_code') ? 'has-error' : '']">
+                    <label for="national_code">
+                        {{ __('app.customer.account.profile.national_code') }}
+                    </label>
+
+                    <input value="{{ old('national_code')?:$customer->national_code}}" name="national_code" type="text"
+                           class="control" v-validate="'required|min:10|max:10'" data-vv-as="&quot;{{ __('app.customer.account.profile.national_code') }}&quot;" />
+                    <span class="control-error" v-if="errors.has('national_code')" v-text="errors.first('national_code')"></span>
+
+                </div>
 
                 {!! view_render_event('bagisto.admin.customer.edit.last_name.after', ['customer' => $customer]) !!}
 
@@ -77,11 +87,9 @@
 
                         <option value="" {{ $customer->gender == "" ? 'selected' : '' }}>{{ __('admin::app.customers.customers.select-gender') }}</option>
                         <option
-                            value="{{ __('admin::app.customers.customers.male') }}" {{ $customer->gender == __('admin::app.customers.customers.male') ? 'selected' : '' }}>{{ __('admin::app.customers.customers.male') }}</option>
+                            value="Male" {{ $customer->gender == 'Male' ? 'selected' : '' }}>{{ __('admin::app.customers.customers.male') }}</option>
                         <option
-                            value="{{ __('admin::app.customers.customers.female') }}" {{ $customer->gender == __('admin::app.customers.customers.female') ? 'selected' : '' }}>{{ __('admin::app.customers.customers.female') }}</option>
-                        <option
-                            value="{{ __('admin::app.customers.customers.other') }}" {{ $customer->gender == __('admin::app.customers.customers.other') ? 'selected' : '' }}>{{ __('admin::app.customers.customers.other') }}</option>
+                            value="Female" {{ $customer->gender == 'Female' ? 'selected' : '' }}>{{ __('admin::app.customers.customers.female') }}</option>
 
                     </select>
 
@@ -105,7 +113,21 @@
 
                     <span class="control-error" v-if="errors.has('status')">@{{ errors.first('status') }}</span>
                 </div>
+                <div class="control-group">
+                    <label for="isMoodleUser" class="required">{{ __('admin::app.customers.customers.is_moodle_user') }}</label>
 
+                    <label class="switch">
+                        <input
+                            type="checkbox"
+                            id="isMoodleUser"
+                            name="is_moodle_user"
+                            value="1" {{ $customer->is_moodle_user ? 'checked' : '' }}>
+
+                        <span class="slider round"></span>
+                    </label>
+
+                    <span class="control-error" v-if="errors.has('is_moodle_user')">@{{ errors.first('is_moodle_user') }}</span>
+                </div>
                 {!! view_render_event('bagisto.admin.customer.edit.status.after', ['customer' => $customer]) !!}
 
                 <div class="control-group">
@@ -116,7 +138,7 @@
                             id="isSuspended"
                             type="checkbox"
                             name="is_suspended"
-                            value="{{ $customer->is_suspended }}" {{ $customer->is_suspended ? 'checked' : '' }}>
+                            value="1" {{ $customer->is_suspended ? 'checked' : '' }}>
 
                         <span class="slider round"></span>
                     </label>
@@ -160,6 +182,27 @@
 
                 {!! view_render_event('bagisto.admin.customer.edit.phone.after', ['customer' => $customer]) !!}
 
+                <div class="control-group"  :class="[errors.has('father_name') ? 'has-error' : '']">
+                    <label for="father_name">{{ __('app.customer.account.profile.father_name') }}</label>
+
+                    <input name="father_name" class="control" type="text"
+                           value="{{ old('father_name') ?: $customer->father_name }}" data-vv-as="&quot;{{ __('app.customer.account.profile.father_name') }}&quot;" />
+                    <span class="control-error" v-if="errors.has('father_name')" v-text="errors.first('father_name')"></span>
+                    <span class="control-error" v-if="{{ $errors->has('father_name') }}" v-text="'{{$errors->first('father_name')}}'"></span>
+
+                </div>
+
+                <div  class="control-group"  :class="[errors.has('education_field') ? 'has-error' : '']">
+                    <label for="education_field">
+                        {{ __('app.customer.account.profile.education_field') }}
+                    </label>
+
+                    <input value="{{old('education_field') ?: $customer->education_field }}" name="education_field" type="text"
+                           class="control" data-vv-as="&quot;{{ __('app.customer.account.profile.education_field') }}&quot;" />
+                    <span class="control-error" v-if="errors.has('education_field')" v-text="errors.first('education_field')"></span>
+                    <span class="control-error" v-if="{{ $errors->has('education_field') }}" v-text="'{{$errors->first('education_field')}}'"></span>
+
+                </div>
                 <div class="control-group">
                     <label for="customerGroup">{{ __('admin::app.customers.customers.customer_group') }}</label>
 
