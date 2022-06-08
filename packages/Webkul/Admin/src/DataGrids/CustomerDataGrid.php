@@ -127,11 +127,17 @@ class CustomerDataGrid extends DataGrid
             'sortable'   => true,
             'filterable' => false,
             'closure'    => function ($row) {
-                if (! $row->gender) {
-                    return '-';
-                } else {
-                    return $row->gender;
+                switch ($row->gender){
+                    case 'Male':
+                        return __('admin::app.customers.customers.male');
+
+                    case 'Female':
+                        return __('admin::app.customers.customers.female');
+
+                     default:
+                        return "-";
                 }
+
             },
         ]);
 
