@@ -21,6 +21,7 @@
  * group.
  */
 
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\MoodleController;
 use App\Http\Controllers\Shop\API\JeduShopController;
 use App\Http\Controllers\Shop\Customer\JeduCustomerController;
@@ -156,19 +157,27 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
     });
 Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => config('app.admin_url')], function () {
     Route::prefix('sales')->group(function () {
-        Route::get('/orders/complete/{id}', [OrderController::class, 'complete'])
-            ->name('admin.sales.orders.complete');
+        Route::prefix('orders')->group(function () {
+            Route::get('complete/{id}', [OrderController::class, 'complete'])
+                ->name('admin.sales.orders.complete');
+
+            Route::get('/upload', [\App\Http\Controllers\Admin\OrderController::class, 'index'])
+                ->name('admin.sales.order.bulk.index');
+            Route::post('/upload', [\App\Http\Controllers\Admin\OrderController::class, 'uploadCSV'])
+                ->name('admin.sales.order.bulk.upload');
+
+        });
+
+
     });
 
     Route::prefix('customers')->group(function () {
-        Route::get('/upload', [\App\Http\Controllers\Admin\CustomerController::class, 'index'])
+        Route::get('/upload', [CustomerController::class, 'index'])
             ->name('admin.customers.bulk.index');
-    });
-
-    Route::prefix('customers')->group(function () {
-        Route::post('/upload', [\App\Http\Controllers\Admin\CustomerController::class, 'uploadCSV'])
+        Route::post('/upload', [CustomerController::class, 'uploadCSV'])
             ->name('admin.customers.bulk.upload');
     });
+
 });
 
 Breadcrumbs::for('customer.moodle.index', function (BreadcrumbTrail $trail) {

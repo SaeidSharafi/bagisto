@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Imports\CustomersImport;
+use App\Imports\EnrolmentsImport;
 use App\Services\CustomerBulkUploadService;
 use App\Services\MoodleService;
 use Carbon\Carbon;
@@ -29,7 +29,7 @@ class CustomerController extends \App\Http\Controllers\Controller
         $request->validate([
             'uploaded_file' => 'required|file|mimes:xls,xlsx,csv',
         ]);
-        $import = new CustomersImport();
+        $import = new EnrolmentsImport();
 
         $file = $request->file('uploaded_file')->store('temp');
         $import->import($file);
@@ -53,7 +53,7 @@ class CustomerController extends \App\Http\Controllers\Controller
             }
         }
 
-        session()->flash("import successful");
+        session()->flash('success',"import successful");
         return view('admin::customers.bulk')
             ->with('failures', collect($errors))
             ->with('data',collect($data));

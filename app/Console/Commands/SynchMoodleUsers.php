@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Shop\JeduCustomer;
 use App\Services\MoodleService;
 use Illuminate\Console\Command;
 use Webkul\Customer\Repositories\CustomerRepository;
@@ -41,20 +42,27 @@ class SynchMoodleUsers extends Command
     /**
      * Execute the console command.
      *
-     * @return int
+     * @return void
      */
     public function handle()
     {
-        $customers = $this->customerRepository->findWhere(
-            ['is_moodle_user' => 1, 'moodle_synch'=>0]
-        );
+        $customers = JeduCustomer::query()
+            ->where( 'is_moodle_user' , 1)
+            ->where( 'moodle_synch',0)
+            ->get();
+        $success = 0;
+        $failes = 0;
         foreach ($customers as $customer){
            $result = MoodleService::createUser($customer);
            if ($result){
                $customer->moodle_synch = 1;
                $customer->save();
+               $success++;
+               continue;
            }
+           $failes++;
         }
-        \Log::info("Cron is working fine!",$customers->toArray());
+        $this->info("{$success} users synchronized with moodle, {$failes} failed.");
+
     }
 }

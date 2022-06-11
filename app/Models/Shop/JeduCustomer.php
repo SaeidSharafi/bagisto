@@ -56,7 +56,7 @@ class JeduCustomer extends \Webkul\Customer\Models\Customer
     }
 
     public function moodle_enrolments(){
-        return $this->hasMany(MoodleEnrolment::class);
+        return $this->hasMany(MoodleEnrolment::class,'customer_national_code','national_code');
     }
     //TODO use this function for asking extra info
     public function extra_info()

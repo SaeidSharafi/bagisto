@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('moodle_enrolments', function (Blueprint $table) {
-            $table->id();
-            $table->integer('customer_id')->unsigned();
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
-            $table->bigInteger('moodle_course_id');
-            $table->timestamps();
+        Schema::table('customers', function (Blueprint $table) {
+            if (Schema::hasColumn('customers', 'national_code')) {
+                $table->unique('national_code');
+            }
         });
     }
 
@@ -29,6 +27,10 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('moodle_enrolments');
+        Schema::table('customers', function (Blueprint $table) {
+            if (Schema::hasColumn('customers', 'national_code')) {
+                $table->dropUnique('national_code');
+            }
+        });
     }
 };

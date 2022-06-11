@@ -85,7 +85,7 @@ class MoodleService
         $user = self::getUser($customer->national_code);
         if ($user) {
             \Log::info("USER Already Exist");
-            return true;
+            return $user;
         }
         //$user1 = new stdClass();
         $data['users'][] = [
@@ -107,7 +107,7 @@ class MoodleService
 
             $body = json_decode($response->body(), true, 512, JSON_THROW_ON_ERROR);
             if ($body) {
-                if (array_key_exists('exception',$body)){
+                if (array_key_exists('exception', $body)) {
                     \Log::error("createUser user failed:", $body);
                     return false;
                 }
@@ -141,13 +141,12 @@ class MoodleService
             return;
         }
 
-
-        $data['users'] =[];
+        $data['users'] = [];
         $url = $root.'/webservice/rest/server.php'.'?wstoken='.$token.'&wsfunction='.$functionname
             .'&moodlewsrestformat=json';
-        foreach ($customers as $customer){
+        foreach ($customers as $customer) {
 
-            if (!$customer['is_moodle_user']){
+            if (!$customer['is_moodle_user']) {
                 continue;
             }
 
@@ -160,7 +159,6 @@ class MoodleService
             ];
         }
 
-
         $body = null;
 
         try {
@@ -170,7 +168,7 @@ class MoodleService
 
             $body = json_decode($response->body(), true, 512, JSON_THROW_ON_ERROR);
             if ($body) {
-                if (array_key_exists('exception',$body)){
+                if (array_key_exists('exception', $body)) {
                     \Log::error("createUser user failed:", $body);
                     return null;
                 }
@@ -182,6 +180,7 @@ class MoodleService
         }
         return $body;
     }
+
     public static function updateUser(Customer $customer)
     {
         $token = env('MOODLE_CORE_TOKEN', '');
@@ -238,7 +237,7 @@ class MoodleService
 
     public static function updateUserEnrolment(Order $order)
     {
-        if (!$order->items->first()->product->moodle_id){
+        if (!$order->items->first()->product->moodle_id) {
             \Log::info("Order item is not moodle type.");
             return null;
         }
@@ -285,16 +284,7 @@ class MoodleService
             return "unnecssary update";
         }
         $customer = $order->customer;
-
-        $user = self::getUser($customer->national_code);
-        if (!$user) {
-            $user = self::createUser($customer);
-            \Log::error("USER NOT FOUND, Creating new one");
-            if (!$user){
-                \Log::error("USER CREATION FAILED");
-                return null;
-            }
-        }
+        $user = self::checkUser($customer);
 
         $user_id = $user[0]['id'];
         //$user1 = new stdClass();
@@ -370,6 +360,66 @@ class MoodleService
         return null;
     }
 
+    public static function enrolUserInCourse($customer)
+    {
+        $token = env('MOODLE_CORE_TOKEN', '');
+        $functionname = 'enrol_manual_enrol_users';
+        $root = env('MOODLE_ADDRESS', '');
+
+        if (!$root) {
+            \Log::error("MOODLE ADDRESS EMPTY");
+            return false;
+        }
+
+        if (!$token) {
+            \Log::error("AUTH TOKEN EMPTY");
+            return false;
+        }
+
+        $user = self::checkUser($customer);
+        if (!$user) {
+            return false;
+        }
+
+        $user_id = $user[0]['id'];
+
+        $data['enrolments'] = [];
+        foreach ($customer->moodle_enrolments as $enrolments) {
+            $data['enrolments'][] = [
+                'roleid'   => env('MOODLE_STUDENT_ROLE_ID', 5),
+                'userid'   => $user_id,
+                'courseid' => $enrolments->moodle_course_id,
+            ];
+        }
+
+        \Log::info("enrolments data", $data);
+
+        $url = $root.'/webservice/rest/server.php'.'?wstoken='.$token.'&wsfunction='.$functionname
+            .'&moodlewsrestformat=json';
+
+        try {
+            $response = Http::asForm()
+                ->post($url, $data)
+                ->throw();
+
+
+            $body = json_decode($response->body(), true, 512, JSON_THROW_ON_ERROR);
+            if (!$body) {
+                return true;
+            }
+            if (array_key_exists('exception', $body)) {
+                \Log::error("enrolUser failed:", $body);
+                return false;
+            }
+
+            return $body;
+
+        } catch (\Exception $exception) {
+            report($exception);
+        }
+        return false;
+    }
+
     public static function getUser($username)
     {
         $token = env('MOODLE_CORE_TOKEN', '');
@@ -433,8 +483,8 @@ class MoodleService
 
         //$user1 = new stdClass();
         $data = [
-            'order_by_cat'  => 1,
-            'username'  => $customer->national_code,
+            'order_by_cat' => 1,
+            'username'     => $customer->national_code,
         ];
 
         $url = $root.'/webservice/rest/server.php'.'?wstoken='.$token.'&wsfunction='.$functionname
@@ -448,7 +498,7 @@ class MoodleService
 
             $body = json_decode($response->body(), true, 512, JSON_THROW_ON_ERROR);
             if ($body) {
-                if (array_key_exists('exception',$body)){
+                if (array_key_exists('exception', $body)) {
                     \Log::error("get user courses failed:", $body);
                     return false;
                 }
@@ -460,16 +510,35 @@ class MoodleService
         }
         return $body;
     }
-    protected static function generateRandomString($length = 25) {
+
+    protected static function generateRandomString($length = 25)
+    {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
         for ($i = 0; $i < $length; $i++) {
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
-        $randomString .="1aA!";
+        $randomString .= "1aA!";
         return $randomString;
     }
 
+    protected static function checkUser($customer)
+    {
 
+        $user = self::getUser($customer->national_code);
+        if (!$user) {
+            return $user;
+        }
+
+        \Log::error("USER NOT FOUND, Creating new one");
+        $user = self::createUser($customer);
+        if ($user) {
+            return $user;
+        }
+
+        \Log::error("USER CREATION FAILED");
+        return null;
+
+    }
 }
