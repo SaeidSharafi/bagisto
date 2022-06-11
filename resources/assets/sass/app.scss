@@ -1037,8 +1037,9 @@ section.product-footer {
 
         img {
             width: 100%;
-            -o-object-fit: none;
-            object-fit: none;
+            height: 100%;
+            -o-object-fit: cover;
+            object-fit: cover;
             border-radius: 0.25rem;
             aspect-ratio: 30/25;
         }
