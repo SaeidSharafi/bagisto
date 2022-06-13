@@ -123,7 +123,9 @@ class JeduCustomerController extends Controller
         }
 
         Event::dispatch('customer.update.before');
-
+        if (!isset($data['email']) || $data['email'] === ""){
+            $data['email'] = $data['national_code'] ."@jedu.ir";
+        }
         if ($customer = $this->customerRepository->update($data, auth()->guard('customer')->user()->id)) {
             if ($isPasswordChanged) {
                 Event::dispatch('user.admin.update-password', $customer);

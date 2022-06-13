@@ -45,3 +45,7 @@ body:not(.Administrator){
     display: inline-block;
     padding: 10px 20px;
 }
+input[type="email"],input[name="email"]{
+    direction: ltr;
+    text-align: right;
+}

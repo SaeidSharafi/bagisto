@@ -153,7 +153,8 @@
                 </label>
 
                 <div class="w-100 mb-3">
-                    <input value="{{ old('phone') ?? $customer->phone }}" name="phone" type="text" v-validate="'required'"/>
+                    <input value="{{ old('phone') ?? $customer->phone }}" type="text" disabled/>
+                    <input value="{{ old('phone') ?? $customer->phone }}" name="phone" type="hidden" v-validate="'required'"/>
                     <span class="control-error" v-if="errors.has('phone')" v-text="errors.first('phone')"></span>
                     <span class="control-error" v-if="{{ $errors->has('phone') }}" v-text="'{{$errors->first('phone')}}'"></span>
                 </div>

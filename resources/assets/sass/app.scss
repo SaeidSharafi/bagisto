@@ -84,7 +84,11 @@ a:hover {
 .rtl .table table {
     text-align: right;
 }
-
+input[type="email"],
+input[name="email"]{
+    direction: ltr;
+    text-align: right;
+}
 .account-content .account-layout {
     .account-heading {
         font-size: 1.6rem;
