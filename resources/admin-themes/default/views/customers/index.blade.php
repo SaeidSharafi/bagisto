@@ -12,12 +12,17 @@
             </div>
 
             <div class="page-action">
-                <div class="export-import" @click="showModal('downloadDataGrid')">
-                    <i class="export-icon"></i>
+                <div style="display: inline-block;">
+                    <div class="export-import btn btn-lg" @click="showModal('downloadDataGrid')">
+                        <i class="export-icon"></i>
 
-                    <span>
+                        <span>
                         {{ __('admin::app.export.export') }}
                     </span>
+                    </div>
+                    <a href="{{ route('admin.customer.create') }}" class="export-import btn btn-lg">
+                        {{ __('admin.customers.customers.bulk-title') }}
+                    </a>
                 </div>
 
                 <a href="{{ route('admin.customer.create') }}" class="btn btn-lg btn-primary">

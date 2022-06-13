@@ -1,6 +1,13 @@
 const path = require('path');
 const mix = require('laravel-mix');
-
+mix.webpackConfig({
+    stats:{
+        children: true,
+        errors: true,
+        errorDetails: true,
+        warnings: true,
+    }
+});
 require('laravel-mix-merge-manifest');
 require('laravel-mix-clean');
 
@@ -14,13 +21,15 @@ const assetsPath = path.join('Resources', 'assets');
 const jsPath = path.join(assetsPath, 'js');
 const imagesPath = path.join(assetsPath, 'images');
 
-mix.js(path.join(jsPath, 'slider.js'), 'public/js').sourceMaps();
-mix
-    .setPublicPath(publicPath)
+
+mix.setPublicPath(publicPath)
+
+    .js(path.join(jsPath, 'slider.js'), 'js/slider.js')
     .js(path.join(jsPath, 'jquery-ez-plus.js'), 'js/jquery-ez-plus.js')
     .js(path.join(jsPath, 'app-core.js'), 'js/velocity-core.js')
     .js(path.join(jsPath, 'app.js'), 'js/velocity.js')
     .vue()
+
     .alias({
         '@Components': path.join(jsPath, 'UI', 'components')
     })
@@ -36,9 +45,11 @@ mix
 
     .clean({
         // enable `dry` before adding new paths:
-        // dry: true,
+        //  dry: true,
         cleanOnceBeforeBuildPatterns: [
             'js/**/*',
+            'css/app.css',
+            'css/admin-app.css',
             'mix-manifest.json',
         ]
     })
@@ -50,7 +61,6 @@ mix
 
     .disableNotifications()
     .mergeManifest()
-    .sourceMaps();
 
 
 mix.sass('resources/assets/sass/app.scss', 'public/css').version();

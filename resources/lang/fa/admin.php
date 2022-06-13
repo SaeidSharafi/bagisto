@@ -16,6 +16,12 @@ return [
 
         ]
     ],
+    'customers'=>[
+        'customers' =>[
+            'bulk-title' => 'وارد کردن',
+            'is_moodle_user' => 'کاربر مودل'
+        ]
+    ],
     'sales' =>[
         'orders'=>[
             'product_number' =>'کد دوره',

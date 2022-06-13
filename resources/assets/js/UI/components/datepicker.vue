@@ -32,7 +32,7 @@
 import VuePersianDatetimePicker from 'vue-persian-datetime-picker'
 
 export default {
-    name: 'persian-date-picker',
+    name: 'p-datepicker',
     props: ['clearable','autoSubmit','popover','inputFormat', 'displayFormat', 'name', 'id', 'placeholder', 'format', 'initialValue','maxDate'],
     $_veeValidate: {
         // fetch the current value from the innerValue defined in the component data.
@@ -46,8 +46,11 @@ export default {
             selectedDate: null
         }
     },
+    created(){
+        window.console.log("datepicker created")
+    },
     mounted() {
-        // window.console.log(this.maxDate)
+         window.console.log("datepicker mounted")
     },
     methods: {
         dateChanged(event){

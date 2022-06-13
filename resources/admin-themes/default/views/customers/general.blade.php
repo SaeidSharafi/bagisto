@@ -114,7 +114,7 @@
                     <span class="control-error" v-if="errors.has('status')">@{{ errors.first('status') }}</span>
                 </div>
                 <div class="control-group">
-                    <label for="isMoodleUser" class="required">{{ __('admin::app.customers.customers.is_moodle_user') }}</label>
+                    <label for="isMoodleUser" class="required">{{ __('admin.customers.customers.is_moodle_user') }}</label>
 
                     <label class="switch">
                         <input

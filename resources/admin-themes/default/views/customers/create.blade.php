@@ -125,7 +125,7 @@
 
                     </div>
                     <div class="control-group">
-                        <label for="is_moodle_user" class="required">{{ __('admin::app.customers.customers.is_moodle_user') }}</label>
+                        <label for="is_moodle_user" class="required">{{ __('admin.customers.customers.is_moodle_user') }}</label>
 
                         <label class="switch">
                             <input

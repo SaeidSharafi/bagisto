@@ -81,14 +81,14 @@
                         class="control styled-select"
                         data-vv-as="&quot;{{ __('shop::app.customer.account.profile.gender') }}&quot;">
                         <option value=""
-                            @if ($selectedGender)
+                            @if (!$selectedGender)
                                 selected="selected"
                             @endif>
                             {{ __('admin::app.customers.customers.select-gender') }}
                         </option>
                         <option
                             value="Male"
-                            @if ($selectedGender)
+                            @if ($selectedGender === 'Male')
                                 selected="selected"
                             @endif>
                             {{ __('velocity::app.shop.gender.male') }}
@@ -96,7 +96,7 @@
 
                         <option
                             value="Female"
-                            @if ($selectedGender)
+                            @if ($selectedGender === 'Female')
                                 selected="selected"
                             @endif>
                             {{ __('velocity::app.shop.gender.female') }}
@@ -119,11 +119,11 @@
                 </label>
 
                 <div class="w-100 mb-3">
-                    <p-date-picker name="date_of_birth"
+                    <p-datepicker name="date_of_birth"
                                    id="date_of_birth"
                                    max-date="{{now()->subDay()}}"
                                    initial-value="{{  old('date_of_birth') ?? $customer->date_of_birth}}"
-                                   placeholder="{{ trans('shop::app.customer.account.profile.dob') }}"></p-date-picker>
+                                   placeholder="{{ trans('shop::app.customer.account.profile.dob') }}"></p-datepicker>
 
                     <span class="control-error" v-if="errors.has('date_of_birth')" v-text="errors.first('date_of_birth')"></span>
                     <span class="control-error" v-if="{{ $errors->has('date_of_birth') }}" v-text="'{{$errors->first('date_of_birth')}}'"></span>

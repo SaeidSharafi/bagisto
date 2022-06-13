@@ -92,7 +92,7 @@ a:hover {
     }
 
     .account-head {
-        justify-content: start;
+        justify-content: flex-start;
 
         .account-heading {
             font-size: 1.6rem;
@@ -839,8 +839,8 @@ section.product-footer {
 .product-price {
     height: auto;
     display: flex;
-    align-items: end;
-    justify-content: end;
+    align-items: flex-end;
+    justify-content:  flex-end;
     flex-direction: column;
 
     span.final-price {
@@ -852,7 +852,7 @@ section.product-footer {
     .discount {
         display: flex;
         width: 100%;
-        justify-content: end;
+        justify-content:  flex-end;
         font-size: 1.2rem;
 
         & > span {
@@ -880,7 +880,7 @@ section.product-footer {
     &.checkout {
 
         .discount {
-            justify-content: end;
+            justify-content:  flex-end;
         }
     }
 }
@@ -891,7 +891,7 @@ section.product-footer {
 
         .product-actions {
             display: flex;
-            justify-content: start;
+            justify-content: flex-start;
         }
     }
 
@@ -962,11 +962,11 @@ section.product-footer {
 
     .product-actions {
         display: flex;
-        justify-content: start;
+        justify-content: flex-start;
     }
 
     .product-price {
-        align-items: end;
+        align-items:  flex-end;
     }
 }
 
@@ -1645,7 +1645,7 @@ body.rtl .product-detail .thumb-list {
         }
 
         .product-price {
-            align-items: end;
+            align-items:  flex-end;
 
             span.regular-price {
                 font-size: 1.2rem;
@@ -1981,16 +1981,16 @@ body.rtl header .mini-cart-container #mini-cart .badge {
         .price-section {
             .product-actions {
                 display: flex;
-                justify-content: end;
+                justify-content:  flex-end;
             }
         }
     }
 
     .product-price {
-        align-items: start;
-        justify-content: start;
+        align-items: flex-start;
+        justify-content: flex-start;
         .discount{
-            justify-content: start;
+            justify-content: flex-start;
         }
     }
     .product-card {
@@ -2011,7 +2011,7 @@ body.rtl header .mini-cart-container #mini-cart .badge {
         }
         .customer-orders {
             .grid-container .datagrid-filters .filter-right {
-                justify-self: start;
+                justify-self: flex-start;
             }
 
             font-size: 1.4rem;
