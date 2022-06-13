@@ -19,7 +19,9 @@ return [
     'customers'=>[
         'customers' =>[
             'bulk-title' => 'وارد کردن',
-            'is_moodle_user' => 'کاربر مودل'
+            'bulk-page-title' => 'وارد کردن فراگیران',
+            'is_moodle_user' => 'کاربر مودل',
+            'bulk-btn-title' => 'وارد کردن'
         ]
     ],
     'sales' =>[

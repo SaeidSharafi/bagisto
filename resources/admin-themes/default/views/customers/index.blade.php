@@ -20,7 +20,7 @@
                         {{ __('admin::app.export.export') }}
                     </span>
                     </div>
-                    <a href="{{ route('admin.customer.create') }}" class="export-import btn btn-lg">
+                    <a href="{{ route('admin.customers.bulk.index') }}" class="export-import btn btn-lg">
                         {{ __('admin.customers.customers.bulk-title') }}
                     </a>
                 </div>

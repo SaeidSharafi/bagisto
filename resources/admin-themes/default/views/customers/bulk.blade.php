@@ -1,7 +1,7 @@
 @extends('admin::layouts.content')
 
 @section('page_title')
-    {{ __('admin::app.customers.customers.add-title') }}
+    {{ __('admin.customers.customers.bulk-page-title') }}
 @stop
 @push('css')
     <style>
@@ -46,7 +46,7 @@
                     <h1>
                         <i class="icon angle-left-icon back-link" onclick="window.location = '{{ route('admin.customer.index') }}'"></i>
 
-                        {{ __('admin::app.customers.customers.title') }}
+                        {{ __('admin.customers.customers.bulk-page-title') }}
 
                         {{ Config::get('carrier.social.facebook.url') }}
                     </h1>
@@ -55,7 +55,7 @@
 
                 <div class="page-action">
                     <button type="submit" class="btn btn-lg btn-primary">
-                        {{ __('admin::app.customers.customers.save-btn-title') }}
+                        {{ __('admin.customers.customers.bulk-btn-title') }}
                     </button>
                 </div>
             </div>
