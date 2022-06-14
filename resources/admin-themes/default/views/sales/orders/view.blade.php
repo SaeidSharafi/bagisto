@@ -129,11 +129,12 @@
 
                                             <div class="row">
                                                 <span class="title">
-                                                    {{ __('admin::app.sales.orders.email') }}
+                                                    {{ __('app.velocity.auth-form.phone') }}
                                                 </span>
 
                                                 <span class="value">
-                                                    {{ $order->customer_email }}
+
+                                                    {{ $order->customer_phone ??  $order->customer_email }}
                                                 </span>
                                             </div>
 

@@ -84,7 +84,7 @@
                                                 </span>
 
                                                 <span class="value">
-                                                    {{ $order->status_label }}
+                                                     {{ __('admin::app.notification.order-status-messages.'.strtolower($order->status_label)) }}
                                                 </span>
                                             </div>
 
@@ -128,8 +128,13 @@
                                             {!! view_render_event('sales.invoice.customer_name.after', ['order' => $order]) !!}
 
                                             <div class="row">
-                                                <span class="title">{{ __('admin::app.sales.orders.email') }}</span>
-                                                <span class="value">{{ $invoice->order->customer_email }}</span>
+                                                  <span class="title">
+                                                    {{ $order->customer_phone ?  __('app.velocity.auth-form.phone') :  __('admin::app.sales.orders.email') }}
+                                                </span>
+                                                <span class="value">
+                                                    {{ $order->customer_phone ??  $order->customer_email }}
+                                                </span>
+
                                             </div>
 
                                             {!! view_render_event('sales.invoice.customer_email.after', ['order' => $order]) !!}
