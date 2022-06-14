@@ -41,5 +41,10 @@ return [
     ],
     'response' => [
         'complete-error' => 'امکان تکمیل ثبت نام نمیباشد.'
+    ],
+    'notifications' =>[
+        'sync' =>[
+            'users' => ':success کاربر در مودل ثبت شد. ثبت :fail کاربر با خطا مواجه شد.'
+        ]
     ]
 ];

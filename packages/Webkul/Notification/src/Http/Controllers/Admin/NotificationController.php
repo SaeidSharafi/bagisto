@@ -56,7 +56,7 @@ class NotificationController extends Controller
 
         if (isset($params['page'])) {
             unset($params['page']);
-        }           
+        }
 
         if (count($params)) {
             $searchResults = $this->notificationRepository->getParamsData($params);
@@ -84,7 +84,64 @@ class NotificationController extends Controller
             $notification->save();
 
             return redirect()->route('admin.sales.orders.view',$orderId);
-        }  
+        }
+
+        abort(404);
+    }
+
+    /**
+     * Update the notification is readed or not
+     *
+     * @return array
+     */
+    public function readNotificationIndex()
+    {
+        $id = request()->read_id;
+        $this->notificationRepository->where('id', $id)->update(['read' => 1]);
+
+        $params = request()->all();
+
+        if (isset($params['read_id'])) {
+            unset($params['read_id']);
+        }
+        if (isset($params['page'])) {
+            unset($params['page']);
+        }
+
+        if (count($params)) {
+            $searchResults = $this->notificationRepository->getParamsData($params);
+        } else {
+            $searchResults = $this->notificationRepository->with('order')->latest()->paginate(10);
+        }
+
+        return [
+            'search_results' => $searchResults,
+            'total_unread'   => $this->notificationRepository->where('read', 0)->count(),
+        ];
+    }
+
+    /**
+     * Update the notification is readed or not
+     *
+     * @return array
+     */
+    public function readNotification()
+    {
+        $id = request()->id;
+        $this->notificationRepository->where('id', $id)->update(['read' => 1]);
+
+        $params = [
+            "limit" =>  5,
+            "read"  =>  0
+        ];
+
+        $searchResults = $this->notificationRepository->getParamsData($params);
+
+        return [
+            'search_results'  => $searchResults,
+            'total_unread'    => $this->notificationRepository->where('read', 0)->count(),
+            'success_message' => trans('admin::app.notification.notification-marked-success')
+        ];
 
         abort(404);
     }

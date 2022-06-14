@@ -6,6 +6,7 @@ use App\Models\Shop\JeduCustomer;
 use App\Services\MoodleService;
 use Illuminate\Console\Command;
 use Webkul\Customer\Repositories\CustomerRepository;
+use Webkul\Notification\Repositories\NotificationRepository;
 
 class SynchMoodleUsers extends Command
 {
@@ -23,20 +24,17 @@ class SynchMoodleUsers extends Command
      */
     protected $description = 'Command description';
 
-    /**
-     *  create new SynchMoodleUser instance
-     * @param  \Webkul\Customer\Repositories\CustomerRepository  $customerRepository
-     */
-    protected $customerRepository;
 
     /**
      * @param  string  $signature
      */
-    public function __construct(CustomerRepository $customerRepository)
+    public function __construct(
+        protected CustomerRepository $customerRepository,
+    protected NotificationRepository $notificationRepository)
     {
        parent::__construct();
 
-       $this->customerRepository = $customerRepository;
+
     }
 
     /**
@@ -63,6 +61,14 @@ class SynchMoodleUsers extends Command
            $failes++;
         }
         $this->info("{$success} users synchronized with moodle, {$failes} failed.");
+        if ($success) {
+            $msg = __('admin.notifications.sync.users', ['fail' => $failes, 'success' => $success]);
+            $this->notificationRepository->create([
+                'type'     => 'sync',
+                'message'  => $msg,
+                'order_id' => null
+            ]);
+        }
 
     }
 }

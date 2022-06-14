@@ -24,8 +24,8 @@
                         <div>
                             <span hidden>{{ moment.locale(localeCode) }}</span>
                         </div>
-                        
-                        <a :href="`${orderViewUrl + notification.order_id}`">
+
+                        <a :href="`${orderViewUrl + notification.order_id}`" v-if="notification.type === 'order'">
                             <div class="notif-icon" :class="notification.order.status">
                                 <span :class="ordertype[notification.order.status].icon"></span>
                             </div>
@@ -36,6 +36,19 @@
 
                             <div class="notif-content">
                                 {{ moment(notification.order.created_at).fromNow() }}
+                            </div>
+                        </a>
+                        <a v-else href="#" @click.prevent="readOne(notification)">
+                            <div class="notif-icon completed">
+                                <span :class="ordertype['completed'].icon"></span>
+                            </div>
+
+                            <div class="notif-content">
+                                {{ notification.message }}
+                            </div>
+
+                            <div class="notif-content">
+                                {{ moment(notification.created_at).fromNow() }}
                             </div>
                         </a>
                     </li>
@@ -63,6 +76,7 @@
             'pusherCluster',
             'title',
             'orderStatus',
+            'getReadOneUrl',
             'noRecordText',
             'orderStatusMessages',
             'localeCode'
@@ -157,6 +171,32 @@
                         this_this.notifications = response.data.search_results.data;
                         this_this.pagNotif = response.data.search_results;
                     });
+            },
+            readOne: function (notification) {
+                if(notification.read === 1){
+                    return;
+                }
+                let this_this = this;
+                const params = {};
+                params.read_id = notification.id;
+                if(this.id){
+                    params.id = this.id;
+                }
+
+                if(this.status){
+                    params.status = this.status;
+                }
+
+                this.$http.post(this.getReadOneUrl, params)
+                    .then(function (response) {
+                        this_this.notifications = [];
+
+                        this_this.notifications = response.data.search_results.data;
+                        this_this.pagNotif = response.data.search_results;
+                    })
+                    .catch(function (error) {
+                        console.error(error);
+                    })
             }
         }
     }

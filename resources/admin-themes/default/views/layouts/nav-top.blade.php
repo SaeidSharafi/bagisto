@@ -51,6 +51,7 @@
                 pusher-cluster="{{ env('PUSHER_APP_CLUSTER') }}"
                 title="{{ __('admin::app.notification.title-plural') }}"
                 view-all-title="{{ __('admin::app.notification.view-all') }}"
+                get-read-one-url="{{ route('admin.notification.read-one') }}"
                 get-read-all-url="{{ route('admin.notification.read-all') }}"
                 order-status-messages="{{ json_encode($orderStatusMessages) }}"
                 read-all-title="{{ __('admin::app.notification.read-all') }}"
@@ -110,7 +111,7 @@
                                 <span class="role">
                                     {{ auth()->guard('admin')->user()->role['name'] }}
                                 </span>
-                            </div>  
+                            </div>
                         </div>
                     </div>
                     <i class="icon arrow-down-icon active"></i>

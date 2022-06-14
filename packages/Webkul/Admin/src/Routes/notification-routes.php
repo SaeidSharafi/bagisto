@@ -19,9 +19,18 @@ Route::group(['middleware' => ['web', 'admin_locale'], 'prefix' => config('app.a
     Route::get('get-notifications', 'Webkul\Notification\Http\Controllers\Admin\NotificationController@getNotifications')
         ->name('admin.notification.get-notification');
 
-    //view order  
+    //view order
     Route::get('viewed-notifications/{orderId}', 'Webkul\Notification\Http\Controllers\Admin\NotificationController@viewedNotifications')
         ->name('admin.notification.viewed-notification');
+
+    // read one notification
+    Route::post('read-one-notifications', 'Webkul\Notification\Http\Controllers\Admin\NotificationController@readNotification')
+        ->name('admin.notification.read-one');
+
+    // read one notification
+    Route::post('read-one-notifications-index', 'Webkul\Notification\Http\Controllers\Admin\NotificationController@readNotificationIndex')
+        ->name('admin.notification.read-one-index');
+
 
     // read all notification
     Route::post('read-all-notifications', 'Webkul\Notification\Http\Controllers\Admin\NotificationController@readAllNotifications')

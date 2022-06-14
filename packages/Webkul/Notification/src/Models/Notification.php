@@ -11,7 +11,8 @@ class Notification extends Model implements NotificationContract
     protected $fillable = [
         'type',
         'read',
-        'order_id'
+        'order_id',
+        'message',
     ];
 
     /**
