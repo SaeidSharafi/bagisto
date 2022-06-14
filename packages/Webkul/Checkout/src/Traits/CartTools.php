@@ -41,6 +41,11 @@ trait CartTools
                 'is_active'   => 1,
             ]);
 
+            /**
+             * Delete old cart since we don't need it
+             */
+            $this->cartRepository->delete($cart->id);
+
             $guestCart = session()->get('cart');
 
             /**
