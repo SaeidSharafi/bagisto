@@ -128,8 +128,8 @@
                                             {!! view_render_event('sales.order.customer_full_name.after', ['order' => $order]) !!}
 
                                             <div class="row">
-                                                <span class="title">
-                                                    {{ __('app.velocity.auth-form.phone') }}
+                                                 <span class="title">
+                                                    {{ $order->customer_phone ?  __('app.velocity.auth-form.phone') :  __('admin::app.sales.orders.email') }}
                                                 </span>
 
                                                 <span class="value">

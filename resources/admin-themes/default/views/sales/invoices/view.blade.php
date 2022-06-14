@@ -150,7 +150,7 @@
                                     <div class="sale">
                                         @if ($order->billing_address)
                                             <div class="sale-section">
-                                                <div class="secton-title" >
+                                                <div class="secton-title">
                                                     <span>{{ __('admin::app.sales.orders.billing-address') }}</span>
                                                 </div>
 
@@ -186,54 +186,54 @@
                                     <div class="table-responsive">
                                         <table>
                                             <thead>
-                                                <tr>
-                                                    <th>{{ __('admin::app.sales.orders.SKU') }}</th>
-                                                    <th>{{ __('admin::app.sales.orders.product-name') }}</th>
-                                                    <th>{{ __('admin::app.sales.orders.price') }}</th>
-                                                    <th>{{ __('admin::app.sales.orders.qty') }}</th>
-                                                    <th>{{ __('admin::app.sales.orders.subtotal') }}</th>
-                                                    <th>{{ __('admin::app.sales.orders.tax-amount') }}</th>
-                                                    @if ($invoice->base_discount_amount > 0)
-                                                        <th>{{ __('admin::app.sales.orders.discount-amount') }}</th>
-                                                    @endif
-                                                    <th>{{ __('admin::app.sales.orders.grand-total') }}</th>
-                                                </tr>
+                                            <tr>
+                                                <th>{{ __('admin::app.sales.orders.SKU') }}</th>
+                                                <th>{{ __('admin::app.sales.orders.product-name') }}</th>
+                                                <th>{{ __('admin::app.sales.orders.price') }}</th>
+                                                <th>{{ __('admin::app.sales.orders.qty') }}</th>
+                                                <th>{{ __('admin::app.sales.orders.subtotal') }}</th>
+                                                <th>{{ __('admin::app.sales.orders.tax-amount') }}</th>
+                                                @if ($invoice->base_discount_amount > 0)
+                                                    <th>{{ __('admin::app.sales.orders.discount-amount') }}</th>
+                                                @endif
+                                                <th>{{ __('admin::app.sales.orders.grand-total') }}</th>
+                                            </tr>
                                             </thead>
 
                                             <tbody>
-                                                @foreach ($invoice->items as $item)
-                                                    <tr>
-                                                        <td>{{ $item->getTypeInstance()->getOrderedItem($item)->sku }}</td>
+                                            @foreach ($invoice->items as $item)
+                                                <tr>
+                                                    <td>{{ $item->getTypeInstance()->getOrderedItem($item)->sku }}</td>
 
-                                                        <td>
-                                                            {{ $item->name }}
+                                                    <td>
+                                                        {{ $item->name }}
 
-                                                            @if (isset($item->additional['attributes']))
-                                                                <div class="item-options">
+                                                        @if (isset($item->additional['attributes']))
+                                                            <div class="item-options">
 
-                                                                    @foreach ($item->additional['attributes'] as $attribute)
-                                                                        <b>{{ $attribute['attribute_name'] }} : </b>{{ $attribute['option_label'] }}</br>
-                                                                    @endforeach
+                                                                @foreach ($item->additional['attributes'] as $attribute)
+                                                                    <b>{{ $attribute['attribute_name'] }} : </b>{{ $attribute['option_label'] }}</br>
+                                                                @endforeach
 
-                                                                </div>
-                                                            @endif
-                                                        </td>
-
-                                                        <td>{{ core()->formatBasePrice($item->base_price) }}</td>
-
-                                                        <td>{{ $item->qty }}</td>
-
-                                                        <td>{{ core()->formatBasePrice($item->base_total) }}</td>
-
-                                                        <td>{{ core()->formatBasePrice($item->base_tax_amount) }}</td>
-
-                                                        @if ($invoice->base_discount_amount > 0)
-                                                            <td>{{ core()->formatBasePrice($item->base_discount_amount) }}</td>
+                                                            </div>
                                                         @endif
+                                                    </td>
 
-                                                        <td>{{ core()->formatBasePrice($item->base_total + $item->base_tax_amount - $item->base_discount_amount) }}</td>
-                                                    </tr>
-                                                @endforeach
+                                                    <td>{{ core()->formatBasePrice($item->base_price) }}</td>
+
+                                                    <td>{{ $item->qty }}</td>
+
+                                                    <td>{{ core()->formatBasePrice($item->base_total) }}</td>
+
+                                                    <td>{{ core()->formatBasePrice($item->base_tax_amount) }}</td>
+
+                                                    @if ($invoice->base_discount_amount > 0)
+                                                        <td>{{ core()->formatBasePrice($item->base_discount_amount) }}</td>
+                                                    @endif
+
+                                                    <td>{{ core()->formatBasePrice($item->base_total + $item->base_tax_amount - $item->base_discount_amount) }}</td>
+                                                </tr>
+                                            @endforeach
                                             </tbody>
                                         </table>
                                     </div>
