@@ -1,11 +1,11 @@
 
 <body data-gr-c-s-loaded="true" cz-shortcut-listen="true">
-    You will be redirected to the PayPal website in a few seconds.
+    در حال انتقال به درگاه پرداخت بانک ملت
 
 
     <form action="{{ $payment_url }}" id="paypal_standard_checkout" method="POST">
-        <input type="hidden" name="refID" value="{{$refID}}">
-        <input value="Click here if you are not redirected within 10 seconds..." type="submit">
+        <input type="hidden" name="RefId" value="{{$refID}}">
+        <input value="در صورت عدم انتقال بعد از 10 ثانیه کلیک کنید..." type="submit">
 
     </form>
 
