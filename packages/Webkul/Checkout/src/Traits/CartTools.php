@@ -172,13 +172,14 @@ trait CartTools
      */
     public function deActivateCart(): void
     {
-        if ($cart = $this->getCart()) {
-            $this->cartRepository->update(['is_active' => false], $cart->id);
-
-            if (session()->has('cart')) {
-                session()->forget('cart');
-            }
-        }
+        $this>$this->deleteCart();
+        //if ($cart = $this->getCart()) {
+        //    $this->cartRepository->update(['is_active' => false], $cart->id);
+        //
+        //    if (session()->has('cart')) {
+        //        session()->forget('cart');
+        //    }
+        //}
     }
 
     /**
