@@ -1,27 +1,13 @@
 <?php
 
-namespace Webkul\CMS\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
+use App\DataGrids\CMSCategoryDataGrid;
 use App\Models\CMS\CmsCategories;
-use Webkul\Admin\DataGrids\CMSPageDataGrid;
-use Webkul\CMS\Http\Controllers\Controller;
 use Webkul\CMS\Repositories\CmsRepository;
 
-class PageController extends Controller
+class CmsCategoryController extends \App\Http\Controllers\Controller
 {
-    /**
-     * To hold the request variables from route file.
-     *
-     * @var array
-     */
-    protected $_config;
-
-    /**
-     * To hold the CMS repository instance.
-     *
-     * @var \Webkul\CMS\Repositories\CmsRepository
-     */
-    protected $cmsRepository;
 
     /**
      * Create a new controller instance.
@@ -46,11 +32,12 @@ class PageController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            return app(CMSPageDataGrid::class)->toJson();
+            return app(CMSCategoryDataGrid::class)->toJson();
         }
 
         return view($this->_config['view']);
     }
+
 
     /**
      * To create a new CMS page.
@@ -59,8 +46,7 @@ class PageController extends Controller
      */
     public function create()
     {
-        $categories = CmsCategories::all();
-        return view($this->_config['view'],compact('categories'));
+        return view($this->_config['view']);
     }
 
     /**
@@ -73,13 +59,11 @@ class PageController extends Controller
         $data = request()->all();
 
         $this->validate(request(), [
-            'url_key'      => ['required', 'unique:cms_page_translations,url_key', new \Webkul\Core\Contracts\Validations\Slug],
-            'page_title'   => 'required',
-            'channels'     => 'required',
-            'html_content' => 'required',
+            'slug'      => ['required', 'unique:cms_categories,slug', new \Webkul\Core\Contracts\Validations\Slug],
+            'name'   => 'required',
         ]);
 
-        $page = $this->cmsRepository->create(request()->all());
+        $page = CmsCategories::create(request()->all());
 
         session()->flash('success', trans('admin::app.response.create-success', ['name' => 'page']));
 
@@ -94,40 +78,30 @@ class PageController extends Controller
      */
     public function edit($id)
     {
-        $page = $this->cmsRepository->findOrFail($id);
-        $categories = CmsCategories::all();
+        $category = CmsCategories::query()->findOrFail($id);
 
-        return view($this->_config['view'], compact('page','categories'));
+        return view($this->_config['view'], compact('category'));
     }
 
     /**
-     * To update the previously created CMS page in storage.
+     * To update the previously created CMS category in storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update($id)
     {
-        $locale = core()->getRequestedLocaleCode();
 
         $this->validate(request(), [
-            $locale . '.url_key'      => ['required', new \Webkul\Core\Contracts\Validations\Slug, function ($attribute, $value, $fail) use ($id) {
-                if (! $this->cmsRepository->isUrlKeyUnique($id, $value)) {
-                    $fail(trans('admin::app.response.already-taken', ['name' => 'Page']));
-                }
-            }],
-            $locale . '.page_title'   => 'required',
-            $locale . '.html_content' => 'required',
-            'channels'                => 'required',
+            'slug'      => ['required', 'unique:cms_categories,slug,'.$id, new \Webkul\Core\Contracts\Validations\Slug],
+            'name'   => 'required',
         ]);
-        $data = request()->all();
-        if (isset($data['category_id']) && !$data['category_id']){
-            $data['category_id']= null;
-        }
 
-        $this->cmsRepository->update($data, $id);
+        $category = CmsCategories::query()->find($id);
+        $category->update(request()->all());
+        //CmsCategories::update(request()->all(), ['id'=>$id]);
 
-        session()->flash('success', trans('admin::app.response.update-success', ['name' => 'Page']));
+        session()->flash('success', trans('admin::app.response.update-success', ['name' => 'دسته بندی']));
 
         return redirect()->route($this->_config['redirect']);
     }
@@ -140,9 +114,9 @@ class PageController extends Controller
      */
     public function delete($id)
     {
-        $page = $this->cmsRepository->findOrFail($id);
+        $category = CmsCategories::query()->find($id);
 
-        if ($page->delete()) {
+        if ($category->delete()) {
             return response()->json(['message' => trans('admin::app.cms.pages.delete-success')]);
         }
 
@@ -159,33 +133,33 @@ class PageController extends Controller
         $data = request()->all();
 
         if ($data['indexes']) {
-            $pageIDs = explode(',', $data['indexes']);
+            $categoryIDs = explode(',', $data['indexes']);
 
             $count = 0;
 
-            foreach ($pageIDs as $pageId) {
-                $page = $this->cmsRepository->find($pageId);
+            foreach ($categoryIDs as $categoryId) {
+                $category = CmsCategories::query()->find($categoryId);
 
-                if ($page) {
-                    $page->delete();
+                if ($category) {
+                    $category->delete();
 
                     $count++;
                 }
             }
 
-            if (count($pageIDs) == $count) {
+            if (count($categoryIDs) == $count) {
                 session()->flash('success', trans('admin::app.datagrid.mass-ops.delete-success', [
-                    'resource' => 'CMS Pages',
+                    'resource' => 'CMS Categories',
                 ]));
             } else {
                 session()->flash('success', trans('admin::app.datagrid.mass-ops.partial-action', [
-                    'resource' => 'CMS Pages',
+                    'resource' => 'CMS Categories',
                 ]));
             }
         } else {
             session()->flash('warning', trans('admin::app.datagrid.mass-ops.no-resource'));
         }
 
-        return redirect()->route('admin.cms.index');
+        return redirect()->route('admin.cms.category.index');
     }
 }

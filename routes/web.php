@@ -21,6 +21,7 @@
  * group.
  */
 
+use App\Http\Controllers\Admin\CmsCategoryController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\MoodleController;
 use App\Http\Controllers\Shop\API\JeduShopController;
@@ -115,9 +116,10 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
                 Route::post('/forgot-password', [JeduForgotPassword::class, 'store'])
                     ->name('customer.forgot-password.store');
 
-                Route::get('/reset-password/{token}', [JeduResetPasswordController::class, 'create'])->defaults('_config', [
-                    'view' => 'shop::customers.signup.reset-password',
-                ])->name('customer.reset-password.create');
+                Route::get('/reset-password/{token}', [JeduResetPasswordController::class, 'create'])
+                    ->defaults('_config', [
+                        'view' => 'shop::customers.signup.reset-password',
+                    ])->name('customer.reset-password.create');
 
                 Route::post('/reset-password', [JeduResetPasswordController::class, 'store'])->defaults('_config', [
                     'redirect' => 'customer.profile.index',
@@ -139,7 +141,7 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
                     /**
                      * Moodle
                      */
-                    Route::get('moodle', [MoodleController::class,'index'])->defaults('_config', [
+                    Route::get('moodle', [MoodleController::class, 'index'])->defaults('_config', [
                         'view' => 'shop::customers.account.profile.index'
                     ])->name('customer.moodle.index');
                 });
@@ -153,6 +155,15 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
 
             Route::get('/category-products/{categoryId}', [JeduShopController::class, 'getCategoryProducts'])
                 ->name('velocity.category.products');
+        });
+
+
+        Route::group(['middleware' => ['cart.merger']], function () {
+            /**
+             * CMS pages.
+             */
+            //Route::get('page/{category}/{url_key}',
+            //    [\Webkul\CMS\Http\Controllers\Shop\PagePresenterController::class, 'presenter'])->name('shop.cms.page');
         });
     });
 Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => config('app.admin_url')], function () {
@@ -168,7 +179,38 @@ Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => conf
 
         });
 
+    });
 
+    Route::prefix('blog')->group(function () {
+        Route::prefix('category')->group(function () {
+            Route::get('/', [CmsCategoryController::class, 'index'])->defaults('_config', [
+                'view' => 'admin.cms.category.index',
+            ])->name('admin.cms.category.index');
+
+            Route::get('create', [CmsCategoryController::class, 'create'])->defaults('_config', [
+                'view' => 'admin.cms.category.create',
+            ])->name('admin.cms.category.create');
+
+            Route::post('create', [CmsCategoryController::class, 'store'])->defaults('_config', [
+                'redirect' => 'admin.cms.category.index',
+            ])->name('admin.cms.category.store');
+
+            Route::get('edit/{id}', [CmsCategoryController::class, 'edit'])->defaults('_config', [
+                'view' => 'admin.cms.category.edit',
+            ])->name('admin.cms.category.edit');
+
+            Route::post('edit/{id}', [CmsCategoryController::class, 'update'])->defaults('_config', [
+                'redirect' => 'admin.cms.category.index',
+            ])->name('admin.cms.category.update');
+
+            Route::post('/delete/{id}', [CmsCategoryController::class, 'delete'])->defaults('_config', [
+                'redirect' => 'admin.cms.category.index',
+            ])->name('admin.cms.category.delete');
+
+            Route::post('/massdelete', [CmsCategoryController::class, 'massDelete'])->defaults('_config', [
+                'redirect' => 'admin.cms.category.index',
+            ])->name('admin.cms.category.mass-delete');
+        });
     });
 
     Route::prefix('customers')->group(function () {

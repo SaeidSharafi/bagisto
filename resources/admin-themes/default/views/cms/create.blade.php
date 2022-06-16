@@ -55,6 +55,18 @@
                                 <span class="control-error" v-if="errors.has('channels[]')">@{{ errors.first('channels[]') }}</span>
                             </div>
 
+                            <div class="control-group select" :class="[errors.has('category_id') ? 'has-error' : '']">
+                                <label for="category-id" class="required">{{ __('admin::app.cms.pages.channel') }}</label>
+
+                                <select type="text" class="control" name="category_id" v-validate="'required'" value="{{ old('category_id') }}" data-vv-as="&quot;{{ __('admin::app.cms.pages.channel') }}&quot;">
+                                    <option value="">-</option>
+                                @foreach($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+
+                                <span class="control-error" v-if="errors.has('channels[]')">@{{ errors.first('channels[]') }}</span>
+                            </div>
                             <div class="control-group" :class="[errors.has('html_content') ? 'has-error' : '']">
                                 <label for="html_content" class="required">{{ __('admin::app.cms.pages.content') }}</label>
 

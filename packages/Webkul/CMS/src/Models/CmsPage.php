@@ -2,13 +2,14 @@
 
 namespace Webkul\CMS\Models;
 
+use App\Models\CMS\CmsCategories;
 use Webkul\Core\Eloquent\TranslatableModel;
 use Webkul\CMS\Contracts\CmsPage as CmsPageContract;
 use Webkul\Core\Models\ChannelProxy;
 
 class CmsPage extends TranslatableModel implements CmsPageContract
 {
-    protected $fillable = ['layout'];
+    protected $fillable = ['layout','category_id'];
 
     public $translatedAttributes = [
         'content',
@@ -28,5 +29,9 @@ class CmsPage extends TranslatableModel implements CmsPageContract
     public function channels()
     {
         return $this->belongsToMany(ChannelProxy::modelClass(), 'cms_page_channels');
+    }
+
+    public function category(){
+        return $this->hasOne(CmsCategories::class);
     }
 }
