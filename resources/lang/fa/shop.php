@@ -11,7 +11,10 @@ return [
     ],
     'home'       =>
         [
-            'free-products' => 'دوره های رایگان'
+            'free-products' => 'دوره های رایگان',
+            'contracts'     => 'تفاهم نامه ها',
+            'qoutes'        => 'درباره ما چه میگویند',
+            'teachers'      => 'با اساتید ما'
         ],
     'header'     =>
         [
@@ -30,5 +33,6 @@ return [
     'teacher'    => 'استاد:',
     'reviews' =>[
         'empty' =>'هیچ نظری یافت نشد'
-    ]
+    ],
+    'laravel_logo' => 'Laravel Logo'
 ];
