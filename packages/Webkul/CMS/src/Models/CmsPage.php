@@ -9,7 +9,7 @@ use Webkul\Core\Models\ChannelProxy;
 
 class CmsPage extends TranslatableModel implements CmsPageContract
 {
-    protected $fillable = ['layout','category_id'];
+    protected $fillable = ['layout','category_id','image_file'];
 
     public $translatedAttributes = [
         'content',

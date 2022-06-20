@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="content">
-        <form method="POST" action="{{ route('admin.cms.store') }}" @submit.prevent="onSubmit">
+        <form method="POST" enctype="multipart/form-data" action="{{ route('admin.cms.store') }}" @submit.prevent="onSubmit">
 
             <div class="page-header">
                 <div class="page-title">
@@ -67,6 +67,11 @@
 
                                 <span class="control-error" v-if="errors.has('channels[]')">@{{ errors.first('channels[]') }}</span>
                             </div>
+
+                            <input type="file"  class="control" id="image_file"
+                                   name="image_file" value="{{ old('image_file')}}"
+                                   data-vv-as="&quot;تصویر&quot;" style="padding-top: 5px;"/>
+
                             <div class="control-group" :class="[errors.has('html_content') ? 'has-error' : '']">
                                 <label for="html_content" class="required">{{ __('admin::app.cms.pages.content') }}</label>
 

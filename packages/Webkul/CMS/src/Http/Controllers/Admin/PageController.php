@@ -3,6 +3,7 @@
 namespace Webkul\CMS\Http\Controllers\Admin;
 
 use App\Models\CMS\CmsCategories;
+use Illuminate\Support\Facades\Storage;
 use Webkul\Admin\DataGrids\CMSPageDataGrid;
 use Webkul\CMS\Http\Controllers\Controller;
 use Webkul\CMS\Repositories\CmsRepository;
@@ -80,7 +81,8 @@ class PageController extends Controller
         ]);
 
         $page = $this->cmsRepository->create(request()->all());
-
+        $page->image_file = is_object('image_file') ? request()->file('image_file')->store('page/'.$page->id) : null;
+        $page->save();
         session()->flash('success', trans('admin::app.response.create-success', ['name' => 'page']));
 
         return redirect()->route($this->_config['redirect']);
@@ -120,10 +122,22 @@ class PageController extends Controller
             $locale . '.html_content' => 'required',
             'channels'                => 'required',
         ]);
+
         $data = request()->all();
         if (isset($data['category_id']) && !$data['category_id']){
             $data['category_id']= null;
         }
+        if (isset($data['image_file']) && $data['image_file']){
+            $data['image_file'] =request()->file('image_file')->store('page/'.$id);
+        }
+
+        if (isset($data['image_file_delete']) && $data['image_file_delete']){
+
+            $data['image_file'] = null;
+            Storage::disk('public')->deleteDirectory('page/'.$id);
+        }
+
+
 
         $this->cmsRepository->update($data, $id);
 
