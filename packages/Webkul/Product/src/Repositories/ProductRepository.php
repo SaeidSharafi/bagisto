@@ -692,15 +692,19 @@ class ProductRepository extends Repository
     private function persistCopiedProduct($originalProduct,$data=null,$keepSKU = false): Product
     {
 
-        $fill = array_merge($data,[
-            // the sku and url_key needs to be unique and should be entered again newly by the admin
-            'sku' => $keepSKU ? $originalProduct->sku : 'temporary-sku-' . substr(md5(microtime()), 0, 6),
-        ]);
+        if($data){
+            $fill = array_merge($data,[
+                // the sku and url_key needs to be unique and should be entered again newly by the admin
+                'sku' => $keepSKU ? $originalProduct->sku : 'temporary-sku-' . substr(md5(microtime()), 0, 6),
+            ]);
+        }else{
+            $fill = [ 'sku' => $keepSKU ? $originalProduct->sku : 'temporary-sku-' . substr(md5(microtime()), 0, 6)];
+        }
+
         $copiedProduct = $originalProduct
             ->replicate()
-            ->fill([
-                $fill
-            ]);
+            ->fill($fill);
+
         $copiedProduct->save();
 
         if (isset($data['super_attributes'])) {
