@@ -42,6 +42,10 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
             ->name('shop.checkout.get-pyaments');
 
         Route::group(['middleware' => ['cart.merger']], function () {
+
+            Route::view('/about-us','shop.aboutus')
+                ->name('shop.aboutus');
+
             /**
              * Customer routes.
              */

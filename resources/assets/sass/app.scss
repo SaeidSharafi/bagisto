@@ -1484,7 +1484,8 @@ body.rtl .product-detail .thumb-list {
 
 .footer {
     background-color: #e3e3e3 !important;
-
+    z-index: 3;
+    position: relative;
     .footer-content {
         > .map-container {
             padding: 50px;
