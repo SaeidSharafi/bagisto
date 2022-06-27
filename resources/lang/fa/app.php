@@ -50,6 +50,11 @@ return [
             'confirm-password' => 'تکرار کلمه عبور',
         ]
     ],
+    'promotions'=>[
+        'cart-rules' =>[
+            'list'=> 'انتخاب تخفیف'
+        ]
+    ],
     'response' =>[
         'complete-success' => 'ثبت نام با موفقیت تایید شد'
     ]

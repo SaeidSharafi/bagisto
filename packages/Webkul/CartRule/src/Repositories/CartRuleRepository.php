@@ -165,6 +165,8 @@ class CartRuleRepository extends Repository
 
         $data['status'] = ! isset($data['status']) ? 0 : 1;
 
+        $data['show_in_list'] = ! isset($data['show_in_list']) ? 0 : 1;
+
         $data['conditions'] = $data['conditions'] ?? [];
 
         $cartRule = $this->find($id);

@@ -92,3 +92,8 @@ body.open-search{
         padding-right: 0;
     }
 }
+
+input.control.coupon-input.disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+}

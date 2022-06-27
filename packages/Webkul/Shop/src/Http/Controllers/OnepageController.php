@@ -3,6 +3,7 @@
 namespace Webkul\Shop\Http\Controllers;
 
 use Illuminate\Support\Facades\Event;
+use Webkul\CartRule\Models\CartRule;
 use Webkul\Checkout\Facades\Cart;
 use Webkul\Checkout\Http\Requests\CustomerAddressForm;
 use Webkul\Customer\Repositories\CustomerRepository;
@@ -101,7 +102,7 @@ class OnepageController extends Controller
         }
 
         Cart::collectTotals();
-        if($cart->base_grand_total == 0){
+        if ($cart->base_grand_total == 0) {
             Cart::savePaymentMethod(['method' => 'mellat']);
             $order = $this->orderRepository->create(Cart::prepareDataForOrder());
             $order = $this->orderRepository->update(['status' => 'processing'],
@@ -109,7 +110,13 @@ class OnepageController extends Controller
             session()->flash('order', $order);
             return redirect()->route('shop.checkout.success');
         }
-        return view($this->_config['view'], compact('cart'));
+        $coupons = CartRule::query()
+            ->with('cart_rule_coupon')
+            ->where('show_in_list', 1)
+            ->get()
+            ->pluck('name', 'coupon_code');
+        $from_list =$coupons->get($cart->coupon_code) ? $cart->coupon_code : '';
+        return view($this->_config['view'], compact('cart', 'coupons','from_list'));
     }
 
     /**
@@ -178,7 +185,6 @@ class OnepageController extends Controller
                 ['review_html' => view('shop::checkout.onepage.review', compact('cart'))->render()])
         );
     }
-
 
     /**
      * Saves shipping method.

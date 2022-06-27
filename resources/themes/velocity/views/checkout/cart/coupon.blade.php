@@ -3,12 +3,25 @@
         <div class="coupon-container pb-2">
             <div class="discount-control">
                 <form class="custom-form" method="post" @submit.prevent="applyCoupon">
+                    <div class="control-group mb-2" v-if="rules.length > 0">
+                        <label for="channels" >{{ __('app.promotions.cart-rules.list') }}</label>
+
+                        <select class="control"  v-model="coupon_code_list" id="coupon_code_list" name="coupon_code_list">
+                            <option value="" selected>انتخاب کنید</option>
+                            <option :value="key" v-for="(rule,key) in rules" v-bind="key">
+                                @{{ rule }}
+                            </option>
+
+
+                        </select>
+                    </div>
                     <div class="row no-gutters align-items-stretch">
                         <div class="control-group col-8 col-lg-10" :class="[error_message ? 'has-error' : '']">
                             <input
+                                :disabled="matched"
                                 type="text"
                                 name="code"
-                                class="control coupon-input"
+                                :class="`control coupon-input ${matched ? 'disabled' : ''}`"
                                 v-model="coupon_code"
                                 placeholder="{{ __('shop::app.checkout.onepage.enter-coupon-code') }}"/>
                         </div>
@@ -20,11 +33,15 @@
                 </form>
             </div>
 
+
+
             <div class="applied-coupon-details" v-if="applied_coupon">
                 <label>{{ __('shop::app.checkout.total.coupon-applied') }}</label>
 
                 <label class="right" style="display: inline-flex; align-items: center;">
-                    <b>@{{ applied_coupon }}</b>
+
+                    <b v-if="matched">@{{ rules[applied_coupon] }}</b>
+                    <b v-else>@{{ applied_coupon }}</b>
 
                     <i class="rango-close fs18 cursor-pointer" title="{{ __('shop::app.checkout.total.remove-coupon') }}" v-on:click="removeCoupon"></i>
                 </label>
@@ -46,17 +63,29 @@
                     coupon_code: '',
                     error_message: '',
                     applied_coupon: "{{ $cart->coupon_code }}",
+                    selected_coupon: '{{ $from_list }}',
+                    coupon_code_list: '',
+                    rules: @json($coupons),
                     route_name: "{{ request()->route()->getName() }}",
                     disable_button: false,
                 }
             },
             mounted() {
-                // console.log("**************");
-                // console.log(this.coupon);
+                console.log("**************");
+                console.log(this.applied_coupon);
+                console.log(this.selected_coupon);
+                console.log(this.rules);
+                console.log(this.coupon_code_list);
                 // console.log(this.renderFromVue);
-                // console.log("**************");
+                console.log("**************");
                 if (this.coupon || this.renderFromVue) {
                     this.applied_coupon = this.coupon;
+                }
+            },
+            computed:{
+                matched(){
+
+                    return this.rules[this.applied_coupon];
                 }
             },
             watch: {
@@ -69,7 +98,8 @@
 
             methods: {
                 applyCoupon: function () {
-                    if (!this.coupon_code.length) {
+
+                    if (!this.coupon_code.length && !this.coupon_code_list.length) {
                         this.error_message = '{{ __('shop::app.checkout.total.invalid-coupon') }}';
 
                         return;
@@ -79,18 +109,21 @@
 
                     this.disable_button = true;
 
-                    let code = this.coupon_code;
 
+                    let code = !(this.coupon_code_list.length) ? this.coupon_code :this.coupon_code_list;
+                    this.coupon_code_list = '';
                     axios
                         .post(
                             '{{ route('shop.checkout.cart.coupon.apply') }}', {code}
                         ).then(response => {
                         if (response.data.success) {
                             // console.log("#####");
-                            // console.log(this.applied_coupon);
+                             console.log(this.applied_coupon);
                             // console.log("#####");
-                            this.applied_coupon = this.coupon_code;
+                            this.applied_coupon = code;
+                            this.selected_coupon = code;
                             this.coupon_code = '';
+                            // this.coupon_code_list = '';
 
                             window.flashMessages = [{'type': 'alert-success', 'message': response.data.message}];
 
@@ -119,6 +152,7 @@
                             self.$emit('onRemoveCoupon')
 
                             self.applied_coupon = '';
+                            // self.coupon_code_list = '';
 
                             self.disable_button = false;
 
@@ -134,7 +168,6 @@
                             self.$root.addFlashMessages();
                         });
                 },
-
                 redirectIfCartPage: function () {
                     if (this.route_name != 'shop.checkout.cart.index') return;
 

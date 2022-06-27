@@ -582,7 +582,7 @@ return [
             'disc-amount' => 'مقدار تخفیف',
             'new-grand-total' => 'کل بزرگ عالی',
             'coupon' => 'کوپن',
-            'coupon-applied' => 'کوپن کاربردی',
+            'coupon-applied' => 'کوپن اعمال شده',
             'remove-coupon' => 'کوپن را بردارید',
             'cannot-apply-coupon' => 'کوپن قابل اعمال نیست',
             'invalid-coupon' => 'کد کوپن نامعتبر است',

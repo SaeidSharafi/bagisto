@@ -20,6 +20,7 @@ class CartRule extends Model implements CartRuleContract
         'starts_from',
         'ends_till',
         'status',
+        'show_in_list',
         'coupon_type',
         'use_auto_generation',
         'usage_per_customer',
