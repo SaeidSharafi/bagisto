@@ -42,7 +42,6 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
 @section('page_title')
     {{ trim($product->meta_title) != "" ? $product->meta_title : $product->name }}
 @stop
-
 @section('seo')
     <meta name="description"
           content="{{ trim($product->meta_description) != "" ? $product->meta_description : \Illuminate\Support\Str::limit(strip_tags($product->description), 120, '') }}"/>
@@ -306,7 +305,16 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                             نمونه گواهی دوره
                         </h5>
                         <div class="w-100 p-3">
-                            <img src="/images/sample-cert.jpg" class="w-100">
+                            @if ($product->product->categories->pluck('id')->contains(16))
+                                <img src="{{asset('images/certs/icdl.jpg')}}" class="w-100">
+                            @elseif ($product->product->categories->pluck('id')->contains(11))
+                                <img src="{{asset('images/certs/doc.jpg')}}" class="w-100">
+                            @elseif ($product->product->categories->pluck('id')->contains(6))
+                                <img src="{{asset('images/certs/zaban.jpg')}}" class="w-100">
+                            @else
+                                <img src="{{asset('images/certs/all.jpg')}}" class="w-100">
+                            @endif
+
                         </div>
                     </div>
                 </div>
