@@ -44,6 +44,10 @@
                 var now = new Date().getTime();
 
                 // Find the distance between now and the count down date
+                if(!countDownDate){
+                    timerElement.innerHTML = "0:00:00:00";
+                    return;
+                }
                 var distance = countDownDate - now;
 
                 // Time calculations for days, hours, minutes and seconds
@@ -52,7 +56,7 @@
                 var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                timerElement.innerHTML = "EXPIRED";
+                timerElement.innerHTML = "0:00:00:00";
                 // Display the result in the element with id="demo"
                 timerElement.innerHTML = days + ":" + ("0" + hours).slice(-2) + ":"
                     + ("0" + minutes).slice(-2) + ":" + ("0" + seconds).slice(-2);

@@ -23,7 +23,7 @@
             max-width: 600px;
             padding: 10px;
             z-index: 2;
-        }
+        }g
 
         .about-us-wrapper .about-us-content {
             background: #fff;

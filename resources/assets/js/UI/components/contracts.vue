@@ -4,9 +4,9 @@
             v-bind="sliderSetting">
             <div
                 :id="`slide-${index}`"
-                v-for="index in 12">
+                v-for="index in 21">
                 <div class="contract-image">
-                    <img :src="`images/shop/contracts/cont${Math.floor(Math.random() *4) +1}.png`" class="w-100">
+                    <img :src="`images/shop/contracts/cont${index}.jpg`" class="w-100">
                 </div>
             </div>
         </slick-carousel>
