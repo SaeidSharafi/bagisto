@@ -3,7 +3,10 @@
 namespace App\Traits;
 
 use App\Notifications\NewOrderNotification;
+use App\Notifications\OrderCancelNotification;
 use App\Notifications\OrderCommentNotification;
+use App\Notifications\OrderCompletedNotification;
+use App\Notifications\OrderRefundNotification;
 use Illuminate\Support\Facades\Notification;
 use Kuro\LaravelSms\SmsChannel;
 
@@ -54,17 +57,52 @@ trait Sms
             if (core()->getConfigData($configKey)) {
                 Notification::route('phone',$order->customer_phone)
                     ->notify(new NewOrderNotification($order));
-                //$this->prepareMail($customerLocale, new NewOrderNotification($order));
             }
 
-            ///**
-            // * Email to admin.
-            // */
-            //$configKey = 'emails.general.notifications.emails.general.notifications.new-admin';
-            //
-            //if (core()->getConfigData($configKey)) {
-            //    $this->prepareMail(config('app.locale'), new NewAdminNotification($order));
-            //}
+        } catch (\Exception $e) {
+            report($e);
+        }
+    }
+
+    /**
+     * Send new order Mail to the customer and admin.
+     *
+     * @param  \Webkul\Sales\Contracts\Order  $order
+     * @return void
+     */
+    public function sendOrderUpdateSms($order)
+    {
+        //$customerLocale = $this->getLocale($order);
+
+        try {
+            $configKey = 'sms.general.notifications.new-order.pattern';
+            $notification = null;
+            switch ($order->status) {
+                case 'closed':
+                    $configKey = 'sms.general.notifications.new-refund.pattern';
+                    $notification = new OrderRefundNotification($order);
+                    break;
+                case 'completed':
+                    $configKey = 'sms.general.notifications.completed-order.pattern';
+                    $notification = new OrderCompletedNotification($order);
+                    break;
+                case 'canceled':
+                    $configKey = 'sms.general.notifications.cancel-order.pattern';
+                    $notification = new OrderCancelNotification($order);
+                    break;
+            }
+
+            if (!$notification){
+                \Log::info("Not sedning notification");
+                return;
+            }
+
+            \Log::info("core()->getConfigData($configKey)");
+            if (core()->getConfigData($configKey)) {
+                Notification::route('phone',$order->customer_phone)
+                    ->notify($notification);
+            }
+
         } catch (\Exception $e) {
             report($e);
         }

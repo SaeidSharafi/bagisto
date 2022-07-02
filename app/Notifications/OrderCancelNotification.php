@@ -9,7 +9,7 @@ use Kuro\LaravelSms\Sms;
 use Kuro\LaravelSms\SmsChannel;
 use Kuro\LaravelSms\SmsData;
 
-class NewOrderNotification extends Notification implements ShouldQueue
+class OrderCancelNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -17,7 +17,7 @@ class NewOrderNotification extends Notification implements ShouldQueue
 
     protected $pattern;
 
-    protected $enabled_status = ['processing'];
+    protected $enabled_status = [ 'canceled'];
 
     /**
      * Create a new notification instance.
@@ -66,9 +66,9 @@ class NewOrderNotification extends Notification implements ShouldQueue
             ?: config('sms.gateway.rangine.password');
 
         $pattern = $this->pattern
-            ?: core()->getConfigData('sms.general.notifications.new-order.pattern');
+            ?: core()->getConfigData('sms.general.notifications.cancel-order.pattern');
 
-        \Log::info("Sending Sms for new order");
+        \Log::info("Sending Sms for canceling order");
         \Log::info("order status is -> {$this->order->status}");
         $parameters = ['invoice_no' => $this->order->increment_id];
 
