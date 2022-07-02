@@ -3,7 +3,7 @@
         <div class="coupon-container pb-2">
             <div class="discount-control">
                 <form class="custom-form" method="post" @submit.prevent="applyCoupon">
-                    <div class="control-group mb-2" v-if="rules.length > 0">
+                    <div class="control-group mb-2" v-if="rules_length">
                         <label for="channels" >{{ __('app.promotions.cart-rules.list') }}</label>
 
                         <select class="control"  v-model="coupon_code_list" id="coupon_code_list" name="coupon_code_list">
@@ -11,7 +11,6 @@
                             <option :value="key" v-for="(rule,key) in rules" v-bind="key">
                                 @{{ rule }}
                             </option>
-
 
                         </select>
                     </div>
@@ -63,9 +62,8 @@
                     coupon_code: '',
                     error_message: '',
                     applied_coupon: "{{ $cart->coupon_code }}",
-                    selected_coupon: '{{ $from_list }}',
                     coupon_code_list: '',
-                    rules: @json($coupons),
+                    rules: {{\Illuminate\Support\Js::from($coupons)}},
                     route_name: "{{ request()->route()->getName() }}",
                     disable_button: false,
                 }
@@ -73,8 +71,8 @@
             mounted() {
                 console.log("**************");
                 console.log(this.applied_coupon);
-                console.log(this.selected_coupon);
                 console.log(this.rules);
+                console.log(Object.keys(this.rules).length);
                 console.log(this.coupon_code_list);
                 // console.log(this.renderFromVue);
                 console.log("**************");
@@ -86,6 +84,9 @@
                 matched(){
 
                     return this.rules[this.applied_coupon];
+                },
+                rules_length(){
+                    return Object.keys(this.rules).length;
                 }
             },
             watch: {
@@ -121,7 +122,6 @@
                              console.log(this.applied_coupon);
                             // console.log("#####");
                             this.applied_coupon = code;
-                            this.selected_coupon = code;
                             this.coupon_code = '';
                             // this.coupon_code_list = '';
 

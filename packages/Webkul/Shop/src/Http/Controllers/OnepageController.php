@@ -114,9 +114,10 @@ class OnepageController extends Controller
             ->with('cart_rule_coupon')
             ->where('show_in_list', 1)
             ->get()
-            ->pluck('name', 'coupon_code');
-        $from_list =$coupons->get($cart->coupon_code) ? $cart->coupon_code : '';
-        return view($this->_config['view'], compact('cart', 'coupons','from_list'));
+            ->pluck('name', 'coupon_code')
+            ->toArray();
+
+        return view($this->_config['view'], compact('cart', 'coupons'));
     }
 
     /**
@@ -127,9 +128,14 @@ class OnepageController extends Controller
     public function summary()
     {
         $cart = Cart::getCart();
-
+        $coupons = CartRule::query()
+            ->with('cart_rule_coupon')
+            ->where('show_in_list', 1)
+            ->get()
+            ->pluck('name', 'coupon_code')
+            ->toArray();
         return response()->json([
-            'html' => view('shop::checkout.total.summary', compact('cart'))->render(),
+            'html' => view('shop::checkout.total.summary', compact('cart','coupons'))->render(),
         ]);
     }
 

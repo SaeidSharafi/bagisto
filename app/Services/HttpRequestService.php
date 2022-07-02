@@ -73,16 +73,17 @@ class HttpRequestService
                 'gender'         => ($customer->gender == 'Male') ? 1 : 2,
             ],
 
-            'intro_method' => 3,
-            'contact_way'  => 5,
-            'details'      => $comments,
+            'intro_method'  => 3,
+            'contact_way'   => 5,
+            'discount_code' => $this->order->coupon_code ?: '',
+            'details'       => $comments,
         ];
 
         foreach ($this->order->items as $item) {
 
             $product_number = $item->product_number;
 
-            if ($item->type === 'configurable'){
+            if ($item->type === 'configurable') {
                 $product_number = $item->product_number ?: $item->child->product_number;
             }
 
