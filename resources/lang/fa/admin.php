@@ -47,6 +47,12 @@ return [
             'users' => ':success کاربر در مودل ثبت شد. ثبت :fail کاربر با خطا مواجه شد.'
         ]
     ],
+    'cms'=>[
+        'categories' =>[
+            'category' => 'دسته بندی',
+            'categories' => 'دسته بندی ها'
+        ]
+    ],
     'admin'         => [
         'sms'    => [
             'sms'                => 'پیامک',

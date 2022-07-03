@@ -4,7 +4,7 @@ return [
     'admin' => [
         [
             'key'        => 'cms.categories',
-            'name'       => 'admin::app.cms.categories.categories',
+            'name'       => 'admin.cms.categories.categories',
             'route'      => 'admin.cms.category.index',
             'sort'       => 2,
             'icon-class' => '',
