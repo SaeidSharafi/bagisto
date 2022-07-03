@@ -1,5 +1,5 @@
 <script type="text/javascript">
-	tinyMCEHelper = {
+	tinyMCEHelperMedia = {
         initTinyMCE: function (config) {
             let self = this;
 

@@ -12,6 +12,7 @@
                 uploadRoute: '{{ route('admin.tinymce.upload') }}',
                 csrfToken: '{{ csrf_token() }}',
                 ...extraConfiguration,
+                directionality : "rtl",
             };
 
             tinymce.init({
@@ -94,6 +95,6 @@
             formData.append('file', blobInfo.blob(), blobInfo.filename());
 
             xhr.send(formData);
-        }
+        },
     };
 </script>
