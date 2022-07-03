@@ -56,9 +56,9 @@
                             </div>
 
                             <div class="control-group select" :class="[errors.has('category_id') ? 'has-error' : '']">
-                                <label for="category-id" class="required">{{ __('admin::app.cms.pages.channel') }}</label>
+                                <label for="category-id">{{ __('admin.cms.categories.category') }}</label>
 
-                                <select type="text" class="control" name="category_id" v-validate="'required'" value="{{ old('category_id') }}" data-vv-as="&quot;{{ __('admin::app.cms.pages.channel') }}&quot;">
+                                <select type="text" class="control" name="category_id"  value="{{ old('category_id') }}" data-vv-as="&quot;{{ __('admin::app.cms.pages.channel') }}&quot;">
                                     <option value="">-</option>
                                 @foreach($categories as $category)
                                         <option value="{{ $category->id }}">{{ $category->name }}</option>

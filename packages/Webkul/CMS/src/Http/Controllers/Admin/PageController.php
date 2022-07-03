@@ -79,8 +79,11 @@ class PageController extends Controller
             'channels'     => 'required',
             'html_content' => 'required',
         ]);
+        if (!$data['category_id']){
+            unset($data['category_id']);
+        }
 
-        $page = $this->cmsRepository->create(request()->all());
+        $page = $this->cmsRepository->create($data);
         $page->image_file = is_object('image_file') ? request()->file('image_file')->store('page/'.$page->id) : null;
         $page->save();
         session()->flash('success', trans('admin::app.response.create-success', ['name' => 'page']));
