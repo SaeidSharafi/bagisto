@@ -106,6 +106,12 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="{{ route('customer.moodle.index') }}" class="unset">
+                        <i class="icon orders text-down-3"></i>
+                        <span>{{ __('app.customer.account.moodle.index.page-title') }}</span>
+                    </a>
+                </li>
             </ul>
         @endauth
     </template>

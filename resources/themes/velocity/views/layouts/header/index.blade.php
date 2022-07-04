@@ -19,7 +19,7 @@
                             </sidebar-header>
                         </li>
                         <li class="top-level"><a href="{{route("customer.auth.create")}}" target="_self">درباره ما</a></li>
-                        <li class="top-level"><a href="{{route("customer.auth.create")}}" target="_self">گواهی نامه</a></li>
+                        <li class="top-level"><a href="{{route("customer.auth.create")}}" target="_self">بلاگ</a></li>
                         @guest('customer')
                         <li class="top-level login"><a href="{{route("customer.auth.create")}}" target="_self">ورود</a></li>
                         @endguest

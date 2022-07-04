@@ -25,7 +25,9 @@
                     <li>
                         <a href="{{ route('customer.orders.index') }}" class="unset">{{ __('velocity::app.shop.general.orders') }}</a>
                     </li>
-
+                    <li>
+                        <a href="{{ route('customer.moodle.index') }}" class="unset">{{ __('app.customer.account.moodle.index.page-title') }}</a>
+                    </li>
                     @php
                         $showCompare = core()->getConfigData('general.content.shop.compare_option') == "1" ? true : false;
 
