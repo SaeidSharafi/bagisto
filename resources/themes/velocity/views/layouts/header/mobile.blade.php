@@ -108,7 +108,7 @@
 
                 <li>
                     <a href="{{ route('customer.moodle.index') }}" class="unset">
-                        <i class="icon orders text-down-3"></i>
+                        <i class="fa fa-desktop text-down-3 px-2" style="font-size: 1.4rem"></i>
                         <span>{{ __('app.customer.account.moodle.index.page-title') }}</span>
                     </a>
                 </li>
