@@ -1,5 +1,11 @@
 <?php
 return [
+    'meta-data' =>[
+        'blog' => 'پست منتخب بلاگ',
+        'blog_title' => 'عنوان پست',
+        'blog_url' => 'آدرس پست',
+        'blog_image' => 'تصویر پست',
+    ],
     'catalog'       => [
         'products' => [
             'banner'           => 'بنر',

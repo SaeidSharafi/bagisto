@@ -178,7 +178,7 @@
                             value="{{ $metaData ? $metaData->blog_url : '' }}" />
                     </div>
                     <div class="control-group">
-
+                        <label>{{ __('admin.meta-data.blog_image') }}</label>
                         @if(isset($metaData->blog_image) && $metaData->blog_image)
 
                             <image-wrapper
