@@ -99,6 +99,21 @@ class ConfigurationController extends Controller
         $advertisement = json_decode($velocityMetaData->advertisement, true);
 
         $params['advertisement'] = [];
+        $dir = 'velocity/images/blog';
+
+        if (request()->hasFile('blog_image')){
+            Storage::deleteDirectory($dir);
+            $params['blog_image'] = collect(request()->file('blog_image'))->first()->store($dir);
+        }else{
+            if (!isset($params['blog_image'])){
+                $params['blog_image'] = null;
+                Storage::deleteDirectory($dir);
+            }else{
+                unset($params['blog_image']);
+            }
+
+        }
+
 
         if (isset($params['images'])) {
             foreach ($params['images'] as $index => $images) {
@@ -217,9 +232,9 @@ class ConfigurationController extends Controller
                                         $saveImage[$subIndex] = $copyAdImage;
                                     }
                                     break;
-                                
+
                                 default:
-                                    
+
                                     break;
                             }
                         } elseif ( $index == 3 ) {
@@ -244,7 +259,7 @@ class ConfigurationController extends Controller
                                     break;
 
                                 default:
-                                    
+
                                     break;
                             }
                         } elseif ( $index == 2 ) {
@@ -263,7 +278,7 @@ class ConfigurationController extends Controller
                                     break;
 
                                 default:
-                                    
+
                                     break;
                             }
                         }
@@ -282,7 +297,7 @@ class ConfigurationController extends Controller
     }
 
     /**
-     * Copy the default adversise images 
+     * Copy the default adversise images
      *
      * @param  string  $resourceImagePath
      * @param  string  $copiedPath

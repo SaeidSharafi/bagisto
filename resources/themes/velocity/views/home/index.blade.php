@@ -55,10 +55,14 @@
         <div class="row align-items-stretch justify-content-center featured-slider mx-0">
             <div class="col-6 col-md-5 col-lg-4">
                 <div class="slider-side">
-                    <div class="item w-100 position-relative rounded overflow-hidden"
-                         style="background-image: url('{{asset("/images/temp/futur-gold.png")}}');">
-                        <div class="overlay-img">آینده طلاسازی</div>
-                    </div>
+                    <a target="_blank" href="{{$velocityMetaData->blog_url}}" class="d-block h-100">
+                        <div class="item w-100 position-relative rounded overflow-hidden"
+                             style="background-image: url('{{ $velocityMetaData->blog_image
+                                                                ? asset('/storage/'.$velocityMetaData->blog_image)
+                                                                : asset("/images/temp/futur-gold.png")}}');">
+                            <div class="overlay-img">{{$velocityMetaData->blog_title ?: 'طلاسازی'}}</div>
+                        </div>
+                    </a>
                 </div>
             </div>
             <div class="col-6 col-md-5 col-lg-4">

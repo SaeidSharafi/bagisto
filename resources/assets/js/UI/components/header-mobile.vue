@@ -20,16 +20,7 @@
                         </span>
                         </div>
                         <slot name="customer-navigation"></slot>
-                        <ul
-                            type="none"
-                            class="velocity-content">
-                            <li>
-                                <a class="unset" :href="`${$root.baseUrl}/#`" target="_self">درباره ما</a>
-                            </li>
-                            <li>
-                                <a class="unset" :href="`${$root.baseUrl}/#`" target="_self">گواهی نامه</a>
-                            </li>
-                        </ul>
+                        <slot name="mainnavigation"></slot>
 
                         <ul
                             type="none"

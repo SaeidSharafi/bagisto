@@ -48,7 +48,18 @@
             </div>
         </div>
     </div>
-
+    <template v-slot:mainNavigation>
+        <ul
+            type="none"
+            class="velocity-content">
+            <li>
+                <a class="unset" :href="`${$root.baseUrl}/#`" target="_self">درباره ما</a>
+            </li>
+            <li>
+                <a class="unset" href="https://jahadreg.ir/blog" target="_blank">بلاگ</a>
+            </li>
+        </ul>
+    </template>
     <template v-slot:greetings>
 
         @auth('customer')
@@ -64,6 +75,7 @@
             </a>
         </template>
     @endguest
+
     <template v-slot:customer-navigation>
         @auth('customer')
             <ul type="none" class="vc-customer-options">

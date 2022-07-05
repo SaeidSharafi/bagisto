@@ -150,7 +150,53 @@
 
                 </div>
             </accordian>
+            <accordian :title="'{{ __('admin.meta-data.blog') }}'" :active="false">
 
+                <div slot="body">
+                    <div class="control-group blog-title">
+                        <label style="width:100%;">
+                            {{ __('admin.meta-data.blog_title') }}
+                        </label>
+
+                        <input
+                            type="text"
+                            class="control"
+                            id="blog_title"
+                            name="blog_title"
+                            value="{{ $metaData ? $metaData->blog_title : '' }}" />
+                    </div>
+                    <div class="control-group blog-url">
+                        <label style="width:100%;">
+                            {{ __('admin.meta-data.blog_url') }}
+                        </label>
+
+                        <input
+                            type="text"
+                            class="control"
+                            id="blog_url"
+                            name="blog_url"
+                            value="{{ $metaData ? $metaData->blog_url : '' }}" />
+                    </div>
+                    <div class="control-group">
+
+                        @if(isset($metaData->blog_image) && $metaData->blog_image)
+
+                            <image-wrapper
+                                :multiple="false"
+                                input-name="blog_image"
+                                :images='"{{ Storage::url($metaData->blog_image) }}"'
+                                :button-label="'{{ __('velocity::app.admin.meta-data.add-image-btn-title') }}'">
+                            </image-wrapper>
+                        @else
+                            <image-wrapper
+                                :multiple="false"
+                                input-name="blog_image"
+                                :button-label="'{{ __('velocity::app.admin.meta-data.add-image-btn-title') }}'">
+                            </image-wrapper>
+                        @endif
+                    </div>
+                </div>
+            </accordian>
             <accordian :title="'{{ __('velocity::app.admin.meta-data.images') }}'" :active="false">
                 @php
                     $images = [
