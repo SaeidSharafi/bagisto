@@ -24,15 +24,16 @@
         </div>
 
         <div class="col-6">
-            <div class="row">
+            <div class="w-100">
 
                 @if ($logo = core()->getCurrentChannel()->logo_url)
                     <div
-                        class="col-12 velocity-icon bg-image"
+                        class="w-100 velocity-icon bg-image"
                         style="background-image: url('{{ $logo }}')"
                     ></div>
                 @else
-                    <div class="col-12 velocity-icon bg-image"></div>
+                    <div class="w-100 velocity-icon bg-image"
+                         style="background-image: url('{{ asset('images/logo-text.png') }}');max-width: 200px;background-position: center center;"></div>
                 @endif
             </div>
 
