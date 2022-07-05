@@ -61,7 +61,7 @@
                                     </label>
                                 </div>
                                 <div class="control-group">
-                                    <label for="show_in_list">{{ __('admin::app.promotions.cart-rules.show_in_list') }}</label>
+                                    <label for="show_in_list">{{ __('admin.promotions.cart-rules.show_in_list') }}</label>
 
                                     <label class="switch">
                                         <input type="checkbox" id="show_in_list" name="show_in_list" value="1" {{ old('show_in_list') ? 'checked' : '' }}>

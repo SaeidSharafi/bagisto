@@ -53,8 +53,18 @@ return [
             'users' => ':success کاربر در مودل ثبت شد. ثبت :fail کاربر با خطا مواجه شد.'
         ]
     ],
+    'promotions'=>[
+        'cart-rules'=>[
+            'show_in_list' => 'نمایش در لیست'
+        ],
+    ],
     'cms'=>[
         'categories' =>[
+            'title' => 'دسته بندی ها',
+            'add-title' => 'دسته بندی جدید',
+            'edit-title' => 'ویرایش دسته بندی',
+            'create-btn-title' => 'ذخیره دسته بندی',
+            'edit-btn-title' => 'ویرایش دسته بندی',
             'category' => 'دسته بندی',
             'categories' => 'دسته بندی ها'
         ]
