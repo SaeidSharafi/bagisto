@@ -97,7 +97,7 @@
                                 <span class="control-error" v-if="errors.has('channels[]')">@{{ errors.first('channels[]') }}</span>
                             </div>
                             <div class="control-group select" :class="[errors.has('category_id') ? 'has-error' : '']">
-                                <label for="category-id">{{ __('admin::app.cms.pages.channel') }}</label>
+                                <label for="category-id">{{ __('admin.cms.categories.category') }}</label>
 
                                 <select type="text" class="control" name="category_id" value="{{ old('category_id') }}"
                                         data-vv-as="&quot;{{ __('admin::app.cms.pages.channel') }}&quot;">
