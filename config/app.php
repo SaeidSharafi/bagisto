@@ -187,6 +187,8 @@ return [
         ],
     ],
 
+
+    'blog_url' => env('BLOG_URL', 'https://blog.jedu.ir'),
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

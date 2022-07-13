@@ -19,7 +19,7 @@
                             </sidebar-header>
                         </li>
                         <li class="top-level"><a href="{{route("customer.auth.create")}}" target="_self">درباره ما</a></li>
-                        <li class="top-level"><a href="https://jahadreg.ir/blog" target="_blank">بلاگ</a></li>
+                        <li class="top-level"><a href="{{config('BLOG_URL')}}" target="_blank">بلاگ</a></li>
                         @guest('customer')
                         <li class="top-level login"><a href="{{route("customer.auth.create")}}" target="_self">ورود</a></li>
                         @endguest
