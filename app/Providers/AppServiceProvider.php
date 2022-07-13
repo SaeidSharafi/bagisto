@@ -58,9 +58,6 @@ class AppServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             dirname(__DIR__).'/../config/sms.php', 'sms'
         );
-        $this->mergeConfigFrom(
-            dirname(__DIR__).'/../config/moodle.php', 'moodle'
-        );
         $this->app->concord->registerModel(
            \Webkul\Customer\Models\Customer::class, JeduCustomer::class
         );
