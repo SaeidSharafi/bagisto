@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Imports\CustomersImport;
 use App\Imports\EnrolmentsImport;
 use App\Services\CustomerBulkUploadService;
 use App\Services\MoodleService;
@@ -29,7 +30,7 @@ class CustomerController extends \App\Http\Controllers\Controller
         $request->validate([
             'uploaded_file' => 'required|file|mimes:xls,xlsx,csv',
         ]);
-        $import = new EnrolmentsImport();
+        $import = new CustomersImport();
 
         $file = $request->file('uploaded_file')->store('temp');
         $import->import($file);
