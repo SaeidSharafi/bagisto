@@ -12,9 +12,9 @@ class MoodleService
 
     public static function getLoginURL(Customer $customer)
     {
-        $token = env('MOODLE_AUTH_TOKEN', '');
+        $token = config('moodle_auth_token');
         $functionname = 'auth_userkey_request_login_url';
-        $root = env('MOODLE_ADDRESS', '');
+        $root = config('moodle_address');
 
         if (!$root) {
             \Log::error("MOODLE ADDRESS EMPTY");
@@ -64,9 +64,9 @@ class MoodleService
 
     public static function createUser(JeduCustomer $customer)
     {
-        $token = env('MOODLE_CORE_TOKEN', '');
+        $token = config('moodle_core_token');
         $functionname = 'core_user_create_users';
-        $root = env('MOODLE_ADDRESS', '');
+        $root = config('moodle_address');
 
         if (!$root) {
             \Log::error("MOODLE ADDRESS EMPTY");
@@ -127,9 +127,9 @@ class MoodleService
      */
     public static function createUsers($customers)
     {
-        $token = env('MOODLE_CORE_TOKEN', '');
+        $token = config('moodle_core_token');
         $functionname = 'core_user_create_users';
-        $root = env('MOODLE_ADDRESS', '');
+        $root = config('moodle_address');
 
         if (!$root) {
             \Log::error("MOODLE ADDRESS EMPTY");
@@ -183,9 +183,9 @@ class MoodleService
 
     public static function updateUser(Customer $customer)
     {
-        $token = env('MOODLE_CORE_TOKEN', '');
+        $token = config('moodle_core_token');
         $functionname = 'core_user_update_users';
-        $root = env('MOODLE_ADDRESS', '');
+        $root = config('moodle_address');
 
         if (!$root) {
             \Log::error("MOODLE ADDRESS EMPTY");
@@ -264,9 +264,9 @@ class MoodleService
 
     public static function enrolUser(Order $order)
     {
-        $token = env('MOODLE_CORE_TOKEN', '');
+        $token = config('moodle_core_token');
         $functionname = 'enrol_manual_enrol_users';
-        $root = env('MOODLE_ADDRESS', '');
+        $root = config('moodle_address');
 
         if (!$root) {
             \Log::error("MOODLE ADDRESS EMPTY");
@@ -289,7 +289,7 @@ class MoodleService
         $user_id = $user[0]['id'];
         //$user1 = new stdClass();
         $data['enrolments'][] = [
-            'roleid'   => env('MOODLE_STUDENT_ROLE_ID', 5),
+            'roleid'   => config('moodle_student_role_id'),
             'userid'   => $user_id,
             'courseid' => $order->items->first()->product->moodle_id,
         ];
@@ -311,9 +311,9 @@ class MoodleService
 
     public static function unEnrolUser(Order $order)
     {
-        $token = env('MOODLE_CORE_TOKEN', '');
+        $token = config('moodle_core_token');
         $functionname = 'enrol_manual_unenrol_users';
-        $root = env('MOODLE_ADDRESS', '');
+        $root = config('moodle_address');
 
         if (!$root) {
             \Log::error("MOODLE ADDRESS EMPTY");
@@ -340,7 +340,7 @@ class MoodleService
         $user_id = $user[0]['id'];
         //$user1 = new stdClass();
         $data['enrolments'][] = [
-            'roleid'   => env('MOODLE_STUDENT_ROLE_ID', 5),
+            'roleid'   => config('moodle_student_role_id'),
             'userid'   => $user_id,
             'courseid' => 118,
         ];
@@ -362,9 +362,9 @@ class MoodleService
 
     public static function enrolUserInCourse($customer)
     {
-        $token = env('MOODLE_CORE_TOKEN', '');
+        $token = config('moodle_core_token');
         $functionname = 'enrol_manual_enrol_users';
-        $root = env('MOODLE_ADDRESS', '');
+        $root = config('moodle_address');
 
         if (!$root) {
             \Log::error("MOODLE ADDRESS EMPTY");
@@ -386,7 +386,7 @@ class MoodleService
         $data['enrolments'] = [];
         foreach ($customer->moodle_enrolments as $enrolments) {
             $data['enrolments'][] = [
-                'roleid'   => env('MOODLE_STUDENT_ROLE_ID', 5),
+                'roleid'   => config('moodle_student_role_id'),
                 'userid'   => $user_id,
                 'courseid' => $enrolments->moodle_course_id,
             ];
@@ -422,9 +422,9 @@ class MoodleService
 
     public static function getUser($username)
     {
-        $token = env('MOODLE_CORE_TOKEN', '');
+        $token = config('moodle_core_token');
         $functionname = 'core_user_get_users_by_field';
-        $root = env('MOODLE_ADDRESS', '');
+        $root = config('moodle_address');
 
         if (!$root) {
             \Log::error("MOODLE ADDRESS EMPTY");
@@ -462,9 +462,9 @@ class MoodleService
 
     public static function getUserCourses(JeduCustomer $customer)
     {
-        $token = env('MOODLE_CORE_TOKEN', '');
+        $token = config('moodle_core_token');
         $functionname = 'joomdle_my_courses';
-        $root = env('MOODLE_ADDRESS', '');
+        $root = config('moodle_address');
 
         if (!$root) {
             \Log::error("MOODLE ADDRESS EMPTY");
