@@ -56,7 +56,7 @@
                 <a class="unset" :href="`${$root.baseUrl}/#`" target="_self">درباره ما</a>
             </li>
             <li>
-                <a class="unset" href="{{config('BLOG_URL')}}" target="_blank">بلاگ</a>
+                <a class="unset" href="{{config('blog_url')}}" target="_blank">بلاگ</a>
             </li>
         </ul>
     </template>
