@@ -74,7 +74,7 @@ class MoodleController extends Controller
             ->whereNotNull('moodle_id')
             ->get();
 
-        $customer = MoodleService::getLoginURL($this->currentCustomer);
+        $customer = MoodleService::getCustomLoginURL($this->currentCustomer);
         if (!$customer) {
             $customer = $this->currentCustomer->refresh();
         }

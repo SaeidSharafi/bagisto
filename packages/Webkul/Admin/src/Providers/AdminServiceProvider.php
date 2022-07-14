@@ -2,6 +2,7 @@
 
 namespace Webkul\Admin\Providers;
 
+use App\Services\MoodleService;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Webkul\Admin\Http\Middleware\Locale;
@@ -31,6 +32,7 @@ class AdminServiceProvider extends ServiceProvider
         $router->aliasMiddleware('admin_locale', Locale::class);
 
         $this->app->register(EventServiceProvider::class);
+
     }
 
     /**
@@ -85,6 +87,7 @@ class AdminServiceProvider extends ServiceProvider
      */
     protected function composeView()
     {
+
         view()->composer(['admin::layouts.nav-left','admin::layouts.tabs','admin::layouts.mobile-nav'], function ($view) {
             $tree = Tree::create();
 
@@ -116,6 +119,7 @@ class AdminServiceProvider extends ServiceProvider
 
                 $tree->add($item, 'menu');
             }
+
 
             $tree->items = core()->sortItems($tree->items);
 

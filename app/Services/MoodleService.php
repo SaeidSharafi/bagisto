@@ -3,14 +3,16 @@
 namespace App\Services;
 
 use App\Models\Shop\JeduCustomer;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Http;
 use Webkul\Customer\Contracts\Customer;
 use Webkul\Sales\Models\Order;
+use Webkul\User\Models\Admin;
 
 class MoodleService
 {
 
-    public static function getLoginURL(Customer $customer)
+    public static function getCustomLoginURL(Customer $customer)
     {
         $token = config('moodle.moodle_auth_token');
         $functionname = 'auth_userkey_request_login_url';
@@ -53,6 +55,51 @@ class MoodleService
                     return $customer;
                 }
 
+                \Log::info("getLoginURL user response:", $body);
+            }
+
+        } catch (\Exception $exception) {
+            report($exception);
+        }
+        return null;
+    }
+
+    public static function getAdminLoginURL(Admin $user)
+    {
+        $token = config('moodle.moodle_auth_token');
+        $functionname = 'auth_userkey_request_login_url';
+        $root = config('moodle.moodle_address');
+
+        if (!$root) {
+            \Log::error("MOODLE ADDRESS EMPTY");
+            return null;
+        }
+
+        if (!$token) {
+            \Log::error("AUTH TOKEN EMPTY");
+            return null;
+        }
+
+        $data = [
+            'user' => [
+                'username' => $user->username
+            ]
+        ];
+
+        $url = $root.'/webservice/rest/server.php'.'?wstoken='.$token.'&wsfunction='.$functionname
+            .'&moodlewsrestformat=json';
+
+        try {
+            $response = Http::asForm()->post($url, $data)
+                ->throw();
+            $body = json_decode($response->body(), true, 512, JSON_THROW_ON_ERROR);
+            $output = [];
+
+            if ($body) {
+                if (array_key_exists('loginurl', $body)) {
+                    //parse_str(parse_url($body['loginurl'], PHP_URL_QUERY), $output);
+                    return $body['loginurl'];
+                }
                 \Log::info("getLoginURL user response:", $body);
             }
 
@@ -401,7 +448,6 @@ class MoodleService
             $response = Http::asForm()
                 ->post($url, $data)
                 ->throw();
-
 
             $body = json_decode($response->body(), true, 512, JSON_THROW_ON_ERROR);
             if (!$body) {
