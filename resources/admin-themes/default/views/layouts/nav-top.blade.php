@@ -9,7 +9,7 @@
     $allLocales = core()->getAllLocales()->pluck('name', 'code');
 
     $currentLocaleCode = core()->getRequestedLocaleCode('admin_locale');
-
+$moodlUrl = null;
     if (auth()->guard('admin')->user()->username){
         $moodlUrl = \App\Services\MoodleService::getAdminLoginURL(auth()->guard('admin')->user());
     }
@@ -38,13 +38,16 @@
         <div class="profile">
             <span class="avatar">
             </span>
-            <div class="store">
-                <div>
-                    <a href="{{$moodlUrl}}" target="_blank" style="display: inline-block; vertical-align: middle;">
-                        <span class="icon moodle-icon" data-toggle="tooltip" data-placement="bottom" title="{{ __('admin.layouts.visit-moodle') }}"></span>
-                    </a>
+            @if ($moodlUrl)
+                <div class="store">
+                    <div>
+                        <a href="{{$moodlUrl}}" target="_blank" style="display: inline-block; vertical-align: middle;">
+                            <span class="icon moodle-icon" data-toggle="tooltip" data-placement="bottom" title="{{ __('admin.layouts.visit-moodle') }}"></span>
+                        </a>
+                    </div>
                 </div>
-            </div>
+            @endif
+
             <div class="store">
                 <div>
                     <a href="{{ route('shop.home.index') }}" target="_blank" style="display: inline-block; vertical-align: middle;">
