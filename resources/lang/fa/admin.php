@@ -58,6 +58,14 @@ return [
             'show_in_list' => 'نمایش در لیست'
         ],
     ],
+    'users' =>[
+      'users'=>[
+          'username'=>'نام کاربری'
+      ]
+    ],
+    'layouts' => [
+      'visit-moodle'=>'سامانه آموزش مجازی'
+    ],
     'cms'=>[
         'categories' =>[
             'title' => 'دسته بندی ها',

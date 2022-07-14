@@ -35,8 +35,8 @@
                                 <span class="control-error" v-if="errors.has('name')">@{{ errors.first('name') }}</span>
                             </div>
                             <div class="control-group" :class="[errors.has('username') ? 'has-error' : '']">
-                                <label for="username" class="required">{{ __('admin::app.users.users.username') }}</label>
-                                <input type="text" v-validate="'required'" class="control" id="username" name="username" data-vv-as="&quot;{{ __('admin::app.users.users.username') }}&quot;"/>
+                                <label for="username" class="required">{{ __('admin.users.users.username') }}</label>
+                                <input type="text" v-validate="'required'" class="control" id="username" name="username" data-vv-as="&quot;{{ __('admin.users.users.username') }}&quot;"/>
                                 <span class="control-error" v-if="errors.has('username')">@{{ errors.first('username') }}</span>
                             </div>
                             <div class="control-group" :class="[errors.has('email') ? 'has-error' : '']">
