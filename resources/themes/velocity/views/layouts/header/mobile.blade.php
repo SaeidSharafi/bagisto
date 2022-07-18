@@ -53,7 +53,7 @@
             type="none"
             class="velocity-content">
             <li>
-                <a class="unset" :href="`${$root.baseUrl}/#`" target="_self">درباره ما</a>
+                <a class="unset" :href="{{route('shop.aboutus')}}" target="_self">درباره ما</a>
             </li>
             <li>
                 <a class="unset" href="{{config('app.blog_url')}}" target="_blank">بلاگ</a>
