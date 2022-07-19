@@ -26,6 +26,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('booking:cron')->dailyAt('3:00');
         $schedule->command('invoice:cron')->dailyAt('3:00');
+        $schedule->command('product:price-rule:index')->dailyAt('3:00');
         $schedule->command('moodle:users')->everyMinute()->withoutOverlapping();
         $schedule->command('moodle:enrol')->everyMinute()->withoutOverlapping();
     }
