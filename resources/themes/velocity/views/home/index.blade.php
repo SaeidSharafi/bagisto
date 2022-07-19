@@ -120,9 +120,9 @@
 @endsection
 
 @section('full-width-content-bot')
-    @include('shop.quotes')
+{{--    @include('shop.quotes')--}}
     <div class="container">
-        @include('shop.teachers')
+{{--        @include('shop.teachers')--}}
         @include('shop.contracts')
     </div>
 @endsection
