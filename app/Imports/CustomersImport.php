@@ -5,6 +5,7 @@ namespace App\Imports;
 use \App\Models\Shop\JeduCustomer;
 use App\Rules\Nationalcode;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\RemembersRowNumber;
@@ -35,6 +36,8 @@ class CustomersImport implements ToModel, WithHeadingRow, WithChunkReading, With
             'date_of_birth'     => $row['date_of_birth'],
             'national_code'     => $row['national_code'],
             'email'             => $row['email'],
+            'api_token'         => Str::random(80),
+            'token'             => dd(md5(uniqid(rand(), true)).md5($row['phone'])),
             'phone'             => $row['phone'],
             'password'          => bcrypt($row['password']),
             'customer_group_id' => 2,
