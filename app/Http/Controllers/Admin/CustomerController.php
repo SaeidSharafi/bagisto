@@ -44,7 +44,7 @@ class CustomerController extends \App\Http\Controllers\Controller
         foreach ($import->failures() as $failure) {
             $errors[$failure->row()][$failure->attribute()] = $failure->errors();
         }
-        foreach ($collection->first() as $row) {
+        foreach ($collection as $row) {
             $index = $row['row'];
 
             if (isset($row['date_of_birth'])) {
