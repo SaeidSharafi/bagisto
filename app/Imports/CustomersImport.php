@@ -37,7 +37,7 @@ class CustomersImport implements ToModel, WithHeadingRow, WithChunkReading, With
             'national_code'     => $row['national_code'],
             'email'             => $row['email'],
             'api_token'         => Str::random(80),
-            'token'             => dd(md5(uniqid(rand(), true)).md5($row['phone'])),
+            'token'             => md5(uniqid(rand(), true)).md5($row['phone']),
             'phone'             => $row['phone'],
             'password'          => bcrypt($row['password']),
             'customer_group_id' => 2,
