@@ -9,7 +9,7 @@ class MoodleFormatService
 
     public static function formatUserCourses($enrollments, $customer, $filtered_products = null)
     {
-        $base_url = env("MOODLE_ADDRESS");
+        $base_url = config("moodle.moodle_address");
         return collect($enrollments)->filter(function ($item) use ($filtered_products) {
             if (!$filtered_products) {
                 return false;
@@ -31,7 +31,7 @@ class MoodleFormatService
 
     public static function formatProduct(Collection $products, $customer)
     {
-        $base_url = env("MOODLE_ADDRESS");
+        $base_url = config("moodle.moodle_address");
 
         return $products->map(function ($product) use ($base_url, $customer) {
             $item['moodle_url'] = $base_url.'/auth/userkey/login.php?key='.$customer->moodle_login_key
