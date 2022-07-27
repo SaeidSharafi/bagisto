@@ -148,6 +148,12 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
                     Route::get('moodle', [MoodleController::class, 'index'])->defaults('_config', [
                         'view' => 'shop::customers.account.profile.index'
                     ])->name('customer.moodle.index');
+
+                    /**
+                     * Moodle
+                     */
+                    Route::get('moodle/redirect', [MoodleController::class, 'redirectToCourse'])
+                        ->name('customer.moodle.redirect');
                 });
 
                 //Route::redirect('login',route('customer.register.index'));

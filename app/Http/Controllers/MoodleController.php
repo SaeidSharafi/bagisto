@@ -74,19 +74,34 @@ class MoodleController extends Controller
             ->whereNotNull('moodle_id')
             ->get();
 
+        $enrollments = MoodleService::getUserCourses($this->currentCustomer);
+        if ($enrollments) {
+            $enrollments = MoodleFormatService::formatUserCourses($enrollments, $this->currentCustomer, $products);
+        }
+
+        $products = MoodleFormatService::formatProduct($products, $this->currentCustomer);
+
+        return view('shop::customers.account.moodle.index', compact('products', 'enrollments'));
+    }
+
+    public function redirectToCourse()
+    {
+        if (!auth()->guard('customer')->check()) {
+            session()->flash("Unathrozied user");
+            redirect()->back();
+        }
+
+        $base_url = config("moodle.moodle_address");
+
         $customer = MoodleService::getCustomLoginURL($this->currentCustomer);
+
         if (!$customer) {
             $customer = $this->currentCustomer->refresh();
         }
+        $moodle_url = $base_url.'/auth/userkey/login.php?key='.$customer->moodle_login_key
+            .'&wantsurl='.$base_url.'/course/view.php?id='.request()->course_id;
 
-        $enrollments = MoodleService::getUserCourses($customer);
-        if ($enrollments) {
-            $enrollments = MoodleFormatService::formatUserCourses($enrollments, $customer, $products);
-        }
+        return redirect()->to($moodle_url);
 
-        $products = MoodleFormatService::formatProduct($products, $customer);
-
-
-        return view('shop::customers.account.moodle.index', compact('products', 'enrollments'));
     }
 }

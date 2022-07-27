@@ -16,8 +16,9 @@ class MoodleFormatService
             }
             return !$filtered_products->firstWhere('moodle_id', $item['id']);
         })->map(function ($item) use ($base_url, $customer) {
-            $item['moodle_url'] = $base_url.'/auth/userkey/login.php?key='.$customer->moodle_login_key
-                .'&wantsurl='.$base_url.'/course/view.php?id='.$item['id'];
+            //$item['moodle_url'] = $base_url.'/auth/userkey/login.php?key='.$customer->moodle_login_key
+            //    .'&wantsurl='.$base_url.'/course/view.php?id='.$item['id'];
+            $item['moodle_url'] = route('customer.moodle.redirect',['course_id'=>$item['id']]);
 
             if (isset($item['summary_files'][0]['url'])) {
                 $item['image'] = $item['summary_files'][0]['url'];
