@@ -140,8 +140,10 @@ class JeduSessionController
         $customer = $this->customerRepository->findOneByField('token',
             $request->get('token'));
         OtpService::clearOTP($customer);
+        $intended_url = session()->get('url.cart', route($this->_config['redirect']));
+        session()->forget('url.cart');
 
-        return redirect()->intended(route($this->_config['redirect']));
+        return redirect()->to($intended_url);
     }
 
     /**
