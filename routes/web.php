@@ -68,7 +68,7 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
 
                 // Login.
                 Route::post('login', [JeduSessionController::class, 'create'])->defaults('_config', [
-                    'redirect' => 'customer.profile.index',
+                    'redirect' => 'customer.moodle.index',
                 ])->name('customer.session.create');
 
                 /**
