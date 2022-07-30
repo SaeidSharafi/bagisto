@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Kuro\LaravelSms\Model\SmsLog;
 
 class Kernel extends ConsoleKernel
 {
@@ -30,6 +31,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('moodle:users')->everyMinute()->withoutOverlapping();
         $schedule->command('moodle:enrol')->everyMinute()->withoutOverlapping();
         $schedule->command('user:generate-token')->everyMinute()->withoutOverlapping();
+        $schedule->command('modle:prune',[
+            '--modle' => [SmsLog::class]
+        ])->daily();
     }
 
     /**
