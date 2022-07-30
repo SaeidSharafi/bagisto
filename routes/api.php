@@ -31,5 +31,7 @@ Route::group(['middleware' => ['locale', 'theme', 'currency']], function () {
         ->defaults('_config', [
             'repository' => 'Webkul\Customer\Repositories\CustomerRepository',
             'resource'   => 'App\Http\Resources\JeduCustomerSMSRemaining'
-        ])->name('sms.resend');
+        ])
+        ->middleware('throttle:3,1')
+        ->name('sms.resend');
 });
