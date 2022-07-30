@@ -91,8 +91,9 @@ class SessionController extends Controller
      */
     public function destroy($id)
     {
-        auth()->guard('customer')->logout();
-
+        Session::flush();
+        Auth::logout();
+        \Log::info("user {$id} Log out");
         Event::dispatch('customer.after.logout', $id);
 
         return redirect()->route($this->_config['redirect']);
