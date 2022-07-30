@@ -4,6 +4,7 @@ namespace Webkul\Customer\Http\Controllers;
 
 use Cookie;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Session;
 use Webkul\Customer\Http\Requests\CustomerLoginRequest;
 
 class SessionController extends Controller
@@ -91,9 +92,9 @@ class SessionController extends Controller
      */
     public function destroy($id)
     {
-        Session::flush();
-        Auth::logout();
-        \Log::info("user {$id} Log out");
+        session()->flush();
+        auth()->logout();
+        //\Log::info("user Log out");
         Event::dispatch('customer.after.logout', $id);
 
         return redirect()->route($this->_config['redirect']);
