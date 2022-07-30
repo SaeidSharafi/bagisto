@@ -97,16 +97,19 @@ class JeduSessionController
         if (array_key_exists('password', $credentials) && !auth()->guard('customer')->attempt($credentials)) {
             session()->flash('error',
                 trans('shop::app.customer.login-form.invalid-creds'));
+            \Log::info("{". $credentials['token']."} ".'shop::app.customer.login-form.invalid-creds');
             return redirect()->back();
         }
         $customer = $this->customerRepository->findOneByField('token', $request->get('token'));
 
         if (!$customer){
             session()->flash('error', trans('shop::app.customer.login-form.invalid-creds'));
+            \Log::info("{". $credentials['token']."} ".'shop::app.customer.login-form.invalid-creds');
             return redirect()->back();
         }
         if (array_key_exists('otp', $credentials) && $customer->otp->token !== $credentials['otp']) {
             session()->flash('error', trans('shop::app.customer.login-form.invalid-creds'));
+            \Log::info("{". $credentials['token']."} ".'shop::app.customer.login-form.invalid-creds');
             return redirect()->back();
         }
         auth()->guard('customer')->login($customer);
@@ -115,19 +118,14 @@ class JeduSessionController
 
             session()->flash('warning',
                 trans('shop::app.customer.login-form.not-activated'));
+            \Log::info("{". $credentials['token']."} ".'shop::app.customer.login-form.not-activated');
             return redirect()->back();
         }
 
         if (auth()->guard('customer')->user()->is_verified == 0) {
             session()->flash('info',
                 trans('shop::app.customer.login-form.verify-first'));
-            //return redirect()->route($this->_config['redirect_verify'],
-            //    ['token' => $request->get('token')]);
-            //Cookie::queue(Cookie::make('enable-resend', 'true', 1));
-            //
-            //Cookie::queue(Cookie::make('email-for-resend',
-            //    $request->get('email'), 1));
-
+            \Log::info("{". $credentials['token']."} ".'shop::app.customer.login-form.verify-first');
             auth()->guard('customer')->logout();
             return redirect()->back();
         }
@@ -141,6 +139,11 @@ class JeduSessionController
             $request->get('token'));
         OtpService::clearOTP($customer);
         $intended_url = session()->get('url.cart', route($this->_config['redirect']));
+        \Log::info("intended user  Token: {". $credentials['token'] ."}");
+        \Log::info("intended user ID : {".auth()->guard('customer')->user()->id ."}");
+        \Log::info("current user Token : {".auth()->guard('customer')->user()->token ."}");
+        \Log::info("intended redirect to : {$intended_url}");
+
         session()->forget('url.cart');
 
         return redirect()->to($intended_url);
@@ -155,8 +158,11 @@ class JeduSessionController
      */
     public function destroy($id)
     {
-        auth()->guard('customer')->logout();
+        //auth()->guard('customer')->logout();
 
+        Session::flush();
+        Auth::logout();
+        \Log::info("user {$id} Log out");
         Event::dispatch('customer.after.logout', $id);
 
         return redirect()->route($this->_config['redirect']);

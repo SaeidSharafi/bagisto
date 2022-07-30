@@ -71,6 +71,11 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
                     'redirect' => 'customer.profile.index',
                 ])->name('customer.session.create');
 
+
+                Route::get('logout', [JeduSessionController::class,'destroy'])->defaults('_config', [
+                    'redirect' => 'customer.session.index'
+                ])->name('customer.session.destroy');
+
                 /**
                  * Registration routes.
                  */
