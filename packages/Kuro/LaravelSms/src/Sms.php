@@ -11,6 +11,7 @@ namespace Kuro\LaravelSms;
 use Kuro\LaravelSms\Gateways\GatewayAbstract;
 use Kuro\LaravelSms\Gateways\MelipayamakGateway;
 use Kuro\LaravelSms\Gateways\RangineGateway;
+use Kuro\LaravelSms\Model\SmsLog;
 
 class Sms
 {
@@ -236,9 +237,24 @@ class Sms
         }
         if ($this->pattern) {
             \Log::info("Sending [".$this->pattern."] sms to [" .implode(",",$this->to) ."]");
-            return $this->gateway->sendPatternSms();
+            $response = $this->gateway->sendPatternSms();
+
+        }else{
+            $response = $this->gateway->sendSms();
         }
-        return $this->gateway->sendSms();
+
+        if (isset($response)){
+           $log = SmsLog::create([
+                'response'=>$response,
+                'from' => $this->from,
+                'to' => implode(",",$this->to),
+                'pattern' => $this->pattern,
+                'content' => $this->getContent()
+            ]);
+           //$log->save();
+        }
+
+        return $response;
     }
 
 }
