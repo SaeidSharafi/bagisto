@@ -69,7 +69,7 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
                 // Login.
                 Route::post('login', [JeduSessionController::class, 'create'])->defaults('_config', [
                     'redirect' => 'customer.moodle.index',
-                ])->name('customer.session.create');
+                ])->middleware('web_throttle:10,1')->name('customer.session.create');
 
                 /**
                  * Registration routes.
@@ -100,6 +100,7 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
                 Route::post('register/confirm/{token}',
                     [JeduLoginRegistrationController::class, 'verifyAccountWithSMS'])
                     ->defaults('_config', ['redirect_on_fail' => 'customer.sms.verify.show'])
+                    ->middleware('web_throttle:10,1')
                     ->name('customer.sms.verify.complete');
 
                 /**
@@ -115,6 +116,7 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
 
                 Route::post('register/confirm/', [JeduForgotPassword::class, 'verify'])
                     ->defaults('_config', ['redirect_on_fail' => 'customer.forgot-password.verify.show'])
+                    ->middleware('web_throttle:10,1')
                     ->name('customer.forgot-password.verify');
 
                 Route::post('/forgot-password', [JeduForgotPassword::class, 'store'])
