@@ -213,7 +213,7 @@
                     </label>
 
                     <div :class="`w-100 mb-2 ${errors.has('oldpassword') ? 'has-error' : ''}`">
-                        <input value="" name="oldpassword" type="password" autocomplete="off"/>
+                        <input value="" name="oldpassword" type="password" autocomplete="new-password"/>
                     </div>
                 </div>
             @else
