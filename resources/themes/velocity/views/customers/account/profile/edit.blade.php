@@ -57,8 +57,9 @@
                 </label>
 
                 <div class="w-100 mb-3">
-                    <input value="{{ old('national_code') ??$customer->national_code }}" name="national_code" type="text"
-                           v-validate="'required|min:10|max:10'" data-vv-as="&quot;{{ __('app.customer.account.profile.national_code') }}&quot;" />
+                    <input value="{{ old('national_code') ?? $customer->national_code }}" type="text" disabled/>
+                    <input value="{{ old('national_code') ?? $customer->national_code }}" name="national_code" type="hidden"  v-validate="'required|min:10|max:10'"
+                           data-vv-as="&quot;{{ __('app.customer.account.profile.national_code') }}&quot;"/>
                     <span class="control-error" v-if="errors.has('national_code')" v-text="errors.first('national_code')"></span>
                     <span class="control-error" v-if="{{ $errors->has('national_code') }}" v-text="'{{$errors->first('national_code')}}'"></span>
                 </div>
