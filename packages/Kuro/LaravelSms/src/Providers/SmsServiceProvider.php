@@ -30,7 +30,7 @@ class SmsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
 
         $this->publishes([
             __DIR__.'/../Config/sms.php' => config_path('sms.php'),
