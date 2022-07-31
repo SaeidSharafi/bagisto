@@ -31,8 +31,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('moodle:users')->everyMinute()->withoutOverlapping();
         $schedule->command('moodle:enrol')->everyMinute()->withoutOverlapping();
         $schedule->command('user:generate-token')->everyMinute()->withoutOverlapping();
-        $schedule->command('modle:prune',[
-            '--modle' => [SmsLog::class]
+        $schedule->command('model:prune',[
+            '--model' => [SmsLog::class]
         ])->daily();
     }
 
