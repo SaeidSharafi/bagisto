@@ -114,7 +114,7 @@ class CustomerController extends Controller
      */
     public function store()
     {
-        $this->validate(request(), [
+        $rules = [
             'first_name'    => 'string|required',
             'last_name'     => 'string|required',
             'gender'        => 'required',
@@ -122,13 +122,18 @@ class CustomerController extends Controller
             'date_of_birth' => 'date|before:today',
             'phone' => 'unique:customers',
             'national_code' => ['unique:customers',new Nationalcode()]
-        ]);
+        ];
+
+        if (request()->get('is_foreign')){
+            $rules['national_code'] = 'unique:customers';
+        }
+        $this->validate(request(), $rules);
 
         $data['is_moodle_user'] = ! isset($data['is_moodle_user']) ? 0 : 1;
 
         $data = request()->all();
 
-        $password = rand(100000, 10000000);
+        $password = $data['national_code'];
 
         $data['password'] = bcrypt($password);
 

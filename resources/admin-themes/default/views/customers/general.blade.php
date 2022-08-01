@@ -54,7 +54,20 @@
                     <span class="control-error" v-if="errors.has('national_code')" v-text="errors.first('national_code')"></span>
 
                 </div>
+                <div class="control-group">
+                    <label for="is_moodle_user" class="">{{ __('admin.customers.customers.is_foriegn') }}</label>
 
+                    <label class="switch">
+                        <input
+                            type="checkbox"
+                            id="is_foreign"
+                            name="is_foreign">
+
+                        <span class="slider round"></span>
+                    </label>
+
+                    <span class="control-error" v-if="errors.has('is_foreign')">@{{ errors.first('is_foreign') }}</span>
+                </div>
                 {!! view_render_event('bagisto.admin.customer.edit.last_name.after', ['customer' => $customer]) !!}
 
                 <div class="control-group" :class="[errors.has('email') ? 'has-error' : '']">

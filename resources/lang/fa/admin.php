@@ -27,7 +27,8 @@ return [
             'bulk-title'      => 'وارد کردن',
             'bulk-page-title' => 'وارد کردن فراگیران',
             'is_moodle_user'  => 'کاربر مودل',
-            'bulk-btn-title'  => 'وارد کردن'
+            'bulk-btn-title'  => 'وارد کردن',
+            'is_foriegn' => 'اتباع خارجی'
         ]
     ],
     'sales'         => [
