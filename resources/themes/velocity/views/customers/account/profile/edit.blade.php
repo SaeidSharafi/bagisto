@@ -3,7 +3,51 @@
 @section('page_title')
     {{ __('shop::app.customer.account.profile.index.title') }}
 @endsection
-
+@push('css')
+    <style>
+        /* switch */
+        .switch input[type="checkbox"] {
+            display: none;
+        }
+        .switch input[type="checkbox"] + label {
+            display: block;
+            position: relative;
+            width: 3em;
+            height: 1.6em;
+            border-radius: 1em;
+            background: #e84d4d;
+            box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -webkit-transition: background 0.1s ease-in-out;
+            transition: background 0.1s ease-in-out;
+        }
+        .switch input[type="checkbox"] + label:before {
+            content: "";
+            display: block;
+            width: 1.2em;
+            height: 1.2em;
+            border-radius: 1em;
+            background: #fff;
+            box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.2);
+            position: absolute;
+            left: 0.2em;
+            top: 0.2em;
+            -webkit-transition: all 0.2s ease-in-out;
+            transition: all 0.2s ease-in-out;
+        }
+        .switch input[type="checkbox"]:checked + label {
+            background: #47cf73;
+        }
+        .switch input[type="checkbox"]:checked + label:before {
+            box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.2);
+            left: 1.6em;
+        }
+        /* switch end */
+    </style>
+@endpush
 @section('page-detail-wrapper')
     <div class="account-head mb-15">
         <span class="back-icon"><a href="{{ route('customer.account.index') }}"><i class="icon icon-menu-back"></i></a></span>
@@ -30,7 +74,8 @@
                 </label>
 
                 <div class="w-100 mb-3">
-                    <input value="{{old('first_name') ?? $customer->first_name }}" name="first_name" type="text" v-validate="'required'" data-vv-as="&quot;{{ __('shop::app.customer.account.profile.fname') }}&quot;" />
+                    <input value="{{old('first_name') ?? $customer->first_name }}" name="first_name" type="text" v-validate="'required'"
+                           data-vv-as="&quot;{{ __('shop::app.customer.account.profile.fname') }}&quot;"/>
                     <span class="control-error" v-if="errors.has('first_name')" v-text="errors.first('first_name')"></span>
                     <span class="control-error" v-if="{{ $errors->has('first_name') }}" v-text="'{{$errors->first('first_name')}}'"></span>
 
@@ -45,7 +90,8 @@
                 </label>
 
                 <div class="w-100 mb-3">
-                    <input value="{{old('last_name') ??  $customer->last_name }}" name="last_name" type="text" v-validate="'required'" data-vv-as="&quot;{{ __('shop::app.customer.account.profile.lname') }}&quot;" />
+                    <input value="{{old('last_name') ??  $customer->last_name }}" name="last_name" type="text" v-validate="'required'"
+                           data-vv-as="&quot;{{ __('shop::app.customer.account.profile.lname') }}&quot;"/>
                     <span class="control-error" v-if="errors.has('last_name')" v-text="errors.first('last_name')"></span>
                     <span class="control-error" v-if="{{ $errors->has('last_name') }}" v-text="'{{$errors->first('last_name')}}'"></span>
                 </div>
@@ -57,14 +103,31 @@
                 </label>
 
                 <div class="w-100 mb-3">
-                    <input value="{{ old('national_code') ?? $customer->national_code }}" type="text" disabled/>
-                    <input value="{{ old('national_code') ?? $customer->national_code }}" name="national_code" type="hidden"  v-validate="'required|min:10|max:10'"
-                           data-vv-as="&quot;{{ __('app.customer.account.profile.national_code') }}&quot;"/>
-                    <span class="control-error" v-if="errors.has('national_code')" v-text="errors.first('national_code')"></span>
-                    <span class="control-error" v-if="{{ $errors->has('national_code') }}" v-text="'{{$errors->first('national_code')}}'"></span>
+                    @if ($customer->national_code )
+                        <input value="{{ old('national_code') ?? $customer->national_code }}" type="text" disabled/>
+                    @else
+                        <input value="{{ old('national_code') ?? $customer->national_code }}" name="national_code" type="text" v-validate="'required|min:10|max:10'"
+                               data-vv-as="&quot;{{ __('app.customer.account.profile.national_code') }}&quot;"/>
+                        <span class="control-error" v-if="errors.has('national_code')" v-text="errors.first('national_code')"></span>
+                    @endif
+
+
                 </div>
             </div>
+            @if (!$customer->national_code )
+                <div class="control-group d-flex">
 
+
+                    <div class="switch d-inline-block">
+                        <input
+                            type="checkbox"
+                            id="is_foreign"
+                            name="is_foreign">
+                        <label for="is_foreign" class=""></label>
+                    </div>
+                    <label for="is_foreign" class="pr-2">{{ __('admin.customers.customers.is_foriegn') }}</label>
+                </div>
+            @endif
             {!! view_render_event('bagisto.shop.customers.account.profile.edit.last_name.after', ['customer' => $customer]) !!}
 
             <div :class="`w-100 mb-2 ${errors.has('gender') ? 'has-error' : ''}`">
@@ -82,8 +145,8 @@
                         class="control styled-select"
                         data-vv-as="&quot;{{ __('shop::app.customer.account.profile.gender') }}&quot;">
                         <option value=""
-                            @if (!$selectedGender)
-                                selected="selected"
+                                @if (!$selectedGender)
+                                    selected="selected"
                             @endif>
                             {{ __('admin::app.customers.customers.select-gender') }}
                         </option>
@@ -121,14 +184,12 @@
 
                 <div class="w-100 mb-3">
                     <p-datepicker name="date_of_birth"
-                                   id="date_of_birth"
-                                   max-date="{{now()->subDay()}}"
-                                   initial-value="{{  old('date_of_birth') ?? $customer->date_of_birth}}"
-                                   placeholder="{{ trans('shop::app.customer.account.profile.dob') }}"></p-datepicker>
+                                  id="date_of_birth"
+                                  max-date="{{now()->subDay()}}"
+                                  initial-value="{{  old('date_of_birth') ?? $customer->date_of_birth}}"
+                                  placeholder="{{ trans('shop::app.customer.account.profile.dob') }}"></p-datepicker>
 
                     <span class="control-error" v-if="errors.has('date_of_birth')" v-text="errors.first('date_of_birth')"></span>
-                    <span class="control-error" v-if="{{ $errors->has('date_of_birth') }}" v-text="'{{$errors->first('date_of_birth')}}'"></span>
-
                 </div>
             </div>
 
@@ -140,7 +201,7 @@
                 </label>
 
                 <div class="w-100 mb-3">
-                    <input value="{{ $customer->email }}" name="email" type="text" />
+                    <input value="{{ $customer->email }}" name="email" type="text"/>
                     <span class="control-error" v-if="errors.has('email')" v-text="errors.first('email')"></span>
                     <span class="control-error" v-if="{{$errors->has('email')}}" v-text="'{{$errors->first('email')}}'"></span>
                 </div>
@@ -155,9 +216,6 @@
 
                 <div class="w-100 mb-3">
                     <input value="{{ old('phone') ?? $customer->phone }}" type="text" disabled/>
-                    <input value="{{ old('phone') ?? $customer->phone }}" name="phone" type="hidden" v-validate="'required'"/>
-                    <span class="control-error" v-if="errors.has('phone')" v-text="errors.first('phone')"></span>
-                    <span class="control-error" v-if="{{ $errors->has('phone') }}" v-text="'{{$errors->first('phone')}}'"></span>
                 </div>
             </div>
 
@@ -170,7 +228,7 @@
 
                 <div class="w-100 mb-3">
                     <input value="{{ $customer->father_name }}" name="father_name" type="text"
-                           data-vv-as="&quot;{{ __('app.customer.account.profile.father_name') }}&quot;" />
+                           data-vv-as="&quot;{{ __('app.customer.account.profile.father_name') }}&quot;"/>
                     <span class="control-error" v-if="errors.has('father_name')" v-text="errors.first('father_name')"></span>
                     <span class="control-error" v-if="{{ $errors->has('father_name') }}" v-text="'{{$errors->first('father_name')}}'"></span>
                 </div>
@@ -183,7 +241,7 @@
 
                 <div class="w-100 mb-3">
                     <input value="{{ $customer->education_field }}" name="education_field" type="text"
-                           data-vv-as="&quot;{{ __('app.customer.account.profile.education_field') }}&quot;" />
+                           data-vv-as="&quot;{{ __('app.customer.account.profile.education_field') }}&quot;"/>
                     <span class="control-error" v-if="errors.has('education_field')" v-text="errors.first('education_field')"></span>
                     <span class="control-error" v-if="{{ $errors->has('education_field') }}" v-text="'{{$errors->first('education_field')}}'"></span>
                 </div>
@@ -195,7 +253,8 @@
                 </label>
 
                 <div class="w-100 mb-3">
-                    <image-wrapper :button-label="'{{ __('admin::app.catalog.products.add-image-btn-title') }}'" input-name="image" :multiple="false" :images='"{{ $customer->image_url }}"'></image-wrapper>
+                    <image-wrapper :button-label="'{{ __('admin::app.catalog.products.add-image-btn-title') }}'" input-name="image" :multiple="false"
+                                   :images='"{{ $customer->image_url }}"'></image-wrapper>
 
                     <span class="control-error" v-if="{!! $errors->has('image.*') !!}">
                         @foreach ($errors->get('image.*') as $key => $message)
@@ -218,7 +277,7 @@
                     </div>
                 </div>
             @else
-                <input value="" name="oldpassword" type="hidden" />
+                <input value="" name="oldpassword" type="hidden"/>
             @endif
 
 
@@ -235,7 +294,7 @@
                         name="password"
                         ref="password"
                         type="password"
-                        v-validate="'min:6'" />
+                        v-validate="'min:6'"/>
 
                     <span class="control-error" v-if="errors.has('password')" v-text="errors.first('password')"></span>
                     <span class="control-error" v-if="{{ $errors->has('password') }}" v-text="'{{$errors->first('password')}}'"></span>
@@ -251,7 +310,7 @@
 
                 <div :class="`w-100 mb-2 ${errors.has('password_confirmation') ? 'has-error' : ''}`">
                     <input value="" name="password_confirmation" type="password"
-                    v-validate="'min:6|confirmed:password'" data-vv-as="confirm password" />
+                           v-validate="'min:6|confirmed:password'" data-vv-as="confirm password"/>
 
                     <span class="control-error" v-if="errors.has('password_confirmation')" v-text="errors.first('password_confirmation')"></span>
                     <span class="control-error" v-if="{{ $errors->has('password_confirmation') }}" v-text="'{{$errors->first('password_confirmation')}}'"></span>
@@ -260,7 +319,8 @@
 
             @if (core()->getConfigData('customer.settings.newsletter.subscription'))
                 <div class="control-group">
-                    <input type="checkbox" id="checkbox2" name="subscribed_to_news_letter" @if (isset($customer->subscription)) value="{{ $customer->subscription->is_subscribed }}" {{ $customer->subscription->is_subscribed ? 'checked' : ''}} @endif  style="width: auto;">
+                    <input type="checkbox" id="checkbox2" name="subscribed_to_news_letter" @if (isset($customer->subscription)) value="{{ $customer->subscription->is_subscribed }}"
+                           {{ $customer->subscription->is_subscribed ? 'checked' : ''}} @endif  style="width: auto;">
                     <span>{{ __('shop::app.customer.signup-form.subscribe-to-newsletter') }}</span>
                 </div>
             @endif

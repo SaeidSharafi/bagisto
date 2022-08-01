@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Shop\Customer;
 
-use App\Http\Requests\Shop\CustomerProfileRequest;
+use App\Http\Requests\Shop\CustomerProfileUpdateRequest;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -83,7 +83,7 @@ class JeduCustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(CustomerProfileRequest $customerProfileRequest)
+    public function update(CustomerProfileUpdateRequest $customerProfileRequest)
     {
         $isPasswordChanged = false;
 

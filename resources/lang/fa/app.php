@@ -4,7 +4,7 @@ return [
     'customer'  => [
         'account' => [
             'profile' => [
-                'national_code'   => 'کد ملی',
+                'national_code'   => 'کد ملی/کد اتباع',
                 'father_name'     => 'نام پدر',
                 'education_field' => 'رشته تحصیلی',
             ],
