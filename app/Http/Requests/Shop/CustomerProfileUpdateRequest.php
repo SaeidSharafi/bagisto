@@ -37,7 +37,7 @@ class CustomerProfileUpdateRequest extends FormRequest
             'oldpassword'           => 'present',
             'password_confirmation' => 'required_with:password',
             'image.*'               => 'mimes:bmp,jpeg,jpg,png,webp',
-            'national_code'         => ['filled','unique:customers,national_code',
+            'national_code'         => ['filled','unique:customers,national_code'.$id,
                                         Rule::when(function ($input) {
                                             return !isset($input->is_foreign);
                                         },new Nationalcode)],
