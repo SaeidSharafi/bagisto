@@ -231,6 +231,19 @@ class Sms
      */
     public function send()
     {
+        $response = random_int(10000,200000);
+        if (isset($response)){
+            $log = SmsLog::create([
+                'response'=>$response,
+                'from' => $this->from,
+                'to' => implode(",",$this->to),
+                'pattern' => $this->pattern,
+                'content' => $this->getContent()
+            ]);
+            //$log->save();
+        }
+
+        return $response;
         if ($this->dry_run){
             \Log::info("Sending [".implode($this->parameters)."] sms to [" .implode(",",$this->to) ."]");
             return "Simualted Sms Sending";

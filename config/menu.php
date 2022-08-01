@@ -8,6 +8,14 @@ return [
             'route'      => 'admin.cms.category.index',
             'sort'       => 2,
             'icon-class' => '',
+
+        ],
+        [
+            'key'        => 'settings.sms_log',
+            'name'       => 'admin.admin.sms.sms_log',
+            'route'      => 'admin.sms.index',
+            'sort'       => 8,
+            'icon-class' => '',
         ]
     ],
 

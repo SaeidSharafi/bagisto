@@ -195,6 +195,9 @@ Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => conf
     Route::get('moodle/redirect', [\App\Http\Controllers\Admin\AdminController::class, 'redirectMoodle'])
         ->name('admin.moodle.redirect');
 
+    Route::get('sms', [\App\Http\Controllers\Admin\SmsController::class, 'index'])
+        ->name('admin.sms.index');
+
     Route::prefix('blog')->group(function () {
         Route::prefix('category')->group(function () {
             Route::get('/', [CmsCategoryController::class, 'index'])->defaults('_config', [
