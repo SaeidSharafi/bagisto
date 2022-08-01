@@ -64,7 +64,11 @@ class CustomersImport implements ToModel, WithHeadingRow, WithChunkReading, With
             'date_of_birth'   => 'nullable|date|before:today',
             'email'           => 'unique:customers,email',
             'phone'           => 'required|numeric|unique:customers,phone',
-            'national_code'   => ['required', 'unique:customers,national_code', new Nationalcode],
+            'national_code'   => ['required','unique:customers,national_code',
+                                  Rule::when(function ($input) {
+                                     $data = collect($input->getAttributes())->first();
+                                      return !isset($data['is_foreign']);
+                                  },new Nationalcode)],
             'father_name'     => 'nullable',
             'education_field' => 'nullable',
         ];
