@@ -192,6 +192,8 @@ Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => conf
         });
 
     });
+    Route::get('moodle/redirect', [\App\Http\Controllers\Admin\AdminController::class, 'redirectMoodle'])
+        ->name('admin.moodle.redirect');
 
     Route::prefix('blog')->group(function () {
         Route::prefix('category')->group(function () {

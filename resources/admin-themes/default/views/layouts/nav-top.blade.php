@@ -9,10 +9,7 @@
     $allLocales = core()->getAllLocales()->pluck('name', 'code');
 
     $currentLocaleCode = core()->getRequestedLocaleCode('admin_locale');
-$moodlUrl = null;
-    if (auth()->guard('admin')->user()->username){
-        $moodlUrl = \App\Services\MoodleService::getAdminLoginURL(auth()->guard('admin')->user());
-    }
+
 @endphp
 
 <div class="navbar-top">
@@ -38,15 +35,15 @@ $moodlUrl = null;
         <div class="profile">
             <span class="avatar">
             </span>
-            @if ($moodlUrl)
+
                 <div class="store">
                     <div>
-                        <a href="{{$moodlUrl}}" target="_blank" style="display: inline-block; vertical-align: middle;">
+                        <a href="{{ route('admin.moodle.redirect') }}" target="_blank" style="display: inline-block; vertical-align: middle;">
                             <span class="icon moodle-icon" data-toggle="tooltip" data-placement="bottom" title="{{ __('admin.layouts.visit-moodle') }}"></span>
                         </a>
                     </div>
                 </div>
-            @endif
+
 
             <div class="store">
                 <div>
