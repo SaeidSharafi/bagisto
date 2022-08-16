@@ -84,6 +84,16 @@
                 </div>
                 @if ($data && $data->count())
                     <div class="table table-responsive">
+                        @if ($extra_errors)
+                            <ul style="list-style: circle;padding-right: 15px;margin-bottom: 10px">
+                                @foreach($extra_errors as $error)
+                                    @foreach($data->first()['errors'][$error] as $item)
+                                        <li><span>{{$item}}</span></li>
+                                    @endforeach
+                                @endforeach
+                            </ul>
+                        @endif
+
                         <table class="table">
                             <thead>
                             <tr>
@@ -104,6 +114,7 @@
                                             <i class="icon completed-icon"></i>
                                         @endif
                                     </td>
+
                                     @foreach($row['values'] as $field => $value)
                                         <td>
                                             <span style="display: block">

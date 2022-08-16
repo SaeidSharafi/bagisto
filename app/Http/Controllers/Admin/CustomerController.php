@@ -35,7 +35,7 @@ class CustomerController extends \App\Http\Controllers\Controller
         $file = $request->file('uploaded_file')->store('temp');
         $import->import($file);
 
-        $collection =  $import->toCollection($file)->first()->filter(function ($value) {
+        $collection = $import->toCollection($file)->first()->filter(function ($value) {
             return !empty($value['national_code']);
         });
 
@@ -55,11 +55,14 @@ class CustomerController extends \App\Http\Controllers\Controller
                 $data[$index]['errors'] = $errors[$index];
             }
         }
+        $keys = $collection->first()->keys()->toArray();
+        $error_keys = array_keys(collect($errors)->first());
 
         session()->flash('success', "import successful");
         return view('admin::customers.bulk')
             ->with('failures', collect($errors))
-            ->with('data', collect($data));
+            ->with('data', collect($data))
+            ->with('extra_errors', array_diff($error_keys, $keys));
 
     }
 }
