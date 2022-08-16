@@ -25,7 +25,7 @@ class CustomersImport implements ToModel, WithHeadingRow, WithChunkReading, With
     /**
      * @param  array  $row
      *
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * @return JeduCustomer
      */
     public function model(array $row)
     {
@@ -45,7 +45,7 @@ class CustomersImport implements ToModel, WithHeadingRow, WithChunkReading, With
             'father_name'       => $row['father_name'],
             'education_field'   => $row['education_field'],
             'status'            => 1,
-            'is_moodle_user'    => $row['is_moodle_user'],
+            'is_moodle_user'    => $row['is_moodle_user'] ?? 0,
             'moodle_synch'      => 0,
         ]);
     }
