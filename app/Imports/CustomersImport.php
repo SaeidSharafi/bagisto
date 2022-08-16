@@ -73,7 +73,7 @@ class CustomersImport implements ToModel, WithHeadingRow, WithChunkReading, With
             ],
             'father_name'     => 'nullable',
             'education_field' => 'nullable',
-            'is_moodle_user'  => 'present',
+            'is_moodle_user'  => 'required',
         ];
 
     }
