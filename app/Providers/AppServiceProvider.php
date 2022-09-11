@@ -8,6 +8,7 @@ use App\Models\Shop\JeduSlider;
 use Carbon\Carbon;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Opcodes\LogViewer\Facades\LogViewer;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
             $timestamp = gregorian_to_jalali($year, $month, $day);
             return self::createFromTimestamp($timestamp);
         });
+
         //Model::preventLazyLoading(! app()->isProduction());
     }
 
