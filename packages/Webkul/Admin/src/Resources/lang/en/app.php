@@ -81,6 +81,7 @@ return [
         'campaigns'                => 'Campaigns',
         'email-templates'          => 'Email Templates',
         'events'                   => 'Events',
+        'sitemaps'                 => 'Sitemaps',
         'discount'                 => 'Discount',
         'cms'                      => 'CMS',
         'transactions'             => 'Transactions',
@@ -135,6 +136,7 @@ return [
         'campaigns'                => 'Campaigns',
         'subscribers'              => 'Newsletter Subscribers',
         'events'                   => 'Events',
+        'sitemaps'                 => 'Sitemaps',
         'newsletter-subscriptions' => 'Newsletter Subscriptions',
     ],
 
@@ -257,6 +259,9 @@ return [
         'date'             => 'Date',
         'transaction-id'   => 'Transaction ID',
         'transaction-date' => 'Transaction Date',
+        'file-name'        => 'File Name',
+        'path'             => 'Path',
+        'link-for-google'  => 'Link For Google',
     ],
 
     'account' => [
@@ -283,6 +288,9 @@ return [
             'confirm-password' => 'Confirm Password',
             'back-link-title'  => 'Back to Sign In',
             'submit-btn-title' => 'Send Password Reset Email',
+            'passwords'        => [
+                'throttled' => 'Warning: You have requested password reset recently, please check your email.',
+            ],
         ],
 
         'reset-password' => [
@@ -309,7 +317,7 @@ return [
         ],
 
         'users' => [
-            'title'                => 'User',
+            'title'                => 'Users',
             'add-user-title'       => 'Add User',
             'edit-user-title'      => 'Edit User',
             'save-btn-title'       => 'Save User',
@@ -517,29 +525,31 @@ return [
                 'invoice-missing'   => 'This invoice id does not exist',
                 'transaction-saved' => 'The transaction has been saved',
                 'already-paid'      => 'This invoice has already been paid',
+                'transaction-amount-exceeds' => 'The specified amount of this transaction exceeds the total amount of the invoice.',
+                'transaction-amount-zero' => 'Transaction amount can be zero or less',
             ],
         ],
     ],
 
     'catalog' => [
         'products' => [
-            'title'                         => 'Products',
-            'add-product-btn-title'         => 'Add Product',
-            'add-title'                     => 'Add Product',
-            'edit-title'                    => 'Edit Product',
-            'save-btn-title'                => 'Save Product',
-            'general'                       => 'General',
-            'product-type'                  => 'Product Type',
-            'type'                          => [
+            'title'                 => 'Products',
+            'add-product-btn-title' => 'Add Product',
+            'add-title'             => 'Add Product',
+            'edit-title'            => 'Edit Product',
+            'save-btn-title'        => 'Save Product',
+            'general'               => 'General',
+            'product-type'          => 'Product Type',
+            'type'                  => [
                 'simple'                        => 'Simple',
                 'booking'                       => 'Booking',
                 'bundle'                        => 'Bundle',
                 'downloadable'                  => 'Downloadable',
                 'grouped'                       => 'Grouped',
-                'virtual'                       => 'Virtual',            
+                'virtual'                       => 'Virtual',
                 'configurable'                  => 'Configurable',
 
-            ],            
+            ],
             'familiy'                       => 'Attribute Family',
             'sku'                           => 'SKU',
             'configurable-attributes'       => 'Configurable Attributes',
@@ -613,6 +623,12 @@ return [
             'cancel'                        => 'Cancel',
             'saved-inventory-message'       => 'Product inventory saved successfully.',
             'image-size'                    => 'Image resolution should be like 640px X 640px',
+            'validations'                   => [
+                'quantity-required' => 'Quantity is required.',
+                'quantity-integer'  => 'Quantity should be integer.',
+                'quantity-min-zero' => 'Quantity should be greater then zero.',
+            ],
+            'video-size'                    => 'Maximum video size should be like :size',
         ],
 
         'attributes' => [
@@ -683,6 +699,8 @@ return [
             'name'                 => 'Name',
             'groups'               => 'Groups',
             'add-group-title'      => 'Add Group',
+            'edit-group-title'     => 'Edit Group',
+            'update-group-title'   => 'Update Group',
             'position'             => 'Position',
             'attribute-code'       => 'Code',
             'type'                 => 'Type',
@@ -719,6 +737,7 @@ return [
             'attributes'               => 'Attributes',
             'image-size'               => 'Image resolution should be like 300px X 168px',
             'image-size-logo'          => 'Image resolution should be like 20px X 20px',
+            'mass-update-success'      => 'All the selected categories have been updated successfully',
         ],
     ],
 
@@ -729,6 +748,8 @@ return [
         'yes'            => 'Yes',
         'no'             => 'No',
         'delete'         => 'Delete',
+        'enable-atleast-one-shipping' => 'Enable atleast one shipping method.',
+        'enable-atleast-one-payment'  => 'Enable atleast one payment method.',
 
         'tax-categories' => [
             'title'           => 'Tax Categories',
@@ -1291,6 +1312,21 @@ return [
             'delete-success' => 'Event deleted successfully.',
             'edit-error'     => 'Can not edit this event.',
         ],
+
+        'sitemaps' => [
+            'title'          => 'Sitemaps',
+            'add-title'      => 'Add Sitemap',
+            'edit-title'     => 'Edit Sitemap',
+            'save-btn-title' => 'Save',
+            'general'        => 'General',
+            'file-name'      => 'File Name',
+            'file-name-info' => 'Example: sitemap.xml',
+            'path'           => 'Path',
+            'path-info'      => 'Example: "/sitemap/" or "/" for base path',
+            'create-success' => 'Sitemap created successfully.',
+            'update-success' => 'Sitemap updated successfully.',
+            'delete-success' => 'Sitemap deleted successfully.',
+        ],
     ],
 
     'error' => [
@@ -1583,8 +1619,8 @@ return [
             'accepted-currencies-info'              => 'Add currency code comma seperated e.g. USD,INR,...',
             'buy-now-button-display'                => 'Allow customers to directly buy products',
             'show-search-input-field'               => 'Show Search Input Field',
-            'allow-no-of-new-product-homepage'      => 'Allowed No of New Product in Homepage',
-            'allow-no-of-featured-product-homepage' => 'Allowed No of Featured Product in Homepage',
+            'allow-no-of-new-product-homepage'      => 'Allowed number of New Product in Homepage',
+            'allow-no-of-featured-product-homepage' => 'Allowed number of Featured Product in Homepage',
             'width'                                 => 'Width',
             'height'                                => 'Height',
             'cache-small-image'                     => 'Small Image',
@@ -1598,6 +1634,7 @@ return [
             'logo-size'                             => 'Image resolution should be like 112px X 41px',
             'favicon-size'                          => 'Image resolution should be like 16px X 16px',
             'invoice-logo-size'                     => 'Image resolution should be like 192px X 50px',
+
         ],
     ],
 
@@ -1641,6 +1678,7 @@ return [
             'canceled'   => 'Order Canceled',
             'pending'    => 'Order Pending',
             'processing' => 'Order Processing',
+            'pending_payment' => 'Pending Payment',
         ],
     ],
 ];

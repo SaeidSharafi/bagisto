@@ -20,14 +20,17 @@
                         {{ __('admin::app.export.export') }}
                     </span>
                     </div>
+                    @if (bouncer()->hasPermission('customers.customers.create'))
                     <a href="{{ route('admin.customers.bulk.index') }}" class="export-import btn btn-lg">
                         {{ __('admin.customers.customers.bulk-title') }}
                     </a>
+                    @endif
                 </div>
-
-                <a href="{{ route('admin.customer.create') }}" class="btn btn-lg btn-primary">
-                    {{ __('admin::app.customers.customers.add-title') }}
-                </a>
+                @if (bouncer()->hasPermission('customers.customers.create'))
+                    <a href="{{ route('admin.customer.create') }}" class="btn btn-lg btn-primary">
+                        {{ __('admin::app.customers.customers.add-title') }}
+                    </a>
+                @endif
             </div>
         </div>
 

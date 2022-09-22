@@ -10,27 +10,6 @@ use Webkul\Sales\Repositories\InvoiceRepository;
 class SmartButtonController extends Controller
 {
     /**
-     * SmartButton $smartButton
-     *
-     * @var \Webkul\Paypal\Payment\SmartButton
-     */
-    protected $smartButton;
-
-    /**
-     * OrderRepository $orderRepository
-     *
-     * @var \Webkul\Sales\Repositories\OrderRepository
-     */
-    protected $orderRepository;
-
-    /**
-     * InvoiceRepository $invoiceRepository
-     *
-     * @var \Webkul\Sales\Repositories\InvoiceRepository
-     */
-    protected $invoiceRepository;
-
-    /**
      * Create a new controller instance.
      *
      * @param  \Webkul\Paypal\Payment\SmartButton  $smartButton
@@ -39,16 +18,11 @@ class SmartButtonController extends Controller
      * @return void
      */
     public function __construct(
-        SmartButton $smartButton,
-        OrderRepository $orderRepository,
-        InvoiceRepository $invoiceRepository
+        protected SmartButton $smartButton,
+        protected OrderRepository $orderRepository,
+        protected InvoiceRepository $invoiceRepository
     )
     {
-        $this->smartButton = $smartButton;
-
-        $this->orderRepository = $orderRepository;
-
-        $this->invoiceRepository = $invoiceRepository;
     }
 
     /**
@@ -158,7 +132,10 @@ class SmartButtonController extends Controller
             ]
         ];
 
-        if ($cart->haveStockableItems() && $cart->shipping_address) {
+        if (
+            $cart->haveStockableItems()
+            && $cart->shipping_address
+        ) {
             $data['purchase_units'][0] = array_merge($data['purchase_units'][0], [
                 'shipping' => [
                     'address' => [
@@ -293,7 +270,10 @@ class SmartButtonController extends Controller
             throw new \Exception(trans('shop::app.checkout.cart.minimum-order-message', ['amount' => core()->currency($minimumOrderAmount)]));
         }
 
-        if ($cart->haveStockableItems() && ! $cart->shipping_address) {
+        if (
+            $cart->haveStockableItems()
+            && ! $cart->shipping_address
+        ) {
             throw new \Exception(trans('Please check shipping address.'));
         }
 
@@ -301,7 +281,10 @@ class SmartButtonController extends Controller
             throw new \Exception(trans('Please check billing address.'));
         }
 
-        if ($cart->haveStockableItems() && ! $cart->selected_shipping_rate) {
+        if (
+            $cart->haveStockableItems()
+            && ! $cart->selected_shipping_rate
+        ) {
             throw new \Exception(trans('Please specify shipping method.'));
         }
 

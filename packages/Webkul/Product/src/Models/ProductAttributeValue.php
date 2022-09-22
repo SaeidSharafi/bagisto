@@ -26,39 +26,41 @@ class ProductAttributeValue extends Model implements ProductAttributeValueContra
      *
      * @var array
      */
-    public static $attributeTypeFields = [
-        'text' => 'text_value',
-        'textarea' => 'text_value',
-        'price' => 'float_value',
-        'boolean' => 'boolean_value',
-        'select' => 'integer_value',
-        'multiselect' => 'text_value',
-        'datetime' => 'datetime_value',
-        'date' => 'date_value',
-        'file' => 'text_value',
-        'image' => 'text_value',
-        'checkbox' => 'text_value',
-        'gallery' => 'json_value',
-    ];
+    public static $attributeTypeFields
+        = [
+            'text'        => 'text_value',
+            'textarea'    => 'text_value',
+            'price'       => 'float_value',
+            'boolean'     => 'boolean_value',
+            'select'      => 'integer_value',
+            'multiselect' => 'text_value',
+            'datetime'    => 'datetime_value',
+            'date'        => 'date_value',
+            'file'        => 'text_value',
+            'image'       => 'text_value',
+            'checkbox'    => 'text_value',
+            'gallery'     => 'json_value',
+        ];
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'product_id',
-        'attribute_id',
-        'locale',
-        'channel',
-        'text_value',
-        'boolean_value',
-        'integer_value',
-        'float_value',
-        'datetime_value',
-        'date_value',
-        'json_value',
-    ];
+    protected $fillable
+        = [
+            'product_id',
+            'attribute_id',
+            'locale',
+            'channel',
+            'text_value',
+            'boolean_value',
+            'integer_value',
+            'float_value',
+            'datetime_value',
+            'date_value',
+            'json_value',
+        ];
 
     /**
      * Get the attribute that owns the attribute value.

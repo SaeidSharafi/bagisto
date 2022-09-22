@@ -372,6 +372,7 @@ return [
                 'share-wishlist'       => 'Share Wishlist',
                 'wishlist-sharing'     => 'Wishlist Sharing',
                 'shared-link'          => 'Shared Link',
+                'copy'                 => 'Copy',
                 'visibility'           => 'Visibility',
                 'public'               => 'Public',
                 'private'              => 'Private',
@@ -491,6 +492,7 @@ return [
                 'missing_links'   => 'Brak linków do pobrania dla tego produktu.',
                 'qty_missing'     => 'Przynajmniej jeden produkt powinien zawierać ilośćwiększą niż 1',
                 'qty_impossible'  => 'Nie można dodać więcej niż jednego z tych produktów do koszyka.',
+                'select_hourly_duration' => 'Wybierz przedział czasu na jedną godzinę.',
             ],
             'create-error'             => 'Wystąpił problem podczas tworzenia instancji koszyka.',
             'title'                    => 'Koszyk zakupu',
@@ -501,6 +503,8 @@ return [
             'proceed-to-checkout'      => 'Przejdź do kasy”',
             'remove'                   => 'Usuń',
             'remove-link'              => 'Usuń',
+            'remove-all-items'         => 'Remove all items',
+            'confirm-action'           => 'Confirm this action?',
             'move-to-wishlist'         => 'Przenieś na listę wyboru',
             'move-to-wishlist-success' => 'Produkt został pomyślnie przeniesiony na listę wyboru.',
             'move-to-wishlist-error'   => 'Nie można przenieść ptoduktu na listę życzeń, spróbuj ponownie później.',
@@ -517,6 +521,7 @@ return [
                 'error_remove'   => 'Brak produktów do usunięcia z koszyka.',
                 'success'        => 'Produkt został pomyślnie dodany do koszyka.',
                 'success-remove' => 'Produkt został pomyślnie usunięty z koszyka.',
+                'success-all-remove' => 'All items is successfully removed from the cart.',
                 'error-add'      => 'Nie można dodać produktu do koszyka, spróbuj ponownie później.',
                 'inactive'       => 'An item is inactive and was removed from cart.',
                 'inactive-add'   => 'Inactive item cannot be added to cart.',
@@ -530,10 +535,12 @@ return [
             ],
             'minimum-order-message'     => 'Minimalna kwota zamówienia to :amount',
             'suspended-account-message' => 'Your account has been suspended.',
+            'inactive-account-message' =>  'Your account has been inactive.',
             'check-shipping-address'    => 'Please check shipping address.',
             'check-billing-address'     => 'Please check billing address.',
             'specify-shipping-method'   => 'Please specify shipping method.',
             'specify-payment-method'    => 'Please specify payment method.',
+            'rule-applied'              => 'Cart rule applied',
         ],
 
         'onepage' => [
@@ -606,6 +613,7 @@ return [
             'invalid-coupon'      => 'Kod kuponu jest nieprawidłowy.',
             'success-coupon'      => 'Kod kuponu został pomyślnie zastosowany.',
             'coupon-apply-issue'  => 'Nie można zastosować kodu kuponu.',
+            'coupon-already-applied' => 'Kod kuponu został już zastosowany.',
         ],
 
         'success' => [

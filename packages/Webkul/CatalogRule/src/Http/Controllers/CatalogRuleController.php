@@ -2,9 +2,10 @@
 
 namespace Webkul\CatalogRule\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use Webkul\Admin\DataGrids\CatalogRuleDataGrid;
 use Webkul\CatalogRule\Helpers\CatalogRuleIndex;
+use Webkul\CatalogRule\Http\Requests\CatalogRuleRequest;
 use Webkul\CatalogRule\Repositories\CatalogRuleRepository;
 
 class CatalogRuleController extends Controller
@@ -17,20 +18,6 @@ class CatalogRuleController extends Controller
     protected $_config;
 
     /**
-     * To hold catalog repository instance.
-     *
-     * @var \Webkul\CatalogRule\Repositories\CatalogRuleRepository
-     */
-    protected $catalogRuleRepository;
-
-    /**
-     * Catalog rule index.
-     *
-     * @var \Webkul\CatalogRule\Helpers\CatalogRuleIndex
-     */
-    protected $catalogRuleIndexHelper;
-
-    /**
      * Create a new controller instance.
      *
      * @param  \Webkul\CatalogRule\Repositories\CatalogRuleRepository  $catalogRuleRepository
@@ -38,14 +25,11 @@ class CatalogRuleController extends Controller
      * @return void
      */
     public function __construct(
-        CatalogRuleRepository $catalogRuleRepository,
-        CatalogRuleIndex $catalogRuleIndexHelper
-    ) {
+        protected CatalogRuleRepository $catalogRuleRepository,
+        protected CatalogRuleIndex $catalogRuleIndexHelper
+    )
+    {
         $this->_config = request('_config');
-
-        $this->catalogRuleRepository = $catalogRuleRepository;
-
-        $this->catalogRuleIndexHelper = $catalogRuleIndexHelper;
     }
 
     /**
@@ -75,23 +59,16 @@ class CatalogRuleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param  \Webkul\CatalogRule\Http\Requests\CatalogRuleRequest  $catalogRuleRequest
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(CatalogRuleRequest $catalogRuleRequest)
     {
-        $this->validate(request(), [
-            'name'            => 'required',
-            'channels'        => 'required|array|min:1',
-            'customer_groups' => 'required|array|min:1',
-            'starts_from'     => 'nullable|date',
-            'ends_till'       => 'nullable|date|after_or_equal:starts_from',
-            'action_type'     => 'required',
-            'discount_amount' => 'required|numeric',
-        ]);
+        Event::dispatch('promotions.catalog_rule.create.before');
 
-        $data = request()->all();
+        $catalogRule = $this->catalogRuleRepository->create($catalogRuleRequest->all());
 
-        $this->catalogRuleRepository->create($data);
+        Event::dispatch('promotions.catalog_rule.create.after', $catalogRule);
 
         $this->catalogRuleIndexHelper->reindexComplete();
 
@@ -116,25 +93,19 @@ class CatalogRuleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Webkul\CatalogRule\Http\Requests\CatalogRuleRequest  $catalogRuleRequest
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CatalogRuleRequest $catalogRuleRequest, $id)
     {
-        $this->validate(request(), [
-            'name'            => 'required',
-            'channels'        => 'required|array|min:1',
-            'customer_groups' => 'required|array|min:1',
-            'starts_from'     => 'nullable|date',
-            'ends_till'       => 'nullable|date|after_or_equal:starts_from',
-            'action_type'     => 'required',
-            'discount_amount' => 'required|numeric',
-        ]);
-
         $this->catalogRuleRepository->findOrFail($id);
 
-        $this->catalogRuleRepository->update(request()->all(), $id);
+        Event::dispatch('promotions.catalog_rule.update.before', $id);
+
+        $catalogRule = $this->catalogRuleRepository->update($catalogRuleRequest->all(), $id);
+
+        Event::dispatch('promotions.catalog_rule.update.after', $catalogRule);
 
         $this->catalogRuleIndexHelper->reindexComplete();
 
@@ -154,7 +125,11 @@ class CatalogRuleController extends Controller
         $this->catalogRuleRepository->findOrFail($id);
 
         try {
+            Event::dispatch('promotions.catalog_rule.delete.before', $id);
+
             $this->catalogRuleRepository->delete($id);
+
+            Event::dispatch('promotions.catalog_rule.delete.after', $id);
 
             return response()->json(['message' => trans('admin::app.response.delete-success', ['name' => 'Catalog Rule'])]);
         } catch (\Exception $e) {}

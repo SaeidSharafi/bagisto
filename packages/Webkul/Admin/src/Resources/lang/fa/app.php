@@ -79,6 +79,8 @@ return [
         'email-marketing'          => 'بازاریابی ایمیل',
         'campaigns'                => 'کمپین ها',
         'email-templates'          => 'قالب های ایمیل',
+        'events'                   => 'Events',
+        'sitemaps'                 => 'Sitemaps',
         'discount'                 => 'تخفیف',
         'cms'                      => 'مدیری محتوا',
         'transactions'             => 'پرداختی ها',
@@ -128,6 +130,13 @@ return [
         'promotions'               => 'تبلیغات',
         'cart-rules'               => 'قوانین سبد خرید',
         'catalog-rules'            => 'قوانین فهرست',
+        'email-marketing'          => 'Email Márketing',
+        'email-templates'          => 'Plantillas de Email',
+        'campaigns'                => 'Campañas',
+        'subscribers'              => 'Suscriptores del Boletín',
+        'events'                   => 'Eventos',
+        'sitemaps'                 => 'Sitemaps',
+        'newsletter-subscriptions' => 'Newsletter Subscriptions',
     ],
 
     'dashboard' => [
@@ -247,6 +256,9 @@ return [
         'transaction-date' => 'تارید پرداخت',
         'date'             => 'تاریخ',
         'subject'          => 'موضوع',
+        'file-name'        => 'File Name',
+        'path'             => 'Path',
+        'link-for-google'  => 'Link For Google',
     ],
 
     'account' => [
@@ -508,6 +520,8 @@ return [
                 'invoice-missing'   => 'This invoice id does not exist',
                 'transaction-saved' => 'The transaction has been saved',
                 'already-paid'      => 'This invoice has already been paid',
+                'transaction-amount-exceeds' => 'The specified amount of this transaction exceeds the total amount of the invoice.',
+                'transaction-amount-zero' => 'Transaction amount can be zero or less',
             ],
         ],
     ],
@@ -591,6 +605,11 @@ return [
             'save'                          => 'Save',
             'cancel'                        => 'Cancel',
             'saved-inventory-message'       => 'Product inventory saved successfully.',
+            'validations'                   => [
+                'quantity-required' => 'Quantity is required.',
+                'quantity-integer'  => 'Quantity should be integer.',
+                'quantity-min-zero' => 'Quantity should be greater then zero.',
+            ],
         ],
 
         'attributes' => [
@@ -661,6 +680,8 @@ return [
             'name'                 => 'نام',
             'groups'               => 'گروه ها',
             'add-group-title'      => 'افزودن گروه',
+            'edit-group-title'     => 'Edit Group',
+            'update-group-title'   => 'Update Group',
             'position'             => 'موقعیت',
             'attribute-code'       => 'کد',
             'type'                 => 'نوع',
@@ -695,6 +716,7 @@ return [
             'image'                    => 'تصویر',
             'filterable-attributes'    => 'ویژگی های فیلتر',
             'attributes'               => 'ویژگی های',
+            'mass-update-success'      => 'همه دسته های انتخابی با موفقیت به روز شدند',
         ],
     ],
 
@@ -705,6 +727,8 @@ return [
         'yes'            => 'بله',
         'no'             => 'خیر',
         'delete'         => 'حذف',
+        'enable-atleast-one-shipping' => 'حداقل یک روش حمل و نقل را فعال کنید.',
+        'enable-atleast-one-payment'  => 'حداقل یک روش پرداخت را فعال کنید.',
 
         'tax-categories' => [
             'title'           => 'دسته بندی های مالیات',
@@ -1257,6 +1281,21 @@ return [
             'delete-success' => 'رویداد مورد نظر حذف شد.',
             'edit-error'     => 'شما نمی توانید این رویداد را ویرایش کنید.',
         ],
+
+        'sitemaps' => [
+            'title'          => 'Sitemaps',
+            'add-title'      => 'Add Sitemap',
+            'edit-title'     => 'Edit Sitemap',
+            'save-btn-title' => 'Save',
+            'general'        => 'General',
+            'file-name'      => 'File Name',
+            'file-name-info' => 'Example: sitemap.xml',
+            'path'           => 'Path',
+            'path-info'      => 'Example: "/sitemap/" or "/" for base path',
+            'create-success' => 'Sitemap created successfully.',
+            'update-success' => 'Sitemap updated successfully.',
+            'delete-success' => 'Sitemap deleted successfully.',
+        ]
     ],
 
     'error' => [
@@ -1597,6 +1636,7 @@ return [
             'canceled'   => 'سفارش لغو شد',
             'pending'    => 'سفارش در انتظار',
             'processing' => 'پردازش سفارش',
+            'pending_payment' => 'در انتظار پرداخت',
         ],
     ],
 ];

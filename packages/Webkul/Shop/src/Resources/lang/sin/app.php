@@ -376,6 +376,7 @@ return [
                 'share-wishlist'       => 'පැතුම් ලැයිස්තුව බෙදාගන්න',
                 'wishlist-sharing'     => 'පැතුම් ලැයිස්තු බෙදාගැනීම',
                 'shared-link'          => 'බෙදාගත් සබැඳිය',
+                'copy'                 => 'Copy',
                 'visibility'           => 'දෘෂ්‍යතාව',
                 'public'               => 'මහජන',
                 'private'              => 'පුද්ගලික',
@@ -493,6 +494,7 @@ return [
                 'missing_links'   => 'මෙම නිෂ්පාදනය සඳහා බාගත කළ හැකි සබැඳි නොමැත.',
                 'qty_missing'     => 'අවම වශයෙන් එක් නිෂ්පාදනයක ප්‍රමාණය 1කට වඩා තිබිය යුතුය.',
                 'qty_impossible'  => 'මෙම නිෂ්පාදන එකකට වඩා කරත්තයට එක් කළ නොහැක.',
+                'select_hourly_duration' => 'පැයක ස්ලට් කාල සීමාවක් තෝරන්න.',
             ],
             'create-error'              => 'කරත්ත නිදසුන සෑදීමේදී යම් ගැටලුවකට මුහුණ පෑමට සිදු විය.',
             'title'                     => 'සාප්පු ට්රොලිය',
@@ -536,6 +538,7 @@ return [
             'check-billing-address'     => 'කරුණාකර බිල්පත් ලිපිනය පරීක්ෂා කරන්න.',
             'specify-shipping-method'   => 'කරුණාකර නැව්ගත කිරීමේ ක්‍රමය සඳහන් කරන්න.',
             'specify-payment-method'    => 'කරුණාකර ගෙවීමේ ක්‍රමය සඳහන් කරන්න.',
+            'rule-applied'              => 'Cart rule applied',
         ],
 
         'onepage' => [
@@ -608,6 +611,7 @@ return [
             'invalid-coupon'      => 'කූපන් කේතය වලංගු නැත.',
             'success-coupon'      => 'කූපන් කේතය සාර්ථකව යොදන ලදී.',
             'coupon-apply-issue'  => 'කූපන් කේතය යෙදිය නොහැක.',
+            'coupon-already-applied' => 'Coupon code already applied.',
         ],
 
         'success' => [

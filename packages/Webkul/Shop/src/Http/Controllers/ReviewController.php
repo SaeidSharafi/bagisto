@@ -10,30 +10,6 @@ use Webkul\Product\Repositories\ProductReviewImageRepository;
 class ReviewController extends Controller
 {
     /**
-     * ProductRepository object
-     *
-     * @var \Webkul\Product\Repositories\ProductRepository
-     */
-    protected $productRepository;
-
-    /**
-     * ProductReviewRepository object
-     *
-     * @var \Webkul\Product\Repositories\ProductReviewRepository
-     */
-    protected $productReviewRepository;
-
-    /**
-     * ProductReviewImageRepository object
-     *
-     * @var \Webkul\Product\Repositories\ProductReviewImageRepository
-     */
-    protected $productReviewImageRepository;
-
-
-    protected $customerRepository;
-
-    /**
      * Create a new controller instance.
      *
      * @param  \Webkul\Product\Repositories\ProductRepository  $productRepository
@@ -43,18 +19,12 @@ class ReviewController extends Controller
      * @return void
      */
     public function __construct(
-        ProductRepository $productRepository,
-        ProductReviewRepository $productReviewRepository,
-        ProductReviewImageRepository $productReviewImageRepository,
-        CustomerRepository $customerRepository
-    ) {
-        $this->productRepository = $productRepository;
-
-        $this->productReviewRepository = $productReviewRepository;
-
-        $this->productReviewImageRepository = $productReviewImageRepository;
-        $this->customerRepository = $customerRepository;
-
+        protected ProductRepository $productRepository,
+        protected ProductReviewRepository $productReviewRepository,
+        protected ProductReviewImageRepository $productReviewImageRepository,
+        protected CustomerRepository $customerRepository
+    )
+    {
         parent::__construct();
     }
 
@@ -66,8 +36,16 @@ class ReviewController extends Controller
      */
     public function create($slug)
     {
-        if (auth()->guard('customer')->check() || core()->getConfigData('catalog.products.review.guest_review')) {
-            $product = $this->productRepository->findBySlugOrFail($slug);
+        if (
+            auth()->guard('customer')->check()
+            || core()->getConfigData('catalog.products.review.guest_review')
+        ) {
+            $product = $this->productRepository->findBySlug($slug);
+
+            if ($product == null) {
+                session()->flash('error', trans('customer::app.product-removed'));
+                return redirect()->back();
+            }
 
             return view($this->_config['view'], compact('product'));
         }

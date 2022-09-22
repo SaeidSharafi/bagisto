@@ -2,7 +2,6 @@
 
 namespace Webkul\Admin\Providers;
 
-use App\Services\MoodleService;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Webkul\Admin\Http\Middleware\Locale;
@@ -28,8 +27,6 @@ class AdminServiceProvider extends ServiceProvider
         $this->composeView();
 
         $this->registerACL();
-
-        $router->aliasMiddleware('admin_locale', Locale::class);
 
         $this->app->register(EventServiceProvider::class);
 
@@ -99,18 +96,26 @@ class AdminServiceProvider extends ServiceProvider
                     continue;
                 }
 
-                if ($index + 1 < count(config('menu.admin')) && $permissionType != 'all') {
+                if (
+                    $index + 1 < count(config('menu.admin'))
+                    && $permissionType != 'all'
+                ) {
                     $permission = config('menu.admin')[$index + 1];
 
-                    if (substr_count($permission['key'], '.') == 2 && substr_count($item['key'], '.') == 1) {
+                    if (
+                        substr_count($permission['key'], '.') == 2
+                        && substr_count($item['key'], '.') == 1
+                    ) {
                         foreach ($allowedPermissions as $key => $value) {
-                            if ($item['key'] == $value) {
-                                $neededItem = $allowedPermissions[$key + 1];
+                            if ($item['key'] != $value) {
+                                continue;
+                            }
 
-                                foreach (config('menu.admin') as $key1 => $findMatced) {
-                                    if ($findMatced['key'] == $neededItem) {
-                                        $item['route'] = $findMatced['route'];
-                                    }
+                            $neededItem = $allowedPermissions[$key + 1];
+
+                            foreach (config('menu.admin') as $key1 => $findMatced) {
+                                if ($findMatced['key'] == $neededItem) {
+                                    $item['route'] = $findMatced['route'];
                                 }
                             }
                         }

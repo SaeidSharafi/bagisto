@@ -79,6 +79,8 @@ return [
         'email-marketing'          => 'Email Marketing',
         'campaigns'                => 'Campaigns',
         'email-templates'          => 'Email Templates',
+        'events'                   => 'Events',
+        'sitemaps'                 => 'Sitemaps',
         'discount'                 => 'Korting',
         'cms'                      => 'CMS',
         'transactions'             => 'Transacties',
@@ -129,6 +131,13 @@ return [
         'promotions'               => 'Promoties',
         'cart-rules'               => 'Cart Rules',
         'catalog-rules'            => 'Catalog Rules',
+        'email-marketing'          => 'Email Marketing',
+        'email-templates'          => 'Email Templates',
+        'campaigns'                => 'Campaigns',
+        'subscribers'              => 'Newsletter Subscribers',
+        'events'                   => 'Events',
+        'sitemaps'                 => 'Sitemaps',
+        'newsletter-subscriptions' => 'Newsletter Subscriptions',
     ],
 
     'dashboard' => [
@@ -245,6 +254,9 @@ return [
         'rtl'              => 'RTL',
         'ltr'              => 'LTR',
         'update-status'    => 'Update Status',
+        'file-name'        => 'File Name',
+        'path'             => 'Path',
+        'link-for-google'  => 'Link For Google',
     ],
 
     'account' => [
@@ -504,6 +516,8 @@ return [
                 'invoice-missing'   => 'Dit factuurnummer bestaat niet',
                 'transaction-saved' => 'De transactie is geregistreerd',
                 'already-paid'      => 'Dit factuur is al voldaan',
+                'transaction-amount-exceeds' => 'Het opgegeven bedrag van deze transactie overschrijdt het totaalbedrag van de factuur.',
+                'transaction-amount-zero' => 'Transactiebedrag kan nul of minder zijn',
             ],
         ],
     ],
@@ -589,6 +603,11 @@ return [
             'save'                          => 'Save',
             'cancel'                        => 'Cancel',
             'saved-inventory-message'       => 'Product inventory saved successfully.',
+            'validations'                   => [
+                'quantity-required' => 'Quantity is required.',
+                'quantity-integer'  => 'Quantity should be integer.',
+                'quantity-min-zero' => 'Quantity should be greater then zero.',
+            ],
         ],
 
         'attributes' => [
@@ -660,6 +679,8 @@ return [
             'name'                 => 'Naam',
             'groups'               => 'Groepen',
             'add-group-title'      => 'Add Group',
+            'edit-group-title'     => 'Edit Group',
+            'update-group-title'   => 'Update Group',
             'position'             => 'Position',
             'attribute-code'       => 'Code',
             'type'                 => 'Type',
@@ -694,6 +715,7 @@ return [
             'image'                    => 'Afbeelding',
             'filterable-attributes'    => 'Filtreerbare kenmerken',
             'attributes'               => 'Attributen',
+            'mass-update-success'      => 'Alle geselecteerde categorieën zijn met succes bijgewerkt',
         ],
     ],
 
@@ -704,6 +726,8 @@ return [
         'yes'            => 'Ja',
         'no'             => 'Nee',
         'delete'         => 'Verwijder',
+        'enable-atleast-one-shipping' => 'Schakel ten minste één verzendmethode in.',
+        'enable-atleast-one-payment'  => 'Schakel ten minste één betaalmethode in.',
 
         'tax-categories' => [
             'title'           => 'BTW categorieën',
@@ -1256,6 +1280,21 @@ return [
             'delete-success' => 'Event deleted successfully.',
             'edit-error'     => 'Can not edit this event.',
         ],
+
+        'sitemaps' => [
+            'title'          => 'Sitemaps',
+            'add-title'      => 'Add Sitemap',
+            'edit-title'     => 'Edit Sitemap',
+            'save-btn-title' => 'Save',
+            'general'        => 'General',
+            'file-name'      => 'File Name',
+            'file-name-info' => 'Example: sitemap.xml',
+            'path'           => 'Path',
+            'path-info'      => 'Example: "/sitemap/" or "/" for base path',
+            'create-success' => 'Sitemap created successfully.',
+            'update-success' => 'Sitemap updated successfully.',
+            'delete-success' => 'Sitemap deleted successfully.',
+        ],
     ],
 
     'error' => [
@@ -1597,6 +1636,7 @@ return [
             'canceled'   => 'Bestelling geannuleerd',
             'pending'    => 'Order in behandeling',
             'processing' => 'Orderverwerking',
+            'pending_payment' => 'In afwachting van betaling',
         ],
     ],
 ];

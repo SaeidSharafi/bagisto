@@ -372,6 +372,7 @@ return [
                 'share-wishlist'       => 'Share Wishlist',
                 'wishlist-sharing'     => 'Wishlist Sharing',
                 'shared-link'          => 'Shared Link',
+                'copy'                 => 'Copy',
                 'visibility'           => 'Visibility',
                 'public'               => 'Public',
                 'private'              => 'Private',
@@ -491,12 +492,15 @@ return [
                 'missing_links'   => 'I link per il download di questo prodotto sono mancanti.',
                 'qty_missing'     => 'Almeno un prodotto dovrebbe avere una quantità superiore a 1.',
                 'qty_impossible'  => 'Non è possibile aggiungere più di un pezzo di questo articolo nel carrello.',
+                'select_hourly_duration' => 'Seleziona una durata dello slot di un\'ora.',
             ],
             'create-error'             => 'Si è verificato un problema durante la visualizzazione del carrello.',
             'title'                    => 'Carrello',
             'empty'                    => 'Il tuo carrello è ancora vuoto',
             'update-cart'              => 'Aggiorna Carrello',
             'continue-shopping'        => 'Continua con i tuoi acquisti',
+            'remove-all-items'         => 'Rimuovi tutti i prodotti',
+            'confirm-action'           => 'Confermi questa azione?',
             'continue-registration'    => 'Continua la registrazione',
             'proceed-to-checkout'      => 'Procedi alla Cassa',
             'remove'                   => 'Rimuovi',
@@ -517,6 +521,7 @@ return [
                 'error_remove'   => 'Nessun prodotto da rimuovere nel carrello.',
                 'success'        => 'Prodotto aggiunto al carrello.',
                 'success-remove' => 'Prodotto rimosso dal carrello.',
+                'success-all-remove' => 'Tutti i prodotti sono rimossi dal carrello',
                 'error-add'      => 'Il prodotto non può essere aggiunto al carrello, prova ancora.',
                 'inactive'       => 'An item is inactive and was removed from cart.',
                 'inactive-add'   => 'Inactive item cannot be added to cart.',
@@ -535,6 +540,7 @@ return [
             'check-billing-address'     => 'Please check billing address.',
             'specify-shipping-method'   => 'Please specify shipping method.',
             'specify-payment-method'    => 'Please specify payment method.',
+            'rule-applied'              => 'Cart rule applied',
         ],
 
         'onepage' => [
@@ -607,6 +613,7 @@ return [
             'invalid-coupon'      => 'Il Codice Promo non è valido.',
             'success-coupon'      => 'Codice Promo applicato con successo.',
             'coupon-apply-issue'  => 'Il Codice Promo non può essere applicato.',
+            'coupon-already-applied' => 'Codice coupon già applicato.',
         ],
 
         'success' => [

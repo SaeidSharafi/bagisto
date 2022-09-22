@@ -15,86 +15,25 @@ use Webkul\Velocity\Repositories\VelocityMetadataRepository;
 class Helper extends Review
 {
     /**
-     * Product model instance.
-     *
-     * @var \Webkul\Product\Contracts\Product
-     */
-    protected $productModel;
-
-    /**
-     * Order brands instance.
-     *
-     * @var \Webkul\Velocity\Repositories\OrderBrandsRepository
-     */
-    protected $orderBrandsRepository;
-
-    /**
-     * Product repository instance.
-     *
-     * @var \Webkul\Product\Repositories\ProductRepository
-     */
-    protected $productRepository;
-
-    /**
-     * Product flat repository instance.
-     *
-     * @var \Webkul\Product\Repositories\ProductFlatRepository
-     */
-    protected $productFlatRepository;
-
-    /**
-     * Attribute option instance.
-     *
-     * @var \Webkul\Attribute\Repositories\AttributeOptionRepository
-     */
-    protected $attributeOptionRepository;
-
-    /**
-     * Product review repository instance.
-     *
-     * @var \Webkul\Product\Repositories\ProductReviewRepository
-     */
-    protected $productReviewRepository;
-
-    /**
-     * Velocity metadata instance.
-     *
-     * @var \Webkul\Velocity\Repositories\VelocityMetadataRepository
-     */
-    protected $velocityMetadataRepository;
-
-    /**
      * Create a helper instance.
      *
-     * @param  \Webkul\Product\Contracts\Product                        $productModel
-     * @param  \Webkul\Velocity\Repositories\OrderBrandsRepository      $orderBrands
-     * @param  \Webkul\Attribute\Repositories\AttributeOptionRepository $attributeOptionRepository
-     * @param  \Webkul\Product\Repositories\ProductReviewRepository     $productReviewRepository
-     * @param  \Webkul\Velocity\Repositories\VelocityMetadataRepository $velocityMetadataRepository
+     * @param  \Webkul\Product\Contracts\Product  $productModel
+     * @param  \Webkul\Velocity\Repositories\OrderBrandsRepository  $orderBrands
+     * @param  \Webkul\Attribute\Repositories\AttributeOptionRepository  $attributeOptionRepository
+     * @param  \Webkul\Product\Repositories\ProductReviewRepository  $productReviewRepository
+     * @param  \Webkul\Velocity\Repositories\VelocityMetadataRepository  $velocityMetadataRepository
      * @return void
      */
     public function __construct(
-        ProductModel $productModel,
-        ProductRepository $productRepository,
-        AttributeOptionRepository $attributeOptionRepository,
-        ProductFlatRepository $productFlatRepository,
-        OrderBrandsRepository $orderBrandsRepository,
-        ProductReviewRepository $productReviewRepository,
-        VelocityMetadataRepository $velocityMetadataRepository
-    ) {
-        $this->productModel = $productModel;
-
-        $this->attributeOptionRepository = $attributeOptionRepository;
-
-        $this->productRepository = $productRepository;
-
-        $this->productFlatRepository = $productFlatRepository;
-
-        $this->orderBrandsRepository = $orderBrandsRepository;
-
-        $this->productReviewRepository = $productReviewRepository;
-
-        $this->velocityMetadataRepository = $velocityMetadataRepository;
+        protected ProductModel $productModel,
+        protected ProductRepository $productRepository,
+        protected AttributeOptionRepository $attributeOptionRepository,
+        protected ProductFlatRepository $productFlatRepository,
+        protected OrderBrandsRepository $orderBrandsRepository,
+        protected ProductReviewRepository $productReviewRepository,
+        protected VelocityMetadataRepository $velocityMetadataRepository
+    )
+    {
     }
 
     /**
@@ -133,7 +72,10 @@ class Helper extends Review
         try {
             $orderBrand = $this->orderBrandsRepository->get()->toArray();
 
-            if (isset($orderBrand) && ! empty($orderBrand)) {
+            if (
+                isset($orderBrand)
+                && ! empty($orderBrand)
+            ) {
                 foreach ($orderBrand as $product) {
                     $product_id[] = $product['product_id'];
 
@@ -203,7 +145,10 @@ class Helper extends Review
                 'channel' => $channel,
             ]);
 
-            if (! $metaData && $default) {
+            if (
+                ! $metaData
+                && $default
+            ) {
                 $metaData = $this->velocityMetadataRepository->findOneWhere([
                     'locale'  => 'en',
                     'channel' => 'default',
@@ -248,13 +193,13 @@ class Helper extends Review
         if ($message['message'] = session('success')) {
             $message['messageType'] = 'alert-success';
             $message['messageLabel'] = __('velocity::app.shop.general.alert.success');
-        } else if ($message['message'] = session('warning')) {
+        } elseif ($message['message'] = session('warning')) {
             $message['messageType'] = 'alert-warning';
             $message['messageLabel'] = __('velocity::app.shop.general.alert.warning');
-        } else if ($message['message'] = session('error')) {
+        } elseif ($message['message'] = session('error')) {
             $message['messageType'] = 'alert-danger';
             $message['messageLabel'] = __('velocity::app.shop.general.alert.error');
-        } else if ($message['message'] = session('info')) {
+        } elseif ($message['message'] = session('info')) {
             $message['messageType'] = 'alert-info';
             $message['messageLabel'] = __('velocity::app.shop.general.alert.info');
         }
@@ -335,7 +280,7 @@ class Helper extends Review
 
         $priceHTML = view('shop::products.price', ['product' => $product])->render();
 
-        $isProductNew = ($product->new && ! strpos($priceHTML, 'sticker sale') > 0) ? __('shop::app.products.new') : false;
+        $isProductNew = ($product->new && strpos($priceHTML, 'sticker sale') === false) ? __('shop::app.products.new') : false;
 
         return [
             'priceHTML'        => $priceHTML,
@@ -355,8 +300,7 @@ class Helper extends Review
                 'product'          => $product,
                 'addWishlistClass' => ! (isset($list) && $list) ? '' : '',
 
-                'showCompare' => core()->getConfigData('general.content.shop.compare_option') == '1'
-                    ? true : false,
+                'showCompare' => (bool) core()->getConfigData('general.content.shop.compare_option'),
 
                 'btnText' => (isset($metaInformation['btnText']) && $metaInformation['btnText'])
                     ? $metaInformation['btnText'] : null,

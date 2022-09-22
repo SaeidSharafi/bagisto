@@ -9,8 +9,8 @@ trait ProvideBouncer
     /**
      * Check permissions.
      *
-     * @param  array     $action
-     * @param  bool      $specialPermission
+     * @param  array  $action
+     * @param  bool  $specialPermission
      * @param  \Closure  $operation
      * @return void
      */
@@ -20,7 +20,10 @@ trait ProvideBouncer
 
         $eventName = isset($action[$nameKey]) ? $this->generateEventName($action[$nameKey]) : null;
 
-        if (bouncer()->hasPermission($currentRouteACL['key'] ?? null) || $specialPermission) {
+        if (
+            bouncer()->hasPermission($currentRouteACL['key'] ?? null)
+            || $specialPermission
+        ) {
             $operation($action, $eventName);
         }
     }

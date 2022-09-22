@@ -2,8 +2,8 @@
 
 namespace Webkul\Checkout\Database\Factories;
 
-use Webkul\Checkout\Models\CartAddress;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Webkul\Checkout\Models\CartAddress;
 
 class CartAddressFactory extends Factory
 {
@@ -22,9 +22,9 @@ class CartAddressFactory extends Factory
     public function definition(): array
     {
         return [
-            'first_name' => $this->faker->firstName(),
-            'last_name' => $this->faker->lastName,
-            'email' => $this->faker->email,
+            'first_name'   => $this->faker->firstName(),
+            'last_name'    => $this->faker->lastName,
+            'email'        => $this->faker->email,
             'address_type' => CartAddress::ADDRESS_TYPE_BILLING,
         ];
     }

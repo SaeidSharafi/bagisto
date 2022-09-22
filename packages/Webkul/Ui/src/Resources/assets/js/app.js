@@ -1,5 +1,5 @@
 import Draggable from 'vuedraggable';
-import { Multiselect } from 'vue-multiselect';
+import {Multiselect} from 'vue-multiselect';
 import VTooltip from 'v-tooltip';
 
 import Accordian from './components/accordian';
@@ -28,12 +28,29 @@ import Debounce from './directives/debounce';
 import Slugify from './directives/slugify';
 import SlugifyTarget from './directives/slugify-target';
 
-/* config section */
+
+window.axios = require('axios');
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+/**
+ * Configs.
+ */
 VTooltip.options.defaultDelay = 0;
 Vue.config.productionTip = false;
 
-/* component section */
+/**
+ * Directives.
+ */
 Vue.directive('tooltip', VTooltip.VTooltip);
+Vue.directive('slugify', Slugify);
+Vue.directive('slugify-target', SlugifyTarget);
+Vue.directive('code', Code);
+Vue.directive('alert', Alert);
+Vue.directive('debounce', Debounce);
+
+/**
+ * Components.
+ */
 Vue.component('datagrid-plus', DatagridPlus);
 Vue.component('flash-wrapper', FlashWrapper);
 Vue.component('flash', Flash);
@@ -48,21 +65,18 @@ Vue.component('modal', Modal);
 Vue.component('image-upload', ImageUpload);
 Vue.component('image-wrapper', ImageWrapper);
 Vue.component('image-item', ImageItem);
-Vue.directive('slugify', Slugify);
-Vue.directive('slugify-target', SlugifyTarget);
-Vue.directive('code', Code);
-Vue.directive('alert', Alert);
 Vue.component('datetime', DatetimeComponent);
 Vue.component('date', DateComponent);
 Vue.component('time-component', TimeComponent);
 Vue.component('swatch-picker', SwatchPicker);
-Vue.directive('debounce', Debounce);
 Vue.component('overlay-loader', OverlayLoader);
 Vue.component('multiselect', Multiselect);
 Vue.component('default-image', DefaultImage);
 Vue.component('draggable', Draggable);
 
-/* filter section */
+/**
+ * Filter.
+ */
 Vue.filter('truncate', function(value, limit, trail) {
     if (!value) value = '';
 
@@ -72,7 +86,24 @@ Vue.filter('truncate', function(value, limit, trail) {
     return value.length > limit ? value.substring(0, limit) + trail : value;
 });
 
-/* require section */
+/**
+ * Get laravel CSRF token.
+ */
+Vue.prototype.getCsrf = () => {
+    let token = document.head.querySelector('meta[name="csrf-token"]');
+
+    if (!token) {
+        console.error(
+            'CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token'
+        );
+    }
+
+    return token.content;
+};
+
+/**
+ * Require.
+ */
 require('flatpickr/dist/flatpickr.css');
 require('vue-swatches/dist/vue-swatches.min.css');
 require('vue-multiselect/dist/vue-multiselect.min.css');

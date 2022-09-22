@@ -11,24 +11,18 @@ class CancelOrderAdminNotification extends Mailable
     use Queueable, SerializesModels;
 
     /**
-     * @var \Webkul\Sales\Contracts\Order
-     */
-    public $order;
-
-    /**
      * @param  \Webkul\Sales\Contracts\Order  $order
      * @return void
      */
-    public function __construct($order)
+    public function __construct(public $order)
     {
-        $this->order = $order;
     }
 
     public function build()
     {
         return $this->from(core()->getSenderEmailDetails()['email'], core()->getSenderEmailDetails()['name'])
-                    ->to(core()->getAdminEmailDetails()['email'])
-                    ->subject(trans('shop::app.mail.order.cancel.subject'))
-                    ->view('shop::emails.sales.order-cancel-admin');
+            ->to(core()->getAdminEmailDetails()['email'])
+            ->subject(trans('shop::app.mail.order.cancel.subject'))
+            ->view('shop::emails.sales.order-cancel-admin');
     }
 }

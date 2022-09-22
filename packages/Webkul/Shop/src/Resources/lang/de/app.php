@@ -371,6 +371,7 @@ return [
                 'share-wishlist'       => 'Share Wishlist',
                 'wishlist-sharing'     => 'Wishlist Sharing',
                 'shared-link'          => 'Shared Link',
+                'copy'                 => 'Copy',
                 'visibility'           => 'Visibility',
                 'public'               => 'Public',
                 'private'              => 'Private',
@@ -500,6 +501,8 @@ return [
             'proceed-to-checkout'      => 'Zur Kasse',
             'remove'                   => 'Entfernen',
             'remove-link'              => 'Entfernen',
+            'remove-all-items'         => 'Remove all items',
+            'confirm-action'           => 'Confirm this action?',
             'move-to-wishlist'         => 'Zur Wunschliste verschieben',
             'move-to-wishlist-success' => 'Artikel wurde erfolgreich auf die Wunschliste verschoben.',
             'move-to-wishlist-error'   => 'Das Objekt kann nicht auf die Wunschliste verschoben werden. Bitte versuchen Sie es später erneut.',
@@ -516,6 +519,7 @@ return [
                 'error_remove'   => 'Keine Artikel aus dem Warenkorb zu entfernen',
                 'success'        => 'Artikel wurde erfolgreich zum Warenkorb hinzugefügt',
                 'success-remove' => 'Artikel wurde erfolgreich aus dem Warenkorb entfernt',
+                'success-all-remove' => 'All items is successfully removed from the cart.',
                 'error-add'      => 'Artikel kann nicht zum Warenkorb hinzugefügt werden. Bitte versuchen Sie es später erneut',
                 'inactive'       => 'Ein Artikel ist inaktiv und wurde aus dem Warenkorb entfernt.',
                 'inactive-add'   => 'Ein inaktiver Artikel kann nicht zum Warenkorb hinzugefügt werde.',
@@ -527,10 +531,12 @@ return [
             'link-missing'              => '',
             'minimum-order-message'     => 'Mindestbestellmenge ist :amount',
             'suspended-account-message' => 'Your account has been suspended.',
+            'inactive-account-message' =>  'Ihr Konto war inaktiv.',
             'check-shipping-address'    => 'Please check shipping address.',
             'check-billing-address'     => 'Please check billing address.',
             'specify-shipping-method'   => 'Please specify shipping method.',
             'specify-payment-method'    => 'Please specify payment method.',
+            'rule-applied'              => 'Cart rule applied',
         ],
 
         'onepage' => [
@@ -603,6 +609,7 @@ return [
             'invalid-coupon'      => 'Gutscheincode ist ungültig.',
             'success-coupon'      => 'Gutscheincode erfolgreich angewendet.',
             'coupon-apply-issue'  => 'Gutscheincode kann nicht angewendet werden.',
+            'coupon-already-applied' => 'Gutscheincode bereits angewendet.',
         ],
 
         'success' => [

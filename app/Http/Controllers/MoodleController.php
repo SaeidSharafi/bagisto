@@ -10,12 +10,6 @@ use Webkul\Sales\Repositories\OrderRepository;
 class MoodleController extends Controller
 {
 
-    /**
-     * Current customer.
-     *
-     * @var \Webkul\Customer\Contracts\Customer
-     */
-    protected $currentCustomer;
 
     /**
      * OrderrRepository object
@@ -44,9 +38,6 @@ class MoodleController extends Controller
         OrderRepository $orderRepository,
         ProductFlatRepository $productFlatRepository,
     ) {
-        $this->middleware('customer');
-
-        $this->currentCustomer = auth()->guard('customer')->user();
 
         $this->orderRepository = $orderRepository;
         $this->productFlatRepository = $productFlatRepository;
@@ -55,10 +46,15 @@ class MoodleController extends Controller
 
     public function index()
     {
+
+
         if (!auth()->guard('customer')->check()) {
             session()->flash("Unathrozied user");
             redirect()->back();
         }
+
+        $customer = auth()->guard('customer')?->user();
+
         $orders = $this->orderRepository
             ->getModel()::query()
             ->with('items', function ($query) {
@@ -74,12 +70,14 @@ class MoodleController extends Controller
             ->whereNotNull('moodle_id')
             ->get();
 
-        $enrollments = MoodleService::getUserCourses($this->currentCustomer);
+        $customer = auth()->guard('customer')->user();
+        $enrollments = MoodleService::getUserCourses($customer);
+
         if ($enrollments) {
-            $enrollments = MoodleFormatService::formatUserCourses($enrollments, $this->currentCustomer, $products);
+            $enrollments = MoodleFormatService::formatUserCourses($enrollments, $customer, $products);
         }
 
-        $products = MoodleFormatService::formatProduct($products, $this->currentCustomer);
+        $products = MoodleFormatService::formatProduct($products, $customer);
 
         return view('shop::customers.account.moodle.index', compact('products', 'enrollments'));
     }
@@ -93,11 +91,12 @@ class MoodleController extends Controller
 
         $base_url = config("moodle.moodle_address");
 
-        $customer = MoodleService::getCustomLoginURL($this->currentCustomer);
-
-        if (!$customer) {
-            $customer = $this->currentCustomer->refresh();
+        $customer = auth()->guard('customer')->user();
+        $customer = MoodleService::getCustomLoginURL($customer);
+        if (!$customer){
+            $customer = auth()->guard('customer')->user();
         }
+
         $moodle_url = $base_url.'/auth/userkey/login.php?key='.$customer->moodle_login_key
             .'&wantsurl='.$base_url.'/course/view.php?id='.request()->course_id;
 

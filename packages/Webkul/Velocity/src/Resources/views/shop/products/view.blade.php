@@ -126,7 +126,10 @@
                                         <div class="col-12 price">
                                             @include ('shop::products.price', ['product' => $product])
 
-                                            @if (Webkul\Tax\Helpers\Tax::isTaxInclusive() && $product->getTypeInstance()->getTaxCategory())
+                                            @if (
+                                                Webkul\Tax\Helpers\Tax::isTaxInclusive()
+                                                && $product->getTypeInstance()->getTaxCategory()
+                                            )
                                                 <span>
                                                     {{ __('velocity::app.products.tax-inclusive') }}
                                                 </span>
@@ -216,8 +219,9 @@
             method="POST"
             id="product-form"
             @click="onSubmit($event)"
-            action="{{ route('cart.add', $product->product_id) }}">
-
+            @submit.enter.prevent="onSubmit($event)"
+            action="{{ route('cart.add', $product->product_id) }}"
+        >
             <input type="hidden" name="is_buy_now" v-model="is_buy_now">
 
             <slot v-if="slot"></slot>
@@ -225,7 +229,6 @@
             <div v-else>
                 <div class="spritespin"></div>
             </div>
-
         </form>
     </script>
 
@@ -286,9 +289,35 @@
                             setTimeout(function() {
                                 document.getElementById('product-form').submit();
                             }, 0);
+                        } else {
+                            this.activateAutoScroll();
                         }
                     });
                 },
+
+                activateAutoScroll: function(event) {
+                    
+                    /**
+                     * This is normal Element
+                     */
+                    const normalElement = document.querySelector(
+                        '.control-error:first-of-type'
+                    );
+
+                    /**
+                     * Scroll Config
+                     */
+                    const scrollConfig = {
+                        behavior: 'smooth',
+                        block: 'end',
+                        inline: 'nearest',
+                    }
+
+                    if (normalElement) {
+                        normalElement.scrollIntoView(scrollConfig);
+                        return;
+                    }
+                }
             }
         });
 

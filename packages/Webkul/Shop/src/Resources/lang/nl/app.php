@@ -378,6 +378,7 @@ return [
                 'share-wishlist'       => 'Share Wishlist',
                 'wishlist-sharing'     => 'Wishlist Sharing',
                 'shared-link'          => 'Shared Link',
+                'copy'                 => 'Copy',
                 'visibility'           => 'Visibility',
                 'public'               => 'Public',
                 'private'              => 'Private',
@@ -498,6 +499,7 @@ return [
                 'missing_links'   => 'Downloadbare links ontbreken voor dit product.',
                 'qty_missing'     => 'Minstens één product moet meer dan 1 hoeveelheid bevatten.',
                 'qty_impossible'  => 'Kan niet meer dan één van deze producten toevoegen aan winkelwagen.',
+                'select_hourly_duration' => 'Kies een slotduur van één uur.',
             ],
             'create-error'             => 'Er is een probleem opgetreden bij het maken van een winkelwageninstantie.',
             'title'                    => 'Winkelwagen',
@@ -508,6 +510,8 @@ return [
             'proceed-to-checkout'      => 'Ga naar de kassa',
             'remove'                   => 'Verwijderen',
             'remove-link'              => 'Verwijderen',
+            'remove-all-items'         => 'Remove all items',
+            'confirm-action'           => 'Confirm this action?',
             'move-to-wishlist'         => 'Verplaats naar wens lijst',
             'move-to-wishlist-success' => 'Item is succesvol naar de verlanglijst verplaatst.',
             'move-to-wishlist-error'   => 'Kan item niet naar verlanglijstje verplaatsen, probeer het later opnieuw.',
@@ -524,6 +528,7 @@ return [
                 'error_remove'   => 'Geen items om uit de winkelwagen te verwijderen.',
                 'success'        => 'Artikel is succesvol toegevoegd aan winkelwagen.',
                 'success-remove' => 'Item is met succes uit de winkelwagen verwijderd.',
+                'success-all-remove' => 'All items is successfully removed from the cart.',
                 'error-add'      => 'Item kan niet aan winkelwagen worden toegevoegd. Probeer het later opnieuw.',
                 'inactive'       => 'An item is inactive and was removed from cart.',
                 'inactive-add'   => 'Inactive item cannot be added to cart.',
@@ -542,6 +547,7 @@ return [
             'check-billing-address'     => 'Please check billing address.',
             'specify-shipping-method'   => 'Please specify shipping method.',
             'specify-payment-method'    => 'Please specify payment method.',
+            'rule-applied'              => 'Cart rule applied',
         ],
 
         'onepage' => [
@@ -614,6 +620,7 @@ return [
             'invalid-coupon'      => 'Couponcode is ongeldig.',
             'success-coupon'      => 'Couponcode succesvol toegepast.',
             'coupon-apply-issue'  => 'Coupon code can\'t be applied.',
+            'coupon-already-applied' => 'Couponcode reeds toegepast.',
         ],
 
         'success' => [

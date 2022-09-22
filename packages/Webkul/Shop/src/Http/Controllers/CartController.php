@@ -6,44 +6,29 @@ use Cart;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
 use Webkul\CartRule\Models\CartRule;
-use Webkul\Checkout\Contracts\Cart as CartModel;
+use Webkul\CartRule\Repositories\CartRuleCouponRepository;
 use Webkul\Customer\Repositories\WishlistRepository;
 use Webkul\Product\Repositories\ProductRepository;
 
 class CartController extends Controller
 {
     /**
-     * Wishlist repository instance.
-     *
-     * @var \Webkul\Customer\Repositories\WishlistRepository
-     */
-    protected $wishlistRepository;
-
-    /**
-     * Product repository instance.
-     *
-     * @var \Webkul\Product\Repositories\ProductRepository
-     */
-    protected $productRepository;
-
-    /**
      * Create a new controller instance.
      *
      * @param  \Webkul\Customer\Repositories\CartItemRepository  $wishlistRepository
      * @param  \Webkul\Product\Repositories\ProductRepository  $productRepository
+     * @param  \Webkul\CartRule\Repositories\CartRuleCouponRepository  $cartRuleCouponRepository
      * @return void
      */
     public function __construct(
-        WishlistRepository $wishlistRepository,
-        ProductRepository $productRepository
-    ) {
+        protected WishlistRepository $wishlistRepository,
+        protected ProductRepository $productRepository,
+        protected CartRuleCouponRepository $cartRuleCouponRepository
+    )
+    {
         $this->middleware('throttle:5,1')->only('applyCoupon');
 
         $this->middleware('customer')->only('moveToWishlist');
-
-        $this->wishlistRepository = $wishlistRepository;
-
-        $this->productRepository = $productRepository;
 
         parent::__construct();
     }
@@ -84,28 +69,32 @@ class CartController extends Controller
                 return redirect()->back();
             }
 
-            if ($result instanceof CartModel) {
-                session()->flash('success', __('shop::app.checkout.cart.item.success'));
+            session()->flash('success', __('shop::app.checkout.cart.item.success'));
 
-                if ($customer = auth()->guard('customer')->user()) {
-                    $this->wishlistRepository->deleteWhere(['product_id' => $id, 'customer_id' => $customer->id]);
-                }
+            if ($customer = auth()->guard('customer')->user()) {
+                $this->wishlistRepository->deleteWhere([
+                    'product_id'  => $id,
+                    'customer_id' => $customer->id,
+                ]);
+            }
 
-                if (request()->get('is_buy_now')) {
-                    Event::dispatch('shop.item.buy-now', $id);
+            if (request()->get('is_buy_now')) {
+                Event::dispatch('shop.item.buy-now', $id);
 
-                    return redirect()->route('shop.checkout.onepage.index');
-                }
+                return redirect()->route('shop.checkout.onepage.index');
             }
         } catch (\Exception $e) {
             throw($e);
             session()->flash('warning', __($e->getMessage()));
 
-            $product = $this->productRepository->find($id);
+            $product = $this->productRepository->findOrFail($id);
 
             Log::error(
                 'Shop CartController: ' . $e->getMessage(),
-                ['product_id' => $id, 'cart_id' => cart()->getCart() ?? 0]
+                [
+                    'product_id' => $id,
+                    'cart_id'    => cart()->getCart() ?? 0
+                ]
             );
 
             return redirect()->route('shop.productOrCategory.index', $product->url_key);
@@ -126,6 +115,22 @@ class CartController extends Controller
 
         if ($result) {
             session()->flash('success', trans('shop::app.checkout.cart.item.success-remove'));
+        }
+
+        return redirect()->back();
+    }
+
+    /**
+     * Removes the item from the cart if it exists.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function removeAllItems()
+    {
+        $result = Cart::removeAllItems();
+
+        if ($result) {
+            session()->flash('success', trans('shop::app.checkout.cart.item.success-all-remove'));
         }
 
         return redirect()->back();
@@ -167,9 +172,7 @@ class CartController extends Controller
             session()->flash('warning', trans('shop::app.checkout.cart.move-to-wishlist-error'));
         }
 
-        return request()->get('redirect') !== false
-            ? redirect()->back()
-            : response()->json([]);
+        return redirect()->back();
     }
 
     /**
@@ -183,13 +186,24 @@ class CartController extends Controller
 
         try {
             if (strlen($couponCode)) {
-                Cart::setCouponCode($couponCode)->collectTotals();
+                $coupon = $this->cartRuleCouponRepository->findOneByField('code', $couponCode);
 
-                if (Cart::getCart()->coupon_code == $couponCode) {
-                    return response()->json([
-                        'success' => true,
-                        'message' => trans('shop::app.checkout.total.success-coupon'),
-                    ]);
+                if ($coupon->cart_rule->status) {
+                    if (Cart::getCart()->coupon_code == $couponCode) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => trans('shop::app.checkout.total.coupon-already-applied'),
+                        ]);
+                    }
+
+                    Cart::setCouponCode($couponCode)->collectTotals();
+
+                    if (Cart::getCart()->coupon_code == $couponCode) {
+                        return response()->json([
+                            'success' => true,
+                            'message' => trans('shop::app.checkout.total.success-coupon'),
+                        ]);
+                    }
                 }
             }
 
@@ -231,16 +245,18 @@ class CartController extends Controller
      */
     private function onFailureAddingToCart($result): bool
     {
-        if (is_array($result) && isset($result['warning'])) {
+        if (! is_array($result)) {
+            return false;
+        }
+
+        if (isset($result['warning'])) {
             session()->flash('warning', $result['warning']);
-            return true;
-        }
-
-        if (is_array($result) && isset($result['info'])) {
+        } elseif (isset($result['info'])) {
             session()->flash('info', $result['info']);
-            return true;
+        } else {
+            return false;
         }
 
-        return false;
+        return true;
     }
 }

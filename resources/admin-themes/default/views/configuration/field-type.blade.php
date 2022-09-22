@@ -37,7 +37,7 @@
 
         @elseif ($field['type'] == 'number')
 
-            <input type="number" min="0" v-validate="'{{ $validations }}'" class="control" id="{{ $name }}" name="{{ $name }}" value="{{ old($nameKey) ?: core()->getConfigData($nameKey, $channel, $locale) }}" data-vv-as="&quot;{{ trans($field['title']) }}&quot;">
+            <input type="number" min="{{ $field['name'] == 'minimum_order_amount' ? 1 : 0 }}" v-validate="'{{ $validations }}'" class="control" id="{{ $name }}" name="{{ $name }}" value="{{ old($nameKey) ?: core()->getConfigData($nameKey, $channel, $locale) }}" data-vv-as="&quot;{{ trans($field['title']) }}&quot;">
 
         @elseif ($field['type'] == 'color')
 
@@ -46,6 +46,10 @@
         @elseif ($field['type'] == 'textarea')
 
             <textarea v-validate="'{{ $validations }}'" class="control" id="{{ $name }}" name="{{ $name }}" data-vv-as="&quot;{{ trans($field['title']) }}&quot;">{{ old($nameKey) ?: core()->getConfigData($nameKey, $channel, $locale) ?: (isset($field['default_value']) ? $field['default_value'] : '') }}</textarea>
+
+        @elseif ($field['type'] == 'editor')
+
+            <textarea v-validate="'{{ $validations }}'" class="editor control" id="{{ $name }}" name="{{ $name }}" data-vv-as="&quot;{{ trans($field['title']) }}&quot;">{{ old($nameKey) ?: core()->getConfigData($nameKey, $channel, $locale) ?: (isset($field['default_value']) ? $field['default_value'] : '') }}</textarea>
 
         @elseif ($field['type'] == 'select')
 
@@ -189,7 +193,7 @@
         @endif
 
         @if (isset($field['info']))
-            <span class="control-info mt-10">{{ trans($field['info']) }}</span>
+            <span class="control-info mt-10">{{!! trans($field['info']) !!}}</span>
         @endif
 
         <span class="control-error" @if ($field['type'] == 'multiselect')  v-if="errors.has('{{ $name }}[]')" @else  v-if="errors.has('{{ $name }}')" @endif>
@@ -305,3 +309,21 @@
         </script>
     @endif
 @endpush
+
+
+@pushonce('scripts')
+    @include('admin::layouts.tinymce')
+
+    <script>
+        $(document).ready(function () {
+            tinyMCEHelper.initTinyMCE({
+                selector: 'textarea.editor',
+                height: 200,
+                width: "100%",
+                plugins: 'image imagetools media wordcount save fullscreen code table lists link hr',
+                toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor link hr | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent  | removeformat | code | table',
+                image_advtab: true,
+            });
+        });
+    </script>
+@endpushonce

@@ -5,8 +5,6 @@
         <meta http-equiv="Cache-control" content="no-cache">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-
-
         {{-- main css --}}
         <style type="text/css">
             * {
@@ -103,6 +101,10 @@
             .text-center {
                 text-align: center;
             }
+
+             .logo {
+                margin-left: 300px;
+            }
         </style>
     </head>
 
@@ -156,7 +158,7 @@
                     @endif
                 </div>
             </div>
-<p style="font-family: iranyekan">تست فونت</p>
+
             <div class="invoice-summary">
                 <div class="row">
                     <span class="label">{{ __('admin::app.sales.invoices.invoice-id') }} -</span>

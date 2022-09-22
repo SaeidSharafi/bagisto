@@ -11,28 +11,18 @@ use Webkul\Checkout\Models\CartItem;
 use Webkul\Product\Datatypes\CartItemValidationResult;
 use Webkul\Product\Repositories\ProductAttributeValueRepository;
 use Webkul\Product\Repositories\ProductImageRepository;
-use Webkul\Product\Repositories\ProductVideoRepository;
 use Webkul\Product\Repositories\ProductInventoryRepository;
 use Webkul\Product\Repositories\ProductRepository;
+use Webkul\Product\Repositories\ProductVideoRepository;
 use Webkul\Product\Type\Virtual;
 
 class Booking extends Virtual
 {
-    /**
-     * BookingProductRepository instance
+    /** @var bool
      *
-     * @var \Webkul\BookingProduct\Repositories\BookingProductRepository
-     */
-    protected $bookingProductRepository;
-
-    /**
-     * Booking helper instance
+     * do not allow booking products to be copied, it would be too complicated.
      *
-     * @var \Webkul\BookingProduct\Helpers\Booking
      */
-    protected $bookingHelper;
-
-    /** @var bool do not allow booking products to be copied, it would be too complicated. */
     protected $canBeCopied = false;
 
     /**
@@ -50,14 +40,14 @@ class Booking extends Virtual
     /**
      * Create a new product type instance.
      *
-     * @param  \Webkul\Attribute\Repositories\AttributeRepository           $attributeRepository
-     * @param  \Webkul\Product\Repositories\ProductRepository               $productRepository
-     * @param  \Webkul\Product\Repositories\ProductAttributeValueRepository $attributeValueRepository
-     * @param  \Webkul\Product\Repositories\ProductInventoryRepository      $productInventoryRepository
-     * @param  \Webkul\Product\Repositories\ProductImageRepository          $productImageRepository
+     * @param  \Webkul\Attribute\Repositories\AttributeRepository  $attributeRepository
+     * @param  \Webkul\Product\Repositories\ProductRepository  $productRepository
+     * @param  \Webkul\Product\Repositories\ProductAttributeValueRepository  $attributeValueRepository
+     * @param  \Webkul\Product\Repositories\ProductInventoryRepository  $productInventoryRepository
+     * @param  \Webkul\Product\Repositories\ProductImageRepository  $productImageRepository
      * @param  \Webkul\BookingProduct\Repositories\BookingProductRepository  $bookingProductRepository
-     * @param  \Webkul\BookingProduct\Helpers\BookingHelper                  $bookingHelper
-     * @param \Webkul\Product\Repositories\ProductVideoRepository            $productVideoRepository
+     * @param  \Webkul\BookingProduct\Helpers\BookingHelper  $bookingHelper
+     * @param  \Webkul\Product\Repositories\ProductVideoRepository  $productVideoRepository
      * @return void
      */
     public function __construct(
@@ -66,9 +56,9 @@ class Booking extends Virtual
         ProductAttributeValueRepository $attributeValueRepository,
         ProductInventoryRepository $productInventoryRepository,
         ProductImageRepository $productImageRepository,
-        BookingProductRepository $bookingProductRepository,
-        BookingHelper $bookingHelper,
-        ProductVideoRepository $productVideoRepository
+        ProductVideoRepository $productVideoRepository,
+        protected BookingProductRepository $bookingProductRepository,
+        protected BookingHelper $bookingHelper
     )
     {
         parent::__construct(
@@ -79,10 +69,6 @@ class Booking extends Virtual
             $productImageRepository,
             $productVideoRepository
         );
-
-        $this->bookingProductRepository = $bookingProductRepository;
-
-        $this->bookingHelper = $bookingHelper;
     }
 
     /**
@@ -175,7 +161,10 @@ class Booking extends Virtual
      */
     public function prepareForCart($data)
     {
-        if (! isset($data['booking']) || ! count($data['booking'])) {
+        if (
+            ! isset($data['booking'])
+            || ! count($data['booking'])
+        ) {
             return trans('shop::app.checkout.cart.integrity.missing_options');
         }
 
@@ -183,8 +172,23 @@ class Booking extends Virtual
 
         $bookingProduct = $this->getBookingProduct($data['product_id']);
 
-        if ($bookingProduct->type == 'event') {
-            if (Carbon::now() > $bookingProduct->available_from && Carbon::now() > $bookingProduct->available_to) {
+
+        if ($bookingProduct->type == 'rental') {
+            if (isset($data['booking']['slot']['from'])) {
+                $time = $data['booking']['slot']['to'] - $data['booking']['slot']['from'];
+                $hours = floor($time / 60) / 60;
+
+                if ($hours > 1) {
+                    return trans('shop::app.checkout.cart.integrity.select_hourly_duration');
+                }
+            }
+
+            $products = parent::prepareForCart($data);
+        } elseif ($bookingProduct->type == 'event') {
+            if (
+                Carbon::now() > $bookingProduct->available_from
+                && Carbon::now() > $bookingProduct->available_to
+            ) {
                 return trans('shop::app.checkout.cart.event.expired');
             }
 
@@ -239,10 +243,12 @@ class Booking extends Virtual
             return false;
         }
 
-        if (isset($options1['booking'], $options2['booking'])
+        if (
+            isset($options1['booking'], $options2['booking'])
             && isset($options1['booking']['ticket_id'], $options2['booking']['ticket_id'])
-            && $options1['booking']['ticket_id'] === $options2['booking']['ticket_id']) {
-                return true;
+            && $options1['booking']['ticket_id'] === $options2['booking']['ticket_id']
+        ) {
+            return true;
         }
 
         return false;

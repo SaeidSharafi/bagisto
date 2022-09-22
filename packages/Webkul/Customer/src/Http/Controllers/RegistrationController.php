@@ -24,27 +24,6 @@ class RegistrationController extends Controller
     protected $_config;
 
     /**
-     * Customer repository instance.
-     *
-     * @var \Webkul\Customer\Repositories\CustomerRepository
-     */
-    protected $customerRepository;
-
-    /**
-     * Customer group repository instance.
-     *
-     * @var \Webkul\Customer\Repositories\CustomerGroupRepository
-     */
-    protected $customerGroupRepository;
-
-    /**
-     * Subscribers list repository instance.
-     *
-     * @var \Webkul\Core\Repositories\SubscribersListRepository
-     */
-    protected $subscriptionRepository;
-
-    /**
      * Create a new controller instance.
      *
      * @param  \Webkul\Customer\Repositories\CustomerRepository  $customer
@@ -53,17 +32,12 @@ class RegistrationController extends Controller
      * @return void
      */
     public function __construct(
-        CustomerRepository $customerRepository,
-        CustomerGroupRepository $customerGroupRepository,
-        SubscribersListRepository $subscriptionRepository
-    ) {
+        protected CustomerRepository $customerRepository,
+        protected CustomerGroupRepository $customerGroupRepository,
+        protected SubscribersListRepository $subscriptionRepository
+    )
+    {
         $this->_config = request('_config');
-
-        $this->customerRepository = $customerRepository;
-
-        $this->customerGroupRepository = $customerGroupRepository;
-
-        $this->subscriptionRepository = $subscriptionRepository;
     }
 
     /**
@@ -89,10 +63,10 @@ class RegistrationController extends Controller
         $data = array_merge(request()->input(), [
             'password'                  => bcrypt(request()->input('password')),
             'api_token'                 => Str::random(80),
-            'is_verified'               => core()->getConfigData('customer.settings.email.verification') ? 0 : 1,
+            'is_verified'               => ! core()->getConfigData('customer.settings.email.verification'),
             'customer_group_id'         => $this->customerGroupRepository->findOneWhere(['code' => 'general'])->id,
             'token'                     => md5(uniqid(rand(), true)),
-            'subscribed_to_news_letter' => isset(request()->input()['is_subscribed']) ? 1 : 0,
+            'subscribed_to_news_letter' => isset(request()->input()['is_subscribed']),
         ]);
 
         Event::dispatch('customer.registration.before');

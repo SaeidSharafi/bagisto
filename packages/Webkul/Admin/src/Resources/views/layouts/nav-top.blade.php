@@ -4,11 +4,10 @@
         'canceled'=> trans('admin::app.notification.order-status-messages.canceled'),
         'closed' => trans('admin::app.notification.order-status-messages.closed'),
         'completed'=> trans('admin::app.notification.order-status-messages.completed'),
-        'processing' => trans('admin::app.notification.order-status-messages.processing')
+        'processing' => trans('admin::app.notification.order-status-messages.processing'),
+        'pending_payment' => trans('admin::app.notification.order-status-messages.pending_payment')
     ];
     $allLocales = core()->getAllLocales()->pluck('name', 'code');
-
-    $currentLocaleCode = core()->getRequestedLocaleCode('admin_locale');
 @endphp
 
 <div class="navbar-top">
@@ -46,7 +45,7 @@
                 notif-title="{{ __('admin::app.notification.notification-title', ['read' => 0]) }}"
                 get-notification-url="{{ route('admin.notification.get-notification') }}"
                 view-all="{{ route('admin.notification.index') }}"
-                order-view-url="{{ \URL::to('/') }}/admin/viewed-notifications/"
+                order-view-url="{{ \URL::to('/') }}/{{ config('app.admin_url')}}/viewed-notifications/"
                 pusher-key="{{ env('PUSHER_APP_KEY') }}"
                 pusher-cluster="{{ env('PUSHER_APP_CLUSTER') }}"
                 title="{{ __('admin::app.notification.title-plural') }}"
@@ -63,29 +62,6 @@
                 </div>
 
             </notification>
-
-            <div class="profile-info">
-
-                <div class="dropdown-toggle">
-
-                    <i class="icon locale-icon"></i>
-                </div>
-
-                <div class="dropdown-list bottom-right">
-                    <div class="dropdown-container">
-                        <ul>
-                            @foreach ($allLocales as $code => $name)
-                                <li>
-                                    <a href="{{ url()->current() . '?' . http_build_query(array_merge(request()->all(), ['admin_locale' => $code])) }}"
-                                        style="{{ $code == $currentLocaleCode ? 'color:blue' : '' }}">
-                                        {{ $name }}
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
-            </div>
 
             <div class="profile-info">
                 <div class="dropdown-toggle">
@@ -110,7 +86,7 @@
                                 <span class="role">
                                     {{ auth()->guard('admin')->user()->role['name'] }}
                                 </span>
-                            </div>  
+                            </div>
                         </div>
                     </div>
                     <i class="icon arrow-down-icon active"></i>

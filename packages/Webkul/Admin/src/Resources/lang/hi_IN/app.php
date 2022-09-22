@@ -81,6 +81,7 @@ return [
         'campaigns'                => 'अभियान',
         'email-templates'          => 'ईमेल टेम्प्लेट',
         'events'                   => 'आयोजन',
+        'sitemaps'                 => 'Sitemaps',
         'discount'                 => 'छूट',
         'cms'                      => 'सीएमएस',
         'transactions'             => 'लेनदेन',
@@ -135,6 +136,7 @@ return [
         'campaigns'                => 'अभियान',
         'subscribers'              => 'न्यूज़लेटर सब्सक्राइबर्स',
         'events'                   => 'आयोजन',
+        'sitemaps'                 => 'Sitemaps',
         'newsletter-subscriptions' => 'न्यूज़लेटर सदस्यता',
     ],
 
@@ -257,6 +259,9 @@ return [
         'date'             => 'तारीख',
         'transaction-id'   => 'लेनदेन आईडी',
         'transaction-date' => 'कार्यवाही की तिथि',
+        'file-name'        => 'File Name',
+        'path'             => 'Path',
+        'link-for-google'  => 'Link For Google',
     ],
 
     'account' => [
@@ -517,6 +522,8 @@ return [
                 'invoice-missing'   => 'यह चालान आईडी मौजूद नहीं है',
                 'transaction-saved' => 'लेन-देन सहेजा गया है',
                 'already-paid'      => 'इस चालान का भुगतान पहले ही किया जा चुका है',
+                'transaction-amount-exceeds' => 'The specified amount of this transaction exceeds the total amount of the invoice.',
+                'transaction-amount-zero' => 'Transaction amount can be zero or less',
             ],
         ],
     ],
@@ -536,10 +543,10 @@ return [
                 'bundle'                        => 'बंडल',
                 'downloadable'                  => 'डाउनलोड करने योग्य',
                 'grouped'                       => 'समूहीकृत',
-                'virtual'                       => 'आभासी',            
+                'virtual'                       => 'आभासी',
                 'configurable'                  => 'कॉन्फ़िगर करने योग्य',
 
-            ],            
+            ],
             'familiy'                       => 'विशेषता परिवार',
             'sku'                           => 'एसकेयू',
             'configurable-attributes'       => 'कॉन्फ़िगर करने योग्य गुण',
@@ -613,6 +620,12 @@ return [
             'cancel'                        => 'रद्द करें',
             'saved-inventory-message'       => 'उत्पाद सूची सफलतापूर्वक सहेजी गई।',
             'image-size'                    => 'इमेज रेजोल्यूशन 640px X 640px जैसा होना चाहिए',
+            'validations'                   => [
+                'quantity-required' => 'Quantity is required.',
+                'quantity-integer'  => 'Quantity should be integer.',
+                'quantity-min-zero' => 'Quantity should be greater then zero.',
+            ],
+            'video-size'                    => 'Maximum video size should be like :size',
         ],
 
         'attributes' => [
@@ -683,6 +696,8 @@ return [
             'name'                 => 'नाम',
             'groups'               => 'समूह',
             'add-group-title'      => 'समूह जोड़ें',
+            'edit-group-title'     => 'Edit Group',
+            'update-group-title'   => 'Update Group',
             'position'             => 'स्थान',
             'attribute-code'       => 'कोड',
             'type'                 => 'प्रकार',
@@ -719,6 +734,7 @@ return [
             'attributes'               => 'गुण',
             'image-size'               => 'इमेज रेजोल्यूशन 300px X 168px जैसा होना चाहिए',
             'image-size-logo'          => 'इमेज रेजोल्यूशन 20px X 20px जैसा होना चाहिए',
+            'mass-update-success'      => 'सभी चयनित श्रेणियों को सफलतापूर्वक अपडेट कर दिया गया है',
         ],
     ],
 
@@ -729,6 +745,8 @@ return [
         'yes'            => 'हां',
         'no'             => 'नहीं',
         'delete'         => 'हटाएं',
+        'enable-atleast-one-shipping' => 'कम से कम एक शिपिंग विधि सक्षम करें।',
+        'enable-atleast-one-payment'  => 'कम से कम एक भुगतान विधि सक्षम करें।',
 
         'tax-categories' => [
             'title'           => 'कर श्रेणियाँ',
@@ -1156,7 +1174,7 @@ return [
             'action-type'                    => 'प्रक्रिया का प्रकार',
             'percentage-product-price'       => 'उत्पाद मूल्य का प्रतिशत',
             'fixed-amount'                   => 'निश्चित राशि',
-            'fixed-amount-whole-cart'        => 'निश्चित राशि से पूरी गाड़ी',
+            'fixed-amount-whole-cart'        => 'निश्चित राशि से पूरी कार्ट',
             'buy-x-get-y-free'               => 'X खरीदें, Y मुफ़्त पाएं',
             'discount-amount'                => 'छूट राशि',
             'discount-quantity'              => 'अधिकतम मात्रा में छूट दी जाने की अनुमति',
@@ -1291,6 +1309,21 @@ return [
             'delete-success' => 'ईवेंट सफलतापूर्वक हटाया गया।',
             'edit-error'     => 'इस घटना को संपादित नहीं कर सकता।',
         ],
+
+        'sitemaps' => [
+            'title'          => 'Sitemaps',
+            'add-title'      => 'Add Sitemap',
+            'edit-title'     => 'Edit Sitemap',
+            'save-btn-title' => 'Save',
+            'general'        => 'General',
+            'file-name'      => 'File Name',
+            'file-name-info' => 'Example: sitemap.xml',
+            'path'           => 'Path',
+            'path-info'      => 'Example: "/sitemap/" or "/" for base path',
+            'create-success' => 'Sitemap created successfully.',
+            'update-success' => 'Sitemap updated successfully.',
+            'delete-success' => 'Sitemap deleted successfully.',
+        ]
     ],
 
     'error' => [
@@ -1641,6 +1674,7 @@ return [
             'canceled'   => 'आदेश रद्द',
             'pending'    => 'आदेश लम्बित',
             'processing' => 'आदेश प्रसंस्करण',
+            'pending_payment' => 'En attente de paiement',
         ],
     ],
 ];

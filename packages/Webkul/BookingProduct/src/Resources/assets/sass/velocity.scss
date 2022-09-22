@@ -1,13 +1,11 @@
 @import "icons";
 
 .booking-information {
-    margin-bottom: 15px;
-
     .booking-info-row {
         padding-left: 32px;
         margin-bottom: 20px;
         position: relative;
-
+        
         .icon {
             position: absolute;
             left: 0;
@@ -110,11 +108,26 @@
             .radio {
                 display: inline-block;
             }
+
+            .control-error {
+                float: left;
+            }
         }
 
         .control-group-container {
             width: 100%;
             float: left;
+
+
+            span {
+                position: relative;
+
+                .icon {
+                    position: absolute;
+                    right: 30px;
+                    top: 10px !important;
+                }
+            }
 
             .control-group:not(.quantity), .form-group:not(.quantity) {
                 width: 50%;
@@ -257,3 +270,27 @@
         }
     }
 }
+
+body {
+        &.rtl {
+        .booking-information {
+            .cross-icon {
+                left: 80px !important;
+                right: inherit !important;
+            }
+
+            .icon {
+                position: absolute;
+                top: -4px;
+            }
+
+            .bp-location-icon {
+                right: 60px;
+            }
+
+            .bp-slot-icon {
+                right: 140px;
+            }
+       }
+    }
+} 

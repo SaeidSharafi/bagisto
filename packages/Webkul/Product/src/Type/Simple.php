@@ -38,8 +38,10 @@ class Simple extends AbstractType
                 return false;
             }
 
-            if (is_callable(config('products.isSaleable')) &&
-                call_user_func(config('products.isSaleable'), $product) === false) {
+            if (
+                is_callable(config('products.isSaleable')) &&
+                call_user_func(config('products.isSaleable'), $product) === false
+            ) {
                 return false;
             }
 
@@ -59,11 +61,7 @@ class Simple extends AbstractType
      */
     public function haveSufficientQuantity(int $qty): bool
     {
-        $backorders = core()->getConfigData('catalog.inventory.stock_options.backorders');
-
-        $backorders = ! is_null($backorders) ? $backorders : false;
-
-        return $qty <= $this->totalQuantity() ? true : $backorders;
+        return $qty <= $this->totalQuantity() ?: (bool) core()->getConfigData('catalog.inventory.stock_options.backorders');
     }
 
     /**
@@ -71,7 +69,7 @@ class Simple extends AbstractType
      *
      * @return float
      */
-    public function getMaximamPrice()
+    public function getMaximumPrice()
     {
         return $this->product->price;
     }

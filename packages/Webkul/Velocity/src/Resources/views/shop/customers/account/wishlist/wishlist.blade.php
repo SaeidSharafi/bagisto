@@ -11,7 +11,7 @@
         <span class="account-heading">{{ __('shop::app.customer.account.wishlist.title') }}</span>
 
         @if (count($items))
-            <span class="account-action">
+            <span class="account-action d-inline-flex">
                 <form id="remove-all-wishlist" class="d-none" action="{{ route('customer.wishlist.removeall') }}" method="POST">
                     @method('DELETE')
 
@@ -70,62 +70,7 @@
                 <i class="rango-close"></i>
 
                 <div slot="body">
-                    <form method="POST" action="{{ route('customer.wishlist.share') }}">
-                        @csrf
-
-                        <div class="row">
-                            <div class="col-12">
-                                <label class="mandatory">
-                                    {{ __('shop::app.customer.account.wishlist.wishlist-sharing') }}
-                                </label>
-
-                                <select name="shared" class="form-control">
-                                    <option value="0" {{ $isWishlistShared ? '' : 'selected="selected"' }}>{{ __('shop::app.customer.account.wishlist.disable') }}</option>
-                                    <option value="1" {{ $isWishlistShared ? 'selected="selected"' : '' }}>{{ __('shop::app.customer.account.wishlist.enable') }}</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="row mt-2">
-                            <div class="col-12">
-                                <label class="mandatory">
-                                    {{ __('shop::app.customer.account.wishlist.visibility') }}
-                                </label>
-
-                                <div>
-                                    @if ($isWishlistShared)
-                                        <span class="badge badge-success">{{ __('shop::app.customer.account.wishlist.public') }}</span>
-                                    @else
-                                        <span class="badge badge-danger">{{ __('shop::app.customer.account.wishlist.private') }}</span>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mt-2">
-                            <div class="col-12">
-                                <label class="mandatory">
-                                    {{ __('shop::app.customer.account.wishlist.shared-link') }}
-                                </label>
-
-                                <div>
-                                    @if ($isWishlistShared)
-                                        <a href="{{ $wishlistSharedLink ?? 'javascript:void(0);' }}" target="_blank">{{ $wishlistSharedLink }}</a>
-                                    @else
-                                        <p class="alert alert-danger">{{ __('shop::app.customer.account.wishlist.enable-wishlist-info') }}</p>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mt-2">
-                            <div class="col-12">
-                                <button type="submit"  class="theme-btn float-right">
-                                    {{ __('shop::app.customer.account.wishlist.save') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    <share-component></share-component>
                 </div>
             </modal>
         </div>
@@ -136,6 +81,72 @@
 
 @push('scripts')
     @if($isSharingEnabled)
+        <script type="text/x-template" id="share-component-template">
+            <form method="POST">
+                @csrf
+
+                <div class="form-group">
+                    <label class="label-style mandatory">
+                        {{ __('shop::app.customer.account.wishlist.wishlist-sharing') }}
+                    </label>
+
+                    <select name="shared" class="form-control" @change="shareWishlist($event.target.value)">
+                        <option value="0" :selected="! isWishlistShared">{{ __('shop::app.customer.account.wishlist.disable') }}</option>
+                        <option value="1" :selected="isWishlistShared">{{ __('shop::app.customer.account.wishlist.enable') }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="label-style mandatory">
+                        {{ __('shop::app.customer.account.wishlist.visibility') }}
+                    </label>
+
+                    <div>
+                        <span class="badge badge-success" v-if="isWishlistShared">
+                            {{ __('shop::app.customer.account.wishlist.public') }}
+                        </span>
+
+                        <span class="badge badge-danger" v-else>
+                            {{ __('shop::app.customer.account.wishlist.private') }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="label-style mandatory">
+                        {{ __('shop::app.customer.account.wishlist.shared-link') }}
+                    </label>
+
+                    <div class="input-group" v-if="isWishlistShared">
+                        <input
+                            type="text"
+                            class="form-control"
+                            v-model="wishlistSharedLink"
+                            v-on:focus="$event.target.select()"
+                            ref="sharedLink"
+                        />
+
+                        <div class="input-group-append">
+                            <button
+                                class="btn btn-outline-secondary theme-btn"
+                                style="padding: 6px 20px"
+                                id="copy-btn"
+                                title="{{ __('shop::app.customer.account.wishlist.copy-link') }}"
+                                type="button"
+                                @click="copyToClipboard"
+                            >
+                                {{ __('shop::app.customer.account.wishlist.copy') }}
+                            </button>
+                        </div> 
+                    </div>
+
+                    <p class="alert alert-danger" v-else>
+                        {{ __('shop::app.customer.account.wishlist.enable-wishlist-info') }}
+                    </p>
+                </div>
+            </form>
+        </script>
+
         <script>
             /**
              * Show share wishlist modal.
@@ -145,6 +156,50 @@
 
                 window.app.showModal('shareWishlist');
             }
+
+            Vue.component('share-component', {
+                template: '#share-component-template',
+
+                inject: ['$validator'],
+
+                data: function () {
+                    return {
+                        isWishlistShared: parseInt("{{ $isWishlistShared }}"),
+
+                        wishlistSharedLink: "{{ $wishlistSharedLink }}".replace("&amp;", "&"),
+                    }
+                },
+
+                methods: {
+                    shareWishlist: function(val) {
+                        var self = this;
+
+                        this.$root.showLoader();
+
+                        this.$http.post("{{ route('customer.wishlist.share') }}", {
+                            shared: val
+                        })
+                        .then(function(response) {
+                            self.$root.hideLoader();
+
+                            self.isWishlistShared = response.data.isWishlistShared;
+
+                            self.wishlistSharedLink = response.data.wishlistSharedLink;
+                        })
+                        .catch(function (error) {
+                            self.$root.hideLoader();
+
+                            window.location.reload();
+                        })
+                    },
+
+                    copyToClipboard: function() {
+                        this.$refs.sharedLink.focus();
+                        document.execCommand('copy');
+                        showCopyMessage();
+                    }
+                }
+            });
         </script>
     @endif
 
@@ -156,6 +211,12 @@
             if (confirm('{{ __('shop::app.customer.account.wishlist.confirm-delete-all') }}')) document.getElementById('remove-all-wishlist').submit();
 
             return;
+        }
+
+        function showCopyMessage()
+        {
+            $('#copy-btn').text("{{ __('shop::app.customer.account.wishlist.copied') }}");
+            $('#copy-btn').css({backgroundColor: '#146e24'});
         }
     </script>
 @endpush

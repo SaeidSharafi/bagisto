@@ -151,7 +151,7 @@
                             id="isSuspended"
                             type="checkbox"
                             name="is_suspended"
-                            value="1" {{ $customer->is_suspended ? 'checked' : '' }}>
+                            value="{{ $customer->is_suspended }}" {{ $customer->is_suspended ? 'checked' : '' }}>
 
                         <span class="slider round"></span>
                     </label>
@@ -217,7 +217,7 @@
 
                 </div>
                 <div class="control-group">
-                    <label for="customerGroup">{{ __('admin::app.customers.customers.customer_group') }}</label>
+                    <label for="customerGroup" >{{ __('admin::app.customers.customers.customer_group') }}</label>
 
                     @if (! is_null($customer->customer_group_id))
                         @php $selectedCustomerOption = $customer->group->id @endphp
@@ -226,7 +226,7 @@
                     @endif
 
                     <select class="control" id="customerGroup" name="customer_group_id">
-                        @foreach ($customerGroup as $group)
+                        @foreach ($groups as $group)
                             <option value="{{ $group->id }}" {{ $selectedCustomerOption == $group->id ? 'selected' : '' }}>
                                 {{ $group->name}}
                             </option>

@@ -12,21 +12,13 @@ class OrderCommentNotification extends Mailable
     use Queueable, SerializesModels;
 
     /**
-     * The order comment instance.
-     *
-     * @var  \Webkul\Sales\Contracts\OrderComment  $comment
-     */
-    public $comment;
-
-    /**
      * Create a new message instance.
      *
      * @param  \Webkul\Sales\Contracts\OrderComment  $comment
      * @return void
      */
-    public function __construct($comment)
+    public function __construct(public $comment)
     {
-        $this->comment = $comment;
     }
 
     /**
@@ -37,8 +29,8 @@ class OrderCommentNotification extends Mailable
     public function build()
     {
         return $this->from(core()->getSenderEmailDetails()['email'], core()->getSenderEmailDetails()['name'])
-                    ->to($this->comment->order->customer_email, $this->comment->order->customer_full_name)
-                    ->subject(trans('shop::app.mail.order.comment.subject', ['order_id' => $this->comment->order->increment_id]))
-                    ->view('shop::emails.sales.new-order-comment');
+            ->to($this->comment->order->customer_email, $this->comment->order->customer_full_name)
+            ->subject(trans('shop::app.mail.order.comment.subject', ['order_id' => $this->comment->order->increment_id]))
+            ->view('shop::emails.sales.new-order-comment');
     }
 }

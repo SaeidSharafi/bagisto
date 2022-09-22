@@ -22,7 +22,10 @@
 <div class="table">
     <datagrid-filters></datagrid-filters>
 
-    @if (isset($results['paginated']) && $results['paginated'])
+    @if (
+        isset($results['paginated'])
+        && $results['paginated']
+    )
         @include('ui::datagrid.pagination', ['results' => $results['records']])
     @endif
 
@@ -260,14 +263,14 @@
                             </span>
                         </span>
                     </div>
-                    
+
                     <div class="records-count-container">
                         <span class="datagrid-count">
                             {{ $results['records']->total()  }}   {{ __('admin::app.admin.system.records-found') }}
                         </span>
                     </div>
-                </div>                                        
-                
+                </div>
+
                 <div class="table-responsive">
                     <table class="table">
                         @include('ui::datagrid.partials.mass-action-header')
@@ -276,7 +279,7 @@
 
                         @include('ui::datagrid.body', ['records' => $results['records'], 'actions' => $results['actions'], 'index' => $results['index'], 'columns' => $results['columns'],'enableMassActions' => $results['enableMassActions'], 'enableActions' => $results['enableActions'], 'norecords' => $results['norecords']])
                     </table>
-                </div>                
+                </div>
             </div>
         </script>
 
@@ -810,7 +813,7 @@
                                     break;
                             }
 
-                            if (obj.column !== undefined && obj.column !== 'admin_locale' && obj.val !== undefined) {
+                            if (obj.column !== undefined && obj.val !== undefined) {
                                 this.filters.push(obj);
                             }
 

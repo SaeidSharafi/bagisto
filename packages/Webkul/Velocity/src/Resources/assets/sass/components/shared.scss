@@ -297,6 +297,7 @@
         background-color: $white-color !important;
         box-shadow: 0 1px 0 0 #CFCFCF;
         border: 1px solid rgba(0,0,0,0.12);
+        z-index: 1;
 
         &:hover,
         &:focus {
@@ -429,6 +430,11 @@
             padding-left: 10px;
         }
 
+        form {
+            display: inline-table;
+            vertical-align: bottom;
+        }
+
         .product-price span:first-child, .product-price span:last-child {
             font-size: 18px;
             font-weight: 600;
@@ -472,7 +478,6 @@
             width: 30%;
             height: 270px;
             max-width: 200px;
-            max-height: 200px;
             position: relative;
 
             .quick-view-btn-container {

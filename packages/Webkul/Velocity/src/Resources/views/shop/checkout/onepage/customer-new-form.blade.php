@@ -1,4 +1,7 @@
-@if (isset($shipping) && $shipping)
+@if (
+    isset($shipping)
+    && $shipping
+)
     <div :class="`col-12 form-field mb30 ${errors.has('address-form.shipping[first_name]') ? 'has-error' : ''}`">
         <label for="shipping[first_name]" class="mandatory" style="width: unset;">
             {{ __('shop::app.checkout.onepage.first-name') }}
@@ -141,7 +144,7 @@
             data-vv-as="&quot;{{ __('shop::app.checkout.onepage.country') }}&quot;"
             @change="validateForm('address-form')">
 
-            <option value=""></option>
+            <option value="" disabled>{{ __('ui::form.select-attribute', ['attribute' => __('shop::app.checkout.onepage.country')]) }}</option>
 
             <option v-for='(country, index) in countries' :value="country.code">
                 @{{ country.name }}
@@ -263,7 +266,10 @@
             </span>
         </div>
     @endauth
-@elseif (isset($billing) && $billing)
+@elseif (
+    isset($billing)
+    && $billing
+)
     <div :class="`col-12 form-field ${errors.has('address-form.billing[company_name]') ? 'has-error' : ''}`">
         <label for="billing[company_name]">
             {{ __('shop::app.checkout.onepage.company-name') }}
@@ -431,7 +437,7 @@
             data-vv-as="&quot;{{ __('shop::app.checkout.onepage.country') }}&quot;"
             @change="validateForm('address-form')">
 
-            <option value=""></option>
+            <option value="" disabled>{{ __('ui::form.select-attribute', ['attribute' => __('shop::app.checkout.onepage.country')]) }}</option>
 
             <option v-for='(country, index) in countries' :value="country.code" v-text="country.name"></option>
         </select>

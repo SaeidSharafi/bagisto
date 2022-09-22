@@ -2,35 +2,25 @@
 
 namespace Webkul\Sales\Repositories;
 
-use Illuminate\Container\Container as App;
+use Illuminate\Container\Container;
 use Webkul\Core\Eloquent\Repository;
-use Webkul\Sales\Contracts\DownloadableLinkPurchased;
 use Webkul\Product\Repositories\ProductDownloadableLinkRepository;
 
 class DownloadableLinkPurchasedRepository extends Repository
 {
-
-    /**
-     * ProductDownloadableLinkRepository object
-     *
-     * @var \Webkul\Product\Repositories\ProductDownloadableLinkRepository
-     */
-    protected $productDownloadableLinkRepository;
-
     /**
      * Create a new repository instance.
      *
      * @param  \Webkul\Product\Repositories\ProductDownloadableLinkRepository  $productDownloadableLinkRepository
+     * @param  \Illuminate\Container\Container  $container
      * @return void
      */
     public function __construct(
-        ProductDownloadableLinkRepository $productDownloadableLinkRepository,
-        App $app
+        protected ProductDownloadableLinkRepository $productDownloadableLinkRepository,
+        Container $container
     )
     {
-        $this->productDownloadableLinkRepository = $productDownloadableLinkRepository;
-
-        parent::__construct($app);
+        parent::__construct($container);
     }
 
     /**
@@ -38,9 +28,9 @@ class DownloadableLinkPurchasedRepository extends Repository
      *
      * @return string
      */
-    function model()
+    function model(): string
     {
-        return DownloadableLinkPurchased::class;
+        return 'Webkul\Sales\Contracts\DownloadableLinkPurchased';
     }
 
     /**
@@ -81,7 +71,10 @@ class DownloadableLinkPurchasedRepository extends Repository
      * @return bool
      */
     private function isValidDownloadableProduct($orderItem) : bool {
-        if (stristr($orderItem->type,'downloadable') !== false && isset($orderItem->additional['links'])) {
+        if (
+            stristr($orderItem->type,'downloadable') !== false
+            && isset($orderItem->additional['links'])
+        ) {
             return true;
         }
 

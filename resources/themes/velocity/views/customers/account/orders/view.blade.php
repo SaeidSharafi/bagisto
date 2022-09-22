@@ -18,72 +18,62 @@
 @endpush
 
 @section('page-detail-wrapper')
-    <div class="account-content">
-        <div class="account-layout">
-            <div class="account-head justify-content-between">
-                <div>
-                    <a href="{{ route('customer.account.index') }}"><i class="fa fa-arrow-right"></i></a>
-                    <span class="account-heading">
-                    {{ __('shop::app.customer.account.order.view.page-tile', ['order_id' => $order->increment_id]) }}
-                </span>
+    <div class="account-head">
+        <span class="account-heading">
+            {{ __('shop::app.customer.account.order.view.page-tile', ['order_id' => $order->increment_id]) }}
+        </span>
+
+        @if ($order->canCancel())
+            <span class="account-action">
+                <form id="cancelOrderForm" action="{{ route('customer.orders.cancel', $order->id) }}" method="post">
+                    @csrf
+                </form>
+
+                <a href="javascript:void(0);" class="theme-btn light unset float-right" onclick="cancelOrder('{{ __('shop::app.customer.account.order.view.cancel-confirm-msg') }}')" style="float: right">
+                    {{ __('shop::app.customer.account.order.view.cancel-btn-title') }}
+                </a>
+            </span>
+        @endif
+    </div>
+
+    {!! view_render_event('bagisto.shop.customers.account.orders.view.before', ['order' => $order]) !!}
+
+    <div class="sale-container mt10">
+        <tabs>
+            <tab name="{{ __('shop::app.customer.account.order.view.info') }}" :selected="true">
+
+                <div class="sale-section">
+                    <div class="section-content">
+                        <div class="row col-12">
+                            <label class="mr20">
+                                {{ __('shop::app.customer.account.order.view.placed-on') }}
+                            </label>
+
+                            <span class="value">
+                                {{ core()->formatDate($order->created_at, 'd F Y') }}
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
-                @if ($order->canCancel())
-                    <span class="account-action">
-                        <form id="cancelOrderForm" action="{{ route('customer.orders.cancel', $order->id) }}" method="post">
-                            @csrf
-                        </form>
+                <div class="sale-section">
+                    <div class="section-title">
+                        <span>{{ __('shop::app.customer.account.order.view.products-ordered') }}</span>
+                    </div>
 
-                        <a href="javascript:void(0);" class="theme-btn light unset float-right"
-                           onclick="cancelOrder('{{ __('shop::app.customer.account.order.view.cancel-confirm-msg') }}')" style="float: right">
-                            {{ __('shop::app.customer.account.order.view.cancel-btn-title') }}
-                        </a>
-                    </span>
-                @endif
-            </div>
-
-            {!! view_render_event('bagisto.shop.customers.account.orders.view.before', ['order' => $order]) !!}
-
-            <div class="sale-container">
-                <tabs>
-                    <tab name="{{ __('shop::app.customer.account.order.view.info') }}" :selected="true">
-
-                        <div class="sale-section">
-                            <div class="section-content">
-                                <div class="row col-12">
-                                    <label class="pl-3">
-                                        {{ __('shop::app.customer.account.order.view.placed-on') }}
-                                    </label>
-
-                                    <span class="value">
-                                        {{ core()->formatDate($order->created_at, 'd F Y') }}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="sale-section">
-                            <div class="section-title d-flex justify-content-between">
-                                <span>{{ __('shop::app.customer.account.order.view.products-ordered') }}</span>
-                                @if ($order->invoices->count())
-                                <a href="{{ route('customer.orders.print', $order->invoices->first()->id) }}" class="text-dark">
-                                    <i class="fa-lg fa fa-print"></i>
-                                </a>
-                                @endif
-                            </div>
-                            <div class="section-content">
-                                <div class="table overflow-x">
-                                    <table>
-                                        <thead>
-                                        <tr>
-                                            <th>{{ __('shop::app.customer.account.order.view.SKU') }}</th>
-                                            <th>{{ __('shop::app.customer.account.order.view.product-name') }}</th>
-                                            <th>{{ __('shop::app.customer.account.order.view.price') }}</th>
-                                            <th>{{ __('shop::app.customer.account.order.view.item-status') }}</th>
-                                            <th>{{ __('shop::app.customer.account.order.view.subtotal') }}</th>
-                                            <th>{{ __('shop::app.customer.account.order.view.grand-total') }}</th>
-                                        </tr>
-                                        </thead>
+                    <div class="section-content">
+                    <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>{{ __('shop::app.customer.account.order.view.SKU') }}</th>
+                                        <th>{{ __('shop::app.customer.account.order.view.product-name') }}</th>
+                                        <th>{{ __('shop::app.customer.account.order.view.price') }}</th>
+                                        <th>{{ __('shop::app.customer.account.order.view.item-status') }}</th>
+                                        <th>{{ __('shop::app.customer.account.order.view.subtotal') }}</th>
+                                        <th>{{ __('shop::app.customer.account.order.view.grand-total') }}</th>
+                                    </tr>
+                                </thead>
 
                                         <tbody>
                                         @foreach ($order->items as $item)

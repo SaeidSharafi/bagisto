@@ -56,8 +56,7 @@ class OrderItem extends Model implements OrderItemContract
      */
     public function isStockable(): bool
     {
-        return $this->getTypeInstance()
-                    ->isStockable();
+        return $this->getTypeInstance()->isStockable();
     }
 
     /**
@@ -65,7 +64,7 @@ class OrderItem extends Model implements OrderItemContract
      */
     public function canShip(): bool
     {
-        if (!$this->isStockable()) {
+        if (! $this->isStockable()) {
             return false;
         }
 
@@ -81,7 +80,7 @@ class OrderItem extends Model implements OrderItemContract
      */
     public function getQtyToShipAttribute()
     {
-        if (!$this->isStockable()) {
+        if (! $this->isStockable()) {
             return 0;
         }
 

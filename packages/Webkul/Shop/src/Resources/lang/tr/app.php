@@ -371,6 +371,7 @@ return [
                 'share-wishlist'       => 'Share Wishlist',
                 'wishlist-sharing'     => 'Wishlist Sharing',
                 'shared-link'          => 'Shared Link',
+                'copy'                 => 'Copy',
                 'visibility'           => 'Visibility',
                 'public'               => 'Public',
                 'private'              => 'Private',
@@ -491,6 +492,7 @@ return [
                 'missing_links'   => 'Bu ürün için indirilebilir linkler girilmemiş.',
                 'qty_missing'     => 'En az bir adet ürün girilmelidir.',
                 'qty_impossible'  => 'Bu üründen birden fazla adet girilemez.',
+                'select_hourly_duration' => 'Bir saatlik bir slot süresi seçin.',
             ],
             'create-error'             => 'Alışveriş sepeti oluşturulurken hata meydana geldi!',
             'title'                    => 'Alışveriş Sepeti',
@@ -501,6 +503,8 @@ return [
             'proceed-to-checkout'      => 'Satın Al',
             'remove'                   => 'Kaldır',
             'remove-link'              => 'Kaldır',
+            'remove-all-items'         => 'Remove all items',
+            'confirm-action'           => 'Confirm this action?',
             'move-to-wishlist'         => 'Dilek Listesine Ekle',
             'move-to-wishlist-success' => 'Dilek listesine başarıyla eklendi.',
             'move-to-wishlist-error'   => 'Dilek listesine eklenirken hata oluştu, lütfen tekrar deneyin.',
@@ -517,6 +521,7 @@ return [
                 'error_remove'   => 'Sepetten kaldırılacak ürün bulunamadı.',
                 'success'        => 'Ürün başarıyla sepete eklendi.',
                 'success-remove' => 'Ürün sepetten başarıyla kaldırıldı.',
+                'success-all-remove' => 'All items is successfully removed from the cart.',
                 'error-add'      => 'Ürün sepete eklenirken hata oluştu, lütfen tekrar deneyin.',
                 'inactive'       => 'An item is inactive and was removed from cart.',
                 'inactive-add'   => 'Inactive item cannot be added to cart.',
@@ -531,10 +536,12 @@ return [
             ],
             'minimum-order-message'     => 'Minimum order amount is :amount',
             'suspended-account-message' => 'Your account has been suspended.',
+            'inactive-account-message' =>  'Your account has been inactive.',
             'check-shipping-address'    => 'Please check shipping address.',
             'check-billing-address'     => 'Please check billing address.',
             'specify-shipping-method'   => 'Please specify shipping method.',
             'specify-payment-method'    => 'Please specify payment method.',
+            'rule-applied'              => 'Cart rule applied',
         ],
 
         'onepage' => [
@@ -605,6 +612,7 @@ return [
             'invalid-coupon'      => 'Kupon kodu geçersiz.',
             'success-coupon'      => 'Kupon kodu başarıyla uygulandı.',
             'coupon-apply-issue'  => 'Kupon kodu uygulanamaz.',
+            'coupon-already-applied' => 'Kupon kodu zaten uygulandı.',
         ],
 
         'success' => [

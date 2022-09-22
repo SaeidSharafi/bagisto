@@ -6,23 +6,48 @@
 
 @php
     $locale = core()->checkRequestedLocaleCodeInRequestedChannel();
+
     $channel = core()->getRequestedChannelCode();
+
     $channelLocales = core()->getAllLocalesByRequestedChannel()['locales'];
+
+    $metaRoute = $metaData
+        ? route('velocity.admin.store.meta-data', ['id' => $metaData->id])
+        : route('velocity.admin.store.meta-data', ['id' => 'new']);
 @endphp
+
+@push('css')
+    <style>
+        @media only screen and (max-width: 680px){
+            .content-container .content .page-header .page-title {
+                float: left;
+                width: 100%;
+                margin-bottom: 12px;
+            }
+
+            .content-container .content .page-header .page-action button {
+                position: absolute;
+                right: 2px;
+                top: 10px !important;
+            }
+
+            .content-container .content .page-header .control-group {
+                margin-top:16px !important;
+                width: 100% !important;
+                margin-left: 0px !important;
+            }
+        }
+    </style>
+@endpush
 
 @section('content')
     <div class="content">
         <form
             method="POST"
-            @submit.prevent="onSubmit"
             enctype="multipart/form-data"
-            @if ($metaData)
-                action="{{ route('velocity.admin.store.meta-data', ['id' => $metaData->id]) }}"
-            @else
-                action="{{ route('velocity.admin.store.meta-data', ['id' => 'new']) }}"
-            @endif
+            action="{{ $metaRoute }}"
+            @submit.prevent="onSubmit"
             >
-
             @csrf
 
             <div class="page-header">
@@ -31,6 +56,7 @@
                 </div>
 
                 <input type="hidden" name="locale" value="{{ $locale }}" />
+
                 <input type="hidden" name="channel" value="{{ $channel }}" />
 
                 <div class="control-group">
@@ -116,9 +142,6 @@
                             name="header_content_count"
                             value="{{ $metaData ? $metaData->header_content_count : '5' }}" />
                     </div>
-
-
-
 
                     <div class="control-group home-page-content">
                         <label style="width:100%;">
@@ -310,14 +333,7 @@
                 height: 200,
                 width: "100%",
                 image_advtab: true,
-                cleanup_on_startup: false,
-                trim_span_elements: false,
-                verify_html: false,
-                cleanup: false,
-                convert_urls: false,
-                valid_children: '+a[div]',
-                forced_root_block : "",
-                extended_valid_elements : '*[*]',
+                valid_elements : '*[*]',
                 selector: 'textarea#home_page_content,textarea#footer_left_content,textarea#subscription_bar_content,textarea#footer_middle_content,textarea#product-policy',
                 plugins: 'image imagetools media wordcount save fullscreen code',
                 toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat | code',

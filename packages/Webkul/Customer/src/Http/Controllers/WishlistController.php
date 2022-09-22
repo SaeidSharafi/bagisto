@@ -17,27 +17,6 @@ class WishlistController extends Controller
     protected $_config;
 
     /**
-     * Current customer.
-     *
-     * @var \Webkul\Customer\Models\Customer
-     */
-    protected $currentCustomer;
-
-    /**
-     * Product repository instance.
-     *
-     * @var \Webkul\Customer\Repositories\WishlistRepository
-     */
-    protected $wishlistRepository;
-
-    /**
-     * Wishlist repository instance.
-     *
-     * @var \Webkul\Product\Repositories\ProductRepository
-     */
-    protected $productRepository;
-
-    /**
      * Create a new controller instance.
      *
      * @param  \Webkul\Customer\Repositories\WishlistRepository  $wishlistRepository
@@ -45,16 +24,11 @@ class WishlistController extends Controller
      * @return void
      */
     public function __construct(
-        WishlistRepository $wishlistRepository,
-        ProductRepository $productRepository
-    ) {
+        protected WishlistRepository $wishlistRepository,
+        protected ProductRepository $productRepository
+    )
+    {
         $this->_config = request('_config');
-
-        $this->wishlistRepository = $wishlistRepository;
-
-        $this->productRepository = $productRepository;
-
-        $this->currentCustomer = auth()->guard('customer')->user();
     }
 
     /**
@@ -64,58 +38,63 @@ class WishlistController extends Controller
      */
     public function index()
     {
+        $customer = auth()->guard('customer')->user();
+
         if (! core()->getConfigData('general.content.shop.wishlist_option')) {
             abort(404);
         }
 
         return view($this->_config['view'], [
-            'items' => $this->wishlistRepository->getCustomerWishlist(),
-            'isSharingEnabled' => $this->isSharingEnabled(),
-            'isWishlistShared' => $this->currentCustomer->isWishlistShared(),
-            'wishlistSharedLink' => $this->currentCustomer->getWishlistSharedLink()
+            'items'              => $this->wishlistRepository->getCustomerWishlist(),
+            'isSharingEnabled'   => $this->isSharingEnabled(),
+            'isWishlistShared'   => $customer->isWishlistShared(),
+            'wishlistSharedLink' => $customer->getWishlistSharedLink()
         ]);
     }
 
     /**
      * Function to add item to the wishlist.
      *
-     * @param  int  $itemId
+     * @param  int  $productId
      * @return \Illuminate\Http\Response
      */
-    public function add($itemId)
+    public function add($productId)
     {
-        $product = $this->productRepository->findOneByField('id', $itemId);
+        $customer = auth()->guard('customer')->user();
 
-        if (! $product->status)
+        $product = $this->productRepository->find($productId);
+
+        if (! $product) {
+            session()->flash('error', trans('customer::app.product-removed'));
+
             return redirect()->back();
+        } elseif (! $product->status) {
+            return redirect()->back();
+        }
 
         $data = [
             'channel_id'  => core()->getCurrentChannel()->id,
-            'product_id'  => $itemId,
-            'customer_id' => $this->currentCustomer->id,
+            'product_id'  => $productId,
+            'customer_id' => $customer->id,
         ];
 
-        $checked = $this->wishlistRepository->findWhere([
-            'channel_id'  => core()->getCurrentChannel()->id,
-            'product_id'  => $itemId,
-            'customer_id' => $this->currentCustomer->id,
-        ]);
+        $wishlist = $this->wishlistRepository->findOneWhere($data);
 
-        if ($product->parent && $product->parent->type !== 'configurable') {
-            $product = $this->productRepository->findOneByField('id', $product->parent_id);
+        if (
+            $product->parent
+            && $product->parent->type !== 'configurable'
+        ) {
+            $product = $this->productRepository->find($product->parent_id);
+
             $data['product_id'] = $product->id;
         }
 
-        if ($checked->isEmpty()) {
-            if ($this->wishlistRepository->create($data)) {
-                session()->flash('success', trans('customer::app.wishlist.success'));
+        if (! $wishlist) {
+            $wishlist = $this->wishlistRepository->create($data);
 
-                return redirect()->back();
-            } else {
-                session()->flash('error', trans('customer::app.wishlist.failure'));
+            session()->flash('success', trans('customer::app.wishlist.success'));
 
-                return redirect()->back();
-            }
+            return redirect()->back();
         } else {
             $this->wishlistRepository->findOneWhere([
                 'product_id' => $data['product_id']
@@ -134,21 +113,27 @@ class WishlistController extends Controller
      */
     public function share()
     {
+        $customer = auth()->guard('customer')->user();
+
         if ($this->isSharingEnabled()) {
             $data = $this->validate(request(), [
                 'shared' => 'required|boolean'
             ]);
 
-            $updateCounts = $this->currentCustomer->wishlist_items()->update(['shared' => $data['shared']]);
+            $updateCounts = $customer->wishlist_items()->update(['shared' => $data['shared']]);
 
-            if ($updateCounts && $updateCounts > 0) {
-                session()->flash('success', __('shop::app.customer.account.wishlist.update-message'));
-
-                return redirect()->back();
+            if (
+                $updateCounts
+                && $updateCounts > 0
+            ) {
+                return response()->json([
+                    'isWishlistShared'   => $customer->isWishlistShared(),
+                    'wishlistSharedLink' => $customer->getWishlistSharedLink()
+                ]);
             }
         }
 
-        return redirect()->back();
+        return response()->json([], 400);
     }
 
     /**
@@ -170,7 +155,10 @@ class WishlistController extends Controller
 
         $items = $customer->wishlist_items()->where('shared', 1)->get();
 
-        if ($customer && $items->isNotEmpty()) {
+        if (
+            $customer
+            && $items->isNotEmpty()
+        ) {
             return view($this->_config['view'], compact('customer', 'items'));
         }
 
@@ -188,7 +176,10 @@ class WishlistController extends Controller
      */
     public function remove($itemId)
     {
-        $customerWishlistItems = $this->currentCustomer->wishlist_items;
+        $customer = auth()->guard('customer')->user();
+
+        $customerWishlistItems = $customer->wishlist_items;
+        $referer = strtok(request()->headers->get('referer'), '?');
 
         foreach ($customerWishlistItems as $customerWishlistItem) {
             if ($itemId == $customerWishlistItem->id) {
@@ -196,7 +187,7 @@ class WishlistController extends Controller
 
                 session()->flash('success', trans('customer::app.wishlist.removed'));
 
-                return redirect()->back();
+                return redirect()->to($referer);
             }
         }
 
@@ -213,9 +204,11 @@ class WishlistController extends Controller
      */
     public function move($itemId)
     {
+        $customer = auth()->guard('customer')->user();
+        
         $wishlistItem = $this->wishlistRepository->findOneWhere([
             'id'          => $itemId,
-            'customer_id' => $this->currentCustomer->id,
+            'customer_id' => $customer->id,
         ]);
 
         if (! $wishlistItem) {
@@ -250,12 +243,10 @@ class WishlistController extends Controller
      */
     public function removeAll()
     {
-        $wishlistItems = $this->currentCustomer->wishlist_items;
+        $customer = auth()->guard('customer')->user();
 
-        if ($wishlistItems->count() > 0) {
-            foreach ($wishlistItems as $wishlistItem) {
-                $this->wishlistRepository->delete($wishlistItem->id);
-            }
+        foreach ($customer->wishlist_items as $wishlistItem) {
+            $this->wishlistRepository->delete($wishlistItem->id);
         }
 
         session()->flash('success', trans('customer::app.wishlist.remove-all-success'));
@@ -270,8 +261,6 @@ class WishlistController extends Controller
      */
     public function isSharingEnabled(): bool
     {
-        return (bool) core()->getConfigData('customer.settings.wishlist.share')
-            ? true
-            : false;
+        return (bool) core()->getConfigData('customer.settings.wishlist.share');
     }
 }

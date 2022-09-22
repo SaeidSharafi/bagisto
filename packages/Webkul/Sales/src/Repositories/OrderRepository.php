@@ -2,49 +2,31 @@
 
 namespace Webkul\Sales\Repositories;
 
-use Illuminate\Container\Container as App;
+use Illuminate\Container\Container;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
 use Webkul\Core\Eloquent\Repository;
-use Webkul\Sales\Contracts\Order;
 use Webkul\Sales\Generators\OrderSequencer;
 use Webkul\Sales\Models\Order as OrderModel;
 
 class OrderRepository extends Repository
 {
     /**
-     * Order item repository instance.
-     *
-     * @var \Webkul\Sales\Repositories\OrderItemRepository
-     */
-    protected $orderItemRepository;
-
-    /**
-     * Downloadable link purchased repository instance.
-     *
-     * @var \Webkul\Sales\Repositories\DownloadableLinkPurchasedRepository
-     */
-    protected $downloadableLinkPurchasedRepository;
-
-    /**
      * Create a new repository instance.
      *
      * @param  \Webkul\Sales\Repositories\OrderItemRepository  $orderItemRepository
      * @param  \Webkul\Sales\Repositories\DownloadableLinkPurchasedRepository  $downloadableLinkPurchasedRepository
-     * @param  \Illuminate\Container\Container  $app
+     * @param  \Illuminate\Container\Container  $container
      * @return void
      */
     public function __construct(
-        OrderItemRepository $orderItemRepository,
-        DownloadableLinkPurchasedRepository $downloadableLinkPurchasedRepository,
-        App $app
-    ) {
-        $this->orderItemRepository = $orderItemRepository;
-
-        $this->downloadableLinkPurchasedRepository = $downloadableLinkPurchasedRepository;
-
-        parent::__construct($app);
+        protected OrderItemRepository $orderItemRepository,
+        protected DownloadableLinkPurchasedRepository $downloadableLinkPurchasedRepository,
+        Container $container
+    )
+    {
+        parent::__construct($container);
     }
 
     /**
@@ -52,9 +34,9 @@ class OrderRepository extends Repository
      *
      * @return string
      */
-    public function model()
+    public function model(): string
     {
-        return Order::class;
+        return 'Webkul\Sales\Contracts\Order';
     }
 
     /**
@@ -69,14 +51,20 @@ class OrderRepository extends Repository
         try {
             Event::dispatch('checkout.order.save.before', [$data]);
 
-            if (isset($data['customer']) && $data['customer']) {
+            if (
+                isset($data['customer'])
+                && $data['customer']
+            ) {
                 $data['customer_id'] = $data['customer']->id;
                 $data['customer_type'] = get_class($data['customer']);
             } else {
                 unset($data['customer']);
             }
 
-            if (isset($data['channel']) && $data['channel']) {
+            if (
+                isset($data['channel'])
+                && $data['channel']
+            ) {
                 $data['channel_id'] = $data['channel']->id;
                 $data['channel_type'] = get_class($data['channel']);
                 $data['channel_name'] = $data['channel']->name;
@@ -91,6 +79,8 @@ class OrderRepository extends Repository
             $order->payment()->create($data['payment']);
 
             if (isset($data['shipping_address'])) {
+                unset($data['shipping_address']['customer_id']);
+
                 $order->addresses()->create($data['shipping_address']);
             }
 
@@ -102,7 +92,10 @@ class OrderRepository extends Repository
 
                 $orderItem = $this->orderItemRepository->create(array_merge($item, ['order_id' => $order->id]));
 
-                if (isset($item['children']) && $item['children']) {
+                if (
+                    isset($item['children'])
+                    && $item['children']
+                ) {
                     foreach ($item['children'] as $child) {
                         $this->orderItemRepository->create(array_merge($child, ['order_id' => $order->id, 'parent_id' => $orderItem->id]));
                     }
@@ -189,7 +182,10 @@ class OrderRepository extends Repository
                     $orderItem->qty_canceled += $orderItem->qty_to_cancel;
                     $orderItem->save();
 
-                    if ($orderItem->parent && $orderItem->parent->qty_ordered) {
+                    if (
+                        $orderItem->parent
+                        && $orderItem->parent->qty_ordered
+                    ) {
                         $orderItem->parent->qty_canceled += $orderItem->parent->qty_to_cancel;
                         $orderItem->parent->save();
                     }
@@ -255,7 +251,10 @@ class OrderRepository extends Repository
          * If order is already completed and total quantity ordered is not equal to refunded
          * then it can be considered as completed.
          */
-        if ($order->status === OrderModel::STATUS_COMPLETED && $totalQtyOrdered != $totalQtyRefunded) {
+        if (
+            $order->status === OrderModel::STATUS_COMPLETED
+            && $totalQtyOrdered != $totalQtyRefunded
+        ) {
             return true;
         }
 

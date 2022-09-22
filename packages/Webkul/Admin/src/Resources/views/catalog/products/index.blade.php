@@ -19,10 +19,11 @@
                         {{ __('admin::app.export.export') }}
                     </span>
                 </div>
-
-                <a href="{{ route('admin.catalog.products.create') }}" class="btn btn-lg btn-primary">
-                    {{ __('admin::app.catalog.products.add-product-btn-title') }}
-                </a>
+                @if (bouncer()->hasPermission('catalog.products.create'))
+                    <a href="{{ route('admin.catalog.products.create') }}" class="btn btn-lg btn-primary">
+                        {{ __('admin::app.catalog.products.add-product-btn-title') }}
+                    </a>
+                @endif
             </div>
         </div>
 
@@ -76,11 +77,18 @@
                 .then(function (response) {
                     let data = response.data;
 
+                    $(`#inventoryErrors${productId}`).text('');
+
                     $(`#edit-product-${productId}-quantity-form-block`).hide();
 
                     $(`#product-${productId}-quantity-anchor`).text(data.updatedTotal);
 
                     $(`#product-${productId}-quantity`).show();
+                })
+                .catch(function ({ response }) {
+                    let { data } = response;
+
+                    $(`#inventoryErrors${productId}`).text(data.message);
                 });
         }
     </script>

@@ -23,8 +23,6 @@ class SessionController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('customer')->except(['show', 'create']);
-
         $this->_config = request('_config');
     }
 
@@ -56,7 +54,7 @@ class SessionController extends Controller
             return redirect()->back();
         }
 
-        if (auth()->guard('customer')->user()->status == 0) {
+        if (! auth()->guard('customer')->user()->status) {
             auth()->guard('customer')->logout();
 
             session()->flash('warning', trans('shop::app.customer.login-form.not-activated'));
@@ -64,7 +62,7 @@ class SessionController extends Controller
             return redirect()->back();
         }
 
-        if (auth()->guard('customer')->user()->is_verified == 0) {
+        if (! auth()->guard('customer')->user()->is_verified) {
             session()->flash('info', trans('shop::app.customer.login-form.verify-first'));
 
             Cookie::queue(Cookie::make('enable-resend', 'true', 1));
@@ -81,7 +79,7 @@ class SessionController extends Controller
          */
         Event::dispatch('customer.after.login', $request->get('email'));
 
-        return redirect()->intended(route($this->_config['redirect']));
+        return redirect()->route($this->_config['redirect']);
     }
 
     /**

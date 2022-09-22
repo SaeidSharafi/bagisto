@@ -2,8 +2,8 @@
 
 namespace Webkul\Admin\DataGrids;
 
-use Webkul\Ui\DataGrid\DataGrid;
 use Illuminate\Support\Facades\DB;
+use Webkul\Ui\DataGrid\DataGrid;
 
 class CartRuleDataGrid extends DataGrid
 {
@@ -102,7 +102,7 @@ class CartRuleDataGrid extends DataGrid
                 '=',
                 'cart_rules.id'
             );
-            
+
             $queryBuilder->where('cart_rule_channels.channel_id', $this->channel);
         }
 
@@ -173,7 +173,7 @@ class CartRuleDataGrid extends DataGrid
             'closure'    => function ($value) {
                 if ($value->status == 1) {
                     return trans('admin::app.datagrid.active');
-                } else if ($value->status == 0) {
+                } elseif ($value->status == 0) {
                     return trans('admin::app.datagrid.inactive');
                 } else {
                     return trans('admin::app.datagrid.draft');

@@ -102,7 +102,7 @@
 
             @if ($user->image_url)
                 <div style="margin-top: 10px;">
-                    <input 
+                    <input
                         type="checkbox"
                         name="remove_image"
                     />
@@ -110,7 +110,7 @@
                     <label for="remove" class="">
                         {{ __('admin::app.account.remove-image') }}
                     </label>
-                </div>      
+                </div>
             @endif
         </div>
     </script>
@@ -141,7 +141,7 @@
                         } else {
                             imageInput.value = '';
 
-                            alert('{{ __('admin::app.account.image_upload_message') }}');
+                            alert('{{ __('admin::app.account.image-upload-message') }}');
                         }
                     }
                 }

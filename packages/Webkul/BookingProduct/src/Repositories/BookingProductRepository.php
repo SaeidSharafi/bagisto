@@ -2,8 +2,8 @@
 
 namespace Webkul\BookingProduct\Repositories;
 
-use Illuminate\Container\Container as App;
 use Carbon\Carbon;
+use Illuminate\Container\Container;
 use Webkul\Core\Eloquent\Repository;
 
 class BookingProductRepository extends Repository
@@ -21,6 +21,7 @@ class BookingProductRepository extends Repository
      * @param  \Webkul\BookingProduct\Repositories\BookingProductEventTicketRepository  $bookingProductEventTicketRepository
      * @param  \Webkul\BookingProduct\Repositories\BookingProductRentalSlotRepository  $bookingProductRentalSlotRepository
      * @param  \Webkul\BookingProduct\Repositories\BookingProductTableSlotRepository  $bookingProductTableSlotRepository
+     * @param  \Illuminate\Container\Container  $container
      * @return void
      */
     public function __construct(
@@ -29,10 +30,10 @@ class BookingProductRepository extends Repository
         BookingProductEventTicketRepository $bookingProductEventTicketRepository,
         BookingProductRentalSlotRepository $bookingProductRentalSlotRepository,
         BookingProductTableSlotRepository $bookingProductTableSlotRepository,
-        App $app
+        Container $container
     )
     {
-        parent::__construct($app);
+        parent::__construct($container);
 
         $this->typeRepositories['default'] = $bookingProductDefaultSlotRepository;
 
@@ -48,9 +49,9 @@ class BookingProductRepository extends Repository
     /**
      * Specify Model class name
      *
-     * @return mixed
+     * @return string
      */
-    function model()
+    function model(): string
     {
         return 'Webkul\BookingProduct\Contracts\BookingProduct';
     }
@@ -115,7 +116,10 @@ class BookingProductRepository extends Repository
      */
     public function formatSlots($data)
     {
-        if (isset($data['same_slot_all_days']) && ! $data['same_slot_all_days']) {
+        if (
+            isset($data['same_slot_all_days'])
+            && ! $data['same_slot_all_days']
+        ) {
             for ($i = 0; $i < 7; $i++) {
                 if (! isset($data['slots'][$i])) {
                     $data['slots'][$i] = [];
@@ -126,7 +130,7 @@ class BookingProductRepository extends Repository
 
                     foreach ($data['slots'][$i] as $slot) {
                         $slots[] = array_merge($slot, ['id' => $i . '_slot_' . $count]);
-                        
+
                         $count++;
                     }
 
@@ -176,15 +180,22 @@ class BookingProductRepository extends Repository
 
             if ($from > $to) {
                 unset($slots[$key]);
-                
+
                 continue;
             }
 
             $isOverLapping = false;
 
             foreach ($tempSlots as $slot) {
-                if (($slot['from'] <= $from && $slot['to'] >= $from)
-                    || ($slot['from'] <= $to && $slot['to'] >= $to)
+                if (
+                    (
+                        $slot['from'] <= $from
+                        && $slot['to'] >= $from
+                    )
+                    || (
+                        $slot['from'] <= $to
+                        && $slot['to'] >= $to
+                    )
                 ) {
                     $isOverLapping = true;
 

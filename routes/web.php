@@ -178,7 +178,7 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
             //    [\Webkul\CMS\Http\Controllers\Shop\PagePresenterController::class, 'presenter'])->name('shop.cms.page');
         });
     });
-Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => config('app.admin_url')], function () {
+Route::group(['middleware' => ['web', 'admin'], 'prefix' => config('app.admin_url')], function () {
     Route::prefix('sales')->group(function () {
         Route::prefix('orders')->group(function () {
             Route::get('complete/{id}', [OrderController::class, 'complete'])

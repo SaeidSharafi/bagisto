@@ -15,22 +15,13 @@ class SubscriptionController extends Controller
     protected $_config;
 
     /**
-     * Subscribers list repository.
-     *
-     * @var \Webkul\Core\Repositories\SubscribersListRepository
-     */
-    protected $subscribersListRepository;
-
-    /**
      * Create a new controller instance.
      *
      * @param  \Webkul\Core\Repositories\SubscribersListRepository  $subscribersListRepository
      * @return void
      */
-    public function __construct(SubscribersListRepository $subscribersListRepository)
+    public function __construct(protected SubscribersListRepository $subscribersListRepository)
     {
-        $this->subscribersListRepository = $subscribersListRepository;
-
         $this->_config = request('_config');
     }
 
@@ -69,18 +60,17 @@ class SubscriptionController extends Controller
      */
     public function update($id)
     {
-        $data = request()->all();
-
         $subscriber = $this->subscribersListRepository->findOrFail($id);
 
         $customer = $subscriber->customer;
 
         if (! is_null($customer)) {
-            $customer->subscribed_to_news_letter = $data['is_subscribed'];
+            $customer->subscribed_to_news_letter = request('is_subscribed');
+
             $customer->save();
         }
 
-        $result = $subscriber->update($data);
+        $result = $subscriber->update(request()->all());
 
         if ($result) {
             session()->flash('success', trans('admin::app.customers.subscribers.update-success'));

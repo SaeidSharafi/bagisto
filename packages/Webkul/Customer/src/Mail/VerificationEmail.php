@@ -12,19 +12,13 @@ class VerificationEmail extends Mailable
     use Queueable, SerializesModels;
 
     /**
-     * @var array
-     */
-    public $verificationData;
-
-    /**
      * Create a new mailable instance.
      *
      * @param  array  $verificationData
      * @return void
      */
-    public function __construct($verificationData)
+    public function __construct(public $verificationData)
     {
-        $this->verificationData = $verificationData;
     }
 
     /**
@@ -41,7 +35,6 @@ class VerificationEmail extends Mailable
             ->with('data', [
                 'email' => $this->verificationData['email'],
                 'token' => $this->verificationData['token'],
-                ]
-            );
+            ]);
     }
 }

@@ -80,13 +80,15 @@ return [
         'email-marketing'          => 'التسويق عبر البريد الإلكتروني',
         'campaigns'                => 'الحملات',
         'email-templates'          => 'قوالب البريد الإلكتروني',
+        'events'                   => 'Events',
+        'sitemaps'                 => 'Sitemaps',
         'discount'                 => 'خصم',
         'cms'                      => 'CMS',
         'transactions'             => 'المعاملات',
         'mode'                     => 'الوضع',
         'account-title'            => 'حساب',
     ],
-    
+
     'acl' => [
         'dashboard'                => 'لوحة التحكم',
         'sales'                    => 'المبيعات',
@@ -130,6 +132,13 @@ return [
         'promotions'               => 'الترقيات',
         'cart-rules'               => 'قواعد سلة التسوق',
         'catalog-rules'            => 'قواعد الكتالوج',
+        'email-marketing'          => 'Email Marketing',
+        'email-templates'          => 'Email Templates',
+        'campaigns'                => 'Campaigns',
+        'subscribers'              => 'Newsletter Subscribers',
+        'events'                   => 'Events',
+        'sitemaps'                 => 'Sitemaps',
+        'newsletter-subscriptions' => 'Newsletter Subscriptions',
     ],
 
     'dashboard' => [
@@ -248,6 +257,9 @@ return [
         'update-status'    => 'تحديث الحالة',
         'transaction-id'   => 'Transaction Id',
         'transaction-date' => 'Transaction Date',
+        'file-name'        => 'File Name',
+        'path'             => 'Path',
+        'link-for-google'  => 'Link For Google',
     ],
 
     'account' => [
@@ -274,6 +286,9 @@ return [
             'confirm-password' => 'تأكيد كلمة المرور',
             'back-link-title'  => 'العودة للتوقيع',
             'submit-btn-title' => 'بريد إلكتروني كلمة مرور إعادة تعيين وصلة',
+            'passwords'        => [
+                'throttled' => 'تحذير: لقد طلبت إعادة تعيين كلمة المرور مؤخرًا ، يرجى التحقق من بريدك الإلكتروني.',
+            ],
         ],
 
         'reset-password' => [
@@ -507,29 +522,31 @@ return [
                 'invoice-missing'   => 'معرف الفاتورة هذا غير موجود',
                 'transaction-saved' => 'تم حفظ الصفقة',
                 'already-paid'      => 'تم دفع هذه الفاتورة بالفعل',
+                'transaction-amount-exceeds' => 'المبلغ المحدد لهذه المعاملة أكبر من المبلغ الإجمالي للفاتورة.',
+                'transaction-amount-zero' => 'يمكن أن يكون مبلغ الصفقة صفرًا أو أقل',
             ],
         ],
     ],
 
     'catalog' => [
         'products' => [
-            'title'                         => 'المنتجات',
-            'add-product-btn-title'         => 'أضف المنتج',
-            'add-title'                     => 'أضف المنتج',
-            'edit-title'                    => 'حرر المنتج',
-            'save-btn-title'                => 'احفظ المنتج',
-            'general'                       => 'ألف-لمحة عامة',
-            'product-type'                  => 'نوع المنتج',
-            'type'                          => [
+            'title'                 => 'المنتجات',
+            'add-product-btn-title' => 'أضف المنتج',
+            'add-title'             => 'أضف المنتج',
+            'edit-title'            => 'حرر المنتج',
+            'save-btn-title'        => 'احفظ المنتج',
+            'general'               => 'ألف-لمحة عامة',
+            'product-type'          => 'نوع المنتج',
+            'type'                  => [
                 'simple'                        => 'بسيط',
                 'booking'                       => 'الحجز',
                 'bundle'                        => 'حزمة',
                 'downloadable'                  => 'للتحميل',
                 'grouped'                       => 'مجمعة',
-                'virtual'                       => 'افتراضية',            
+                'virtual'                       => 'افتراضية',
                 'configurable'                  => 'شكلي',
 
-            ], 
+            ],
             'simple'                        => 'بسيط',
             'configurable'                  => 'مهيء',
             'familiy'                       => 'الصفة الأسرة',
@@ -602,6 +619,11 @@ return [
             'save'                          => 'يحفظ',
             'cancel'                        => 'يلغي',
             'saved-inventory-message'       => 'تم حفظ مخزون المنتج بنجاح.',
+            'validations'                   => [
+                'quantity-required' => 'Quantity is required.',
+                'quantity-integer'  => 'Quantity should be integer.',
+                'quantity-min-zero' => 'Quantity should be greater then zero.',
+            ],
         ],
 
         'attributes' => [
@@ -673,6 +695,8 @@ return [
             'name'                 => 'اسم',
             'groups'               => 'المجموعات',
             'add-group-title'      => 'أضف المجموعة',
+            'edit-group-title'     => 'Edit Group',
+            'update-group-title'   => 'Update Group',
             'position'             => 'موضع',
             'attribute-code'       => 'الشفرة',
             'type'                 => 'النوع',
@@ -707,6 +731,7 @@ return [
             'image'                    => 'صورة',
             'filterable-attributes'    => 'سمات قابلة للفلترة',
             'attributes'               => 'السمات',
+            'mass-update-success'      => 'تم تحديث جميع الفئات المحددة بنجاح',
         ],
     ],
 
@@ -717,6 +742,8 @@ return [
         'yes'            => 'نعم.',
         'no'             => 'لا.',
         'delete'         => 'احذف',
+        'enable-atleast-one-shipping' => 'تفعيل طريقة شحن واحدة على الأقل.',
+        'enable-atleast-one-payment'  => 'تفعيل طريقة دفع واحدة على الأقل.',
 
         'tax-categories' => [
             'title'           => 'فئات الضرائب',
@@ -1269,6 +1296,21 @@ return [
             'delete-success' => 'تم حذف الحدث بنجاح.',
             'edit-error'     => 'لا يمكن تعديل هذا الحدث.',
         ],
+
+        'sitemaps' => [
+            'title'          => 'Sitemaps',
+            'add-title'      => 'Add Sitemap',
+            'edit-title'     => 'Edit Sitemap',
+            'save-btn-title' => 'Save',
+            'general'        => 'General',
+            'file-name'      => 'File Name',
+            'file-name-info' => 'Example: sitemap.xml',
+            'path'           => 'Path',
+            'path-info'      => 'Example: "/sitemap/" or "/" for base path',
+            'create-success' => 'Sitemap created successfully.',
+            'update-success' => 'Sitemap updated successfully.',
+            'delete-success' => 'Sitemap deleted successfully.',
+        ],
     ],
 
     'error' => [
@@ -1617,6 +1659,7 @@ return [
             'canceled'   => 'تم إلغاء الطلب',
             'pending'    => 'انتظار الطلب',
             'processing' => 'معالجة الطلب',
+            'pending_payment' => 'في انتظار الدفع',
         ],
     ],
 ];

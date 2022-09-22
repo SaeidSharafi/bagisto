@@ -13,54 +13,17 @@ class CustomerRepository extends Repository
     /**
      * Specify model class name.
      *
-     * @return mixed
+     * @return string
      */
-    public function model()
+    public function model(): string
     {
-        return \Webkul\Customer\Contracts\Customer::class;
-    }
-
-    /**
-     * Create customer.
-     *
-     * @param  array  $attributes
-     *
-     * @return mixed
-     */
-    public function create($attributes)
-    {
-        Event::dispatch('customer.registration.before');
-
-        $customer = parent::create($attributes);
-
-        Event::dispatch('customer.registration.after', $customer);
-
-        return $customer;
-    }
-
-    /**
-     * Update customer.
-     *
-     * @param  array  $attributes
-     *
-     * @return mixed
-     */
-    public function update(array $attributes, $id)
-    {
-        Event::dispatch('customer.update.before');
-
-        $customer = parent::update($attributes, $id);
-
-        Event::dispatch('customer.update.after', $customer);
-
-        return $customer;
+        return 'Webkul\Customer\Contracts\Customer';
     }
 
     /**
      * Check if customer has order pending or processing.
      *
      * @param  \Webkul\Customer\Models\Customer
-     *
      * @return boolean
      */
     public function checkIfCustomerHasOrderPendingOrProcessing($customer)
@@ -74,7 +37,6 @@ class CustomerRepository extends Repository
      * Check if bulk customers, if they have order pending or processing.
      *
      * @param  array
-     *
      * @return boolean
      */
     public function checkBulkCustomerIfTheyHaveOrderPendingOrProcessing($customerIds)
@@ -123,8 +85,7 @@ class CustomerRepository extends Repository
      *
      * @param  array  $data
      * @param  \Webkul\Customer\Models\Customer  $customer
-     * @param  string  $type
-     *
+     * @param  string $type
      * @return void
      */
     public function uploadImages($data, $customer, $type = 'image')
@@ -133,8 +94,8 @@ class CustomerRepository extends Repository
             $request = request();
 
             foreach ($data[$type] as $imageId => $image) {
-                $file = $type.'.'.$imageId;
-                $dir = 'customer/'.$customer->id;
+                $file = $type . '.' . $imageId;
+                $dir = 'customer/' . $customer->id;
 
                 if ($request->hasFile($file)) {
                     if ($customer->{$type}) {
@@ -159,7 +120,6 @@ class CustomerRepository extends Repository
      * Sync new registered customer data.
      *
      * @param  \Webkul\Customer\Contracts\Customer  $customer
-     *
      * @return mixed
      */
     public function syncNewRegisteredCustomerInformations($customer)

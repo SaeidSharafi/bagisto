@@ -37,10 +37,10 @@ class CustomerProfileUpdateRequest extends FormRequest
             'oldpassword'           => 'present',
             'password_confirmation' => 'required_with:password',
             'image.*'               => 'mimes:bmp,jpeg,jpg,png,webp',
-            'national_code'         => ['filled','unique:customers,national_code,'.$id,
-                                        Rule::when(function ($input) {
-                                            return !isset($input->is_foreign);
-                                        },new Nationalcode)],
+            'national_code'         => [
+                'filled', 'unique:customers,national_code,'.$id,
+                Rule::when(!isset($input->is_foreign), [new Nationalcode()])
+            ],
             'father_name'           => 'nullable',
             'education_field'       => 'nullable',
         ];
@@ -61,7 +61,7 @@ class CustomerProfileUpdateRequest extends FormRequest
             'image.*'               => __('admin::app.catalog.categories.image'),
             'national_code'         => __('app.customer.account.profile.national_code'),
             'father_name'           => __('app.customer.account.profile.father_name'),
-            'education_field'       => __('app.customer.account.profile.education_field') ,
+            'education_field'       => __('app.customer.account.profile.education_field'),
         ];
     }
 }

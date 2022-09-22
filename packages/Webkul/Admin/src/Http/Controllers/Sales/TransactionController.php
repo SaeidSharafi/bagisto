@@ -9,6 +9,7 @@ use Webkul\Payment\Facades\Payment;
 use Webkul\Sales\Repositories\InvoiceRepository;
 use Webkul\Sales\Repositories\OrderRepository;
 use Webkul\Sales\Repositories\OrderTransactionRepository;
+use Webkul\Sales\Repositories\ShipmentRepository;
 
 class TransactionController extends Controller
 {
@@ -20,47 +21,22 @@ class TransactionController extends Controller
     protected $_config;
 
     /**
-     * Order repository instance.
-     *
-     * @var \Webkul\Sales\Repositories\OrderRepository
-     */
-    protected $orderRepository;
-
-    /**
-     * Order transaction repository instance.
-     *
-     * @var \Webkul\Sales\Repositories\OrderTransactionRepository
-     */
-    protected $orderTransactionRepository;
-
-    /**
-     * Invoice repository instance.
-     *
-     * @var \Webkul\Sales\Repositories\InvoiceRepository
-     */
-    protected $invoiceRepository;
-
-    /**
      * Create a new controller instance.
      *
      * @param  \Webkul\Sales\Repositories\OrderRepository  $orderRepository
      * @param  \Webkul\Sales\Repositories\OrderTransactionRepository  $orderTransactionRepository
      * @param  \Webkul\Sales\Repositories\InvoiceRepository  $invoiceRepository
+     * @param  \Webkul\Sales\Repositories\ShipmentRepository $shipmentRepository
      * @return void
      */
     public function __construct(
-        OrderRepository $orderRepository,
-        OrderTransactionRepository $orderTransactionRepository,
-        InvoiceRepository $invoiceRepository) {
-        $this->middleware('admin');
-
+        protected OrderRepository $orderRepository,
+        protected OrderTransactionRepository $orderTransactionRepository,
+        protected InvoiceRepository $invoiceRepository,
+        protected ShipmentRepository $shipmentRepository
+    )
+    {
         $this->_config = request('_config');
-
-        $this->orderRepository = $orderRepository;
-
-        $this->orderTransactionRepository = $orderTransactionRepository;
-
-        $this->invoiceRepository = $invoiceRepository;
     }
 
     /**
@@ -104,52 +80,68 @@ class TransactionController extends Controller
 
         $invoice = $this->invoiceRepository->where('increment_id', $request->invoice_id)->first();
 
-        if ($invoice) {
-            if ($invoice->state == 'paid') {
-                session()->flash('info', trans('admin::app.sales.transactions.response.already-paid'));
+        if (! $invoice) {
+            session()->flash('error', trans('admin::app.sales.transactions.response.invoice-missing'));
 
-                return redirect(route('admin.sales.transactions.index'));
-            }
+            return redirect()->back();
+        }
 
-            $order = $this->orderRepository->find($invoice->order_id);
+        $transactionAmtBefore = $this->orderTransactionRepository->where('invoice_id', $invoice->id)->sum('amount');
+        
+        $transactionAmtfinal = $request->amount + $transactionAmtBefore;
 
-            $randomId = random_bytes(20);
-
-            $this->orderTransactionRepository->create([
-                'transaction_id' => bin2hex($randomId),
-                'type'           => $request->payment_method,
-                'payment_method' => $request->payment_method,
-                'invoice_id'     => $invoice->id,
-                'order_id'       => $invoice->order_id,
-                'amount'         => $request->amount,
-                'status'         => 'paid',
-                'data'           => json_encode([
-                    'paidAmount' => $request->amount,
-                ]),
-            ]);
-
-            $transactionTotal = $this->orderTransactionRepository->where('invoice_id', $invoice->id)->sum('amount');
-
-            if ($transactionTotal >= $invoice->base_grand_total) {
-                $shipments = $this->shipmentRepository->where('order_id', $invoice->order_id)->first();
-
-                if (isset($shipments)) {
-                    $this->orderRepository->updateOrderStatus($order, 'completed');
-                } else {
-                    $this->orderRepository->updateOrderStatus($order, 'processing');
-                }
-
-                $this->invoiceRepository->updateState($invoice, 'paid');
-            }
-
-            session()->flash('success', trans('admin::app.sales.transactions.response.transaction-saved'));
+        if ($invoice->state == 'paid') {
+            session()->flash('info', trans('admin::app.sales.transactions.response.already-paid'));
 
             return redirect(route('admin.sales.transactions.index'));
         }
 
-        session()->flash('error', trans('admin::app.sales.transactions.response.invoice-missing'));
+        if ($transactionAmtfinal > $invoice->base_grand_total) {
+            session()->flash('info', trans('admin::app.sales.transactions.response.transaction-amount-exceeds'));
 
-        return redirect()->back();
+            return redirect(route('admin.sales.transactions.create'));
+        }
+        
+        if ($request->amount <= 0) {
+            session()->flash('info', trans('admin::app.sales.transactions.response.transaction-amount-zero'));
+
+            return redirect(route('admin.sales.transactions.create'));
+        }
+
+        $order = $this->orderRepository->find($invoice->order_id);
+
+        $randomId = random_bytes(20);
+
+        $this->orderTransactionRepository->create([
+            'transaction_id' => bin2hex($randomId),
+            'type'           => $request->payment_method,
+            'payment_method' => $request->payment_method,
+            'invoice_id'     => $invoice->id,
+            'order_id'       => $invoice->order_id,
+            'amount'         => $request->amount,
+            'status'         => 'paid',
+            'data'           => json_encode([
+                'paidAmount' => $request->amount,
+            ]),
+        ]);
+
+        $transactionTotal = $this->orderTransactionRepository->where('invoice_id', $invoice->id)->sum('amount');
+
+        if ($transactionTotal >= $invoice->base_grand_total) {
+            $shipments = $this->shipmentRepository->where('order_id', $invoice->order_id)->first();
+
+            if (isset($shipments)) {
+                $this->orderRepository->updateOrderStatus($order, 'completed');
+            } else {
+                $this->orderRepository->updateOrderStatus($order, 'processing');
+            }
+
+            $this->invoiceRepository->updateState($invoice, 'paid');
+        }
+
+        session()->flash('success', trans('admin::app.sales.transactions.response.transaction-saved'));
+
+        return redirect(route('admin.sales.transactions.index'));
     }
 
     /**

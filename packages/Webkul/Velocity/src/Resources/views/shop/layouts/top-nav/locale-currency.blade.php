@@ -1,7 +1,10 @@
 @php
     $searchQuery = request()->input();
 
-    if ($searchQuery && ! empty($searchQuery)) {
+    if (
+        $searchQuery
+        && ! empty($searchQuery)
+    ) {
         $searchQuery = implode('&', array_map(
             function ($v, $k) {
                 if (is_array($v)) {
@@ -40,7 +43,10 @@
                 @endif>
 
                 @foreach (core()->getCurrentChannel()->locales()->orderBy('name')->get() as $locale)
-                    @if (isset($searchQuery) && $searchQuery)
+                    @if (
+                        isset($searchQuery)
+                        && $searchQuery
+                    )
                         <option
                             value="?{{ $searchQuery }}&locale={{ $locale->code }}"
                             {{ $locale->code == app()->getLocale() ? 'selected' : '' }}>
@@ -65,11 +71,18 @@
     @if (core()->getCurrentChannel()->currencies->count() > 1)
         <div class="d-inline-block">
             <div class="dropdown">
+            <span class="currency-icon">
+                {{ core()->getCurrentCurrency()->symbol }}
+            </span>
+
                <select
                     class="btn btn-link dropdown-toggle control locale-switcher styled-select"
                     onchange="window.location.href = this.value" aria-label="Locale">
                     @foreach (core()->getCurrentChannel()->currencies as $currency)
-                        @if (isset($searchQuery) && $searchQuery)
+                        @if (
+                            isset($searchQuery)
+                            && $searchQuery
+                        )
                             <option value="?{{ $searchQuery }}&currency={{ $currency->code }}" {{ $currency->code == core()->getCurrentCurrencyCode() ? 'selected' : '' }}>{{ $currency->code }}</option>
                         @else
                             <option value="?currency={{ $currency->code }}" {{ $currency->code == core()->getCurrentCurrencyCode() ? 'selected' : '' }}>{{ $currency->code }}</option>

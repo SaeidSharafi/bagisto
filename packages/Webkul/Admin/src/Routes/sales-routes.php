@@ -10,7 +10,7 @@ use Webkul\Admin\Http\Controllers\Sales\TransactionController;
 /**
  * Sales routes.
  */
-Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => config('app.admin_url')], function () {
+Route::group(['middleware' => ['web', 'admin'], 'prefix' => config('app.admin_url')], function () {
     Route::prefix('sales')->group(function () {
         /**
          * Orders routes.
@@ -89,7 +89,7 @@ Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => conf
         ])->name('admin.sales.refunds.create');
 
         Route::post('/refunds/create/{order_id}', [RefundController::class, 'store'])->defaults('_config', [
-            'redirect' => 'admin.sales.orders.view',
+            'redirect' => 'admin.sales.refunds.index',
         ])->name('admin.sales.refunds.store');
 
         Route::post('/refunds/update-qty/{order_id}', [RefundController::class, 'updateQty'])->defaults('_config', [

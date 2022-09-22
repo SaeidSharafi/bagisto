@@ -101,6 +101,10 @@
             .text-center {
                 text-align: center;
             }
+
+             .logo {
+                margin-left: 300px;
+            }
         </style>
     </head>
 

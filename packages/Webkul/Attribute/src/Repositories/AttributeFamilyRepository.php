@@ -2,55 +2,35 @@
 
 namespace Webkul\Attribute\Repositories;
 
-use Webkul\Core\Eloquent\Repository;
-use Illuminate\Support\Facades\Event;
-use Webkul\Attribute\Repositories\AttributeRepository;
-use Webkul\Attribute\Repositories\AttributeGroupRepository;
-use Illuminate\Container\Container as App;
+use Illuminate\Container\Container;
 use Illuminate\Support\Str;
+use Webkul\Core\Eloquent\Repository;
 
 class AttributeFamilyRepository extends Repository
 {
     /**
-     * AttributeRepository object
-     *
-     * @var \Webkul\Attribute\Repositories\AttributeRepository
-     */
-    protected $attributeRepository;
-
-    /**
-     * AttributeGroupRepository object
-     *
-     * @var \Webkul\Attribute\Repositories\AttributeGroupRepository
-     */
-    protected $attributeGroupRepository;
-
-    /**
-     * Create a new controller instance.
+     * Create a new repository instance.
      *
      * @param  \Webkul\Attribute\Repositories\AttributeRepository  $attributeRepository
      * @param  \Webkul\Attribute\Repositories\AttributeGroupRepository  $attributeGroupRepository
+     * @param  \Illuminate\Container\Container  $container
      * @return void
      */
     public function __construct(
-        AttributeRepository $attributeRepository,
-        AttributeGroupRepository $attributeGroupRepository,
-        App $app
+        protected AttributeRepository $attributeRepository,
+        protected AttributeGroupRepository $attributeGroupRepository,
+        Container $container
     )
     {
-        $this->attributeRepository = $attributeRepository;
-
-        $this->attributeGroupRepository = $attributeGroupRepository;
-
-        parent::__construct($app);
+        parent::__construct($container);
     }
 
     /**
      * Specify Model class name
      *
-     * @return mixed
+     * @return string
      */
-    function model()
+    function model(): string
     {
         return 'Webkul\Attribute\Contracts\AttributeFamily';
     }
@@ -61,8 +41,6 @@ class AttributeFamilyRepository extends Repository
      */
     public function create(array $data)
     {
-        Event::dispatch('catalog.attribute_family.create.before');
-
         $attributeGroups = isset($data['attribute_groups']) ? $data['attribute_groups'] : [];
 
         unset($data['attribute_groups']);
@@ -87,8 +65,6 @@ class AttributeFamilyRepository extends Repository
             }
         }
 
-        Event::dispatch('catalog.attribute_family.create.after', $family);
-
         return $family;
     }
 
@@ -101,8 +77,6 @@ class AttributeFamilyRepository extends Repository
     public function update(array $data, $id, $attribute = "id")
     {
         $family = $this->find($id);
-
-        Event::dispatch('catalog.attribute_family.update.before', $id);
 
         $family->update($data);
 
@@ -154,8 +128,6 @@ class AttributeFamilyRepository extends Repository
             $this->attributeGroupRepository->delete($attributeGroupId);
         }
 
-        Event::dispatch('catalog.attribute_family.update.after', $family);
-
         return $family;
     }
 
@@ -170,7 +142,10 @@ class AttributeFamilyRepository extends Repository
         $trimmed = [];
 
         foreach ($attributeFamilies as $key => $attributeFamily) {
-            if ($attributeFamily->name != null || $attributeFamily->name != "") {
+            if (
+                $attributeFamily->name != null
+                || $attributeFamily->name != ""
+            ) {
                 $trimmed[$key] = [
                     'id'   => $attributeFamily->id,
                     'code' => $attributeFamily->code,
@@ -180,18 +155,5 @@ class AttributeFamilyRepository extends Repository
         }
 
         return $trimmed;
-    }
-
-    /**
-     * @param  int  $id
-     * @return void
-     */
-    public function delete($id)
-    {
-        Event::dispatch('catalog.attribute_family.delete.before', $id);
-
-        parent::delete($id);
-
-        Event::dispatch('catalog.attribute_family.delete.after', $id);
     }
 }

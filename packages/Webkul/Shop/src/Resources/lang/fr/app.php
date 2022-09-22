@@ -372,6 +372,7 @@ return [
                 'share-wishlist'       => 'Share Wishlist',
                 'wishlist-sharing'     => 'Wishlist Sharing',
                 'shared-link'          => 'Shared Link',
+                'copy'                 => 'Copy',
                 'visibility'           => 'Visibility',
                 'public'               => 'Public',
                 'private'              => 'Private',
@@ -488,6 +489,7 @@ return [
                 'missing_links'   => 'Il manque des liens téléchargeables pour ce produit.',
                 'qty_missing'     => 'Au moins un produit doit avoir plus d\'une quantité.',
                 'qty_impossible'  => 'Impossible d\'ajouter plus d\'un de ces produits au panier.',
+                'select_hourly_duration' => 'Sélectionnez une durée de créneau d\'une heure.',
             ],
 
             'create-error'             => 'J\'ai rencontré un problème lors de la création d\'une instance de panier.',
@@ -499,6 +501,8 @@ return [
             'proceed-to-checkout'      => 'Passer à la caisse',
             'remove'                   => 'Supprimer',
             'remove-link'              => 'Supprimer',
+            'remove-all-items'         => 'Supprimer tous les éléments',
+            'confirm-action'           => 'Confirmez cette action?',
             'move-to-wishlist'         => 'Placer dans la liste de souhaits',
             'move-to-wishlist-success' => 'L\'article a été déplacé vers la liste de souhaits avec succès.',
             'move-to-wishlist-error'   => 'Impossible de déplacer l\'élément vers la liste de souhaits, veuillez réessayer plus tard.',
@@ -516,6 +520,7 @@ return [
                 'error_remove'   => 'Aucun article à retirer du panier.',
                 'success'        => 'L\'article a été ajouté au panier avec succès.',
                 'success-remove' => 'L\'article a été supprimé avec succès du panier.',
+                'remove-all-items'          => 'Remove all items',
                 'error-add'      => 'L\'article ne peut pas être ajouté au panier, veuillez réessayer plus tard.',
                 'inactive'       => 'Un article est inactif et a été supprimé du panier.',
                 'inactive-add'   => 'L\'article inactif ne peut pas être ajouté au panier.',
@@ -533,10 +538,12 @@ return [
 
             'minimum-order-message'     => 'Le montant minimum de commande est de :amount',
             'suspended-account-message' => 'Your account has been suspended.',
+            'inactive-account-message' =>  'Your account has been inactive.',
             'check-shipping-address'    => 'Please check shipping address.',
             'check-billing-address'     => 'Please check billing address.',
             'specify-shipping-method'   => 'Please specify shipping method.',
             'specify-payment-method'    => 'Please specify payment method.',
+            'rule-applied'              => 'Cart rule applied',
         ],
 
         'onepage' => [
@@ -607,6 +614,7 @@ return [
             'invalid-coupon'      => 'Le code promo n\'est pas valide.',
             'success-coupon'      => 'Code promo appliqué avec succès.',
             'coupon-apply-issue'  => 'Le code promo ne peut pas être appliqué.',
+            'coupon-already-applied' => 'Code promo déjà appliqué.',
         ],
 
         'success' => [

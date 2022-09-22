@@ -370,6 +370,7 @@ return [
                 'share-wishlist'       => 'Share Wishlist',
                 'wishlist-sharing'     => 'Wishlist Sharing',
                 'shared-link'          => 'Shared Link',
+                'copy'                 => 'Copy',
                 'visibility'           => 'Visibility',
                 'public'               => 'Public',
                 'private'              => 'Private',
@@ -490,6 +491,7 @@ return [
                 'missing_links'   => 'لینک های قابل بارگیری برای این محصول وجود ندارد',
                 'qty_missing'     => 'حداقل یک محصول باید بیش از 1 مقدار داشته باشد.',
                 'qty_impossible'  => 'نمی توان بیش از یکی از این محصولات را به سبد خرید اضافه کرد',
+                'select_hourly_duration' => 'مدت زمان یک ساعت را انتخاب کنید.',
             ],
             'create-error'             => 'هنگام تهیه نمونه سبد خرید ، با برخی از شماره ها روبرو شد',
             'title'                    => 'سبد خرید',
@@ -500,6 +502,8 @@ return [
             'proceed-to-checkout'      => 'ادامه به پرداخت',
             'remove'                   => 'برداشتن',
             'remove-link'              => 'برداشتن',
+            'remove-all-items'         => 'Remove all items',
+            'confirm-action'           => 'Confirm this action?',
             'move-to-wishlist'         => 'انتقال به لیست دلخواه',
             'move-to-wishlist-success' => 'مورد به لیست دلخواه منتقل شد',
             'move-to-wishlist-error'   => 'نمی توان مورد را به لیست علاقه مندی ها انتقال داد ، لطفا بعداً دوباره امتحان کنید',
@@ -516,6 +520,7 @@ return [
                 'error_remove'   => 'هیچ موردی برای حذف از سبد خرید وجود ندارد',
                 'success'        => 'مورد با موفقیت به سبد خرید اضافه شد',
                 'success-remove' => 'مورد با موفقیت از سبد خرید حذف شد',
+                'success-all-remove' => 'All items is successfully removed from the cart.',
                 'error-add'      => 'لطفاً موردی را به سبد خرید اضافه نکرد ، لطفا بعداً دوباره امتحان کنید',
                 'inactive'       => 'An item is inactive and was removed from cart',
                 'inactive-add'   => 'Inactive item cannot be added to cart',
@@ -530,10 +535,12 @@ return [
             ],
             'minimum-order-message'     => 'حداقل مقدار سفارش است :amount',
             'suspended-account-message' => 'Your account has been suspended.',
+            'inactive-account-message' =>  'Your account has been inactive.',
             'check-shipping-address'    => 'Please check shipping address.',
             'check-billing-address'     => 'Please check billing address.',
             'specify-shipping-method'   => 'Please specify shipping method.',
             'specify-payment-method'    => 'Please specify payment method.',
+            'rule-applied'              => 'Cart rule applied',
         ],
 
         'onepage' => [
@@ -604,6 +611,7 @@ return [
             'invalid-coupon'      => 'کد کوپن نامعتبر است',
             'success-coupon'      => 'کد کوپن با موفقیت اعمال شد',
             'coupon-apply-issue'  => 'کد کوپن نمی تواند اعمال شود',
+            'coupon-already-applied' => 'کد کوپن قبلاً اعمال شده است.',
         ],
 
         'success' => [

@@ -9,7 +9,7 @@ use Webkul\Product\Http\Controllers\ProductController;
 /**
  * Catalog routes.
  */
-Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => config('app.admin_url')], function () {
+Route::group(['middleware' => ['web', 'admin'], 'prefix' => config('app.admin_url')], function () {
     Route::prefix('catalog')->group(function () {
         /**
          * Sync route.
@@ -103,6 +103,10 @@ Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => conf
         Route::post('categories/massdelete', [CategoryController::class, 'massDestroy'])->defaults('_config', [
             'redirect' => 'admin.catalog.categories.index',
         ])->name('admin.catalog.categories.massdelete');
+
+        Route::post('categories/mass-update', [CategoryController::class, 'massUpdate'])->defaults('_config', [
+            'redirect' => 'admin.catalog.categories.index',
+        ])->name('admin.catalog.categories.mass-update');
 
         Route::post('/categories/product/count', [CategoryController::class, 'categoryProductCount'])->name('admin.catalog.categories.product.count');
 

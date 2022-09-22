@@ -14,7 +14,7 @@
         }
     ],
     "require": {
-        "php": "^8.0.2",
+        "php": "^8.1",
         "ext-curl": "*",
         "ext-json": "*",
         "astrotomic/laravel-translatable": "^11.0.0",
@@ -22,7 +22,7 @@
         "bagisto/rest-api": "dev-master",
         "bagistobrasil/bagisto-product-social-share": "^0.1.2",
         "barryvdh/laravel-debugbar": "^3.1",
-        "barryvdh/laravel-dompdf": "^1.0.0",
+        "barryvdh/laravel-dompdf": "^2.0.0",
         "barryvdh/laravel-elfinder": "^0.5.1",
         "diglactic/laravel-breadcrumbs": "^7.0",
         "doctrine/dbal": "^3.3",
@@ -36,7 +36,7 @@
         "khaled.alshamaa/ar-php": "^6.0.0",
         "konekt/concord": "^1.2",
         "kuro/laravel-sms": "@dev",
-        "laravel/framework": "^9.9",
+        "laravel/framework": "^9.0",
         "laravel/sanctum": "^2.12",
         "laravel/scout": "^9.0",
         "laravel/socialite": "^5.0",
@@ -48,7 +48,8 @@
         "paypal/paypal-checkout-sdk": "1.0.1",
         "prettus/l5-repository": "^2.6",
         "pusher/pusher-php-server": "^7.0",
-        "spatie/laravel-ignition": "^1.0"
+        "spatie/laravel-ignition": "^1.0",
+        "spatie/laravel-sitemap": "^6.1"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.12.3",
@@ -120,8 +121,9 @@
             "PayIr\\": "packages/PayIr/src",
             "MellatGateway\\": "packages/MellatGateway/src",
             "Kuro\\LaravelSms\\": "packages/Kuro/LaravelSms/src",
+            "Ridhima\\MediaManager\\": "packages/Ridhima/MediaManager/src",
             "Webkul\\Notification\\": "packages/Webkul/Notification/src",
-            "Ridhima\\MediaManager\\": "packages/Ridhima/MediaManager/src"
+            "Webkul\\Sitemap\\": "packages/Webkul/Sitemap/src"
         }
     },
     "autoload-dev": {
@@ -157,14 +159,16 @@
             "@php artisan migrate:fresh --env=testing",
             "vendor/bin/codecept run unit",
             "vendor/bin/codecept run functional",
-            "vendor/bin/codecept run trigger"
+            "vendor/bin/codecept run trigger",
+            "vendor/bin/codecept run api"
         ],
         "test-win": [
             "@set -e",
             "@php artisan migrate:fresh --env=testing",
             "vendor\\bin\\codecept.bat run unit",
             "vendor\\bin\\codecept.bat run functional",
-            "vendor\\bin\\codecept.bat run trigger"
+            "vendor\\bin\\codecept.bat run trigger",
+            "vendor\\bin\\codecept.bat run api"
         ]
     },
     "config": {

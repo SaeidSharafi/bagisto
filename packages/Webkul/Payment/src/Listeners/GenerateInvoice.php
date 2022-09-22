@@ -3,7 +3,6 @@ namespace Webkul\Payment\Listeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
-
 use Webkul\Sales\Repositories\OrderRepository;
 use Webkul\Sales\Repositories\InvoiceRepository;
 
@@ -14,20 +13,6 @@ use Webkul\Sales\Repositories\InvoiceRepository;
 class GenerateInvoice
 {
     /**
-     * OrderRepository object
-     *
-     * @var \Webkul\Sales\Repositories\OrderRepository
-     */
-    protected $orderRepository;
-
-    /**
-     * InvoiceRepository object
-     *
-     * @var \Webkul\Sales\Repositories\InvoiceRepository
-     */
-    protected $invoiceRepository;
-
-    /**
      * Create the event listener.
      *
      * @param  Webkul\Sales\Repositories\OrderRepository $orderRepository
@@ -35,13 +20,11 @@ class GenerateInvoice
      * @return void
      */
     public function __construct(
-        OrderRepository $orderRepository,
-        InvoiceRepository $invoiceRepository
-        )
-        {
-            $this->orderRepository = $orderRepository;
-            $this->invoiceRepository = $invoiceRepository;
-        }
+        protected OrderRepository $orderRepository,
+        protected InvoiceRepository $invoiceRepository
+    )
+    {
+    }
 
     /**
      * Generate a new invoice.
@@ -51,12 +34,26 @@ class GenerateInvoice
      */
     public function handle($order)
     {
-        if ($order->payment->method == 'cashondelivery' && core()->getConfigData('sales.paymentmethods.cashondelivery.generate_invoice')) {
-            $this->invoiceRepository->create($this->prepareInvoiceData($order), core()->getConfigData('sales.paymentmethods.cashondelivery.invoice_status'), core()->getConfigData('sales.paymentmethods.cashondelivery.order_status'));
+        if (
+            $order->payment->method == 'cashondelivery'
+            && core()->getConfigData('sales.paymentmethods.cashondelivery.generate_invoice')
+        ) {
+            $this->invoiceRepository->create(
+                $this->prepareInvoiceData($order),
+                core()->getConfigData('sales.paymentmethods.cashondelivery.invoice_status'),
+                core()->getConfigData('sales.paymentmethods.cashondelivery.order_status')
+            );
         }
 
-        if ($order->payment->method == 'moneytransfer' && core()->getConfigData('sales.paymentmethods.moneytransfer.generate_invoice')) {
-            $this->invoiceRepository->create($this->prepareInvoiceData($order), core()->getConfigData('sales.paymentmethods.moneytransfer.invoice_status'), core()->getConfigData('sales.paymentmethods.moneytransfer.order_status'));
+        if (
+            $order->payment->method == 'moneytransfer'
+            && core()->getConfigData('sales.paymentmethods.moneytransfer.generate_invoice')
+        ) {
+            $this->invoiceRepository->create(
+                $this->prepareInvoiceData($order),
+                core()->getConfigData('sales.paymentmethods.moneytransfer.invoice_status'),
+                core()->getConfigData('sales.paymentmethods.moneytransfer.order_status')
+            );
         }
     }
 

@@ -53,9 +53,9 @@ class Install extends Command
         $result = $this->call('db:seed');
         $this->info($result);
 
-        // running `php artisan vendor:publish --all`
+        // running `php artisan bagisto:publish --force`
         $this->warn('Step: Publishing assets and configurations...');
-        $result = $this->call('vendor:publish', ['--all' => true, '--force' => false]);
+        $result = $this->call('bagisto:publish', ['--force' => false]);
         $this->info($result);
 
         // running `php artisan storage:link`

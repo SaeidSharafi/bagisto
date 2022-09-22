@@ -2,7 +2,7 @@
 
 namespace Webkul\SocialLogin\Repositories;
 
-use Illuminate\Container\Container as App;
+use Illuminate\Container\Container;
 use Webkul\Core\Eloquent\Repository;
 use Webkul\Customer\Repositories\CustomerRepository;
 use Webkul\Customer\Repositories\CustomerGroupRepository;
@@ -10,40 +10,22 @@ use Webkul\Customer\Repositories\CustomerGroupRepository;
 class CustomerSocialAccountRepository extends Repository
 {
     /**
-     * CustomerRepository object
-     *
-     * @var \Webkul\Customer\Repositories\CustomerRepository
-     */
-    protected $customerRepository;
-
-    /**
-     * CustomerGroupRepository object
-     *
-     * @var \Webkul\Customer\Repositories\CustomerGroupRepository
-     */
-    protected $customerGroupRepository;
-
-    /**
      * Create a new reposotory instance.
      *
-     * @param  \Webkul\Customer\Repositories\CustomerRepository       $customerRepository
+     * @param  \Webkul\Customer\Repositories\CustomerRepository  $customerRepository
      * @param  \Webkul\Customer\Repositories\CustomerGroupRepository  $customerGroupRepository
-     * @param  \Illuminate\Container\Container  $app
+     * @param  \Illuminate\Container\Container  $container
      * @return void
      */
     public function __construct(
-        CustomerRepository $customerRepository,
-        CustomerGroupRepository $customerGroupRepository,
-        App $app
+        protected CustomerRepository $customerRepository,
+        protected CustomerGroupRepository $customerGroupRepository,
+        Container $container
     )
     {
-        $this->customerRepository = $customerRepository;
-
-        $this->customerGroupRepository = $customerGroupRepository;
-
         $this->_config = request('_config');
 
-        parent::__construct($app);
+        parent::__construct($container);
     }
 
     /**
@@ -51,7 +33,7 @@ class CustomerSocialAccountRepository extends Repository
      *
      * @return string
      */
-    public function model()
+    public function model(): string
     {
         return 'Webkul\SocialLogin\Contracts\CustomerSocialAccount';
     }
@@ -81,7 +63,7 @@ class CustomerSocialAccountRepository extends Repository
                     'first_name'        => $names['first_name'],
                     'last_name'         => $names['last_name'],
                     'status'            => 1,
-                    'is_verified'       => core()->getConfigData('customer.settings.email.verification') ? 0 : 1,
+                    'is_verified'       => ! core()->getConfigData('customer.settings.email.verification'),
                     'customer_group_id' => $this->customerGroupRepository->findOneWhere(['code' => 'general'])->id
                 ]);
             }

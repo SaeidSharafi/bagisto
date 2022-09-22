@@ -77,6 +77,8 @@ return [
         'email-marketing'          => 'Email Marketing',
         'campaigns'                => 'Campaigns',
         'email-templates'          => 'Email Templates',
+        'events'                   => 'Events',
+        'sitemaps'                 => 'Sitemaps',
         'discount'                 => 'İndirim',
         'cms'                      => 'CMS',
         'transactions'             => 'işlemler',
@@ -127,6 +129,13 @@ return [
         'promotions'               => 'Promosyonlar',
         'cart-rules'               => 'Alışveriş Sepeti Kuralları',
         'catalog-rules'            => 'Katalog Kuralları',
+        'email-marketing'          => 'Email Marketing',
+        'email-templates'          => 'Email Templates',
+        'campaigns'                => 'Campaigns',
+        'subscribers'              => 'Newsletter Subscribers',
+        'events'                   => 'Events',
+        'sitemaps'                 => 'Sitemaps',
+        'newsletter-subscriptions' => 'Newsletter Subscriptions',
     ],
 
     'dashboard' => [
@@ -244,6 +253,9 @@ return [
         'update-status'    => 'Durum Güncelle',
         'transaction-id'   => 'İşlem Id',
         'transaction-date' => 'İşlem Tarihi',
+        'file-name'        => 'File Name',
+        'path'             => 'Path',
+        'link-for-google'  => 'Link For Google',
     ],
 
     'account' => [
@@ -504,6 +516,8 @@ return [
                 'invoice-missing'   => 'Bu fatura kimliği mevcut değil',
                 'transaction-saved' => 'İşlem kaydedildi',
                 'already-paid'      => 'Bu fatura zaten ödendi',
+                'transaction-amount-exceeds' => 'The specified amount of this transaction exceeds the total amount of the invoice.',
+                'transaction-amount-zero' => 'Transaction amount can be zero or less',
             ],
         ],
     ],
@@ -596,6 +610,11 @@ return [
             'save'                          => 'Kaydet',
             'cancel'                        => 'İptal',
             'saved-inventory-message'       => 'Ürün envanteri başarıyla kaydedildi.',
+            'validations'                   => [
+                'quantity-required' => 'Quantity is required.',
+                'quantity-integer'  => 'Quantity should be integer.',
+                'quantity-min-zero' => 'Quantity should be greater then zero.',
+            ],
         ],
 
         'attributes' => [
@@ -666,6 +685,8 @@ return [
             'name'                 => 'Tanımı',
             'groups'               => 'Gruplar',
             'add-group-title'      => 'Grup Ekle',
+            'edit-group-title'     => 'Edit Group',
+            'update-group-title'   => 'Update Group',
             'position'             => 'Konum',
             'attribute-code'       => 'Nitelik Kodu',
             'type'                 => 'Tipi',
@@ -700,6 +721,7 @@ return [
             'image'                    => 'Görsel',
             'filterable-attributes'    => 'Filtrelenebilir Nitelikler',
             'attributes'               => 'Nitelikler',
+            'mass-update-success'      => 'All the selected categories have been updated successfully',
         ],
     ],
 
@@ -710,6 +732,8 @@ return [
         'yes'            => 'Evet',
         'no'             => 'Hayır',
         'delete'         => 'Sil',
+        'enable-atleast-one-shipping' => 'En az bir gönderim yöntemini etkinleştirin.',
+        'enable-atleast-one-payment'  => 'En az bir ödeme yöntemini etkinleştirin.',
 
         'tax-categories' => [
             'title'           => 'Vergi Kategorileri',
@@ -1256,6 +1280,21 @@ return [
             'delete-success' => 'Etkinlik başarıyla silindi.',
             'edit-error'     => 'Bu etkinlik düzenlenemiyor.',
         ],
+
+        'sitemaps' => [
+            'title'          => 'Sitemaps',
+            'add-title'      => 'Add Sitemap',
+            'edit-title'     => 'Edit Sitemap',
+            'save-btn-title' => 'Save',
+            'general'        => 'General',
+            'file-name'      => 'File Name',
+            'file-name-info' => 'Example: sitemap.xml',
+            'path'           => 'Path',
+            'path-info'      => 'Example: "/sitemap/" or "/" for base path',
+            'create-success' => 'Sitemap created successfully.',
+            'update-success' => 'Sitemap updated successfully.',
+            'delete-success' => 'Sitemap deleted successfully.',
+        ]
     ],
 
     'error' => [
@@ -1552,6 +1591,7 @@ return [
             'set-order-status'                      => 'Faturayı oluşturduktan sonra sipariş durumunu ayarlayın.',
             'generate-invoice-applicable'           => 'Otomatik fatura oluştur etkinse geçerlidir',
             'records-found'                         => 'Kayıt(lar) bulundu',
+
         ],
     ],
 
@@ -1595,6 +1635,7 @@ return [
             'canceled'   => 'Sipariş İptal Edildi',
             'pending'    => 'Sipariş beklemede',
             'processing' => 'sipariş düzenleniyor',
+            'pending_payment' => 'bekleyen ödeme',
         ],
     ],
 ];

@@ -376,6 +376,7 @@ return [
                 'share-wishlist'       => '«Поделиться списком желаний»',
                 'wishlist-sharing'     => '«Обмен списком желаний»',
                 'shared-link'          => '«Общая ссылка»',
+                'copy'                 => 'Copy',
                 'visibility'           => '«Видимость»',
                 'public'               => '«Общественный»',
                 'private'              => 'Частный',
@@ -493,6 +494,7 @@ return [
                 'missing_links'   => 'Для этого продукта отсутствуют ссылки для скачивания.',
                 'qty_missing'     => 'По крайней мере, у одного товара должно быть более 1 количества.',
                 'qty_impossible'  => 'Невозможно добавить в корзину более одного из этих товаров.',
+                'select_hourly_duration' => 'Выберите продолжительность слота один час.',
             ],
             'create-error'              => 'Обнаружена проблема при создании экземпляра корзины.',
             'title'                     => 'Корзина',
@@ -532,10 +534,12 @@ return [
             ],
             'minimum-order-message'     => 'Минимальная сумма заказа: сумма',
             'suspended-account-message' => 'Ваша учетная запись была приостановлена.',
+            'inactive-account-message' =>  'Your account has been inactive.',
             'check-shipping-address'    => 'Пожалуйста, проверьте адрес доставки.',
             'check-billing-address'     => 'Пожалуйста, проверьте платежный адрес.',
             'specify-shipping-method'   => '«Укажите способ доставки».',
             'specify-payment-method'    => 'Укажите способ оплаты.',
+            'rule-applied'              => 'Cart rule applied',
         ],
 
         'onepage' => [
@@ -608,6 +612,7 @@ return [
             'invalid-coupon'      => 'Код купона недействителен.',
             'success-coupon'      => 'Код купона успешно применен.',
             'coupon-apply-issue'  => 'Код купона не может быть применен.',
+            'coupon-already-applied' => 'Coupon code already applied.',
         ],
 
         'success' => [

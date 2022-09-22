@@ -21,27 +21,6 @@ class CustomerController extends Controller
     protected $_config;
 
     /**
-     * Customer repository instance.
-     *
-     * @var \Webkul\Customer\Repositories\CustomerRepository
-     */
-    protected $customerRepository;
-
-    /**
-     * Product review repository instance.
-     *
-     * @var \Webkul\Customer\Repositories\ProductReviewRepository
-     */
-    protected $productReviewRepository;
-
-    /**
-     * Subscribers list repository instance.
-     *
-     * @var \Webkul\Core\Repositories\SubscribersListRepository
-     */
-    protected $subscriptionRepository;
-
-    /**
      * Create a new controller instance.
      *
      * @param  \Webkul\Customer\Repositories\CustomerRepository  $customerRepository
@@ -50,19 +29,12 @@ class CustomerController extends Controller
      * @return void
      */
     public function __construct(
-        CustomerRepository $customerRepository,
-        ProductReviewRepository $productReviewRepository,
-        SubscribersListRepository $subscriptionRepository
-    ) {
-        $this->middleware('customer');
-
+        protected CustomerRepository $customerRepository,
+        protected ProductReviewRepository $productReviewRepository,
+        protected SubscribersListRepository $subscriptionRepository
+    )
+    {
         $this->_config = request('_config');
-
-        $this->customerRepository = $customerRepository;
-
-        $this->productReviewRepository = $productReviewRepository;
-
-        $this->subscriptionRepository = $subscriptionRepository;
     }
 
     /**
@@ -100,14 +72,27 @@ class CustomerController extends Controller
 
         $data = $customerProfileRequest->validated();
 
-        if (isset($data['date_of_birth']) && $data['date_of_birth'] == '') {
+        if (
+            isset($data['date_of_birth'])
+            && $data['date_of_birth'] == ''
+        ) {
             unset($data['date_of_birth']);
         }
 
-        $data['subscribed_to_news_letter'] = isset($data['subscribed_to_news_letter']) ? 1 : 0;
+        if (
+            core()->getCurrentChannel()->theme === 'default'
+            && ! isset($data['image'])
+        ) {
+            $data['image']['image_0'] = '';
+        }
+
+        $data['subscribed_to_news_letter'] = isset($data['subscribed_to_news_letter']);
 
         if (isset($data['oldpassword'])) {
-            if ($data['oldpassword'] != '' || $data['oldpassword'] != null) {
+            if (
+                $data['oldpassword'] != ''
+                || $data['oldpassword'] != null
+            ) {
                 if (Hash::check($data['oldpassword'], auth()->guard('customer')->user()->password)) {
                     $isPasswordChanged = true;
 

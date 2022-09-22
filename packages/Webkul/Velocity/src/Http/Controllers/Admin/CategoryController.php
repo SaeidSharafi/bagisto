@@ -2,26 +2,11 @@
 
 namespace Webkul\Velocity\Http\Controllers\Admin;
 
-use Illuminate\Http\Response;
 use Webkul\Category\Repositories\CategoryRepository;
 use Webkul\Velocity\Repositories\CategoryRepository as VelocityCategoryRepository;
 
 class CategoryController extends Controller
 {
-    /**
-     * Category Repository object
-     *
-     * @var \Webkul\Category\Repositories\CategoryRepository
-     */
-    protected $categoryRepository;
-
-    /**
-     * VelocityCategory Repository object
-     *
-     * @var \Webkul\Velocity\Repositories\CategoryRepository
-     */
-    protected $velocityCategoryRepository;
-
     /**
      * Create a new controller instance.
      *
@@ -30,15 +15,13 @@ class CategoryController extends Controller
      * @return void
      */
     public function __construct(
-        CategoryRepository $categoryRepository,
-        VelocityCategoryRepository $velocityCategoryRepository
-    ) {
-        $this->categoryRepository = $categoryRepository;
-
-        $this->velocityCategoryRepository = $velocityCategoryRepository;
-
+        protected CategoryRepository $categoryRepository,
+        protected VelocityCategoryRepository $velocityCategoryRepository
+    )
+    {
         $this->_config = request('_config');
     }
+
     /**
      * Display a listing of the resource.
      *

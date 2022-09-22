@@ -375,6 +375,7 @@ return [
                 'share-wishlist'       => '分享愿望清单',
                 'wishlist-sharing'     => '愿望清单分享',
                 'shared-link'          => '已共享链接',
+                'copy'                 => 'Copy',
                 'visibility'           => '可见度',
                 'public'               => '公开的',
                 'private'              => '私有的',
@@ -491,7 +492,8 @@ return [
                 'missing_options' => '此产品缺少选项.',
                 'missing_links' => '此产品缺少可下载链接.',
                 'qty_missing' => '至少一种产品的数量应超过 1 个.',
-                'qty_impossible' => '不能将这些产品中的一种以上添加到购物车.'
+                'qty_impossible' => '不能将这些产品中的一种以上添加到购物车.',
+                'select_hourly_duration' => '選擇一小時的時隙持續時間。',
             ],
             'create-error' => '制作购物车实例时遇到一些问题.',
             'title' => '购物车',
@@ -501,6 +503,8 @@ return [
             'proceed-to-checkout' => '进行结算',
             'remove' => '移除',
             'remove-link' => '移除',
+            'remove-all-items'          => 'Remove all items',
+            'confirm-action'           => 'Confirm this action?',
             'move-to-wishlist' => '移动到愿望清单',
             'move-to-wishlist-success' => '项目已成功移至愿望清单.',
             'move-to-wishlist-error' => '无法将商品移至愿望清单, 请稍后再试.',
@@ -517,6 +521,7 @@ return [
                 'error_remove' => '没有要从购物车中删除的物品.',
                 'success' => '商品已成功添加到购物车.',
                 'success-remove' => '物品已成功从购物车中移除.',
+                'success-all-remove' => 'All items is successfully removed from the cart.',
                 'error-add' => '商品无法加入购物车, 请稍后再试.',
                 'inactive' => '商品处于非活动状态并已从购物车中移除.',
                 'inactive-add' => '不活跃商品无法添加到购物车.',
@@ -531,10 +536,12 @@ return [
             ],
             'minimum-order-message'     => '最低订购金额为 :amount',
             'suspended-account-message' => '您的帐户已被暂停.',
+            'inactive-account-message' =>  '您的帐户一直处于非活动状态',
             'check-shipping-address'    => '请检查收货地址.',
             'check-billing-address'     => '请检查帐单地址.',
             'specify-shipping-method'   => '请指定送货方式.',
             'specify-payment-method'    => '请指定付款方式.',
+            'rule-applied'              => 'Cart rule applied',
         ],
 
         'onepage' => [
@@ -606,7 +613,8 @@ return [
             'cannot-apply-coupon' => '不能应用优惠券',
             'invalid-coupon' => '优惠券代码无效.',
             'success-coupon' => '优惠券代码已应用成功.',
-            'coupon-apply-issue' => '优惠券代码不能被应用.'
+            'coupon-apply-issue' => '优惠券代码不能被应用.',
+            'coupon-already-applied' => '優惠券代碼已應用',
         ],
 
         'success' => [

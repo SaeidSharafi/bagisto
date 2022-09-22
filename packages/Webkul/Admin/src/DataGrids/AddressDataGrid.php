@@ -24,22 +24,13 @@ class AddressDataGrid extends DataGrid
     protected $sortOrder = 'desc';
 
     /**
-     * Customer repository instance.
-     *
-     * @var \Webkul\Customer\Repositories\CustomerRepository
-     */
-    protected $customerRepository;
-
-    /**
      * Create a new datagrid instance.
      *
      * @param  \Webkul\Customer\Repositories\CustomerRepository $customerRepository
      * @return void
      */
-    public function __construct(CustomerRepository $customerRepository)
+    public function __construct(protected CustomerRepository $customerRepository)
     {
-        $this->customerRepository = $customerRepository;
-
         parent::__construct();
     }
 
@@ -155,7 +146,7 @@ class AddressDataGrid extends DataGrid
             'sortable'   => true,
             'searchable' => false,
             'closure'    => function ($row) {
-                if ($row->default_address == 1) {
+                if ($row->default_address) {
                     return '<span class="badge badge-md badge-success"">' . trans('admin::app.customers.addresses.yes') . '</span>';
                 } else {
                     return trans('admin::app.customers.addresses.dash');

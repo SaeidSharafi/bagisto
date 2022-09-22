@@ -28,7 +28,7 @@ class JeduConfigurable extends Configurable
             if ($offer['action_type'] === "by_percent") {
                 $discount = core()->formatPercent($offer['discount_amount']);
             }
-            $regular_price = core()->currencyNoSymbole($this->evaluatePrice($this->getMaximamPrice()));
+            $regular_price = core()->currencyNoSymbole($this->evaluatePrice($this->getMaximumPrice()));
             return '<div class="discount"><span class="regular-price">'
                 .$regular_price
                 .'</span>'
@@ -47,8 +47,8 @@ class JeduConfigurable extends Configurable
                 .'<span class=discount-amount></span>'
                 .'</div>'
                 .'<span class="final-price">'
-                .(($this->getMaximamPrice() != 0) ?
-                    (core()->currency($this->evaluatePrice($this->getMaximamPrice()))) : __('app.product.free'))
+                .(($this->getMaximumPrice() != 0) ?
+                    (core()->currency($this->evaluatePrice($this->getMaximumPrice()))) : __('app.product.free'))
                 .'</span>';
         }
         return '<span class="final-price">'
@@ -279,7 +279,7 @@ class JeduConfigurable extends Configurable
             if ($childProduct->getTypeInstance()->isPercentOffer()) {
                 $discount = $childProduct->getTypeInstance()->getDiscountPercent();
             }
-            $regular_price = $this->evaluatePrice($childProduct->getTypeInstance()->getMaximamPrice());
+            $regular_price = $this->evaluatePrice($childProduct->getTypeInstance()->getMaximumPrice());
         }
         return [
             'parent'    => [

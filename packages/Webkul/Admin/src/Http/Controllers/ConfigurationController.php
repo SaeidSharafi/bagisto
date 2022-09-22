@@ -17,13 +17,6 @@ class ConfigurationController extends Controller
     protected $_config;
 
     /**
-     * Core config repository instance.
-     *
-     * @var \Webkul\Core\Repositories\CoreConfigRepository
-     */
-    protected $coreConfigRepository;
-
-    /**
      * Tree instance.
      *
      * @var \Webkul\Core\Tree
@@ -36,12 +29,8 @@ class ConfigurationController extends Controller
      * @param  \Webkul\Core\Repositories\CoreConfigRepository  $coreConfigRepository
      * @return void
      */
-    public function __construct(CoreConfigRepository $coreConfigRepository)
+    public function __construct(protected CoreConfigRepository $coreConfigRepository)
     {
-        $this->middleware('admin');
-
-        $this->coreConfigRepository = $coreConfigRepository;
-
         $this->_config = request('_config');
 
         $this->prepareConfigTree();
@@ -90,6 +79,7 @@ class ConfigurationController extends Controller
     {
         if (! request()->route('slug')) {
             $firstItem = current($this->configTree->items);
+
             $secondItem = current($firstItem['children']);
 
             return $this->getSlugs($secondItem);
@@ -108,10 +98,46 @@ class ConfigurationController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Webkul\Admin\Http\Requests\ConfigurationForm  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(ConfigurationForm $request)
     {
+        $data = $request->request->all();
+        
+        if (isset($data['sales']['carriers'])) {
+            $atLeastOneCarrierEnabled = false;
+            
+            foreach ($data['sales']['carriers'] as $carrier) {
+                if ($carrier['active']) {
+                    $atLeastOneCarrierEnabled = true;
+                    
+                    break;
+                }
+            }
+            
+            if (! $atLeastOneCarrierEnabled) {
+                session()->flash('error', trans('admin::app.configuration.enable-atleast-one-shipping'));
+                
+                return redirect()->back();
+            }
+        } elseif (isset($data['sales']['paymentmethods'])) {
+            $atLeastOnePaymentMethodEnabled = false;
+            
+            foreach ($data['sales']['paymentmethods'] as $paymentMethod) {
+                if ($paymentMethod['active']) {
+                    $atLeastOnePaymentMethodEnabled = true;
+
+                    break;
+                }
+            }
+            
+            if (! $atLeastOnePaymentMethodEnabled) {
+                session()->flash('error', trans('admin::app.configuration.enable-atleast-one-payment'));
+                
+                return redirect()->back();
+            }
+        }
+
         $this->coreConfigRepository->create($request->except(['_token', 'admin_locale']));
 
         session()->flash('success', trans('admin::app.configuration.save-message'));

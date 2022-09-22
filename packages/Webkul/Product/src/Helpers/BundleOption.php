@@ -41,7 +41,10 @@ class BundleOption extends AbstractProduct
         foreach ($this->product->bundle_options as $option) {
             $data = $this->getOptionItemData($option);
 
-            if (! $option->is_required && ! count($data['products'])) {
+            if (
+                ! $option->is_required
+                && ! count($data['products'])
+            ) {
                 continue;
             }
 
@@ -100,7 +103,7 @@ class BundleOption extends AbstractProduct
                 'product_id' => $bundleOptionProduct->product_id,
                 'is_default' => $bundleOptionProduct->is_default,
                 'sort_order' => $bundleOptionProduct->sort_order,
-                'in_stock'  => $bundleOptionProduct->product->inventories->sum('qty') >= $bundleOptionProduct->qty,
+                'in_stock'   => $bundleOptionProduct->product->inventories->sum('qty') >= $bundleOptionProduct->qty,
                 'inventory'  => $bundleOptionProduct->product->inventories->sum('qty'),
             ];
         }

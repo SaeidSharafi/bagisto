@@ -508,6 +508,9 @@ class MoodleService
 
     public static function getUserCourses(JeduCustomer $customer)
     {
+        if (!$customer){
+            return false;
+        }
         $token = config('moodle.moodle_core_token');
         $functionname = 'joomdle_my_courses';
         $root = config('moodle.moodle_address');

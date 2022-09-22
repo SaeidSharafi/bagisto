@@ -2,18 +2,18 @@
 
 namespace Tests\Unit\CartRule;
 
-use UnitTester;
 use Codeception\Example;
 use Faker\Factory;
+use Helper\Bagisto;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
+use UnitTester;
 use Webkul\CartRule\Models\CartRule;
 use Webkul\CartRule\Models\CartRuleCoupon;
-use Helper\Bagisto;
 use Webkul\Customer\Models\Customer;
 use Webkul\Customer\Models\CustomerAddress;
-use Illuminate\Contracts\Support\Arrayable;
 use Webkul\Product\Repositories\ProductDownloadableLinkRepository;
 use Webkul\Sales\Repositories\DownloadableLinkPurchasedRepository;
 use Webkul\Sales\Repositories\OrderItemRepository;
@@ -21,7 +21,6 @@ use Webkul\Sales\Repositories\OrderRepository;
 use Webkul\Tax\Models\TaxCategory;
 use Webkul\Tax\Models\TaxMap;
 use Webkul\Tax\Models\TaxRate;
-use Cart;
 
 class cartRuleWithCoupon
 {
@@ -617,7 +616,7 @@ class CartRuleCest
             $expectedCartCoupon = $cartRuleWithCoupon->coupon->code;
             $I->comment('I try to use coupon code ' . $expectedCartCoupon);
             cart()
-                ->setCouponCode($expectedCartCoupon)
+                ->setCouponCode($expectedCartCoupon->toString())
                 ->collectTotals();
         } else {
             $I->comment('I have no coupon');
@@ -688,9 +687,9 @@ class CartRuleCest
             $expectedOrder = new expectedOrder($expectedCart, $customer, $cart->id);
             $I->seeRecord('orders', $expectedOrder->toArray());
 
-            auth()
-                ->guard('customer')
-                ->logout();
+            auth()->guard('customer')->logout();
+
+            cart()->setCart(null);
         }
     }
 
@@ -1062,6 +1061,7 @@ class CartRuleCest
 
         $couponSpecifications = $this->getCouponSpecifications();
         $ruleConfig = $this->makeRuleConfig($couponSpecifications[$couponConfig['scenario']], $this->products, $couponConfig['products']);
+
         $cartRule = $I->have(CartRule::class, $ruleConfig);
 
         DB::table('cart_rule_channels')

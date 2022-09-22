@@ -4,6 +4,7 @@ namespace Webkul\CMS\Http\Controllers\Admin;
 
 use App\Models\CMS\CmsCategories;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Event;
 use Webkul\Admin\DataGrids\CMSPageDataGrid;
 use Webkul\CMS\Http\Controllers\Controller;
 use Webkul\CMS\Repositories\CmsRepository;
@@ -18,24 +19,13 @@ class PageController extends Controller
     protected $_config;
 
     /**
-     * To hold the CMS repository instance.
-     *
-     * @var \Webkul\CMS\Repositories\CmsRepository
-     */
-    protected $cmsRepository;
-
-    /**
      * Create a new controller instance.
      *
      * @param  \Webkul\CMS\Repositories\CmsRepository  $cmsRepository
      * @return void
      */
-    public function __construct(CmsRepository $cmsRepository)
+    public function __construct(protected CmsRepository $cmsRepository)
     {
-        $this->middleware('admin');
-
-        $this->cmsRepository = $cmsRepository;
-
         $this->_config = request('_config');
     }
 
@@ -71,8 +61,6 @@ class PageController extends Controller
      */
     public function store()
     {
-        $data = request()->all();
-
         $this->validate(request(), [
             'url_key'      => ['required', 'unique:cms_page_translations,url_key', new \Webkul\Core\Contracts\Validations\Slug],
             'page_title'   => 'required',
@@ -83,9 +71,13 @@ class PageController extends Controller
             unset($data['category_id']);
         }
 
-        $page = $this->cmsRepository->create($data);
+        Event::dispatch('cms.pages.create.before');
+
+        $page = $this->cmsRepository->create(request()->all());
         $page->image_file = is_object('image_file') ? request()->file('image_file')->store('page/'.$page->id) : null;
         $page->save();
+        Event::dispatch('cms.pages.create.after', $page);
+
         session()->flash('success', trans('admin::app.response.create-success', ['name' => 'page']));
 
         return redirect()->route($this->_config['redirect']);
@@ -126,6 +118,8 @@ class PageController extends Controller
             'channels'                => 'required',
         ]);
 
+        Event::dispatch('cms.pages.update.before', $id);
+
         $data = request()->all();
         if (isset($data['category_id']) && !$data['category_id']){
             $data['category_id']= null;
@@ -139,8 +133,6 @@ class PageController extends Controller
             $data['image_file'] = null;
             Storage::disk('public')->deleteDirectory('page/'.$id);
         }
-
-
 
         $this->cmsRepository->update($data, $id);
 
@@ -157,11 +149,15 @@ class PageController extends Controller
      */
     public function delete($id)
     {
-        $page = $this->cmsRepository->findOrFail($id);
+        try {
+            Event::dispatch('cms.pages.delete.before', $id);
 
-        if ($page->delete()) {
+            $this->cmsRepository->delete($id);
+
+            Event::dispatch('cms.pages.delete.after', $id);
+
             return response()->json(['message' => trans('admin::app.cms.pages.delete-success')]);
-        }
+        } catch (\Exception $e) {}
 
         return response()->json(['message' => trans('admin::app.cms.pages.delete-failure')], 500);
     }
@@ -173,32 +169,20 @@ class PageController extends Controller
      */
     public function massDelete()
     {
-        $data = request()->all();
+        if (request()->isMethod('post')) {
+            $indexes = explode(',', request()->input('indexes'));
 
-        if ($data['indexes']) {
-            $pageIDs = explode(',', $data['indexes']);
+            foreach ($indexes as $index) {
+                Event::dispatch('cms.pages.delete.before', $index);
 
-            $count = 0;
+                $this->cmsRepository->delete($index);
 
-            foreach ($pageIDs as $pageId) {
-                $page = $this->cmsRepository->find($pageId);
-
-                if ($page) {
-                    $page->delete();
-
-                    $count++;
-                }
+                Event::dispatch('cms.pages.delete.after', $index);
             }
 
-            if (count($pageIDs) == $count) {
-                session()->flash('success', trans('admin::app.datagrid.mass-ops.delete-success', [
-                    'resource' => 'CMS Pages',
-                ]));
-            } else {
-                session()->flash('success', trans('admin::app.datagrid.mass-ops.partial-action', [
-                    'resource' => 'CMS Pages',
-                ]));
-            }
+            session()->flash('success', trans('admin::app.datagrid.mass-ops.delete-success', [
+                'resource' => 'CMS Pages',
+            ]));
         } else {
             session()->flash('warning', trans('admin::app.datagrid.mass-ops.no-resource'));
         }

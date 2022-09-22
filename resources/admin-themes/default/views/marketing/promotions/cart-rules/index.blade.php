@@ -18,9 +18,11 @@
             </div>
 
             <div class="page-action">
-                <a href="{{ route('admin.cart-rules.create') }}" class="btn btn-lg btn-primary">
-                    {{ __('admin::app.promotions.cart-rules.add-title') }}
-                </a>
+                @if (bouncer()->hasPermission('marketing.promotions.cart-rules.create'))
+                    <a href="{{ route('admin.cart-rules.create') }}" class="btn btn-lg btn-primary">
+                        {{ __('admin::app.promotions.cart-rules.add-title') }}
+                    </a>
+                @endif
             </div>
         </div>
 
@@ -34,7 +36,7 @@
     <script>
         function reloadPage(getVar, getVal) {
             let url = new URL(window.location.href);
-            
+
             url.searchParams.set(getVar, getVal);
 
             window.location.href = url.href;

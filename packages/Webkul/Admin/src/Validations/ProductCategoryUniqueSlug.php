@@ -26,30 +26,16 @@ class ProductCategoryUniqueSlug implements Rule
     protected $isSlugReserved = false;
 
     /**
-     * Table name.
-     *
-     * @var string
-     */
-    protected $tableName;
-
-    /**
-     * Table id.
-     *
-     * @var string
-     */
-    protected $id;
-
-    /**
      * Constructor.
      *
      * @param  string  $tableName
      * @param  string  $id
      */
-    public function __construct($tableName = null, $id = null)
+    public function __construct(
+        protected $tableName = null,
+        protected $id = null
+    )
     {
-        $this->tableName = $tableName;
-
-        $this->id = $id;
     }
 
     /**
@@ -101,7 +87,11 @@ class ProductCategoryUniqueSlug implements Rule
      */
     protected function isSlugExistsInCategories($slug)
     {
-        if ($this->tableName && $this->id && $this->tableName === 'category_translations') {
+        if (
+            $this->tableName
+            && $this->id
+            && $this->tableName === 'category_translations'
+        ) {
             return CategoryTranslationProxy::modelClass()::where('category_id', '<>', $this->id)
                 ->where('slug', $slug)
                 ->limit(1)
@@ -123,7 +113,11 @@ class ProductCategoryUniqueSlug implements Rule
      */
     protected function isSlugExistsInProducts($slug)
     {
-        if ($this->tableName && $this->id && $this->tableName === 'product_flat') {
+        if (
+            $this->tableName
+            && $this->id
+            && $this->tableName === 'product_flat'
+        ) {
             return ProductFlatProxy::modelClass()::where('product_id', '<>', $this->id)
                 ->where('url_key', $slug)
                 ->limit(1)

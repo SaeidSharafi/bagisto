@@ -25,13 +25,19 @@
             <div class="page-action">
                 {!! view_render_event('sales.order.page_action.before', ['order' => $order]) !!}
 
-                @if ($order->canCancel() && bouncer()->hasPermission('sales.orders.cancel'))
+                @if (
+                    $order->canCancel()
+                    && bouncer()->hasPermission('sales.orders.cancel')
+                )
                     <a href="{{ route('admin.sales.orders.cancel', $order->id) }}" class="btn btn-lg btn-primary" v-alert:message="'{{ __('admin::app.sales.orders.cancel-confirm-msg') }}'">
                         {{ __('admin::app.sales.orders.cancel-btn-title') }}
                     </a>
                 @endif
 
-                @if ($order->canInvoice() && $order->payment->method !== 'paypal_standard')
+                @if (
+                    $order->canInvoice()
+                    && $order->payment->method !== 'paypal_standard'
+                )
                     <a href="{{ route('admin.sales.invoices.create', $order->id) }}" class="btn btn-lg btn-primary">
                         {{ __('admin::app.sales.orders.invoice-btn-title') }}
                     </a>
@@ -89,7 +95,7 @@
                                                 </span>
 
                                                 <span class="value">
-                                                {{ __('admin::app.notification.order-status-messages.'.strtolower($order->status_label)) }}
+                                                    {{ __('admin::app.notification.order-status-messages.'.strtolower($order->status)) }}
                                                 </span>
                                             </div>
 
@@ -139,7 +145,10 @@
 
                                             {!! view_render_event('sales.order.customer_email.after', ['order' => $order]) !!}
 
-                                            @if (! is_null($order->customer) && ! is_null($order->customer->group))
+                                            @if (
+                                                ! is_null($order->customer)
+                                                && ! is_null($order->customer->group)
+                                            )
                                                 <div class="row">
                                                     <span class="title">
                                                         {{ __('admin::app.customers.customers.customer_group') }}
@@ -159,7 +168,10 @@
                             </div>
                         </accordian>
 
-                        @if ($order->billing_address || $order->shipping_address)
+                        @if (
+                            $order->billing_address
+                            || $order->shipping_address
+                        )
                             <accordian title="{{ __('admin::app.sales.orders.address') }}" :active="true">
                                 <div slot="body">
                                     <div class="sale">
@@ -499,7 +511,7 @@
                                         <td>#{{ $invoice->increment_id ?? $invoice->id }}</td>
                                         <td>{{ $invoice->created_at }}</td>
                                         <td>#{{ $invoice->order->increment_id }}</td>
-                                        <td>{{ $invoice->address->name }}</td>
+                                        <td>{{ $order->customer_full_name }}</td>
                                         <td>{{ $invoice->status_label }}</td>
                                         <td>{{ core()->formatBasePrice($invoice->base_grand_total) }}</td>
                                         <td class="action">

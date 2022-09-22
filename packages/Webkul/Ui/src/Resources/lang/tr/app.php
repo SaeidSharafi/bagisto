@@ -15,6 +15,7 @@ return [
         'error' => [
             'multiple-sort-keys-error'   => 'Fatal Error! Multiple sort keys found, please resolve the URL manually',
             'multiple-search-keys-error' => 'Multiple search keys found, please resolve the URL manually',
+            'mapped-keys-error'          => 'Mapped key not found. Make sure you have given valid options.',
         ],
 
         'zero-index'            => 'Index sütunları sadece sıfırdan büyük değere sahip olmalı',
@@ -50,5 +51,12 @@ return [
         'edit'                  => 'Düzenle',
         'delete'                => 'Sil',
         'view'                  => 'Görüntüle',
+        'active'                => 'Aktif',
+        'inactive'              => 'etkin değil',
+        'all-channels'          => 'Tüm kanallar',
+        'all-locales'           => 'Tüm Yerel Ayarlar',
+        'all-customer-groups'   => 'Tüm Müşteri grupları',
+        'records-found'         => 'Kayıt(lar) bulundu',
+        'clear-all'             => 'Clear All'
     ],
 ];

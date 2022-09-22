@@ -9,22 +9,13 @@ use Webkul\Product\Repositories\ProductRepository;
 class ProductImage extends AbstractProduct
 {
     /**
-     * Product repository instance.
-     *
-     * @var \Webkul\Product\Repositories\ProductRepository
-     */
-    protected $productRepository;
-
-    /**
      * Create a new helper instance.
      *
      * @param  \Webkul\Product\Repositories\ProductRepository  $productRepository
      * @return void
      */
-    public function __construct(
-        ProductRepository $productRepository
-    ) {
-        $this->productRepository = $productRepository;
+    public function __construct(protected ProductRepository $productRepository)
+    {
     }
 
     /**
@@ -55,7 +46,11 @@ class ProductImage extends AbstractProduct
             $images[] = $this->getCachedImageUrls($image->path);
         }
 
-        if (! $product->parent_id && ! count($images) && ! count($product->videos)) {
+        if (
+            ! $product->parent_id
+            && ! count($images)
+            && ! count($product->videos)
+        ) {
             $images[] = $this->getFallbackImageUrls();
         }
 
@@ -104,15 +99,17 @@ class ProductImage extends AbstractProduct
     {
         static $loadedBaseImages = [];
 
-        if ($product) {
-            if (array_key_exists($product->id, $loadedBaseImages)) {
-                return $loadedBaseImages[$product->id];
-            }
-
-            return $loadedBaseImages[$product->id] = $galleryImages
-                ? $galleryImages[0]
-                : $this->otherwiseLoadFromProduct($product);
+        if (! $product) {
+            return;
         }
+
+        if (array_key_exists($product->id, $loadedBaseImages)) {
+            return $loadedBaseImages[$product->id];
+        }
+
+        return $loadedBaseImages[$product->id] = $galleryImages
+            ? $galleryImages[0]
+            : $this->otherwiseLoadFromProduct($product);
     }
 
     /**

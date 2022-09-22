@@ -2,36 +2,27 @@
 
 namespace Webkul\Velocity\Repositories;
 
-use Webkul\Core\Eloquent\Repository;
-use Illuminate\Container\Container as App;
+use Illuminate\Container\Container;
 use Prettus\Repository\Traits\CacheableRepository;
+use Webkul\Core\Eloquent\Repository;
 
 class CategoryRepository extends Repository
 {
     use CacheableRepository;
 
-   /**
-    * Category Repository object
-    *
-    * @var \Webkul\Category\Repositories\CategoryRepository
-    */
-    protected $categoryRepository;
-
     /**
      * Create a new repository instance.
      *
      * @param  \Webkul\Category\Repositories\CategoryRepository  $categoryRepository
-     * @param  \Illuminate\Container\Container  $app
+     * @param  \Illuminate\Container\Container  $container
      * @return void
      */
     public function __construct(
-        CategoryRepository $categoryRepository,
-        App $app
+        protected CategoryRepository $categoryRepository,
+        Container $container
     )
     {
-        $this->categoryRepository = $categoryRepository;
-
-        parent::__construct($app);
+        parent::__construct($container);
     }
 
     /**
@@ -39,7 +30,7 @@ class CategoryRepository extends Repository
      *
      * @return string
      */
-    function model()
+    function model(): string
     {
         return 'Webkul\Velocity\Contracts\Category';
     }
@@ -62,7 +53,10 @@ class CategoryRepository extends Repository
         if (isset($categories->first()->id)) {
             foreach ($categories as $category) {
 
-                if (! empty($categoryMenues) && !in_array($category->id, array_column($categoryMenues, 'category_id'))) {
+                if (
+                    ! empty($categoryMenues)
+                    && ! in_array($category->id, array_column($categoryMenues, 'category_id'))
+                ) {
                     $results[] = [
                         'id'   => $category->id,
                         'name' => $category->name,

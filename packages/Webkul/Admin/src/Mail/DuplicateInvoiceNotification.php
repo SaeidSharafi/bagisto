@@ -11,31 +11,17 @@ class DuplicateInvoiceNotification extends Mailable
     use Queueable, SerializesModels;
 
     /**
-     * The invoice instance.
-     *
-     * @var  \Webkul\Customer\Contracts\Invoice
-     */
-    public $invoice;
-
-    /**
-     * Customer email.
-     *
-     * @var string
-     */
-    public $customerEmail;
-
-    /**
      * Create a new message instance.
      *
      * @param  \Webkul\Customer\Contracts\Invoice  $invoice
      * @param  string  $customerEmail
      * @return void
      */
-    public function __construct($invoice, $customerEmail)
+    public function __construct(
+        public $invoice,
+        public $customerEmail
+    )
     {
-        $this->invoice = $invoice;
-
-        $this->customerEmail = $customerEmail;
     }
 
     /**

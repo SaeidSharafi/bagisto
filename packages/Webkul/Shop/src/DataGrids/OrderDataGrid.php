@@ -34,42 +34,8 @@ class OrderDataGrid extends DataGrid
                 'order.order_currency_code')
             ->where('customer_id', auth()->guard('customer')->user()->id);
 
-        $this->addFilter('status', 'order.status');
-
         $this->setQueryBuilder($queryBuilder);
 
-    }
-
-    /**
-     * Prepare view data.
-     *
-     * @return array
-     */
-    public function prepareViewData()
-    {
-        return [
-            'index'             => $this->index,
-            'records'           => $this->getCollection(),
-            'columns'           => $this->completeColumnDetails,
-            'actions'           => $this->actions,
-            'enableActions'     => $this->enableAction,
-            'massactions'       => $this->massActions,
-            'enableMassActions' => $this->enableMassAction,
-            'paginated'         => $this->paginate,
-            'itemsPerPage'      => $this->itemsPerPage,
-            'norecords'         => __('ui::app.datagrid.no-records'),
-            'extraFilters'      => array_merge($this->getNecessaryExtraFilters(), [
-                'translation' => collect([
-                    'processing'      => trans('shop::app.customer.account.order.index.processing'),
-                    'completed'       => trans('shop::app.customer.account.order.index.completed'),
-                    'canceled'        => trans('shop::app.customer.account.order.index.canceled'),
-                    'closed'          => trans('shop::app.customer.account.order.index.closed'),
-                    'pending'         => trans('shop::app.customer.account.order.index.pending'),
-                    'pending_payment' => trans('shop::app.customer.account.order.index.pending-payment'),
-                    'fraud'           => trans('shop::app.customer.account.order.index.fraud'),
-                ])
-            ]),
-        ];
     }
 
     /**
@@ -116,10 +82,7 @@ class OrderDataGrid extends DataGrid
         $this->addColumn([
             'index'      => 'status',
             'label'      => trans('shop::app.customer.account.order.index.status'),
-            'type'       => 'select',
-            'searchable' => false,
-            'sortable'   => true,
-            'filterable' => true,
+            'type'       => 'checkbox',
             'options'    => [
                 'processing'      => trans('shop::app.customer.account.order.index.processing'),
                 'completed'       => trans('shop::app.customer.account.order.index.completed'),
@@ -129,30 +92,26 @@ class OrderDataGrid extends DataGrid
                 'pending_payment' => trans('shop::app.customer.account.order.index.pending-payment'),
                 'fraud'           => trans('shop::app.customer.account.order.index.fraud'),
             ],
+            'searchable' => false,
+            'sortable'   => true,
             'closure'    => function ($value) {
                 if ($value->status == 'processing') {
-                    return '<span class="badge badge-md badge-success">'
-                        .trans('shop::app.customer.account.order.index.processing').'</span>';
+                    return '<span class="badge badge-md badge-success">' . trans('shop::app.customer.account.order.index.processing') . '</span>';
                 } elseif ($value->status == 'completed') {
-                    return '<span class="badge badge-md badge-success">'
-                        .trans('shop::app.customer.account.order.index.completed').'</span>';
+                    return '<span class="badge badge-md badge-success">' . trans('shop::app.customer.account.order.index.completed') . '</span>';
                 } elseif ($value->status == 'canceled') {
-                    return '<span class="badge badge-md badge-danger">'
-                        .trans('shop::app.customer.account.order.index.canceled').'</span>';
+                    return '<span class="badge badge-md badge-danger">' . trans('shop::app.customer.account.order.index.canceled') . '</span>';
                 } elseif ($value->status == 'closed') {
-                    return '<span class="badge badge-md badge-info">'
-                        .trans('shop::app.customer.account.order.index.closed').'</span>';
+                    return '<span class="badge badge-md badge-info">' . trans('shop::app.customer.account.order.index.closed') . '</span>';
                 } elseif ($value->status == 'pending') {
-                    return '<span class="badge badge-md badge-warning">'
-                        .trans('shop::app.customer.account.order.index.pending').'</span>';
+                    return '<span class="badge badge-md badge-warning">' . trans('shop::app.customer.account.order.index.pending') . '</span>';
                 } elseif ($value->status == 'pending_payment') {
-                    return '<span class="badge badge-md badge-warning">'
-                        .trans('shop::app.customer.account.order.index.pending-payment').'</span>';
+                    return '<span class="badge badge-md badge-warning">' . trans('shop::app.customer.account.order.index.pending-payment') . '</span>';
                 } elseif ($value->status == 'fraud') {
-                    return '<span class="badge badge-md badge-danger">'
-                        .trans('shop::app.customer.account.order.index.fraud').'</span>';
+                    return '<span class="badge badge-md badge-danger">' . trans('shop::app.customer.account.order.index.fraud') . '</span>';
                 }
             },
+            'filterable' => true,
         ]);
     }
 

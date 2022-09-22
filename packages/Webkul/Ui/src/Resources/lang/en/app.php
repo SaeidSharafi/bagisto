@@ -15,6 +15,7 @@ return [
         'error' => [
             'multiple-sort-keys-error'   => 'Fatal Error! Multiple sort keys found, please resolve the URL manually',
             'multiple-search-keys-error' => 'Multiple search keys found, please resolve the URL manually',
+            'mapped-keys-error'          => 'Mapped key not found. Make sure you have given valid options.',
         ],
 
         'zero-index'            => 'Index columns can have values greater than zero only',
@@ -50,5 +51,14 @@ return [
         'edit'                  => 'Edit',
         'delete'                => 'Delete',
         'view'                  => 'View',
+        'empty-field'           => 'Please select the filter',
+        'empty-value'           => 'Please enter the value',
+        'active'                => 'Active',
+        'inactive'              => 'Inactive',
+        'all-channels'          => 'All Channels',
+        'all-locales'           => 'All Locales',
+        'all-customer-groups'   => 'All Customer groups',
+        'records-found'         => 'Record(s) found',
+        'clear-all'             => 'Clear All'
     ],
 ];

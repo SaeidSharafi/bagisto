@@ -12,20 +12,6 @@ class NewCustomerNotification extends Mailable
     use Queueable, SerializesModels;
 
     /**
-     * The customer instance.
-     *
-     * @var  \Webkul\Customer\Contracts\Customer
-     */
-    public $customer;
-
-    /**
-     * The password instance.
-     *
-     * @var string
-     */
-    public $password;
-
-    /**
      * Create a new message instance.
      * 
      * @param  \Webkul\Customer\Contracts\Customer  $order
@@ -33,13 +19,10 @@ class NewCustomerNotification extends Mailable
      * @return void
      */
     public function __construct(
-        $customer,
-        $password
+        public $customer,
+        public $password
     )
     {
-        $this->customer = $customer;
-
-        $this->password = $password;
     }
 
     /**
@@ -50,8 +33,11 @@ class NewCustomerNotification extends Mailable
     public function build()
     {
         return $this->from(core()->getSenderEmailDetails()['email'], core()->getSenderEmailDetails()['name'])
-                    ->to($this->customer->email)
-                    ->subject(trans('shop::app.mail.customer.new.subject'))
-                    ->view('shop::emails.customer.new-customer')->with(['customer' => $this->customer, 'password' => $this->password]);
+            ->to($this->customer->email)
+            ->subject(trans('shop::app.mail.customer.new.subject'))
+            ->view('shop::emails.customer.new-customer')->with([
+                'customer' => $this->customer,
+                'password' => $this->password,
+            ]);
     }
 }

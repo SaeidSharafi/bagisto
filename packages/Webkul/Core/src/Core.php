@@ -24,62 +24,6 @@ class Core
     const BAGISTO_VERSION = '1.x-dev';
 
     /**
-     * Channel repository instance.
-     *
-     * @var \Webkul\Core\Repositories\ChannelRepository
-     */
-    protected $channelRepository;
-
-    /**
-     * Currency repository instance.
-     *
-     * @var \Webkul\Core\Repositories\CurrencyRepository
-     */
-    protected $currencyRepository;
-
-    /**
-     * Exchange rate repository instance.
-     *
-     * @var \Webkul\Core\Repositories\ExchangeRateRepository
-     */
-    protected $exchangeRateRepository;
-
-    /**
-     * Country repository instance.
-     *
-     * @var \Webkul\Core\Repositories\CountryRepository
-     */
-    protected $countryRepository;
-
-    /**
-     * Country state repository instance.
-     *
-     * @var \Webkul\Core\Repositories\CountryStateRepository
-     */
-    protected $countryStateRepository;
-
-    /**
-     * Locale repository instance.
-     *
-     * @var \Webkul\Core\Repositories\LocaleRepository
-     */
-    protected $localeRepository;
-
-    /**
-     * Customer group repository instance.
-     *
-     * @var CustomerGroupRepository
-     */
-    protected $customerGroupRepository;
-
-    /**
-     * Core config repository instance.
-     *
-     * @var \Webkul\Core\Repositories\CoreConfigRepository
-     */
-    protected $coreConfigRepository;
-
-    /**
      * Channel.
      *
      * @var \Webkul\Core\Models\Channel
@@ -105,41 +49,26 @@ class Core
     /**
      * Create a new instance.
      *
-     * @param  \Webkul\Core\Repositories\ChannelRepository            $channelRepository
-     * @param  \Webkul\Core\Repositories\CurrencyRepository           $currencyRepository
-     * @param  \Webkul\Core\Repositories\ExchangeRateRepository       $exchangeRateRepository
-     * @param  \Webkul\Core\Repositories\CountryRepository            $countryRepository
-     * @param  \Webkul\Core\Repositories\CountryStateRepository       $countryStateRepository
-     * @param  \Webkul\Core\Repositories\LocaleRepository             $localeRepository
+     * @param  \Webkul\Core\Repositories\ChannelRepository  $channelRepository
+     * @param  \Webkul\Core\Repositories\CurrencyRepository  $currencyRepository
+     * @param  \Webkul\Core\Repositories\ExchangeRateRepository  $exchangeRateRepository
+     * @param  \Webkul\Core\Repositories\CountryRepository  $countryRepository
+     * @param  \Webkul\Core\Repositories\CountryStateRepository  $countryStateRepository
+     * @param  \Webkul\Core\Repositories\LocaleRepository  $localeRepository
      * @param  \Webkul\Customer\Repositories\CustomerGroupRepository  $customerGroupRepository
-     * @param  \Webkul\Core\Repositories\CoreConfigRepository         $coreConfigRepository
+     * @param  \Webkul\Core\Repositories\CoreConfigRepository  $coreConfigRepository
      * @return void
      */
     public function __construct(
-        ChannelRepository $channelRepository,
-        CurrencyRepository $currencyRepository,
-        ExchangeRateRepository $exchangeRateRepository,
-        CountryRepository $countryRepository,
-        CountryStateRepository $countryStateRepository,
-        LocaleRepository $localeRepository,
-        CustomerGroupRepository $customerGroupRepository,
-        CoreConfigRepository $coreConfigRepository
+        protected ChannelRepository $channelRepository,
+        protected CurrencyRepository $currencyRepository,
+        protected ExchangeRateRepository $exchangeRateRepository,
+        protected CountryRepository $countryRepository,
+        protected CountryStateRepository $countryStateRepository,
+        protected LocaleRepository $localeRepository,
+        protected CustomerGroupRepository $customerGroupRepository,
+        protected CoreConfigRepository $coreConfigRepository
     ) {
-        $this->channelRepository = $channelRepository;
-
-        $this->currencyRepository = $currencyRepository;
-
-        $this->exchangeRateRepository = $exchangeRateRepository;
-
-        $this->countryRepository = $countryRepository;
-
-        $this->countryStateRepository = $countryStateRepository;
-
-        $this->localeRepository = $localeRepository;
-
-        $this->customerGroupRepository = $customerGroupRepository;
-
-        $this->coreConfigRepository = $coreConfigRepository;
     }
 
     /**
@@ -316,7 +245,7 @@ class Core
 
         return $data = [
             'channel' => $channel,
-            'locales' => $channel->locales()->orderBy('name')->get()
+            'locales' => $channel->locales()->orderBy('name')->get(),
         ];
     }
 
@@ -560,7 +489,10 @@ class Core
     {
         static $exchangeRate;
 
-        if ($exchangeRate || $exchangeRate === '') {
+        if (
+            $exchangeRate
+            || $exchangeRate === ''
+        ) {
             return $exchangeRate;
         }
 
@@ -609,7 +541,11 @@ class Core
 
         $exchangeRate = $this->getExchangeRate($targetCurrency->id);
 
-        if ('' === $exchangeRate || null === $exchangeRate || ! $exchangeRate->rate) {
+        if (
+            '' === $exchangeRate
+            || null === $exchangeRate
+            || ! $exchangeRate->rate
+        ) {
             return $amount;
         }
 
@@ -643,7 +579,10 @@ class Core
             'target_currency' => $targetCurrency->id,
         ]);
 
-        if (null === $exchangeRate || ! $exchangeRate->rate) {
+        if (
+            null === $exchangeRate
+            || ! $exchangeRate->rate
+        ) {
             return $amount;
         }
 
@@ -668,11 +607,13 @@ class Core
     /**
      * Return currency symbol from currency code.
      *
-     * @param  float  $price
+     * @param  string|\Webkul\Core\Contracts\Currency  $currency
      * @return string
      */
-    public function currencySymbol($code)
+    public function currencySymbol($currency)
     {
+        $code = $currency instanceof \Webkul\Core\Contracts\Currency ? $currency->code : $currency;
+
         $formatter = new \NumberFormatter(app()->getLocale() . '@currency=' . $code, \NumberFormatter::CURRENCY);
 
         return $formatter->getSymbol(\NumberFormatter::CURRENCY_SYMBOL);
@@ -785,9 +726,15 @@ class Core
             $toTimeStamp += 86400;
         }
 
-        if (! $this->is_empty_date($dateFrom) && $channelTimeStamp < $fromTimeStamp) {
+        if (
+            ! $this->is_empty_date($dateFrom)
+            && $channelTimeStamp < $fromTimeStamp
+        ) {
             $result = false;
-        } elseif (! $this->is_empty_date($dateTo) && $channelTimeStamp > $toTimeStamp) {
+        } elseif (
+            ! $this->is_empty_date($dateTo)
+            && $channelTimeStamp > $toTimeStamp
+        ) {
             $result = false;
         } else {
             $result = true;
@@ -860,7 +807,10 @@ class Core
     {
         static $loadedConfigs = [];
 
-        if (array_key_exists($field, $loadedConfigs) && ! in_array($field, $this->coreConfigExceptions)) {
+        if (
+            array_key_exists($field, $loadedConfigs)
+            && ! in_array($field, $this->coreConfigExceptions)
+        ) {
             $coreConfigValue = $loadedConfigs[$field];
         } else {
             if (null === $channel) {
@@ -967,7 +917,7 @@ class Core
      */
     public function isCountryRequired()
     {
-        return $this->getConfigData('customer.address.requirements.country') == 1;
+        return (bool) $this->getConfigData('customer.address.requirements.country');
     }
 
     /**
@@ -977,7 +927,7 @@ class Core
      */
     public function isStateRequired()
     {
-        return $this->getConfigData('customer.address.requirements.state') == 1;
+        return (bool) $this->getConfigData('customer.address.requirements.state');
     }
 
     /**
@@ -987,7 +937,7 @@ class Core
      */
     public function isPostCodeRequired()
     {
-        return $this->getConfigData('customer.address.requirements.postcode') == 1;
+        return (bool) $this->getConfigData('customer.address.requirements.postcode');
     }
 
     /**
@@ -1172,7 +1122,10 @@ class Core
         while (count($keys) > 1) {
             $key = array_shift($keys);
 
-            if (! isset($array[$key]) || ! is_array($array[$key])) {
+            if (
+                ! isset($array[$key])
+                || ! is_array($array[$key])
+            ) {
                 $array[$key] = [];
             }
 
@@ -1276,12 +1229,16 @@ class Core
      * @param  array  $array2
      * @return array
      */
-    protected function arrayMerge(array &$array1, array &$array2)
+    protected function arrayMerge(array&$array1, array&$array2)
     {
         $merged = $array1;
 
         foreach ($array2 as $key => &$value) {
-            if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
+            if (
+                is_array($value)
+                && isset($merged[$key])
+                && is_array($merged[$key])
+            ) {
                 $merged[$key] = $this->arrayMerge($merged[$key], $value);
             } else {
                 $merged[$key] = $value;
@@ -1303,8 +1260,14 @@ class Core
     {
         $fields = $this->getConfigField($field);
 
-        if (isset($fields['channel_based']) && $fields['channel_based']) {
-            if (isset($fields['locale_based']) && $fields['locale_based']) {
+        if (
+            isset($fields['channel_based'])
+            && $fields['channel_based']
+        ) {
+            if (
+                isset($fields['locale_based'])
+                && $fields['locale_based']
+            ) {
                 $coreConfigValue = $this->coreConfigRepository->findOneWhere([
                     'code'         => $field,
                     'channel_code' => $channel,
@@ -1317,7 +1280,10 @@ class Core
                 ]);
             }
         } else {
-            if (isset($fields['locale_based']) && $fields['locale_based']) {
+            if (
+                isset($fields['locale_based'])
+                && $fields['locale_based']
+            ) {
                 $coreConfigValue = $this->coreConfigRepository->findOneWhere([
                     'code'        => $field,
                     'locale_code' => $locale,
@@ -1349,5 +1315,15 @@ class Core
         $field = implode('.', $fields);
 
         return Config::get($field, $configFieldInfo['default'] ?? null);
+    }
+
+    /**
+     * Get max upload size from the php.ini file.
+     *
+     * @return string
+     */
+    public function getMaxUploadSize()
+    {
+        return ini_get('upload_max_filesize');
     }
 }

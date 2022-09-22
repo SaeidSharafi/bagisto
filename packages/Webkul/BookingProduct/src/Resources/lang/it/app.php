@@ -21,6 +21,7 @@ return [
                 'same-slot-all-days' => 'Stesso Slot tutti i giorni',
                 'slot-has-quantity' => 'Slot ha quantità',
                 'slots' => 'Slot',
+                'no-slots-available' => 'No slots available',
                 'from' => 'Da',
                 'to' => 'A',
                 'qty' => 'Qtà',
@@ -82,6 +83,7 @@ return [
 
     'shop' => [
         'products' => [
+            'booking-information' => 'Informazioni sulla prenotazione',
             'location' => 'Location',
             'contact' => 'Contatto',
             'email' => 'Email',

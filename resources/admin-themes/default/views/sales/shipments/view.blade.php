@@ -49,7 +49,7 @@
                                         </span>
 
                                         <span class="value">
-                                            {{ $order->created_at->jdate() }}
+                                            {{ $order->created_at }}
                                         </span>
                                     </div>
 
@@ -102,11 +102,14 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>                                            
                     </div>
                 </accordian>
 
-                @if ($order->billing_address || $order->shipping_address)
+                @if (
+                    $order->billing_address
+                    || $order->shipping_address
+                )
                     <accordian title="{{ __('admin::app.sales.orders.address') }}" :active="true">
                         <div slot="body">
                             <div class="sale">
@@ -137,7 +140,7 @@
                                         </div>
                                     </div>
                                 @endif
-                            </div>
+                            </div>                            
                         </div>
                     </accordian>
                 @endif
@@ -199,7 +202,10 @@
                                         </span>
                                     </div>
 
-                                    @if ($shipment->inventory_source || $shipment->inventory_source_name)
+                                    @if (
+                                        $shipment->inventory_source
+                                        || $shipment->inventory_source_name
+                                    )
                                         <div class="row">
                                             <span class="title">
                                                 {{ __('admin::app.sales.shipments.inventory-source') }}
@@ -232,7 +238,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>                       
                     </div>
                 </accordian>
 
@@ -274,7 +280,7 @@
 
                                     </tbody>
                                 </table>
-                            </div>
+                            </div>                            
                         </div>
                     </div>
                 </accordian>

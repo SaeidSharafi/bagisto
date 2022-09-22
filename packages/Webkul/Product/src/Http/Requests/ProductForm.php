@@ -2,30 +2,17 @@
 
 namespace Webkul\Product\Http\Requests;
 
+use Illuminate\Support\Str;
 use Illuminate\Foundation\Http\FormRequest;
-use Webkul\Admin\Validations\ProductCategoryUniqueSlug;
-use Webkul\Core\Contracts\Validations\Decimal;
 use Webkul\Core\Contracts\Validations\Slug;
+use Webkul\Core\Contracts\Validations\Decimal;
 use Webkul\Product\Models\ProductAttributeValue;
-use Webkul\Product\Repositories\ProductAttributeValueRepository;
 use Webkul\Product\Repositories\ProductRepository;
+use Webkul\Admin\Validations\ProductCategoryUniqueSlug;
+use Webkul\Product\Repositories\ProductAttributeValueRepository;
 
 class ProductForm extends FormRequest
 {
-    /**
-     * Product repository instance.
-     *
-     * @var \Webkul\Product\Repositories\ProductRepository
-     */
-    protected $productRepository;
-
-    /**
-     * Product attribute value repository instnace.
-     *
-     * @var \Webkul\Product\Repositories\ProductAttributeValueRepository
-     */
-    protected $productAttributeValueRepository;
-
     /**
      * Rules.
      *
@@ -37,16 +24,14 @@ class ProductForm extends FormRequest
      * Create a new form request instance.
      *
      * @param  \Webkul\Product\Repositories\ProductRepository  $productRepository
-     * @param  \Webkul\Product\Repositories\ProductAttributeValueRepository $productAttributeValueRepository
+     * @param  \Webkul\Product\Repositories\ProductAttributeValueRepository  $productAttributeValueRepository
      * @return void
      */
     public function __construct(
-        ProductRepository $productRepository,
-        ProductAttributeValueRepository $productAttributeValueRepository
-    ) {
-        $this->productRepository = $productRepository;
-
-        $this->productAttributeValueRepository = $productAttributeValueRepository;
+        protected ProductRepository $productRepository,
+        protected ProductAttributeValueRepository $productAttributeValueRepository
+    )
+    {
     }
 
     /**
@@ -82,8 +67,21 @@ class ProductForm extends FormRequest
             'special_price'      => ['nullable', new Decimal, 'lt:price'],
         ],$product->getTypeInstance()->getTypeValidationRules());
 
+        if (request()->images) {
+            foreach (request()->images['files'] as $key => $file) {
+                if (Str::contains($key, 'image_')) {
+                    $this->rules = array_merge($this->rules, [
+                        'images.files.' . $key => ['required', 'mimes:bmp,jpeg,jpg,png,webp'],
+                    ]);
+                }
+            }
+        }
+
         foreach ($product->getEditableAttributes() as $attribute) {
-            if (in_array($attribute->code, ['sku', 'url_key']) || $attribute->type == 'boolean') {
+            if (
+                in_array($attribute->code, ['sku', 'url_key'])
+                || $attribute->type == 'boolean'
+            ) {
                 continue;
             }
 
@@ -95,7 +93,10 @@ class ProductForm extends FormRequest
                 $validations = $this->rules[$attribute->code];
             }
 
-            if ($attribute->type == 'text' && $attribute->validation) {
+            if (
+                $attribute->type == 'text'
+                && $attribute->validation
+            ) {
                 array_push($validations,
                     $attribute->validation == 'decimal'
                         ? new Decimal

@@ -82,6 +82,7 @@ return [
 
     'shop' => [
         'products' => [
+            'booking-information' => 'Rezervasyon bilgileri',
             'location' => 'Konum',
             'contact' => 'İletişim',
             'email' => 'Email',
@@ -100,6 +101,7 @@ return [
             'book-an-appointment' => 'Randevu Al',
             'date' => 'Tarih',
             'slot' => 'Slot',
+            'no-slots-available' => 'No slots available',
             'rent-an-item' => 'Eşya Kiralama',
             'choose-rent-option' => 'Kiralama Seçeneğini Seçin',
             'daily-basis' => 'Günlük Bazında',

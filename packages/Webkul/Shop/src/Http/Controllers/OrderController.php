@@ -12,27 +12,6 @@ class OrderController extends Controller
     use PDFHandler;
 
     /**
-     * Current customer.
-     *
-     * @var \Webkul\Customer\Contracts\Customer
-     */
-    protected $currentCustomer;
-
-    /**
-     * OrderrRepository object
-     *
-     * @var \Webkul\Sales\Repositories\OrderRepository
-     */
-    protected $orderRepository;
-
-    /**
-     * InvoiceRepository object
-     *
-     * @var \Webkul\Sales\Repositories\InvoiceRepository
-     */
-    protected $invoiceRepository;
-
-    /**
      * Create a new controller instance.
      *
      * @param  \Webkul\Sales\Repositories\OrderRepository  $orderRepository
@@ -40,17 +19,10 @@ class OrderController extends Controller
      * @return void
      */
     public function __construct(
-        OrderRepository $orderRepository,
-        InvoiceRepository $invoiceRepository
-    ) {
-        $this->middleware('customer');
-
-        $this->currentCustomer = auth()->guard('customer')->user();
-
-        $this->orderRepository = $orderRepository;
-
-        $this->invoiceRepository = $invoiceRepository;
-
+        protected OrderRepository $orderRepository,
+        protected InvoiceRepository $invoiceRepository
+    )
+    {
         parent::__construct();
     }
 
@@ -61,6 +33,7 @@ class OrderController extends Controller
      */
     public function index()
     {
+
         if (request()->ajax()) {
             return app(OrderDataGrid::class)->toJson();
         }
@@ -76,8 +49,10 @@ class OrderController extends Controller
      */
     public function view($id)
     {
+        $customer = auth()->guard('customer')->user();
+
         $order = $this->orderRepository->findOneWhere([
-            'customer_id' => $this->currentCustomer->id,
+            'customer_id' => $customer->id,
             'id'          => $id,
         ]);
 
@@ -96,9 +71,11 @@ class OrderController extends Controller
      */
     public function printInvoice($id)
     {
+        $customer = auth()->guard('customer')->user();
+
         $invoice = $this->invoiceRepository->findOrFail($id);
 
-        if ($invoice->order->customer_id !== $this->currentCustomer->id) {
+        if ($invoice->order->customer_id !== $customer->id) {
             abort(404);
         }
 
@@ -116,8 +93,10 @@ class OrderController extends Controller
      */
     public function cancel($id)
     {
+        $customer = auth()->guard('customer')->user();
+
         /* find by order id in customer's order */
-        $order = $this->currentCustomer->all_orders()->find($id);
+        $order = $customer->all_orders()->find($id);
 
         /* if order id not found then process should be aborted with 404 page */
         if (! $order) {

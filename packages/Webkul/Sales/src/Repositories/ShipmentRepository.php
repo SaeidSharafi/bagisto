@@ -2,11 +2,10 @@
 
 namespace Webkul\Sales\Repositories;
 
-use Illuminate\Container\Container as App;
+use Illuminate\Container\Container;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Webkul\Core\Eloquent\Repository;
-use Webkul\Sales\Contracts\Shipment;
 use Webkul\Sales\Repositories\OrderItemRepository;
 use Webkul\Sales\Repositories\OrderRepository;
 use Webkul\Sales\Repositories\ShipmentItemRepository;
@@ -14,47 +13,22 @@ use Webkul\Sales\Repositories\ShipmentItemRepository;
 class ShipmentRepository extends Repository
 {
     /**
-     * Order repository instance.
-     *
-     * @var \Webkul\Sales\Repositories\OrderRepository
-     */
-    protected $orderRepository;
-
-    /**
-     * Order item repository instance.
-     *
-     * @var \Webkul\Sales\Repositories\OrderItemRepository
-     */
-    protected $orderItemRepository;
-
-    /**
-     * Shipment item repository instance.
-     *
-     * @var \Webkul\Sales\Repositories\ShipmentItemRepository
-     */
-    protected $shipmentItemRepository;
-
-    /**
      * Create a new repository instance.
      *
      * @param  \Webkul\Sales\Repositories\OrderRepository  $orderRepository
      * @param  \Webkul\Sales\Repositories\OrderItemRepository  $orderItemRepository
      * @param  \Webkul\Sales\Repositories\ShipmentItemRepository  $orderItemRepository
+     * @param  \Illuminate\Container\Container  $container
      * @return void
      */
     public function __construct(
-        OrderRepository $orderRepository,
-        OrderItemRepository $orderItemRepository,
-        ShipmentItemRepository $shipmentItemRepository,
-        App $app
-    ) {
-        $this->orderRepository = $orderRepository;
-
-        $this->orderItemRepository = $orderItemRepository;
-
-        $this->shipmentItemRepository = $shipmentItemRepository;
-
-        parent::__construct($app);
+        protected OrderRepository $orderRepository,
+        protected OrderItemRepository $orderItemRepository,
+        protected ShipmentItemRepository $shipmentItemRepository,
+        Container $container
+    )
+    {
+        parent::__construct($container);
     }
 
     /**
@@ -62,9 +36,9 @@ class ShipmentRepository extends Repository
      *
      * @return string
      */
-    public function model()
+    public function model(): string
     {
-        return Shipment::class;
+        return 'Webkul\Sales\Contracts\Shipment';
     }
 
     /**

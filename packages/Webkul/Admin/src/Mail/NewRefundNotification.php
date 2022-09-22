@@ -12,21 +12,13 @@ class NewRefundNotification extends Mailable
     use Queueable, SerializesModels;
 
     /**
-     * The refund instance.
-     *
-     * @var \Webkul\Sales\Contracts\Refund
-     */
-    public $refund;
-
-    /**
      * Create a new message instance.
      *
      * @param  \Webkul\Sales\Contracts\Refund  $refund
      * @return void
      */
-    public function __construct($refund)
+    public function __construct(public $refund)
     {
-        $this->refund = $refund;
     }
 
     /**
@@ -39,8 +31,8 @@ class NewRefundNotification extends Mailable
         $order = $this->refund->order;
 
         return $this->from(core()->getSenderEmailDetails()['email'], core()->getSenderEmailDetails()['name'])
-                    ->to($order->customer_email, $order->customer_full_name)
-                    ->subject(trans('shop::app.mail.refund.subject', ['order_id' => $order->increment_id]))
-                    ->view('shop::emails.sales.new-refund');
+            ->to($order->customer_email, $order->customer_full_name)
+            ->subject(trans('shop::app.mail.refund.subject', ['order_id' => $order->increment_id]))
+            ->view('shop::emails.sales.new-refund');
     }
 }

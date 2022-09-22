@@ -155,7 +155,7 @@ class JeduSimple extends Simple
             if ($this->isPercentOffer()) {
                 $discount = $this > getDiscountPercent();
             }
-            $regular_price = $this->evaluatePrice($this->getMaximamPrice());
+            $regular_price = $this->evaluatePrice($this->getMaximumPrice());
         }
         $data['discount_data'] = [
             'discount'      => $discount,

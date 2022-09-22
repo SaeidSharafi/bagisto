@@ -51,12 +51,15 @@ class CustomerController extends \App\Http\Controllers\Controller
                 $row['date_of_birth'] = Carbon::make($row['date_of_birth'])->jdate("Y-m-d");
             }
             $data[$index]['values'] = $row;
-            if (array_key_exists($index, $errors)) {
-                $data[$index]['errors'] = $errors[$index];
+            if ($errors) {
+                if (array_key_exists($index, $errors)) {
+                    $data[$index]['errors'] = $errors[$index];
+                }
             }
+
         }
         $keys = $collection->first()->keys()->toArray();
-        $error_keys = array_keys(collect($errors)->first());
+        $error_keys = array_keys(collect($errors)->first() ?? []);
 
         session()->flash('success', "import successful");
         return view('admin::customers.bulk')

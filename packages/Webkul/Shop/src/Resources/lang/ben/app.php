@@ -376,6 +376,7 @@ return [
                 'share-wishlist'       => 'ইচ্ছা তালিকা ভাগ করুন',
                 'wishlist-sharing'     => 'ইচ্ছা তালিকা শেয়ারিং',
                 'shared-link'          => 'শেয়ারড লিংক',
+                'copy'                 => 'Copy',
                 'visibility'           => 'দৃশ্যমানতা',
                 'public'               => 'পাবলিক',
                 'private'              => 'ব্যক্তিগত',
@@ -493,6 +494,7 @@ return [
                 'missing_links'   => 'এই পণ্যটির জন্য ডাউনলোডযোগ্য লিঙ্কগুলি অনুপস্থিত৷',
                 'qty_missing'     => 'অন্তত একটি পণ্যে 1 পরিমাণের বেশি হওয়া উচিত।',
                 'qty_impossible'  => 'এই পণ্যগুলির একটির বেশি কার্টে যোগ করা যাবে না।',
+                'select_hourly_duration' => 'এক ঘন্টার একটি স্লট সময়কাল নির্বাচন করুন।',
             ],
             'create-error'              => 'কার্টের উদাহরণ তৈরি করার সময় কিছু সমস্যার সম্মুখীন হয়েছে৷',
             'title'                     => 'বাজারের ব্যাগ',
@@ -532,10 +534,12 @@ return [
             ],
             'minimum-order-message'     => 'ন্যূনতম অর্ডারের পরিমাণ হল :অ্যামাউন্ট',
             'suspended-account-message' => 'আপনার অ্যাকাউন্ট স্থগিত করা হয়েছে.',
+            'inactive-account-message' =>  'আপনার অ্যাকাউন্ট নিষ্ক্রিয় করা হয়েছে.',
             'check-shipping-address'    => 'অনুগ্রহ করে শিপিং ঠিকানা চেক করুন।',
             'check-billing-address'     => 'বিলিং ঠিকানা চেক করুন।',
             'specify-shipping-method'   => 'অনুগ্রহ করে শিপিং পদ্ধতি উল্লেখ করুন।',
             'specify-payment-method'    => 'অনুগ্রহ করে অর্থপ্রদানের পদ্ধতি উল্লেখ করুন।',
+            'rule-applied'              => 'Cart rule applied',
         ],
 
         'onepage' => [
@@ -608,6 +612,7 @@ return [
             'invalid-coupon'      => 'কুপন কোড অবৈধ।',
             'success-coupon'      => 'কুপন কোড সফলভাবে প্রয়োগ করা হয়েছে।',
             'coupon-apply-issue'  => 'কুপন কোড প্রয়োগ করা যাবে না।',
+            'coupon-already-applied' => 'কুপন কোড ইতিমধ্যেই প্রয়োগ করা হয়েছে।',
         ],
 
         'success' => [

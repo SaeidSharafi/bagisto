@@ -15,6 +15,7 @@ return [
         'error' => [
             'multiple-sort-keys-error'   => '致命错误! 找到多个排序键, 请手动解析URL.',
             'multiple-search-keys-error' => '找到多个搜索键, 请手动解析URL',
+            'mapped-keys-error'          => 'Mapped key not found. Make sure you have given valid options.',
         ],
 
         'zero-index'            => '索引列的值只能大于零',
@@ -50,5 +51,12 @@ return [
         'edit'                  => '编辑',
         'delete'                => '删除',
         'view'                  => '查看',
+        'active'                => '積極的',
+        'inactive'              => '不活躍',
+        'all-channels'          => '所有頻道',
+        'all-locales'           => '所有語言環境',
+        'all-customer-groups'   => '所有客戶組',
+        'records-found'         => '找到記錄',
+        'clear-all'             => 'Clear All'
     ],
 ];

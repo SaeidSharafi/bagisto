@@ -110,6 +110,7 @@ class JeduSessionController
             return redirect()->back();
         }
         auth()->guard('customer')->login($customer);
+
         if (auth()->guard('customer')->user()->status == 0) {
             auth()->guard('customer')->logout();
 

@@ -374,6 +374,7 @@ return [
                 'share-wishlist'       => 'Share Wishlist',
                 'wishlist-sharing'     => 'Wishlist Sharing',
                 'shared-link'          => 'Shared Link',
+                'copy'                 => 'Copy',
                 'visibility'           => 'Visibility',
                 'public'               => 'Public',
                 'private'              => 'Private',
@@ -494,6 +495,7 @@ return [
                 'missing_links'   => 'Faltan enlaces descargables para este producto.',
                 'qty_missing'     => 'Al menos un producto debe tener más de 1 cantidad.',
                 'qty_impossible'  => 'No se pueden agregar más de uno de estos productos al carrito.',
+                'select_hourly_duration' => 'Seleccione una duración de ranura de una hora.',
             ],
             'create-error'              => 'Se encontraron problemas con el carrito de compra',
             'title'                     => 'Carrito de la compra',
@@ -504,6 +506,8 @@ return [
             'proceed-to-checkout'       => 'Continuar con el pago',
             'remove'                    => 'Eliminar',
             'remove-link'               => 'Eliminar',
+            'remove-all-items'          => 'Remove all items',
+            'confirm-action'            => 'Confirm this action?',
             'move-to-wishlist'          => 'Mover a la lista de deseos',
             'move-to-wishlist-success'  => 'Artículo movido a la lista de deseos',
             'move-to-wishlist-error'    => 'El artículo no se puede añadir a la lista de deseos, por favor inténtalo más tarde',
@@ -519,6 +523,7 @@ return [
                 'error_remove'   => 'No hay artículos que eliminar en el carrito',
                 'success'        => 'El artículo se añadió al carrito',
                 'success-remove' => 'El artículo se eliminó del carrito',
+                'success-all-remove' => 'All items is successfully removed from the cart.',
                 'error-add'      => 'El artículo no se puede añadir al carrito, inténtelo más tarde',
                 'inactive'       => 'Un artículo está inactivo y se eliminó del carrito.',
                 'inactive-add'   => 'El artículo inactivo no se puede agregar al carrito',
@@ -532,10 +537,12 @@ return [
             ],
             'minimum-order-message'     => 'La cantidad mínima de pedido es :amount',
             'suspended-account-message' => 'Your account has been suspended.',
+            'inactive-account-message' =>  'Su cuenta ha estado inactiva.',
             'check-shipping-address'    => 'Please check shipping address.',
             'check-billing-address'     => 'Please check billing address.',
             'specify-shipping-method'   => 'Please specify shipping method.',
             'specify-payment-method'    => 'Please specify payment method.',
+            'rule-applied'              => 'Cart rule applied',
         ],
 
         'onepage' => [
@@ -608,6 +615,7 @@ return [
             'invalid-coupon'      => 'El código del cupón no es válido.',
             'success-coupon'      => 'Código del cupón aplicado correctamente.',
             'coupon-apply-issue'  => 'No se puede aplicar el código de cupón.',
+            'coupon-already-applied' => 'Código de cupón ya aplicado.',
         ],
 
         'success' => [

@@ -223,8 +223,7 @@ $(function() {
                 localStorage.setItem('bagisto-sidebar', this.isMenuOpen);
             },
 
-            checkMode(){
-
+            checkMode() {
                 this.isDarkMode = ! this.isDarkMode;
 
                 localStorage.setItem('dark-mode', this.isDarkMode);
@@ -241,7 +240,7 @@ $(function() {
                 return false;
             },
 
-            CheckIsMenuOpen: function(){
+            CheckIsMenuOpen: function() {
                 return this.isMenuOpen;
             }
         }

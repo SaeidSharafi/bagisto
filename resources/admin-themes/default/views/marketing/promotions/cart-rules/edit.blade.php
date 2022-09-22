@@ -18,7 +18,7 @@
                     <div class="page-title">
                         <h1>
                             <i class="icon angle-left-icon back-link"
-                               onclick="window.location = '{{ route('admin.cart-rules.index') }}'"></i>
+                            onclick="window.location = '{{ route('admin.cart-rules.index') }}'"></i>
 
                             {{ __('admin::app.promotions.cart-rules.edit-title') }}
                         </h1>
@@ -42,8 +42,7 @@
                                 <div class="control-group" :class="[errors.has('name') ? 'has-error' : '']">
                                     <label for="name" class="required">{{ __('admin::app.promotions.cart-rules.name') }}</label>
 
-                                    <input v-validate="'required'" class="control" id="name" name="name" data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.name') }}&quot;"
-                                           value="{{ old('name') ?: $cartRule->name }}"/>
+                                    <input v-validate="'required'" class="control" id="name" name="name" data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.name') }}&quot;" value="{{ old('name') ?: $cartRule->name }}"/>
 
                                     <span class="control-error" v-if="errors.has('name')">@{{ errors.first('name') }}</span>
                                 </div>
@@ -77,8 +76,7 @@
                                         $selectedOptionIds = old('channels') ?: $cartRule->channels->pluck('id')->toArray();
                                     @endphp
 
-                                    <select class="control" id="channels" name="channels[]" v-validate="'required'"
-                                            data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.channels') }}&quot;" multiple="multiple">
+                                    <select class="control" id="channels" name="channels[]" v-validate="'required'" data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.channels') }}&quot;" multiple="multiple">
 
                                         @foreach(core()->getAllChannels() as $channel)
                                             <option value="{{ $channel->id }}" {{ in_array($channel->id, $selectedOptionIds) ? 'selected' : '' }}>
@@ -98,8 +96,7 @@
                                         $selectedOptionIds = old('customer_groups') ?: $cartRule->customer_groups->pluck('id')->toArray();
                                     @endphp
 
-                                    <select class="control" id="customer_groups" name="customer_groups[]" v-validate="'required'"
-                                            data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.customer-groups') }}&quot;" multiple="multiple">
+                                    <select class="control" id="customer_groups" name="customer_groups[]" v-validate="'required'" data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.customer-groups') }}&quot;" multiple="multiple">
 
                                         @foreach(app('Webkul\Customer\Repositories\CustomerGroupRepository')->all() as $customerGroup)
                                             <option value="{{ $customerGroup->id }}" {{ in_array($customerGroup->id, $selectedOptionIds) ? 'selected' : '' }}>
@@ -115,8 +112,7 @@
                                 <div class="control-group" :class="[errors.has('coupon_type') ? 'has-error' : '']">
                                     <label for="coupon_type" class="required">{{ __('admin::app.promotions.cart-rules.coupon-type') }}</label>
 
-                                    <select class="control" id="coupon_type" name="coupon_type" v-model="coupon_type" v-validate="'required'"
-                                            data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.coupon-type') }}&quot;">
+                                    <select class="control" id="coupon_type" name="coupon_type" v-model="coupon_type" v-validate="'required'" data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.coupon-type') }}&quot;">
                                         <option value="0" {{ old('coupon_type') == 0 ? 'selected' : '' }}>{{ __('admin::app.promotions.cart-rules.no-coupon') }}</option>
                                         <option value="1" {{ old('coupon_type') == 1 ? 'selected' : '' }}>{{ __('admin::app.promotions.cart-rules.specific-coupon') }}</option>
                                     </select>
@@ -128,8 +124,7 @@
                                     <div class="control-group" :class="[errors.has('use_auto_generation') ? 'has-error' : '']">
                                         <label for="use_auto_generation" class="required">{{ __('admin::app.promotions.cart-rules.auto-generate-coupon') }}</label>
 
-                                        <select class="control" id="use_auto_generation" name="use_auto_generation" v-model="use_auto_generation" v-validate="'required'"
-                                                data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.auto-generate-coupon') }}&quot;">
+                                        <select class="control" id="use_auto_generation" name="use_auto_generation" v-model="use_auto_generation" v-validate="'required'" data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.auto-generate-coupon') }}&quot;">
                                             <option value="0">{{ __('admin::app.promotions.cart-rules.no') }}</option>
                                             <option value="1">{{ __('admin::app.promotions.cart-rules.yes') }}</option>
                                         </select>
@@ -141,28 +136,28 @@
                                         <div class="control-group" :class="[errors.has('coupon_code') ? 'has-error' : '']">
                                             <label for="coupon_code" class="required">{{ __('admin::app.promotions.cart-rules.coupon-code') }}</label>
 
-                                            <input v-validate="'required'" class="control" id="coupon_code" name="coupon_code"
-                                                   data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.coupon-code') }}&quot;"
-                                                   value="{{ old('coupon_code') ?: $cartRule->coupon_code }}"/>
+                                            <input v-validate="'required'" class="control" id="coupon_code" name="coupon_code" data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.coupon-code') }}&quot;" value="{{ old('coupon_code') ?: $cartRule->coupon_code }}"/>
 
                                             <span class="control-error" v-if="errors.has('coupon_code')">@{{ errors.first('coupon_code') }}</span>
                                         </div>
                                     </div>
 
-                                    <div class="control-group">
+                                    <div class="control-group" :class="[errors.has('uses_per_coupon') ? 'has-error' : '']">
                                         <label for="uses_per_coupon">{{ __('admin::app.promotions.cart-rules.uses-per-coupon') }}</label>
 
-                                        <input class="control" id="uses_per_coupon" name="uses_per_coupon" value="{{ old('uses_per_coupon') ?: $cartRule->uses_per_coupon }}"/>
+                                        <input  v-validate="'numeric'" class="control" id="uses_per_coupon" name="uses_per_coupon" data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.uses-per-coupon') }}&quot;" value="{{ old('uses_per_coupon') ?: $cartRule->uses_per_coupon }}"/>
+
+                                        <span class="control-error" v-if="errors.has('uses_per_coupon')">@{{ errors.first('uses_per_coupon') }}</span>
                                     </div>
                                 </div>
 
-                                <div class="control-group">
+                                <div class="control-group" :class="[errors.has('usage_per_customer') ? 'has-error' : '']">
                                     <label for="usage_per_customer">{{ __('admin::app.promotions.cart-rules.uses-per-customer') }}</label>
 
-                                    <input class="control" id="usage_per_customer" name="usage_per_customer"
-                                           value="{{ old('usage_per_customer') ?: $cartRule->usage_per_customer }}"/>
+                                    <input v-validate="'numeric'" class="control" id="usage_per_customer" name="usage_per_customer" data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.uses-per-customer') }}&quot;"  value="{{ old('usage_per_customer') ?: $cartRule->usage_per_customer }}"/>
 
                                     <span class="control-info">{{ __('admin::app.promotions.cart-rules.uses-per-customer-control-info') }}</span>
+                                    <span class="control-error" v-if="errors.has('usage_per_customer')">@{{ errors.first('usage_per_customer') }}</span>
                                 </div>
 
                                 <div class="control-group date">
@@ -192,8 +187,7 @@
                                 <div class="control-group">
                                     <label for="sort_order">{{ __('admin::app.promotions.cart-rules.priority') }}</label>
 
-                                    <input type="text" class="control" id="sort_order" name="sort_order"
-                                           value="{{ $cartRule->sort_order }}" {{ $cartRule->sort_order ? 'checked' : '' }}/>
+                                    <input type="text" class="control" id="sort_order" name="sort_order" value="{{ $cartRule->sort_order }}" {{ $cartRule->sort_order ? 'checked' : '' }}/>
                                 </div>
                             </div>
                         </accordian>
@@ -232,8 +226,7 @@
                                         $selectedOption = old('action_type') ?: $cartRule->action_type;
                                     @endphp
 
-                                    <select class="control" id="action_type" name="action_type" v-validate="'required'" v-model="action_type"
-                                            data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.action-type') }}&quot;">
+                                    <select class="control" id="action_type" name="action_type" v-validate="'required'" v-model="action_type" data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.action-type') }}&quot;">
                                         <option value="by_percent" {{ $selectedOption == 'by_percent' ? 'selected' : '' }}>
                                             {{ __('admin::app.promotions.cart-rules.percentage-product-price') }}
                                         </option>
@@ -257,9 +250,7 @@
                                 <div class="control-group" :class="[errors.has('discount_amount') ? 'has-error' : '']">
                                     <label for="discount_amount" class="required">{{ __('admin::app.promotions.cart-rules.discount-amount') }}</label>
 
-                                    <input v-validate="'required'" class="control" id="discount_amount" name="discount_amount"
-                                           data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.discount-amount') }}&quot;"
-                                           value="{{ old('discount_amount') ?: $cartRule->discount_amount }}"/>
+                                    <input v-validate="'required'" class="control" id="discount_amount" name="discount_amount" data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.discount-amount') }}&quot;" value="{{ old('discount_amount') ?: $cartRule->discount_amount }}"/>
 
                                     <span class="control-error" v-if="errors.has('discount_amount')">@{{ errors.first('discount_amount') }}</span>
                                 </div>
@@ -334,7 +325,7 @@
 
                         {!! view_render_event('bagisto.admin.promotions.cart-rules.create.after') !!}
 
-                        <accordian title="{{ __('admin::app.promotions.cart-rules.coupon-codes') }}" :active="false" v-if="coupon_type && use_auto_generation">
+                        <accordian title="{{ __('admin::app.promotions.cart-rules.coupon-codes') }}" :active="false" v-if="parseInt(use_auto_generation) && parseInt(coupon_type)">
                             <div slot="body">
                                 <create-coupon-form></create-coupon-form>
                             </div>
@@ -374,15 +365,12 @@
                 <div v-if="matchedAttribute">
                     <input type="hidden" :name="['conditions[' + index + '][attribute_type]']" v-model="matchedAttribute.type">
 
-                    <div
-                        v-if="matchedAttribute.key == 'product|children::category_ids' || matchedAttribute.key == 'product|category_ids' || matchedAttribute.key == 'product|parent::category_ids'">
-                        <tree-view value-field="id" id-field="id" :name-field="'conditions[' + index + '][value]'" input-type="checkbox" :items='matchedAttribute.options'
-                                   :value='condition.value' :behavior="'no'" fallback-locale="{{ config('app.fallback_locale') }}"></tree-view>
+                    <div v-if="matchedAttribute.key == 'product|children::category_ids' || matchedAttribute.key == 'product|category_ids' || matchedAttribute.key == 'product|parent::category_ids'">
+                        <tree-view value-field="id" id-field="id" :name-field="'conditions[' + index + '][value]'" input-type="checkbox" :items='matchedAttribute.options' :value='condition.value' :behavior="'no'" fallback-locale="{{ config('app.fallback_locale') }}"></tree-view>
                     </div>
 
                     <div v-else>
-                        <div class="control-group"
-                             v-if="matchedAttribute.type == 'text' || matchedAttribute.type == 'price' || matchedAttribute.type == 'decimal' || matchedAttribute.type == 'integer'">
+                        <div class="control-group" v-if="matchedAttribute.type == 'text' || matchedAttribute.type == 'price' || matchedAttribute.type == 'decimal' || matchedAttribute.type == 'integer'">
                             <input class="control" :name="['conditions[' + index + '][value]']" v-model="condition.value"/>
                         </div>
 
@@ -454,8 +442,7 @@
                 <div class="control-group" :class="[errors.has('create-coupon-form.coupon_qty') ? 'has-error' : '']">
                     <label for="coupon_qty" class="required">{{ __('admin::app.promotions.cart-rules.coupon-qty') }}</label>
 
-                    <input v-validate="'required|min_value:1'" class="control" id="coupon_qty" name="coupon_qty" v-model="coupon_format.coupon_qty"
-                           data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.coupon-qty') }}&quot;"/>
+                    <input v-validate="'required|min_value:1'" class="control" id="coupon_qty" name="coupon_qty" v-model="coupon_format.coupon_qty" data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.coupon-qty') }}&quot;"/>
 
                     <span class="control-error" v-if="errors.has('create-coupon-form.coupon_qty')">
                         @{{ errors.first('create-coupon-form.coupon_qty') }}
@@ -465,8 +452,7 @@
                 <div class="control-group" :class="[errors.has('create-coupon-form.code_length') ? 'has-error' : '']">
                     <label for="code_length" class="required">{{ __('admin::app.promotions.cart-rules.code-length') }}</label>
 
-                    <input v-validate="'required|min_value:10'" class="control" id="code_length" name="code_length" v-model="coupon_format.code_length"
-                           data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.code-length') }}&quot;"/>
+                    <input v-validate="'required|min_value:10'" class="control" id="code_length" name="code_length" v-model="coupon_format.code_length" data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.code-length') }}&quot;"/>
 
                     <span class="control-error" v-if="errors.has('create-coupon-form.code_length')">
                         @{{ errors.first('create-coupon-form.code_length') }}
@@ -476,8 +462,7 @@
                 <div class="control-group" :class="[errors.has('create-coupon-form.code_format') ? 'has-error' : '']">
                     <label for="code_format" class="required">{{ __('admin::app.promotions.cart-rules.code-format') }}</label>
 
-                    <select class="control" id="code_format" name="code_format" v-model="coupon_format.code_format" v-validate="'required'"
-                            data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.code-format') }}&quot;">
+                    <select class="control" id="code_format" name="code_format" v-model="coupon_format.code_format" v-validate="'required'" data-vv-as="&quot;{{ __('admin::app.promotions.cart-rules.code-format') }}&quot;">
                         <option value="alphanumeric">{{ __('admin::app.promotions.cart-rules.alphanumeric') }}</option>
                         <option value="alphabetical">{{ __('admin::app.promotions.cart-rules.alphabetical') }}</option>
                         <option value="numeric">{{ __('admin::app.promotions.cart-rules.numeric') }}</option>
@@ -508,7 +493,7 @@
                     <div class="page-action">
                         <div class="export-import" @click="showModal('downloadDataGrid')">
                             <i class="export-icon"></i>
-                            <span>
+                            <span >
                                 {{ __('admin::app.export.export') }}
                             </span>
                         </div>
@@ -538,7 +523,7 @@
 
             inject: ['$validator'],
 
-            data: function () {
+            data: function() {
                 return {
                     coupon_type: {{ old('coupon_type') ?: $cartRule->coupon_type }},
 
@@ -553,7 +538,7 @@
             },
 
             methods: {
-                addCondition: function () {
+                addCondition: function() {
                     this.conditions.push({
                         'attribute': '',
                         'operator': '==',
@@ -561,17 +546,17 @@
                     });
                 },
 
-                removeCondition: function (condition) {
+                removeCondition: function(condition) {
                     let index = this.conditions.indexOf(condition)
 
                     this.conditions.splice(index, 1)
                 },
 
-                onSubmit: function (e) {
+                onSubmit: function(e) {
                     this.$root.onSubmit(e)
                 },
 
-                redirectBack: function (fallbackUrl) {
+                redirectBack: function(fallbackUrl) {
                     this.$root.redirectBack(fallbackUrl)
                 }
             }
@@ -582,7 +567,7 @@
 
             props: ['index', 'condition'],
 
-            data: function () {
+            data: function() {
                 return {
                     condition_attributes: @json(app('\Webkul\CartRule\Repositories\CartRuleRepository')->getConditionAttributes()),
 
@@ -596,148 +581,148 @@
 
                     condition_operators: {
                         'price': [{
-                            'operator': '==',
-                            'label': '{{ __('admin::app.promotions.cart-rules.is-equal-to') }}'
-                        }, {
-                            'operator': '!=',
-                            'label': '{{ __('admin::app.promotions.cart-rules.is-not-equal-to') }}'
-                        }, {
-                            'operator': '>=',
-                            'label': '{{ __('admin::app.promotions.cart-rules.equals-or-greater-than') }}'
-                        }, {
-                            'operator': '<=',
-                            'label': '{{ __('admin::app.promotions.cart-rules.equals-or-less-than') }}'
-                        }, {
-                            'operator': '>',
-                            'label': '{{ __('admin::app.promotions.cart-rules.greater-than') }}'
-                        }, {
-                            'operator': '<',
-                            'label': '{{ __('admin::app.promotions.cart-rules.less-than') }}'
-                        }],
+                                'operator': '==',
+                                'label': '{{ __('admin::app.promotions.cart-rules.is-equal-to') }}'
+                            }, {
+                                'operator': '!=',
+                                'label': '{{ __('admin::app.promotions.cart-rules.is-not-equal-to') }}'
+                            }, {
+                                'operator': '>=',
+                                'label': '{{ __('admin::app.promotions.cart-rules.equals-or-greater-than') }}'
+                            }, {
+                                'operator': '<=',
+                                'label': '{{ __('admin::app.promotions.cart-rules.equals-or-less-than') }}'
+                            }, {
+                                'operator': '>',
+                                'label': '{{ __('admin::app.promotions.cart-rules.greater-than') }}'
+                            }, {
+                                'operator': '<',
+                                'label': '{{ __('admin::app.promotions.cart-rules.less-than') }}'
+                            }],
                         'decimal': [{
-                            'operator': '==',
-                            'label': '{{ __('admin::app.promotions.cart-rules.is-equal-to') }}'
-                        }, {
-                            'operator': '!=',
-                            'label': '{{ __('admin::app.promotions.cart-rules.is-not-equal-to') }}'
-                        }, {
-                            'operator': '>=',
-                            'label': '{{ __('admin::app.promotions.cart-rules.equals-or-greater-than') }}'
-                        }, {
-                            'operator': '<=',
-                            'label': '{{ __('admin::app.promotions.cart-rules.equals-or-less-than') }}'
-                        }, {
-                            'operator': '>',
-                            'label': '{{ __('admin::app.promotions.cart-rules.greater-than') }}'
-                        }, {
-                            'operator': '<',
-                            'label': '{{ __('admin::app.promotions.cart-rules.less-than') }}'
-                        }],
+                                'operator': '==',
+                                'label': '{{ __('admin::app.promotions.cart-rules.is-equal-to') }}'
+                            }, {
+                                'operator': '!=',
+                                'label': '{{ __('admin::app.promotions.cart-rules.is-not-equal-to') }}'
+                            }, {
+                                'operator': '>=',
+                                'label': '{{ __('admin::app.promotions.cart-rules.equals-or-greater-than') }}'
+                            }, {
+                                'operator': '<=',
+                                'label': '{{ __('admin::app.promotions.cart-rules.equals-or-less-than') }}'
+                            }, {
+                                'operator': '>',
+                                'label': '{{ __('admin::app.promotions.cart-rules.greater-than') }}'
+                            }, {
+                                'operator': '<',
+                                'label': '{{ __('admin::app.promotions.cart-rules.less-than') }}'
+                            }],
                         'integer': [{
-                            'operator': '==',
-                            'label': '{{ __('admin::app.promotions.cart-rules.is-equal-to') }}'
-                        }, {
-                            'operator': '!=',
-                            'label': '{{ __('admin::app.promotions.cart-rules.is-not-equal-to') }}'
-                        }, {
-                            'operator': '>=',
-                            'label': '{{ __('admin::app.promotions.cart-rules.equals-or-greater-than') }}'
-                        }, {
-                            'operator': '<=',
-                            'label': '{{ __('admin::app.promotions.cart-rules.equals-or-less-than') }}'
-                        }, {
-                            'operator': '>',
-                            'label': '{{ __('admin::app.promotions.cart-rules.greater-than') }}'
-                        }, {
-                            'operator': '<',
-                            'label': '{{ __('admin::app.promotions.cart-rules.less-than') }}'
-                        }],
+                                'operator': '==',
+                                'label': '{{ __('admin::app.promotions.cart-rules.is-equal-to') }}'
+                            }, {
+                                'operator': '!=',
+                                'label': '{{ __('admin::app.promotions.cart-rules.is-not-equal-to') }}'
+                            }, {
+                                'operator': '>=',
+                                'label': '{{ __('admin::app.promotions.cart-rules.equals-or-greater-than') }}'
+                            }, {
+                                'operator': '<=',
+                                'label': '{{ __('admin::app.promotions.cart-rules.equals-or-less-than') }}'
+                            }, {
+                                'operator': '>',
+                                'label': '{{ __('admin::app.promotions.cart-rules.greater-than') }}'
+                            }, {
+                                'operator': '<',
+                                'label': '{{ __('admin::app.promotions.cart-rules.less-than') }}'
+                            }],
                         'text': [{
-                            'operator': '==',
-                            'label': '{{ __('admin::app.promotions.cart-rules.is-equal-to') }}'
-                        }, {
-                            'operator': '!=',
-                            'label': '{{ __('admin::app.promotions.cart-rules.is-not-equal-to') }}'
-                        }, {
-                            'operator': '{}',
-                            'label': '{{ __('admin::app.promotions.cart-rules.contain') }}'
-                        }, {
-                            'operator': '!{}',
-                            'label': '{{ __('admin::app.promotions.cart-rules.does-not-contain') }}'
-                        }],
+                                'operator': '==',
+                                'label': '{{ __('admin::app.promotions.cart-rules.is-equal-to') }}'
+                            }, {
+                                'operator': '!=',
+                                'label': '{{ __('admin::app.promotions.cart-rules.is-not-equal-to') }}'
+                            }, {
+                                'operator': '{}',
+                                'label': '{{ __('admin::app.promotions.cart-rules.contain') }}'
+                            }, {
+                                'operator': '!{}',
+                                'label': '{{ __('admin::app.promotions.cart-rules.does-not-contain') }}'
+                            }],
                         'boolean': [{
-                            'operator': '==',
-                            'label': '{{ __('admin::app.promotions.cart-rules.is-equal-to') }}'
-                        }, {
-                            'operator': '!=',
-                            'label': '{{ __('admin::app.promotions.cart-rules.is-not-equal-to') }}'
-                        }],
+                                'operator': '==',
+                                'label': '{{ __('admin::app.promotions.cart-rules.is-equal-to') }}'
+                            }, {
+                                'operator': '!=',
+                                'label': '{{ __('admin::app.promotions.cart-rules.is-not-equal-to') }}'
+                            }],
                         'date': [{
-                            'operator': '==',
-                            'label': '{{ __('admin::app.promotions.cart-rules.is-equal-to') }}'
-                        }, {
-                            'operator': '!=',
-                            'label': '{{ __('admin::app.promotions.cart-rules.is-not-equal-to') }}'
-                        }, {
-                            'operator': '>=',
-                            'label': '{{ __('admin::app.promotions.cart-rules.equals-or-greater-than') }}'
-                        }, {
-                            'operator': '<=',
-                            'label': '{{ __('admin::app.promotions.cart-rules.equals-or-less-than') }}'
-                        }, {
-                            'operator': '>',
-                            'label': '{{ __('admin::app.promotions.cart-rules.greater-than') }}'
-                        }, {
-                            'operator': '<',
-                            'label': '{{ __('admin::app.promotions.cart-rules.less-than') }}'
-                        }],
+                                'operator': '==',
+                                'label': '{{ __('admin::app.promotions.cart-rules.is-equal-to') }}'
+                            }, {
+                                'operator': '!=',
+                                'label': '{{ __('admin::app.promotions.cart-rules.is-not-equal-to') }}'
+                            }, {
+                                'operator': '>=',
+                                'label': '{{ __('admin::app.promotions.cart-rules.equals-or-greater-than') }}'
+                            }, {
+                                'operator': '<=',
+                                'label': '{{ __('admin::app.promotions.cart-rules.equals-or-less-than') }}'
+                            }, {
+                                'operator': '>',
+                                'label': '{{ __('admin::app.promotions.cart-rules.greater-than') }}'
+                            }, {
+                                'operator': '<',
+                                'label': '{{ __('admin::app.promotions.cart-rules.less-than') }}'
+                            }],
                         'datetime': [{
-                            'operator': '==',
-                            'label': '{{ __('admin::app.promotions.cart-rules.is-equal-to') }}'
-                        }, {
-                            'operator': '!=',
-                            'label': '{{ __('admin::app.promotions.cart-rules.is-not-equal-to') }}'
-                        }, {
-                            'operator': '>=',
-                            'label': '{{ __('admin::app.promotions.cart-rules.equals-or-greater-than') }}'
-                        }, {
-                            'operator': '<=',
-                            'label': '{{ __('admin::app.promotions.cart-rules.equals-or-less-than') }}'
-                        }, {
-                            'operator': '>',
-                            'label': '{{ __('admin::app.promotions.cart-rules.greater-than') }}'
-                        }, {
-                            'operator': '<',
-                            'label': '{{ __('admin::app.promotions.cart-rules.less-than') }}'
-                        }],
+                                'operator': '==',
+                                'label': '{{ __('admin::app.promotions.cart-rules.is-equal-to') }}'
+                            }, {
+                                'operator': '!=',
+                                'label': '{{ __('admin::app.promotions.cart-rules.is-not-equal-to') }}'
+                            }, {
+                                'operator': '>=',
+                                'label': '{{ __('admin::app.promotions.cart-rules.equals-or-greater-than') }}'
+                            }, {
+                                'operator': '<=',
+                                'label': '{{ __('admin::app.promotions.cart-rules.equals-or-less-than') }}'
+                            }, {
+                                'operator': '>',
+                                'label': '{{ __('admin::app.promotions.cart-rules.greater-than') }}'
+                            }, {
+                                'operator': '<',
+                                'label': '{{ __('admin::app.promotions.cart-rules.less-than') }}'
+                            }],
                         'select': [{
-                            'operator': '==',
-                            'label': '{{ __('admin::app.promotions.cart-rules.is-equal-to') }}'
-                        }, {
-                            'operator': '!=',
-                            'label': '{{ __('admin::app.promotions.cart-rules.is-not-equal-to') }}'
-                        }],
+                                'operator': '==',
+                                'label': '{{ __('admin::app.promotions.cart-rules.is-equal-to') }}'
+                            }, {
+                                'operator': '!=',
+                                'label': '{{ __('admin::app.promotions.cart-rules.is-not-equal-to') }}'
+                            }],
                         'radio': [{
-                            'operator': '==',
-                            'label': '{{ __('admin::app.promotions.cart-rules.is-equal-to') }}'
-                        }, {
-                            'operator': '!=',
-                            'label': '{{ __('admin::app.promotions.cart-rules.is-not-equal-to') }}'
-                        }],
+                                'operator': '==',
+                                'label': '{{ __('admin::app.promotions.cart-rules.is-equal-to') }}'
+                            }, {
+                                'operator': '!=',
+                                'label': '{{ __('admin::app.promotions.cart-rules.is-not-equal-to') }}'
+                            }],
                         'multiselect': [{
-                            'operator': '{}',
-                            'label': '{{ __('admin::app.promotions.cart-rules.contains') }}'
-                        }, {
-                            'operator': '!{}',
-                            'label': '{{ __('admin::app.promotions.cart-rules.does-not-contain') }}'
-                        }],
+                                'operator': '{}',
+                                'label': '{{ __('admin::app.promotions.cart-rules.contains') }}'
+                            }, {
+                                'operator': '!{}',
+                                'label': '{{ __('admin::app.promotions.cart-rules.does-not-contain') }}'
+                            }],
                         'checkbox': [{
-                            'operator': '{}',
-                            'label': '{{ __('admin::app.promotions.cart-rules.contains') }}'
-                        }, {
-                            'operator': '!{}',
-                            'label': '{{ __('admin::app.promotions.cart-rules.does-not-contain') }}'
-                        }]
+                                'operator': '{}',
+                                'label': '{{ __('admin::app.promotions.cart-rules.contains') }}'
+                            }, {
+                                'operator': '!{}',
+                                'label': '{{ __('admin::app.promotions.cart-rules.does-not-contain') }}'
+                            }]
                     }
                 }
             },
@@ -759,8 +744,8 @@
                         this.condition.operator = '{}';
 
                         this.condition.value = this.condition.value == '' && this.condition.value != undefined
-                            ? []
-                            : Array.isArray(this.condition.value) ? this.condition.value : [];
+                                ? []
+                                : Array.isArray(this.condition.value) ? this.condition.value : [];
                     }
 
                     return matchedAttribute[0];
@@ -768,7 +753,7 @@
             },
 
             methods: {
-                removeCondition: function () {
+                removeCondition: function() {
                     this.$emit('onRemoveCondition', this.condition)
                 }
             }
@@ -779,7 +764,7 @@
 
             inject: ['$validator'],
 
-            data: function () {
+            data: function() {
                 return {
                     coupon_format: {
                         coupon_qty: '',
@@ -796,13 +781,13 @@
             },
 
             methods: {
-                generateCoupons: function (formScope) {
+                generateCoupons: function(formScope) {
                     let self = this;
 
                     this.$validator.validateAll(formScope).then(function (result) {
                         if (result) {
                             self.$http.post("{{ route('admin.cart-rules-coupons.store', $cartRule->id) }}", self.coupon_format)
-                                .then(function (response) {
+                                .then(function(response) {
                                     window.flashMessages = [{
                                         'type': 'alert-success',
                                         'message': response.data.message

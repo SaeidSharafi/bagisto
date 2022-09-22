@@ -160,7 +160,7 @@ return [
             'not-activated'       => 'Your activation seeks admin approval',
             'resend-verification' => 'Resend verification mail again',
             'show-password'       => 'Show Password',
-            
+
         ],
 
         'forgot-password' => [
@@ -376,6 +376,9 @@ return [
                 'share-wishlist'       => 'Share Wishlist',
                 'wishlist-sharing'     => 'Wishlist Sharing',
                 'shared-link'          => 'Shared Link',
+                'copy'                 => 'Copy',
+                'copy-link'            => 'Copy Link',
+                'copied'               => 'Copied!',
                 'visibility'           => 'Visibility',
                 'public'               => 'Public',
                 'private'              => 'Private',
@@ -493,12 +496,15 @@ return [
                 'missing_links'   => 'Downloadable links are missing for this product.',
                 'qty_missing'     => 'Atleast one product should have more than 1 quantity.',
                 'qty_impossible'  => 'Cannot add more than one of these products to cart.',
+                'select_hourly_duration' => 'Select a slot duration of one hour.',
             ],
             'create-error'              => 'Encountered some issue while making cart instance.',
             'title'                     => 'Shopping Cart',
             'empty'                     => 'Your shopping cart is empty',
             'update-cart'               => 'Update Cart',
             'continue-shopping'         => 'Continue Shopping',
+            'remove-all-items'          => 'Remove all items',
+            'confirm-action'            => 'Confirm this action?',
             'continue-registration'     => 'Continue Registration',
             'proceed-to-checkout'       => 'Proceed To Checkout',
             'remove'                    => 'Remove',
@@ -518,6 +524,7 @@ return [
                 'error_remove'   => 'No items to remove from the cart.',
                 'success'        => 'Item is successfully added to cart.',
                 'success-remove' => 'Item is successfully removed from the cart.',
+                'success-all-remove' => 'All items is successfully removed from the cart.',
                 'error-add'      => 'Item cannot be added to cart, please try again later.',
                 'inactive'       => 'An item is inactive and was removed from cart.',
                 'inactive-add'   => 'Inactive item cannot be added to cart.',
@@ -532,10 +539,12 @@ return [
             ],
             'minimum-order-message'     => 'Minimum order amount is :amount',
             'suspended-account-message' => 'Your account has been suspended.',
+            'inactive-account-message' =>  'Your account has been inactive.',
             'check-shipping-address'    => 'Please check shipping address.',
             'check-billing-address'     => 'Please check billing address.',
             'specify-shipping-method'   => 'Please specify shipping method.',
             'specify-payment-method'    => 'Please specify payment method.',
+            'rule-applied'              => 'Cart rule applied',
         ],
 
         'onepage' => [
@@ -565,6 +574,13 @@ return [
             'shipping-method'     => 'Select Shipping Method',
             'payment-methods'     => 'Select Payment Method',
             'payment-method'      => 'Payment Method',
+            'payment-method-name' => [
+                'PayPal Smart Button' => 'PayPal Smart Button',
+                'PayPal'              => 'PayPal',
+                'Cash On Delivery'    => 'Cash On Delivery',                
+                'Money Transfer'      => 'Money Transfer',                
+                'Paypal Standard'     => 'PayPal Standard'    
+            ],
             'summary'             => 'Order Summary',
             'price'               => 'Price',
             'quantity'            => 'Quantity',
@@ -608,6 +624,7 @@ return [
             'invalid-coupon'      => 'Coupon code is invalid.',
             'success-coupon'      => 'Coupon code applied successfully.',
             'coupon-apply-issue'  => 'Coupon code can\'t be applied.',
+            'coupon-already-applied' => 'Coupon code already applied.',
         ],
 
         'success' => [

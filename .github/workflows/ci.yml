@@ -2,13 +2,16 @@ name: CI
 
 on: [push, pull_request]
 
+permissions:
+  contents: read
+
 jobs:
   tests:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
         operating-system: [ubuntu-latest]
-        php-versions: ['8.0', '8.1']
+        php-versions: ['8.1']
     name: PHP ${{ matrix.php-versions }} test on ${{ matrix.operating-system }}
 
     services:
@@ -16,9 +19,7 @@ jobs:
         image: mysql:5.7
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: bagisto_testing
-          MYSQL_USER: bagisto
-          MYSQL_PASSWORD: secret
+          MYSQL_DATABASE: bagisto
         ports:
           - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
@@ -42,11 +43,12 @@ jobs:
         run: |
           cp .env.example .env.testing
           set -e
+          sed -i "s|^\(APP_ENV=\s*\).*$|\1testing|" .env.testing
           sed -i "s|^\(DB_HOST=\s*\).*$|\1127.0.0.1|" .env.testing
           sed -i "s|^\(DB_PORT=\s*\).*$|\1${{ job.services.mysql.ports['3306'] }}|" .env.testing
-          sed -i "s|^\(DB_DATABASE=\s*\).*$|\1bagisto_testing|" .env.testing
-          sed -i "s|^\(DB_USERNAME=\s*\).*$|\1bagisto|" .env.testing
-          sed -i "s|^\(DB_PASSWORD=\s*\).*$|\1secret|" .env.testing
+          sed -i "s|^\(DB_DATABASE=\s*\).*$|\1bagisto|" .env.testing
+          sed -i "s|^\(DB_USERNAME=\s*\).*$|\1root|" .env.testing
+          sed -i "s|^\(DB_PASSWORD=\s*\).*$|\1root|" .env.testing
 
       - name: Key Generate
         run: set -e && php artisan key:generate --env=testing
@@ -66,7 +68,7 @@ jobs:
         run: set -e && php artisan db:seed --env=testing
 
       - name: Vendor Publish
-        run: set -e && php artisan vendor:publish --all --force --env=testing
+        run: set -e && php artisan bagisto:publish --force --env=testing
 
       - name: Execute Unit Tests
         run: set -e && vendor/bin/codecept run unit

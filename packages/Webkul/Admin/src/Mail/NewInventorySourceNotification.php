@@ -12,21 +12,13 @@ class NewInventorySourceNotification extends Mailable
     use Queueable, SerializesModels;
 
     /**
-     * The shipment instance.
-     *
-     * @var \Webkul\Customer\Contracts\Shipment
-     */
-    public $shipment;
-
-    /**
      * Create a new message instance.
      *
      * @param  \Webkul\Customer\Contracts\Shipment  $shipment
      * @return void
      */
-    public function __construct($shipment)
+    public function __construct(public $shipment)
     {
-        $this->shipment = $shipment;
     }
 
     /**
@@ -41,8 +33,8 @@ class NewInventorySourceNotification extends Mailable
         $inventory = $this->shipment->inventory_source;
 
         return $this->from(core()->getSenderEmailDetails()['email'], core()->getSenderEmailDetails()['name'])
-                    ->to($inventory->contact_email, $inventory->name)
-                    ->subject(trans('shop::app.mail.shipment.subject', ['order_id' => $order->increment_id]))
-                    ->view('shop::emails.sales.new-inventorysource-shipment');
+            ->to($inventory->contact_email, $inventory->name)
+            ->subject(trans('shop::app.mail.shipment.subject', ['order_id' => $order->increment_id]))
+            ->view('shop::emails.sales.new-inventorysource-shipment');
     }
 }

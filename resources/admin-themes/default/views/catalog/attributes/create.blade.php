@@ -314,7 +314,7 @@
 
                             <td>
                                 <div class="control-group" :class="[errors.has(adminName(row)) ? 'has-error' : '']">
-                                    <input type="text" v-validate="'required'" v-model="row['admin_name']" :name="adminName(row)" class="control" data-vv-as="&quot;{{ __('admin::app.catalog.attributes.admin_name') }}&quot;"/>
+                                    <input type="text" v-validate="getOptionValidation(row,'')" v-model="row['admin_name']" :name="adminName(row)" class="control" data-vv-as="&quot;{{ __('admin::app.catalog.attributes.admin_name') }}&quot;"/>
                                     <span class="control-error" v-if="errors.has(adminName(row))">@{{ errors.first(adminName(row)) }}</span>
                                 </div>
                             </td>
@@ -330,7 +330,7 @@
 
                             <td>
                                 <div class="control-group" :class="[errors.has(sortOrderName(row)) ? 'has-error' : '']">
-                                    <input type="text" v-validate="'required|numeric'" :name="sortOrderName(row)" class="control" data-vv-as="&quot;{{ __('admin::app.catalog.attributes.position') }}&quot;"/>
+                                    <input type="text" v-validate="getOptionValidation(row,'')" :name="sortOrderName(row)" class="control" data-vv-as="&quot;{{ __('admin::app.catalog.attributes.position') }}&quot;"/>
                                     <span class="control-error" v-if="errors.has(sortOrderName(row))">@{{ errors.first(sortOrderName(row)) }}</span>
                                 </div>
                             </td>
@@ -370,6 +370,12 @@
                     $('#enable_wysiwyg').parents('.control-group').removeClass('hide');
                 } else {
                     $('#enable_wysiwyg').parents('.control-group').addClass('hide');
+                }
+
+                if (['text'].indexOf($(e.target).val()) > -1) {
+                    $('#validation').parents('.control-group').removeClass('hide');
+                } else {
+                    $('#validation').parents('.control-group').addClass('hide');
                 }
             })
         });
@@ -453,7 +459,7 @@
                         return '';
                     }
 
-                    return ('{{ app()->getLocale() }}' === localeCode) ? 'required' : '';
+                        return ('{{ app()->getLocale() }}' === localeCode) || localeCode == ""  ? 'required' : '';
                 }
             },
 

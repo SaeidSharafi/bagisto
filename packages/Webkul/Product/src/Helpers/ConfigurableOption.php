@@ -57,12 +57,18 @@ class ConfigurableOption extends AbstractProduct
     /**
      * Get allowed attributes.
      *
-     * @param  \Webkul\Product\Contracts\Product|\Webkul\Product\Contracts\ProductFlat  $product
+     * @param  \Webkul\Product\Contracts\ProductFlat  $product
      * @return \Illuminate\Support\Collection
      */
     public function getAllowAttributes($product)
     {
-        return $product->product->super_attributes;
+        static $productSuperAttributes = [];
+
+        if (isset($productSuperAttributes[$product->id])) {
+            return $productSuperAttributes[$product->id];
+        }
+
+        return $productSuperAttributes[$product->id] = $product->product->super_attributes()->with(['translation', 'options', 'options.translation'])->get();
     }
 
     /**
@@ -90,7 +96,10 @@ class ConfigurableOption extends AbstractProduct
 
                 $attributeValue = $product->{$productAttribute->code};
 
-                if ($attributeValue == '' && $product instanceof \Webkul\Product\Models\ProductFlat) {
+                if (
+                    $attributeValue == ''
+                    && $product instanceof \Webkul\Product\Models\ProductFlat
+                ) {
                     $attributeValue = $product->product->{$productAttribute->code};
                 }
 
@@ -117,20 +126,13 @@ class ConfigurableOption extends AbstractProduct
         $allowAttributes = $this->getAllowAttributes($product);
 
         foreach ($allowAttributes as $attribute) {
-
-            $attributeOptionsData = $this->getAttributeOptionsData($attribute, $options);
-
-            if ($attributeOptionsData) {
-                $attributeId = $attribute->id;
-
-                $attributes[] = [
-                    'id'          => $attributeId,
-                    'code'        => $attribute->code,
-                    'label'       => $attribute->name ? $attribute->name : $attribute->admin_name,
-                    'swatch_type' => $attribute->swatch_type,
-                    'options'     => $attributeOptionsData,
-                ];
-            }
+            $attributes[] = [
+                'id'          => $attribute->id,
+                'code'        => $attribute->code,
+                'label'       => $attribute->name ? $attribute->name : $attribute->admin_name,
+                'swatch_type' => $attribute->swatch_type,
+                'options'     => $this->getAttributeOptionsData($attribute, $options),
+            ];
         }
 
         return $attributes;
@@ -148,17 +150,18 @@ class ConfigurableOption extends AbstractProduct
         $attributeOptionsData = [];
 
         foreach ($attribute->options as $attributeOption) {
-
             $optionId = $attributeOption->id;
 
-            if (isset($options[$attribute->id][$optionId])) {
-                $attributeOptionsData[] = [
-                    'id'           => $optionId,
-                    'label'        => $attributeOption->label ? $attributeOption->label : $attributeOption->admin_name,
-                    'swatch_value' => $attribute->swatch_type == 'image' ? $attributeOption->swatch_value_url : $attributeOption->swatch_value,
-                    'products'     => $options[$attribute->id][$optionId],
-                ];
+            if (! isset($options[$attribute->id][$optionId])) {
+                continue;
             }
+            
+            $attributeOptionsData[] = [
+                'id'           => $optionId,
+                'label'        => $attributeOption->label ? $attributeOption->label : $attributeOption->admin_name,
+                'swatch_value' => $attribute->swatch_type == 'image' ? $attributeOption->swatch_value_url : $attributeOption->swatch_value,
+                'products'     => $options[$attribute->id][$optionId],
+            ];
         }
 
         return $attributeOptionsData;

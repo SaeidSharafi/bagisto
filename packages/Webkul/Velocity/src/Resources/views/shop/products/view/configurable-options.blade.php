@@ -314,16 +314,32 @@
                             });
 
                             let priceLabelElement = document.querySelector('.price-label');
-                            let priceElement = document.querySelector('.final-price');
+                            let priceElement = document.querySelector('.special-price') ? document.querySelector('.special-price') : document.querySelector('.final-price');
                             let regularPriceElement = document.querySelector('.regular-price');
 
                             if (this.childAttributes.length == selectedOptionCount) {
                                 priceLabelElement.style.display = 'none';
 
-                                priceElement.innerHTML = this.config.variant_prices[this.simpleProduct].final_price.formated_price;
-
                                 if (regularPriceElement) {
+                                    regularPriceElement.style.display = 'none';
+                                }
+
+                                priceElement.innerHTML = this.config.variant_prices[this.simpleProduct].final_price.formated_price;
+                                   
+                                if (
+                                    this.config.variant_prices[this.simpleProduct].regular_price.formated_price == "$0.00" 
+                                    || this.config.variant_prices[this.simpleProduct].regular_price.formated_price == this.config.variant_prices[this.simpleProduct].final_price.formated_price
+                                ) {
+                                    regularPriceElement.innerHTML = "";
+                                }
+                                
+                                if (
+                                    regularPriceElement 
+                                    && this.config.variant_prices[this.simpleProduct].regular_price.formated_price != "$0.00" 
+                                    && this.config.variant_prices[this.simpleProduct].regular_price.formated_price != this.config.variant_prices[this.simpleProduct].final_price.formated_price 
+                                ) {
                                     regularPriceElement.innerHTML = this.config.variant_prices[this.simpleProduct].regular_price.formated_price;
+                                    regularPriceElement.style.display = 'inline-block';
                                 }
 
                                 eventBus.$emit('configurable-variant-selected-event', this.simpleProduct)

@@ -4,14 +4,14 @@ namespace Webkul\Admin\Http\Controllers\Customer;
 
 use App\Rules\Nationalcode;
 use App\Services\MoodleService;
-use Mail;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rule;
 use Webkul\Admin\DataGrids\CustomerDataGrid;
 use Webkul\Admin\DataGrids\CustomerOrderDataGrid;
 use Webkul\Admin\DataGrids\CustomersInvoicesDataGrid;
 use Webkul\Admin\Http\Controllers\Controller;
 use Webkul\Admin\Mail\NewCustomerNotification;
-use Webkul\Core\Repositories\ChannelRepository;
-use Webkul\Customer\Repositories\CustomerAddressRepository;
 use Webkul\Customer\Repositories\CustomerGroupRepository;
 use Webkul\Customer\Repositories\CustomerRepository;
 
@@ -25,58 +25,16 @@ class CustomerController extends Controller
     protected $_config;
 
     /**
-     * Customer repository instance.
-     *
-     * @var \Webkul\Customer\Repositories\CustomerRepository
-     */
-    protected $customerRepository;
-
-    /**
-     * Customer address repository instance.
-     *
-     * @var \Webkul\Customer\Repositories\CustomerAddressRepository
-     */
-    protected $customerAddressRepository;
-
-    /**
-     * Customer group repository instance.
-     *
-     * @var \Webkul\Customer\Repositories\CustomerGroupRepository
-     */
-    protected $customerGroupRepository;
-
-    /**
-     * Channel repository instance.
-     *
-     * @var \Webkul\Core\Repositories\ChannelRepository
-     */
-    protected $channelRepository;
-
-    /**
      * Create a new controller instance.
      *
-     * @param \Webkul\Customer\Repositories\CustomerRepository  $customerRepository
-     * @param  \Webkul\Customer\Repositories\CustomerAddressRepository  $customerAddressRepository
-     * @param \Webkul\Customer\Repositories\CustomerGroupRepository  $customerGroupRepository
-     * @param \Webkul\Core\Repositories\ChannelRepository  $channelRepository
+     * @param  \Webkul\Customer\Repositories\CustomerRepository  $customerRepository
+     * @param  \Webkul\Customer\Repositories\CustomerGroupRepository  $customerGroupRepository
      */
     public function __construct(
-        CustomerRepository $customerRepository,
-        CustomerAddressRepository $customerAddressRepository,
-        CustomerGroupRepository $customerGroupRepository,
-        ChannelRepository $channelRepository
+        protected CustomerRepository $customerRepository,
+        protected CustomerGroupRepository $customerGroupRepository
     ) {
         $this->_config = request('_config');
-
-        $this->middleware('admin');
-
-        $this->customerRepository = $customerRepository;
-
-        $this->customerAddressRepository = $customerAddressRepository;
-
-        $this->customerGroupRepository = $customerGroupRepository;
-
-        $this->channelRepository = $channelRepository;
     }
 
     /**
@@ -100,11 +58,9 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        $customerGroup = $this->customerGroupRepository->findWhere([['code', '<>', 'guest']]);
+        $groups = $this->customerGroupRepository->findWhere([['code', '<>', 'guest']]);
 
-        $channelName = $this->channelRepository->all();
-
-        return view($this->_config['view'], compact('customerGroup', 'channelName'));
+        return view($this->_config['view'], compact('groups'));
     }
 
     /**
@@ -119,34 +75,43 @@ class CustomerController extends Controller
             'last_name'     => 'string|required',
             'gender'        => 'required',
             'email'         => 'required|unique:customers,email',
-            'date_of_birth' => 'date|before:today',
-            'phone' => 'unique:customers',
-            'national_code' => ['unique:customers',new Nationalcode()]
+            'date_of_birth' => 'nullable|date|before:today',
+            'phone'         => 'required|unique:customers',
+            'national_code' => [
+                'required', 'unique:customers,national_code',
+                Rule::when(!isset($input->is_foreign), [new Nationalcode()])
+            ]
         ];
 
-        if (request()->get('is_foreign')){
+        if (request()->get('is_foreign')) {
             $rules['national_code'] = 'unique:customers';
         }
-        $this->validate(request(), $rules);
+        $data = $this->validate(request(), $rules);
 
-        $data['is_moodle_user'] = ! isset($data['is_moodle_user']) ? 0 : 1;
+        if (!$data['date_of_birth']) {
+            unset($data['date_of_birth']);
+        }
 
-        $data = request()->all();
+        $data['is_moodle_user'] = !isset($data['is_moodle_user']) ? 0 : 1;
 
         $password = $data['national_code'];
 
-        $data['password'] = bcrypt($password);
+        Event::dispatch('customer.registration.before');
 
-        $data['is_verified'] = 1;
-
-        $customer = $this->customerRepository->create($data);
+        $customer = $this->customerRepository->create(array_merge($data, [
+            'password'    => bcrypt($password),
+            'is_verified' => 1,
+        ]));
         \Log::info("customer data {$customer->incomplete}");
-        if ($customer->is_moodle_user){
+        if ($customer->is_moodle_user) {
             MoodleService::createUser($customer);
         }
 
+        Event::dispatch('customer.registration.after', $customer);
+
         try {
             $configKey = 'emails.general.notifications.emails.general.notifications.customer';
+
             if (core()->getConfigData($configKey)) {
                 Mail::queue(new NewCustomerNotification($customer, $password));
             }
@@ -163,50 +128,63 @@ class CustomerController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
+     *
      * @return \Illuminate\View\View
      */
     public function edit($id)
     {
         $customer = $this->customerRepository->findOrFail($id);
-        $address = $this->customerAddressRepository->find($id);
-        $customerGroup = $this->customerGroupRepository->findWhere([['code', '<>', 'guest']]);
-        $channelName = $this->channelRepository->all();
 
-        return view($this->_config['view'], compact('customer', 'address', 'customerGroup', 'channelName'));
+        $groups = $this->customerGroupRepository->findWhere([['code', '<>', 'guest']]);
+
+        return view($this->_config['view'], compact('customer', 'groups'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  int  $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update($id)
     {
-        $this->validate(request(), [
+        $rules = [
             'first_name'    => 'string|required',
             'last_name'     => 'string|required',
             'gender'        => 'required',
-            'email'         => 'required|unique:customers,email,' . $id,
+            'email'         => 'required|unique:customers,email,'.$id,
             'date_of_birth' => 'date|before:today',
-            'phone' => 'unique:customers,phone,'.$id,
-            'national_code' => ['unique:customers,national_code,'.$id,new Nationalcode()]
-        ]);
+            'phone'         => 'required|unique:customers,phone,'.$id,
+            'national_code' => [
+                'filled', 'unique:customers,national_code,'.$id,
+                Rule::when(!isset($input->is_foreign), [new Nationalcode()])
+            ]
+        ];
 
-        $data = request()->all();
+        if (request()->get('is_foreign')) {
+            $rules['national_code'] = 'unique:customers';
+        }
 
-        $data['status'] = ! isset($data['status']) ? 0 : 1;
+        $data = $this->validate(request(), $rules);
 
-        $data['is_suspended'] = ! isset($data['is_suspended']) ? 0 : 1;
+        if (!$data['date_of_birth']) {
+            unset($data['date_of_birth']);
+        }
 
-        $data['is_moodle_user'] = ! isset($data['is_moodle_user']) ? 0 : 1;
+        Event::dispatch('customer.update.before', $id);
 
-       $customer = $this->customerRepository->update($data, $id);
+        $customer = $this->customerRepository->update(array_merge($data, [
+            'status'       => request()->has('status'),
+            'is_suspended' => request()->has('is_suspended'),
+        ]), $id);
+
         \Log::info("customer data {$customer->incomplete}");
-        if ($customer->is_moodle_user){
+        if ($customer->is_moodle_user) {
             MoodleService::createUser($customer);
         }
 
+        Event::dispatch('customer.update.after', $customer);
 
         session()->flash('success', trans('admin::app.response.update-success', ['name' => 'Customer']));
 
@@ -217,6 +195,7 @@ class CustomerController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -224,14 +203,18 @@ class CustomerController extends Controller
         $customer = $this->customerRepository->findorFail($id);
 
         try {
-            if (! $this->customerRepository->checkIfCustomerHasOrderPendingOrProcessing($customer)) {
+            if (!$this->customerRepository->checkIfCustomerHasOrderPendingOrProcessing($customer)) {
                 $this->customerRepository->delete($id);
 
-                return response()->json(['message' => trans('admin::app.response.delete-success', ['name' => 'Customer'])]);
+                return response()->json([
+                    'message' => trans('admin::app.response.delete-success', ['name' => 'Customer'])
+                ]);
             }
 
-            return response()->json(['message' => trans('admin::app.response.order-pending', ['name' => 'Customer'])], 400);
-        } catch (\Exception $e) {}
+            return response()->json(['message' => trans('admin::app.response.order-pending', ['name' => 'Customer'])],
+                400);
+        } catch (\Exception $e) {
+        }
 
         return response()->json(['message' => trans('admin::app.response.delete-failed', ['name' => 'Customer'])], 400);
     }
@@ -240,6 +223,7 @@ class CustomerController extends Controller
      * To load the note taking screen for the customers.
      *
      * @param  int  $id
+     *
      * @return \Illuminate\View\View
      */
     public function createNote($id)
@@ -260,15 +244,15 @@ class CustomerController extends Controller
             'notes' => 'string|nullable',
         ]);
 
-        $customer = $this->customerRepository->find(request()->input('_customer'));
+        Event::dispatch('customer.update.before', request()->input('_customer'));
 
-        $noteTaken = $customer->update(['notes' => request()->input('notes')]);
+        $customer = $this->customerRepository->update([
+            'notes' => request()->input('notes'),
+        ], request()->input('_customer'));
 
-        if ($noteTaken) {
-            session()->flash('success', 'Note taken');
-        } else {
-            session()->flash('error', 'Note cannot be taken');
-        }
+        Event::dispatch('customer.update.after', $customer);
+
+        session()->flash('success', 'Note taken');
 
         return redirect()->route($this->_config['redirect']);
     }
@@ -281,12 +265,17 @@ class CustomerController extends Controller
     public function massUpdate()
     {
         $customerIds = explode(',', request()->input('indexes'));
+
         $updateOption = request()->input('update-options');
 
         foreach ($customerIds as $customerId) {
-            $customer = $this->customerRepository->find($customerId);
+            Event::dispatch('customer.update.before', $customerId);
 
-            $customer->update(['status' => $updateOption]);
+            $customer = $this->customerRepository->update([
+                'status' => $updateOption,
+            ], $customerId);
+
+            Event::dispatch('customer.update.after', $customer);
         }
 
         session()->flash('success', trans('admin::app.customers.customers.mass-update-success'));
@@ -303,10 +292,13 @@ class CustomerController extends Controller
     {
         $customerIds = explode(',', request()->input('indexes'));
 
-        if (! $this->customerRepository->checkBulkCustomerIfTheyHaveOrderPendingOrProcessing($customerIds)) {
-
+        if (!$this->customerRepository->checkBulkCustomerIfTheyHaveOrderPendingOrProcessing($customerIds)) {
             foreach ($customerIds as $customerId) {
-                $this->customerRepository->deleteWhere(['id' => $customerId]);
+                Event::dispatch('customer.delete.before', $customerId);
+
+                $this->customerRepository->delete($customerId);
+
+                Event::dispatch('customer.delete.after', $customerId);
             }
 
             session()->flash('success', trans('admin::app.customers.customers.mass-destroy-success'));
@@ -315,6 +307,7 @@ class CustomerController extends Controller
         }
 
         session()->flash('error', trans('admin::app.response.order-pending', ['name' => 'Customers']));
+
         return redirect()->back();
     }
 
@@ -322,6 +315,7 @@ class CustomerController extends Controller
      * Retrieve all invoices from customer.
      *
      * @param  int  $id
+     *
      * @return \Webkul\Admin\DataGrids\CustomersInvoicesDataGrid
      */
     public function invoices($id)
@@ -335,6 +329,7 @@ class CustomerController extends Controller
      * Retrieve all orders from customer.
      *
      * @param  int  $id
+     *
      * @return \Webkul\Admin\DataGrids\CustomerOrderDataGrid
      */
     public function orders($id)

@@ -5,7 +5,7 @@
             <i class="icon notification-icon active" style="margin-left:0px"></i>
         </div>
 
-        <div class="dropdown-list bottom-right notification">
+        <div class="dropdown-list bottom-right notification" ref="dropdownList">
             <div class="dropdown-container">
                 <ul class="notif">
                     <div id="notif-title">{{ title }}</div>
@@ -105,6 +105,10 @@ export default {
                 closed: {
                     icon: 'closed-icon',
                     message: 'Order Closed'
+                },
+                pending_payment: {
+                    icon: 'pending-icon',
+                    message: 'Payment Pending'
                 }
             },
 
@@ -146,14 +150,14 @@ export default {
                 read: 0
             };
 
-            let this_this = this;
+            let self = this;
 
             this.$http.get(this.getNotificationUrl, {
                 params: params
             })
                 .then(function (response) {
-                    this_this.notifications = response.data.search_results.data;
-                    this_this.totalUnRead = response.data.total_unread;
+                    self.notifications = response.data.search_results.data;
+                    self.totalUnRead = response.data.total_unread;
                 })
                 .catch(function (error) {
                 })
@@ -184,24 +188,27 @@ export default {
                     console.error(error);
                 })
         },
+
         readAll: function () {
-            let this_this = this;
+            let self = this;
+            let dropdownList = this.$refs.dropdownList;
 
             this.$http.post(this.getReadAllUrl)
                 .then(function (response) {
-                    this_this.notifications = response.data.search_results.data;
+                    self.notifications = response.data.search_results.data;
 
-                    this_this.totalUnRead = response.data.total_unread;
+                    self.totalUnRead = response.data.total_unread;
 
                     window.flashMessages.push({
                         'type': 'alert-success',
                         'message': response.data.success_message
                     });
 
-                    this_this.$root.addFlashMessages();
+                    self.$root.addFlashMessages();
                 })
-                .catch(function (error) {
-                })
+                .catch(function (error) {})
+
+                dropdownList.style.display = "none";
         }
     }
 }

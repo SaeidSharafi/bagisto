@@ -441,19 +441,17 @@ class Product extends Model implements ProductContract
      */
     public function getAttribute($key)
     {
+
         if (! method_exists(static::class, $key)
             && ! in_array($key, [
                 'pivot',
                 'parent_id',
                 'attribute_family_id',
             ])
-            && ! isset($this->attributes[$key])) {
+            && ! isset($this->attributes[$key])
+        ) {
             if (isset($this->id)) {
-                $this->attributes[$key] = '';
-
-                $attribute = core()
-                    ->getSingletonInstance(AttributeRepository::class)
-                    ->getAttributeByCode($key);
+                $attribute = $this->checkInLoadedFamilyAttributes()->where('code', $key)->first();
 
                 $this->attributes[$key] = $this->getCustomAttributeValue($attribute);
 
@@ -493,32 +491,34 @@ class Product extends Model implements ProductContract
         $locale = core()->checkRequestedLocaleCodeInRequestedChannel();
         $channel = core()->getRequestedChannelCode();
 
-        if (array_key_exists($this->id, self::$loadedAttributeValues)
-            && array_key_exists($attribute->id, self::$loadedAttributeValues[$this->id])) {
+        if (
+            array_key_exists($this->id, self::$loadedAttributeValues)
+            && array_key_exists($attribute->id, self::$loadedAttributeValues[$this->id])
+        ) {
             return self::$loadedAttributeValues[$this->id][$attribute->id];
         }
 
         if ($attribute->value_per_channel) {
             if ($attribute->value_per_locale) {
-                $attributeValue = $this->attribute_values()
+                $attributeValue = $this->attribute_values
                     ->where('channel', $channel)
                     ->where('locale', $locale)
                     ->where('attribute_id', $attribute->id)
                     ->first();
             } else {
-                $attributeValue = $this->attribute_values()
+                $attributeValue = $this->attribute_values
                     ->where('channel', $channel)
                     ->where('attribute_id', $attribute->id)
                     ->first();
             }
         } else {
             if ($attribute->value_per_locale) {
-                $attributeValue = $this->attribute_values()
+                $attributeValue = $this->attribute_values
                     ->where('locale', $locale)
                     ->where('attribute_id', $attribute->id)
                     ->first();
             } else {
-                $attributeValue = $this->attribute_values()
+                $attributeValue = $this->attribute_values
                     ->where('attribute_id', $attribute->id)
                     ->first();
             }

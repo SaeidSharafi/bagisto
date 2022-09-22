@@ -234,8 +234,7 @@ class Order extends Model implements OrderContract
     public function haveStockableItems(): bool
     {
         foreach ($this->items as $item) {
-            if ($item->getTypeInstance()
-                ->isStockable()) {
+            if ($item->getTypeInstance()->isStockable()) {
                 return true;
             }
         }
@@ -255,7 +254,10 @@ class Order extends Model implements OrderContract
         }
 
         foreach ($this->items as $item) {
-            if ($item->canShip() && $item->order->status !== self::STATUS_CLOSED) {
+            if (
+                $item->canShip()
+                && $item->order->status !== self::STATUS_CLOSED
+            ) {
                 return true;
             }
         }
@@ -296,7 +298,10 @@ class Order extends Model implements OrderContract
         }
 
         foreach ($this->items as $item) {
-            if ($item->canInvoice() && $item->order->status !== self::STATUS_CLOSED) {
+            if (
+                $item->canInvoice()
+                && $item->order->status !== self::STATUS_CLOSED
+            ) {
                 return true;
             }
         }
@@ -329,11 +334,17 @@ class Order extends Model implements OrderContract
      */
     public function canCancel(): bool
     {
-        if ($this->payment->method == 'cashondelivery' && core()->getConfigData('sales.paymentmethods.cashondelivery.generate_invoice')) {
+        if (
+            $this->payment->method == 'cashondelivery'
+            && core()->getConfigData('sales.paymentmethods.cashondelivery.generate_invoice')
+        ) {
             return false;
         }
 
-        if ($this->payment->method == 'moneytransfer' && core()->getConfigData('sales.paymentmethods.moneytransfer.generate_invoice')) {
+        if (
+            $this->payment->method == 'moneytransfer'
+            && core()->getConfigData('sales.paymentmethods.moneytransfer.generate_invoice')
+        ) {
             return false;
         }
 
@@ -352,8 +363,10 @@ class Order extends Model implements OrderContract
         }
 
         foreach ($this->items as $item) {
-
-            if ($item->canCancel() && $item->order->status !== self::STATUS_CLOSED) {
+            if (
+                $item->canCancel()
+                && $item->order->status !== self::STATUS_CLOSED
+            ) {
                 return true;
             }
         }
@@ -383,13 +396,15 @@ class Order extends Model implements OrderContract
         }
 
         foreach ($this->items as $item) {
-            if ($item->qty_to_refund > 0 && $item->order->status !== self::STATUS_CLOSED) {
+            if (
+                $item->qty_to_refund > 0
+                && $item->order->status !== self::STATUS_CLOSED
+            ) {
                 return true;
             }
         }
 
-        if ($this->base_grand_total_invoiced - $this->base_grand_total_refunded - $this->refunds()
-            ->sum('base_adjustment_fee') > 0) {
+        if ($this->base_grand_total_invoiced - $this->base_grand_total_refunded - $this->refunds()->sum('base_adjustment_fee') > 0) {
             return true;
         }
 

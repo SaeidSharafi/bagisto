@@ -4,41 +4,13 @@ namespace Webkul\CatalogRule\Helpers;
 
 use Carbon\Carbon;
 use Webkul\Attribute\Repositories\AttributeRepository;
-use Webkul\Product\Repositories\ProductRepository;
-use Webkul\Product\Models\ProductAttributeValue;
 use Webkul\CatalogRule\Repositories\CatalogRuleProductRepository;
+use Webkul\Product\Models\ProductAttributeValue;
+use Webkul\Product\Repositories\ProductRepository;
 use Webkul\Rule\Helpers\Validator;
 
 class CatalogRuleProduct
 {
-    /**
-     * AttributeRepository object
-     *
-     * @var \Webkul\Attribute\Repositories\AttributeRepository
-     */
-    protected $attributeRepository;
-
-    /**
-     * ProductRepository object
-     *
-     * @var \Webkul\Product\Repositories\ProductRepository
-     */
-    protected $productRepository;
-
-    /**
-     * CatalogRuleProductRepository object
-     *
-     * @var \Webkul\CatalogRule\Repositories\CatalogRuleProductRepository
-     */
-    protected $catalogRuleProductRepository;
-
-    /**
-     * Validator object
-     *
-     * @var \Webkul\Rule\Helpers\ValidatorValidator
-     */
-    protected $validator;
-
     /**
      * Create a new helper instance.
      *
@@ -49,19 +21,12 @@ class CatalogRuleProduct
      * @return void
      */
     public function __construct(
-        AttributeRepository $attributeRepository,
-        ProductRepository $productRepository,
-        CatalogRuleProductRepository $catalogRuleProductRepository,
-        Validator $validator
+        protected AttributeRepository $attributeRepository,
+        protected ProductRepository $productRepository,
+        protected CatalogRuleProductRepository $catalogRuleProductRepository,
+        protected Validator $validator
     )
     {
-        $this->attributeRepository = $attributeRepository;
-
-        $this->productRepository = $productRepository;
-
-        $this->catalogRuleProductRepository = $catalogRuleProductRepository;
-
-        $this->validator = $validator;
     }
 
     /**
@@ -73,8 +38,9 @@ class CatalogRuleProduct
      */
     public function insertRuleProduct($rule, $batchCount = 1000, $product = null)
     {
-        if (! (float) $rule->discount_amount)
+        if (! (float) $rule->discount_amount) {
             return;
+        }
 
         $productIds = $this->getMatchingProductIds($rule, $product);
 
@@ -125,10 +91,10 @@ class CatalogRuleProduct
     {
         $qb = $this->productRepository->scopeQuery(function($query) use($rule, $product) {
             $qb = $query->distinct()
-                        ->addSelect('products.*')
-                        ->leftJoin('product_flat', 'products.id', '=', 'product_flat.product_id')
-                        ->leftJoin('channels', 'product_flat.channel', '=', 'channels.code')
-                        ->whereIn('channels.id', $rule->channels()->pluck('id')->toArray());
+                ->addSelect('products.*')
+                ->leftJoin('product_flat', 'products.id', '=', 'product_flat.product_id')
+                ->leftJoin('channels', 'product_flat.channel', '=', 'channels.code')
+                ->whereIn('channels.id', $rule->channels()->pluck('id')->toArray());
 
             if ($product) {
                 $qb->where('products.id', $product->id);
@@ -141,7 +107,8 @@ class CatalogRuleProduct
             $appliedAttributes = [];
 
             foreach ($rule->conditions as $condition) {
-                if (! $condition['attribute']
+                if (
+                    ! $condition['attribute']
                     || ! isset($condition['value'])
                     || is_null($condition['value'])
                     || $condition['value'] == ''
@@ -164,7 +131,6 @@ class CatalogRuleProduct
 
         foreach ($qb->get() as $product) {
             if (! $product->getTypeInstance()->priceRuleCanBeApplied()) {
-                dd($product);
                 continue;
             }
 
@@ -197,7 +163,7 @@ class CatalogRuleProduct
 
         $query = $query->leftJoin('product_attribute_values as ' . 'pav_' . $attribute->code, function($qb) use($attribute) {
             $qb = $qb->where('pav_' . $attribute->code . '.channel', $attribute->value_per_channel ? core()->getDefaultChannelCode() : null)
-                     ->where('pav_' . $attribute->code . '.locale', $attribute->value_per_locale ? app()->getLocale() : null);
+                ->where('pav_' . $attribute->code . '.locale', $attribute->value_per_locale ? app()->getLocale() : null);
 
             $qb->on('products.id', 'pav_' . $attribute->code . '.product_id')
                ->where('pav_' . $attribute->code . '.attribute_id', $attribute->id);
@@ -218,13 +184,13 @@ class CatalogRuleProduct
     {
         $results = $this->catalogRuleProductRepository->scopeQuery(function($query) use($product) {
             $qb = $query->distinct()
-                        ->select('catalog_rule_products.*')
-                        ->leftJoin('products', 'catalog_rule_products.product_id', '=', 'products.id')
-                        ->orderBy('channel_id', 'asc')
-                        ->orderBy('customer_group_id', 'asc')
-                        ->orderBy('product_id', 'asc')
-                        ->orderBy('sort_order', 'asc')
-                        ->orderBy('catalog_rule_id', 'asc');
+                ->select('catalog_rule_products.*')
+                ->leftJoin('products', 'catalog_rule_products.product_id', '=', 'products.id')
+                ->orderBy('channel_id', 'asc')
+                ->orderBy('customer_group_id', 'asc')
+                ->orderBy('product_id', 'asc')
+                ->orderBy('sort_order', 'asc')
+                ->orderBy('catalog_rule_id', 'asc');
 
             $qb = $this->addAttributeToSelect('price', $qb);
 

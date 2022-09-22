@@ -3,16 +3,15 @@
 namespace Webkul\Checkout\Models;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Model;
-use Webkul\Product\Models\ProductProxy;
-use Webkul\Product\Models\ProductFlatProxy;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Webkul\Checkout\Database\Factories\CartItemFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Webkul\Checkout\Contracts\CartItem as CartItemContract;
-
+use Webkul\Checkout\Database\Factories\CartItemFactory;
+use Webkul\Product\Models\ProductFlatProxy;
+use Webkul\Product\Models\ProductProxy;
 
 class CartItem extends Model implements CartItemContract
 {
@@ -41,9 +40,9 @@ class CartItem extends Model implements CartItemContract
     public function product_flat()
     {
         return (ProductFlatProxy::modelClass())::where('product_flat.product_id', $this->product_id)
-                                               ->where('product_flat.locale', app()->getLocale())
-                                               ->where('product_flat.channel', core()->getCurrentChannelCode())
-                                               ->select('product_flat.*');
+            ->where('product_flat.locale', app()->getLocale())
+            ->where('product_flat.channel', core()->getCurrentChannelCode())
+            ->select('product_flat.*');
     }
 
     /**
@@ -51,8 +50,7 @@ class CartItem extends Model implements CartItemContract
      */
     public function getProductFlatAttribute()
     {
-        return $this->product_flat()
-                    ->first();
+        return $this->product_flat()->first();
     }
 
     public function cart(): HasOne

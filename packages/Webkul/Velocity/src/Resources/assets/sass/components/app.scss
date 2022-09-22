@@ -226,7 +226,6 @@
 
 .product-card-new {
     width: 12rem;
-    height: 385px;
     border: none !important;
     margin: 0 5px 10px 10px;
 
@@ -731,7 +730,6 @@
             .product-image-container {
                 padding: 0;
                 max-width: 110px;
-                max-height: 110px;
             }
 
             .wishlist-icon {
@@ -779,6 +777,7 @@
 
                     .rango-delete {
                         margin-left: -2px;
+                        float: left;
                     }
                 }
             }
@@ -822,6 +821,7 @@
 
                 button {
                     margin-top: 10px;
+                    width: 100%;
                 }
             }
         }
@@ -854,6 +854,9 @@
         border-right: 1px solid $border-general;
 
         .customer-sidebar {
+            position: sticky;
+            top: 40px;
+            
             .account-details {
                 text-align: center;
                 padding: 25px 20px;
@@ -1750,7 +1753,7 @@
 
         .category {
             padding: 5px 0 4px 15px;
-
+            
             + .nested {
                 color: $font-color;
 
@@ -2017,10 +2020,10 @@
             margin-top: 0;
 
             &.required:after {
-                content: "*";
+                content: '*';
                 font-size: 16px;
                 margin-left: -1px;
-                color: #F05153;
+                color: #f05153;
             }
         }
 
@@ -2117,24 +2120,34 @@
 
 .full-content-wrapper {
     > .container-fluid {
-        padding: 0 !important;
-        margin-bottom: 60px !important;
+        padding: 0;
+        margin: 10px 0;
 
         > .row {
-            padding: 0 15px !important;
+            padding: 0 15px;
         }
     }
 
     p,
     div {
         > .container-fluid {
-            padding: 0 !important;
-            margin-bottom: 60px !important;
+            padding: 0;
+            margin: 10px 0;
 
             > .row {
-                padding: 0 15px !important;
+                padding: 0 15px;
             }
         }
+    }
+}
+
+.cd-slider {
+    .VueCarousel-dot.VueCarousel-dot--active {
+        background-color: rgb(0 0 0) !important;
+    }
+
+    .VueCarousel-dot {
+        background-color: rgb(26 24 24 / 59%) !important;
     }
 }
 
@@ -2395,7 +2408,6 @@
             padding: 0 !important;
             margin: 0 !important;
 
-
             span {
                 font-size: 24px;
             }
@@ -2458,7 +2470,6 @@
         position: relative;
 
         .btn-add-to-cart {
-            width: 125px !important;
             white-space: pre-wrap;
         }
 
@@ -2677,4 +2688,12 @@
     100% {
         transform: rotate(360deg);
     }
+}
+
+.sub-category:hover ~ ul {
+    display: block;
+}
+
+.nested {
+    display: none;
 }

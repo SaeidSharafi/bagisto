@@ -24,48 +24,6 @@ use Webkul\Tax\Repositories\TaxCategoryRepository;
 abstract class AbstractType
 {
     /**
-     * Attribute repository instance.
-     *
-     * @var \Webkul\Attribute\Repositories\AttributeRepository
-     */
-    protected $attributeRepository;
-
-    /**
-     * Product repository instance.
-     *
-     * @var \Webkul\Product\Repositories\ProductRepository
-     */
-    protected $productRepository;
-
-    /**
-     * Product attribute value repository instance.
-     *
-     * @var \Webkul\Product\Repositories\ProductAttributeValueRepository
-     */
-    protected $attributeValueRepository;
-
-    /**
-     * Product inventory repository instance.
-     *
-     * @var ProductInventoryRepository
-     */
-    protected $productInventoryRepository;
-
-    /**
-     * Product image repository instance.
-     *
-     * @var \Webkul\Product\Repositories\productImageRepository
-     */
-    protected $productImageRepository;
-
-    /**
-     * Product video repository instance.
-     *
-     * @var \Webkul\Product\Repositories\productVideoRepository
-     */
-    protected $productVideoRepository;
-
-    /**
      * Product instance.
      *
      * @var \Webkul\Product\Models\Product
@@ -160,33 +118,22 @@ abstract class AbstractType
      * Create a new product type instance.
      *
      * @param  \Webkul\Attribute\Repositories\AttributeRepository  $attributeRepository
-     * @param  \Webkul\Product\Repositories\ProductRepository  $productRepository
+     * @param  \Webkul\Product\Repositories\ProductRepository   $productRepository
      * @param  \Webkul\Product\Repositories\ProductAttributeValueRepository  $attributeValueRepository
      * @param  \Webkul\Product\Repositories\ProductInventoryRepository  $productInventoryRepository
      * @param  \Webkul\Product\Repositories\ProductImageRepository  $productImageRepository
      * @param  \Webkul\Product\Repositories\ProductVideoRepository  $productVideoRepository
-     *
      * @return void
      */
     public function __construct(
-        AttributeRepository $attributeRepository,
-        ProductRepository $productRepository,
-        ProductAttributeValueRepository $attributeValueRepository,
-        ProductInventoryRepository $productInventoryRepository,
-        ProductImageRepository $productImageRepository,
-        ProductVideoRepository $productVideoRepository
-    ) {
-        $this->attributeRepository = $attributeRepository;
-
-        $this->productRepository = $productRepository;
-
-        $this->attributeValueRepository = $attributeValueRepository;
-
-        $this->productInventoryRepository = $productInventoryRepository;
-
-        $this->productImageRepository = $productImageRepository;
-
-        $this->productVideoRepository = $productVideoRepository;
+        protected AttributeRepository $attributeRepository,
+        protected ProductRepository $productRepository,
+        protected ProductAttributeValueRepository $attributeValueRepository,
+        protected ProductInventoryRepository $productInventoryRepository,
+        protected ProductImageRepository $productImageRepository,
+        protected ProductVideoRepository $productVideoRepository
+    )
+    {
     }
 
     /**
@@ -203,7 +150,6 @@ abstract class AbstractType
      * Create product.
      *
      * @param  array  $data
-     *
      * @return \Webkul\Product\Contracts\Product
      */
     public function create(array $data)
@@ -217,7 +163,6 @@ abstract class AbstractType
      * @param  array  $data
      * @param  int  $id
      * @param  string  $attribute
-     *
      * @return \Webkul\Product\Contracts\Product
      */
     public function update(array $data, $id, $attribute = 'id')
@@ -229,34 +174,49 @@ abstract class AbstractType
         foreach ($product->attribute_family->custom_attributes as $attribute) {
             $route = request()->route() ? request()->route()->getName() : '';
 
-            if ($attribute->type === 'boolean' && $route !== 'admin.catalog.products.massupdate') {
+            if (
+                $attribute->type === 'boolean'
+                && $route !== 'admin.catalog.products.massupdate'
+            ) {
                 $data[$attribute->code] = isset($data[$attribute->code]) && $data[$attribute->code] ? 1 : 0;
             }
 
-            if (!isset($data[$attribute->code])) {
+            if (
+                $attribute->type == 'multiselect'
+                || $attribute->type == 'checkbox'
+            ) {
+                $data[$attribute->code] = isset($data[$attribute->code]) ? implode(',', $data[$attribute->code]) : null;
+            }
+
+            if (! isset($data[$attribute->code])) {
                 continue;
             }
 
-            if ($attribute->type === 'price' && isset($data[$attribute->code]) && $data[$attribute->code] === '') {
+            if (
+                $attribute->type === 'price'
+                && isset($data[$attribute->code])
+                && $data[$attribute->code] === ''
+            ) {
                 $data[$attribute->code] = null;
             }
 
-            if ($attribute->type === 'date' && $data[$attribute->code] === ''
+            if (
+                $attribute->type === 'date'
+                && $data[$attribute->code] === ''
                 && $route !== 'admin.catalog.products.massupdate'
             ) {
                 $data[$attribute->code] = null;
             }
 
-            if ($attribute->type === 'multiselect' || $attribute->type === 'checkbox') {
-                $data[$attribute->code] = implode(',', $data[$attribute->code]);
-            }
-
-            if ($attribute->type === 'image' || $attribute->type === 'file') {
+            if (
+                $attribute->type === 'image'
+                || $attribute->type === 'file'
+            ) {
                 $data[$attribute->code] = gettype($data[$attribute->code]) === 'object'
-                    ? request()->file($attribute->code)->store('product/'.$product->id)
+                    ? request()->file($attribute->code)->store('product/' . $product->id)
                     : null;
             }
-
+            $gallery_files = null;
             if ($attribute->type === "gallery") {
                 $images = [];
                 $pathes = [];
@@ -288,30 +248,49 @@ abstract class AbstractType
                 $data[$attribute->code] = json_encode($images, JSON_THROW_ON_ERROR);
             }
 
-            $attributeValue = $this->attributeValueRepository->findOneWhere([
-                'product_id'   => $product->id,
-                'attribute_id' => $attribute->id,
-                'channel'      => $attribute->value_per_channel ? $data['channel'] : null,
-                'locale'       => $attribute->value_per_locale ? $data['locale'] : null,
-            ]);
+            if ($attribute->value_per_channel) {
+                if ($attribute->value_per_locale) {
+                    $productAttributeValue = $product->attribute_values
+                        ->where('channel', $attribute->value_per_channel ? $data['channel'] : null)
+                        ->where('locale', $attribute->value_per_locale ? $data['locale'] : null)
+                        ->where('attribute_id', $attribute->id)
+                        ->first();
+                } else {
+                    $productAttributeValue = $product->attribute_values
+                        ->where('channel', $attribute->value_per_channel ? $data['channel'] : null)
+                        ->where('attribute_id', $attribute->id)
+                        ->first();
+                }
+            } else {
+                if ($attribute->value_per_locale) {
+                    $productAttributeValue = $product->attribute_values
+                        ->where('locale', $attribute->value_per_locale ? $data['locale'] : null)
+                        ->where('attribute_id', $attribute->id)
+                        ->first();
+                } else {
+                    $productAttributeValue = $product->attribute_values
+                        ->where('attribute_id', $attribute->id)
+                        ->first();
+                }
+            }
 
-            if (!$attributeValue) {
+            $columnName = ProductAttributeValue::$attributeTypeFields[$attribute->type];
+
+            if (! $productAttributeValue) {
                 $this->attributeValueRepository->create([
                     'product_id'   => $product->id,
                     'attribute_id' => $attribute->id,
-                    'value'        => $data[$attribute->code],
+                    $columnName    => $data[$attribute->code],
                     'channel'      => $attribute->value_per_channel ? $data['channel'] : null,
                     'locale'       => $attribute->value_per_locale ? $data['locale'] : null,
                 ]);
             } else {
-                $this->attributeValueRepository->update(
-                    [
-                        ProductAttributeValue::$attributeTypeFields[$attribute->type] => $data[$attribute->code],
-                    ],
-                    $attributeValue->id
-                );
+                $productAttributeValue->update([$columnName => $data[$attribute->code]]);
 
-                if ($attribute->type == 'image' || $attribute->type == 'file') {
+                if (
+                    $attribute->type == 'image'
+                    || $attribute->type == 'file'
+                ) {
                     Storage::delete($attributeValue->text_value);
                 }
             }
@@ -320,7 +299,7 @@ abstract class AbstractType
         $route = request()->route() ? request()->route()->getName() : '';
 
         if ($route !== 'admin.catalog.products.massupdate') {
-            if (!isset($data['categories'])) {
+            if (! isset($data['categories'])) {
                 $data['categories'] = [];
             }
 
@@ -351,7 +330,6 @@ abstract class AbstractType
      * Specify type instance product.
      *
      * @param  \Webkul\Product\Contracts\Product  $product
-     *
      * @return \Webkul\Product\Type\AbstractType
      */
     public function setProduct($product)
@@ -359,6 +337,28 @@ abstract class AbstractType
         $this->product = $product;
 
         return $this;
+    }
+
+    /**
+     * @param  string  $code
+     * @return mixed
+     */
+    public function getAttributeByCode($code)
+    {
+        return core()
+            ->getSingletonInstance(AttributeRepository::class)
+            ->getAttributeByCode($code);
+    }
+
+    /**
+     * @param  integer  $id
+     * @return mixed
+     */
+    public function getAttributeById($id)
+    {
+        return core()
+            ->getSingletonInstance(AttributeRepository::class)
+            ->getAttributeById($id);
     }
 
     /**
@@ -388,13 +388,13 @@ abstract class AbstractType
      */
     public function isSaleable()
     {
-        if (!$this->product->status) {
+        if (! $this->product->status) {
             return false;
         }
 
         if (
-            is_callable(config('products.isSaleable'))
-            && call_user_func(config('products.isSaleable'), $this->product) === false
+            is_callable(config('products.isSaleable')) &&
+            call_user_func(config('products.isSaleable'), $this->product) === false
         ) {
             return false;
         }
@@ -446,7 +446,6 @@ abstract class AbstractType
      * Have sufficient quantity.
      *
      * @param  int  $qty
-     *
      * @return bool
      */
     public function haveSufficientQuantity(int $qty): bool
@@ -478,7 +477,6 @@ abstract class AbstractType
      * Is item have quantity.
      *
      * @param  \Webkul\Checkout\Contracts\CartItem  $cartItem
-     *
      * @return bool
      */
     public function isItemHaveQuantity($cartItem)
@@ -505,7 +503,7 @@ abstract class AbstractType
             }
         }
 
-        $orderedInventory = $this->product->ordered_inventories()
+        $orderedInventory = $this->product->ordered_inventories
             ->where('channel_id', core()->getCurrentChannel()->id)->first();
 
         if ($orderedInventory) {
@@ -519,7 +517,6 @@ abstract class AbstractType
      * Return true if item can be moved to cart from wishlist.
      *
      * @param  \Webkul\Checkout\Contracts\CartItem  $item
-     *
      * @return bool
      */
     public function canBeMovedFromWishlistToCart($item)
@@ -532,7 +529,6 @@ abstract class AbstractType
      *
      * @param  \Webkul\Attribute\Contracts\Group  $group
      * @param  bool  $skipSuperAttribute
-     *
      * @return \Illuminate\Support\Collection
      */
     public function getEditableAttributes($group = null, $skipSuperAttribute = true)
@@ -544,7 +540,7 @@ abstract class AbstractType
             );
         }
 
-        if (!$group) {
+        if (! $group) {
             return $this->product->attribute_family->custom_attributes()->whereNotIn(
                 'attributes.code',
                 $this->skipAttributes
@@ -578,7 +574,6 @@ abstract class AbstractType
      * Get product minimal price.
      *
      * @param  int  $qty
-     *
      * @return float
      */
     public function getMinimalPrice($qty = null)
@@ -595,7 +590,7 @@ abstract class AbstractType
      *
      * @return float
      */
-    public function getMaximamPrice()
+    public function getMaximumPrice()
     {
         return $this->getMinimalPrice();
     }
@@ -604,19 +599,17 @@ abstract class AbstractType
      * Get product minimal price.
      *
      * @param  int  $qty
-     *
      * @return float
      */
     public function getFinalPrice($qty = null)
     {
-        return round($this->getMinimalPrice($qty), 2);
+        return round($this->getMinimalPrice($qty), 4);
     }
 
     /**
      * Returns the product's minimal price.
      *
      * @param  int  $qty
-     *
      * @return float
      */
     public function getSpecialPrice($qty = null)
@@ -628,7 +621,6 @@ abstract class AbstractType
      * Have special price.
      *
      * @param  int  $qty
-     *
      * @return bool
      */
     public function haveSpecialPrice($qty = null)
@@ -639,8 +631,12 @@ abstract class AbstractType
 
         $specialPrice = $this->product->special_price;
 
-        if ((is_null($specialPrice) || !(float) $specialPrice)
-            && !$rulePrice
+        if (
+            (
+                is_null($specialPrice)
+                || ! (float) $specialPrice
+            )
+            && ! $rulePrice
             && $customerGroupPrice == $this->product->price
         ) {
             return false;
@@ -648,14 +644,20 @@ abstract class AbstractType
 
         $haveSpecialPrice = false;
 
-        if (!(float) $specialPrice) {
-            if ($rulePrice && $rulePrice->price < $this->product->price) {
+        if (! (float) $specialPrice) {
+            if (
+                $rulePrice
+                && $rulePrice->price < $this->product->price
+            ) {
                 $this->product->special_price = $rulePrice->price;
 
                 $haveSpecialPrice = true;
             }
         } else {
-            if ($rulePrice && $rulePrice->price <= $this->product->special_price) {
+            if (
+                $rulePrice
+                && $rulePrice->price <= $this->product->special_price
+            ) {
                 $this->product->special_price = $rulePrice->price;
 
                 $haveSpecialPrice = true;
@@ -663,8 +665,7 @@ abstract class AbstractType
                 if (core()->isChannelDateInInterval(
                     $this->product->special_price_from,
                     $this->product->special_price_to
-                )
-                ) {
+                )) {
                     $haveSpecialPrice = true;
                 } elseif ($rulePrice) {
                     $this->product->special_price = $rulePrice->price;
@@ -709,11 +710,9 @@ abstract class AbstractType
             }
         }
 
-        $customerGroupPrices
-            = app(ProductCustomerGroupPriceRepository::class)->checkInLoadedCustomerGroupPrice($product,
-            $customerGroupId);
+        $customerGroupPrices = app(ProductCustomerGroupPriceRepository::class)->checkInLoadedCustomerGroupPrice($product, $customerGroupId);
 
-        if (!$customerGroupPrices->count()) {
+        if (! $customerGroupPrices->count()) {
             return $product->price;
         }
 
@@ -724,7 +723,10 @@ abstract class AbstractType
         $lastCustomerGroupId = null;
 
         foreach ($customerGroupPrices as $price) {
-            if ($price->customer_group_id != $customerGroupId && $price->customer_group_id) {
+            if (
+                $price->customer_group_id != $customerGroupId
+                && $price->customer_group_id
+            ) {
                 continue;
             }
 
@@ -745,7 +747,10 @@ abstract class AbstractType
             }
 
             if ($price->value_type == 'discount') {
-                if ($price->value >= 0 && $price->value <= 100) {
+                if (
+                    $price->value >= 0
+                    && $price->value <= 100
+                ) {
                     $lastPrice = $product->price - ($product->price * $price->value) / 100;
 
                     $lastQty = $price->qty;
@@ -753,7 +758,10 @@ abstract class AbstractType
                     $lastCustomerGroupId = $price->customer_group_id;
                 }
             } else {
-                if ($price->value >= 0 && $price->value < $lastPrice) {
+                if (
+                    $price->value >= 0
+                    && $price->value < $lastPrice
+                ) {
                     $lastPrice = $price->value;
 
                     $lastQty = $price->qty;
@@ -775,14 +783,14 @@ abstract class AbstractType
     {
         return [
             'regular_price' => [
-                'price'          => core()->convertPrice($this->evaluatePrice($this->product->price)),
-                'formated_price' => core()->currency($this->evaluatePrice($this->product->price)),
+                'price'          => core()->convertPrice($this->evaluatePrice($regularPrice = $this->product->price)),
+                'formated_price' => core()->currency($this->evaluatePrice($regularPrice)),
                 'discount'       => $this->product->discount_amount
                     ? core()->formatPercent($this->product->discount_amount) : null,
             ],
             'final_price'   => [
-                'price'          => core()->convertPrice($this->evaluatePrice($this->getMinimalPrice())),
-                'formated_price' => core()->currency($this->evaluatePrice($this->getMinimalPrice())),
+                'price'          => core()->convertPrice($this->evaluatePrice($minimalPrice = $this->getMinimalPrice())),
+                'formated_price' => core()->currency($this->evaluatePrice($minimalPrice)),
                 'discount'       => $this->product->discount_amount
                     ? core()->formatPercent($this->product->discount_amount) : null,
             ],
@@ -797,12 +805,11 @@ abstract class AbstractType
     public function getPriceHtml()
     {
         if ($this->haveSpecialPrice()) {
-            $html = '<div class="sticker sale">'.trans('shop::app.products.sale').'</div>'
-                .'<span class="regular-price">'.core()->currency($this->evaluatePrice($this->product->price)).'</span>'
-                .'<span class="special-price">'.core()->currency($this->evaluatePrice($this->getSpecialPrice()))
-                .'</span>';
+            $html = '<div class="sticker sale">' . trans('shop::app.products.sale') . '</div>'
+            . '<span class="regular-price">' . core()->currency($this->evaluatePrice($this->product->price)) . '</span>'
+            . '<span class="special-price">' . core()->currency($this->evaluatePrice($this->getSpecialPrice())) . '</span>';
         } else {
-            $html = '<span>'.core()->currency($this->evaluatePrice($this->product->price)).'</span>';
+            $html = '<span>' . core()->currency($this->evaluatePrice($this->product->price)) . '</span>';
         }
 
         return $html;
@@ -812,7 +819,6 @@ abstract class AbstractType
      * Get inclusive tax rates.
      *
      * @param  float  $totalPrice
-     *
      * @return float
      */
     public function getTaxInclusiveRate($totalPrice)
@@ -821,8 +827,11 @@ abstract class AbstractType
         $address = null;
 
         if ($taxCategory = $this->getTaxCategory()) {
-            if ($address === null && auth()->guard('customer')->check()) {
-                $address = auth()->guard('customer')->user()->addresses()->where('default_address', 1)->first();
+            if (
+                $address === null
+                && auth()->guard('customer')->check()
+            ) {
+                $address = auth()->guard('customer')->user()->addresses->where('default_address', 1)->first();
             }
 
             if ($address === null) {
@@ -844,8 +853,7 @@ abstract class AbstractType
      */
     public function getTaxCategory()
     {
-        $taxCategoryId = $this->product->parent ? $this->product->parent->tax_category_id
-            : $this->product->tax_category_id;
+        $taxCategoryId = $this->product->parent ? $this->product->parent->tax_category_id : $this->product->tax_category_id;
 
         return app(TaxCategoryRepository::class)->find($taxCategoryId);
     }
@@ -868,16 +876,15 @@ abstract class AbstractType
      * Add product. Returns error message if can't prepare product.
      *
      * @param  array  $data
-     *
      * @return array
      */
     public function prepareForCart($data)
     {
-        $data['quantity'] = (int) $data['quantity'] ?? 1;
+        $data['quantity'] = $this->handleQuantity((int) $data['quantity']);
 
         $data = $this->getQtyRequest($data);
 
-        if (!$this->haveSufficientQuantity($data['quantity'])) {
+        if (! $this->haveSufficientQuantity($data['quantity'])) {
             return trans('shop::app.checkout.cart.quantity.inventory_warning');
         }
 
@@ -906,10 +913,22 @@ abstract class AbstractType
     }
 
     /**
+     * Handle quantity.
+     *
+     * @param  int  $quantity
+     * @return int
+     */
+    public function handleQuantity(int $quantity): int
+    {
+        return ! empty($quantity)
+            ? $quantity
+            : 1;
+    }
+
+    /**
      * Get request quantity.
      *
      * @param  array  $data
-     *
      * @return array
      */
     public function getQtyRequest($data)
@@ -926,7 +945,6 @@ abstract class AbstractType
      *
      * @param  array  $options1
      * @param  array  $options2
-     *
      * @return bool
      */
     public function compareOptions($options1, $options2)
@@ -934,15 +952,24 @@ abstract class AbstractType
         if ($this->product->id != $options2['product_id']) {
             return false;
         } else {
-            if (isset($options1['parent_id']) && isset($options2['parent_id'])) {
+            if (
+                isset($options1['parent_id'])
+                && isset($options2['parent_id'])
+            ) {
                 if ($options1['parent_id'] == $options2['parent_id']) {
                     return true;
                 } else {
                     return false;
                 }
-            } elseif (isset($options1['parent_id']) && !isset($options2['parent_id'])) {
+            } elseif (
+                isset($options1['parent_id'])
+                && ! isset($options2['parent_id'])
+            ) {
                 return false;
-            } elseif (isset($options2['parent_id']) && !isset($options1['parent_id'])) {
+            } elseif (
+                isset($options2['parent_id'])
+                && ! isset($options1['parent_id'])
+            ) {
                 return false;
             }
         }
@@ -954,7 +981,6 @@ abstract class AbstractType
      * Returns additional information for items.
      *
      * @param  array  $data
-     *
      * @return array
      */
     public function getAdditionalOptions($data)
@@ -965,8 +991,7 @@ abstract class AbstractType
     /**
      * Get actual ordered item.
      *
-     * @param  \Webkul\Checkout\Contracts\CartItem  $item
-     *
+     * @param  \Webkul\Checkout\Contracts\CartItem $item
      * @return \Webkul\Checkout\Contracts\CartItem|\Webkul\Sales\Contracts\OrderItem|\Webkul\Sales\Contracts\InvoiceItem|\Webkul\Sales\Contracts\ShipmentItem|\Webkul\Customer\Contracts\Wishlist
      */
     public function getOrderedItem($item)
@@ -977,8 +1002,7 @@ abstract class AbstractType
     /**
      * Get product base image.
      *
-     * @param  \Webkul\Customer\Contracts\CartItem|\Webkul\Checkout\Contracts\CartItem  $item
-     *
+     * @param  \Webkul\Customer\Contracts\CartItem|\Webkul\Checkout\Contracts\CartItem $item
      * @return array
      */
     public function getBaseImage($item)
@@ -990,7 +1014,6 @@ abstract class AbstractType
      * Validate cart item product price and other things.
      *
      * @param  \Webkul\Checkout\Models\CartItem  $item
-     *
      * @return \Webkul\Product\Datatypes\CartItemValidationResult
      */
     public function validateCartItem(CartItem $item): CartItemValidationResult
@@ -1003,7 +1026,7 @@ abstract class AbstractType
             return $result;
         }
 
-        $price = round($item->product->getTypeInstance()->getFinalPrice($item->quantity), 2);
+        $price = round($item->product->getTypeInstance()->getFinalPrice($item->quantity), 4);
 
         if ($price == $item->base_price) {
             return $result;
@@ -1034,26 +1057,28 @@ abstract class AbstractType
      * Returns true, if cart item is inactive.
      *
      * @param  \Webkul\Checkout\Contracts\CartItem  $item
-     *
      * @return bool
      */
     public function isCartItemInactive(\Webkul\Checkout\Contracts\CartItem $item): bool
     {
-        if ($item->product->status === 0) {
+        if (! $item->product->status) {
             return true;
         }
 
         switch ($item->product->type) {
             case 'bundle':
                 foreach ($item->children as $child) {
-                    if ($child->product->status === 0) {
+                    if (! $child->product->status) {
                         return true;
                     }
                 }
                 break;
 
             case 'configurable':
-                if ($item->child && $item->child->product->status === 0) {
+                if (
+                    $item->child
+                    && ! $item->child->product->status
+                ) {
                     return true;
                 }
                 break;
@@ -1076,9 +1101,7 @@ abstract class AbstractType
         if (auth()->guard()->check()) {
             $customerGroupId = auth()->guard()->user()->customer_group_id;
         } else {
-            $customerGroupRepository = app('Webkul\Customer\Repositories\CustomerGroupRepository');
-
-            if ($customerGuestGroup = $customerGroupRepository->findOneByField('code', 'guest')) {
+            if ($customerGuestGroup = app(CustomerGroupRepository::class)->findOneByField('code', 'guest')) {
                 $customerGroupId = $customerGuestGroup->id;
             }
         }
@@ -1093,13 +1116,19 @@ abstract class AbstractType
         if ($this->haveSpecialPrice()) {
             $rulePrice = app('Webkul\CatalogRule\Helpers\CatalogRuleProductPrice')->getRulePrice($this->product);
 
-            if ($rulePrice && $rulePrice->price < $this->product->special_price) {
+            if (
+                $rulePrice
+                && $rulePrice->price < $this->product->special_price
+            ) {
                 $haveOffers = false;
             }
 
             if ($haveOffers) {
                 foreach ($customerGroupPrices as $key => $customerGroupPrice) {
-                    if ($customerGroupPrice && $customerGroupPrice->qty > 1) {
+                    if (
+                        $customerGroupPrice
+                        && $customerGroupPrice->qty > 1
+                    ) {
                         array_push($offerLines, $this->getOfferLines($customerGroupPrice));
                     }
                 }
@@ -1119,7 +1148,6 @@ abstract class AbstractType
      * Get offers lines.
      *
      * @param  object  $customerGroupPrice
-     *
      * @return array
      */
     public function getOfferLines($customerGroupPrice)

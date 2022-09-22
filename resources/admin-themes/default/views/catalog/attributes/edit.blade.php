@@ -187,25 +187,27 @@
                                 <input type="hidden" name="is_unique" value="{{ $attribute->is_unique }}"/>
                             </div>
 
-                            <div class="control-group">
-                                <?php $selectedValidation = old('validation') ?: $attribute->validation ?>
-                                <label for="validation">{{ __('admin::app.catalog.attributes.input_validation') }}</label>
-                                <select class="control" id="validation" name="validation" {{ ! $attribute->is_user_defined ? 'disabled' : '' }}>
-                                    <option value=""></option>
-                                    <option value="numeric" {{ $selectedValidation == 'numeric' ? 'selected' : '' }}>
-                                        {{ __('admin::app.catalog.attributes.number') }}
-                                    </option>
-                                    <option value="decimal" {{ $selectedValidation == 'decimal' ? 'selected' : '' }}>
-                                        {{ __('admin::app.catalog.attributes.decimal') }}
-                                    </option>
-                                    <option value="email" {{ $selectedValidation == 'email' ? 'selected' : '' }}>
-                                        {{ __('admin::app.catalog.attributes.email') }}
-                                    </option>
-                                    <option value="url" {{ $selectedValidation == 'url' ? 'selected' : '' }}>
-                                        {{ __('admin::app.catalog.attributes.url') }}
-                                    </option>
-                                </select>
-                            </div>
+                            @if ($attribute->type == 'text')
+                                <div class="control-group">
+                                    <?php $selectedValidation = old('validation') ?: $attribute->validation ?>
+                                    <label for="validation">{{ __('admin::app.catalog.attributes.input_validation') }}</label>
+                                    <select class="control" id="validation" name="validation" {{ ! $attribute->is_user_defined ? 'disabled' : '' }}>
+                                        <option value=""></option>
+                                        <option value="numeric" {{ $selectedValidation == 'numeric' ? 'selected' : '' }}>
+                                            {{ __('admin::app.catalog.attributes.number') }}
+                                        </option>
+                                        <option value="decimal" {{ $selectedValidation == 'decimal' ? 'selected' : '' }}>
+                                            {{ __('admin::app.catalog.attributes.decimal') }}
+                                        </option>
+                                        <option value="email" {{ $selectedValidation == 'email' ? 'selected' : '' }}>
+                                            {{ __('admin::app.catalog.attributes.email') }}
+                                        </option>
+                                        <option value="url" {{ $selectedValidation == 'url' ? 'selected' : '' }}>
+                                            {{ __('admin::app.catalog.attributes.url') }}
+                                        </option>
+                                    </select>
+                                </div>
+                            @endif
 
                             {!! view_render_event('bagisto.admin.catalog.attribute.edit_form_accordian.validations.controls.after', ['attribute' => $attribute]) !!}
                         </div>
@@ -388,7 +390,7 @@
 
                             <td>
                                 <div class="control-group" :class="[errors.has(adminName(row)) ? 'has-error' : '']">
-                                    <input type="text" v-validate="'required'" v-model="row['admin_name']" :name="adminName(row)" class="control" data-vv-as="&quot;{{ __('admin::app.catalog.attributes.admin_name') }}&quot;"/>
+                                    <input type="text" v-validate="getOptionValidation(row, '')" v-model="row['admin_name']" :name="adminName(row)" class="control" data-vv-as="&quot;{{ __('admin::app.catalog.attributes.admin_name') }}&quot;"/>
                                     <span class="control-error" v-if="errors.has(adminName(row))" v-text="errors.first(adminName(row))"></span>
                                 </div>
                             </td>
@@ -402,7 +404,7 @@
 
                             <td>
                                 <div class="control-group" :class="[errors.has(sortOrderName(row)) ? 'has-error' : '']">
-                                    <input type="text" v-validate="'required|numeric'" v-model="row['sort_order']" :name="sortOrderName(row)" class="control" data-vv-as="&quot;{{ __('admin::app.catalog.attributes.position') }}&quot;"/>
+                                    <input type="text" v-validate="getOptionValidation(row, '')" v-model="row['sort_order']" :name="sortOrderName(row)" class="control" data-vv-as="&quot;{{ __('admin::app.catalog.attributes.position') }}&quot;"/>
                                     <span class="control-error" v-if="errors.has(sortOrderName(row))" v-text="errors.first(sortOrderName(row))"></span>
                                 </div>
                             </td>
@@ -507,10 +509,12 @@
                                 'isDelete': false,
                             };
 
-                            if (option.label) {
+                            if (! option.label) {
                                 self.isNullOptionChecked = true;
                                 self.idNullOption = option.id;
                                 row['notRequired'] = true;
+                            } else {
+                                row['notRequired'] = false;
                             }
 
                             option.translations.forEach((translation) => {
@@ -597,7 +601,7 @@
                         return '';
                     }
 
-                    return (this.appLocale === localeCode) ? 'required' : '';
+                    return ('{{ app()->getLocale() }}' === localeCode) || localeCode == ""  ? 'required' : '';
                 },
             },
         });

@@ -3,32 +3,11 @@
 namespace Webkul\CatalogRule\Helpers;
 
 use Carbon\Carbon;
-use Webkul\Customer\Repositories\CustomerGroupRepository;
 use Webkul\CatalogRule\Repositories\CatalogRuleProductPriceRepository;
+use Webkul\Customer\Repositories\CustomerGroupRepository;
 
 class CatalogRuleProductPrice
 {
-    /**
-     * CatalogRuleProductPriceRepository object
-     *
-     * @var \Webkul\CatalogRule\Repositories\CatalogRuleProductPriceRepository
-     */
-    protected $catalogRuleProductPriceRepository;
-
-    /**
-     * CatalogRuleProduct object
-     *
-     * @var \Webkul\CatalogRule\Helpers\CatalogRuleProduct
-     */
-    protected $catalogRuleProductHelper;
-
-    /**
-     * CustomerGroupRepository object
-     *
-     * @var \Webkul\Customer\Repositories\CustomerGroupRepository
-     */
-    protected $customerGroupRepository;
-
     /**
      * Create a new helper instance.
      *
@@ -38,16 +17,11 @@ class CatalogRuleProductPrice
      * @return void
      */
     public function __construct(
-        CatalogRuleProductPriceRepository $catalogRuleProductPriceRepository,
-        CatalogRuleProduct $catalogRuleProductHelper,
-        CustomerGroupRepository $customerGroupRepository
+        protected CatalogRuleProductPriceRepository $catalogRuleProductPriceRepository,
+        protected CatalogRuleProduct $catalogRuleProductHelper,
+        protected CustomerGroupRepository $customerGroupRepository
     )
     {
-        $this->catalogRuleProductPriceRepository = $catalogRuleProductPriceRepository;
-
-        $this->catalogRuleProductHelper = $catalogRuleProductHelper;
-
-        $this->customerGroupRepository = $customerGroupRepository;
     }
 
     /**
@@ -74,7 +48,10 @@ class CatalogRuleProductPrice
         foreach ($catalogRuleProducts as $row) {
             $productKey = $row->product_id . '-' . $row->channel_id . '-' . $row->customer_group_id;
 
-            if ($previousKey && $previousKey != $productKey) {
+            if (
+                $previousKey
+                && $previousKey != $productKey
+            ) {
                 $endRuleFlags = [];
 
                 if (count($prices) > $batchCount) {
@@ -85,8 +62,15 @@ class CatalogRuleProductPrice
             }
 
             foreach ($dates as $key => $date) {
-                if ((! $row->starts_from || $date >= $row->starts_from)
-                    && (! $row->ends_till || $date <= $row->ends_till)
+                if (
+                    (
+                        ! $row->starts_from
+                        || $date >= $row->starts_from
+                    )
+                    && (
+                        ! $row->ends_till
+                        || $date <= $row->ends_till
+                    )
                 ) {
                     $priceKey = $date->getTimestamp() . '-' . $productKey;
 

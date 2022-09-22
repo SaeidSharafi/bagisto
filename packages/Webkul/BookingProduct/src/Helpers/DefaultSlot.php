@@ -12,7 +12,7 @@ class DefaultSlot extends Booking
     protected $daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     
     /**
-     * Returns slots for a perticular day
+     * Returns slots for a particular day
      *
      * @param  \Webkul\BookingProduct\Contracts\BookingProduct  $bookingProduct
      * @param  string  $date
@@ -22,7 +22,10 @@ class DefaultSlot extends Booking
     {
         $bookingProductSlot = $this->typeRepositories[$bookingProduct->type]->findOneByField('booking_product_id', $bookingProduct->id);
 
-        if (! is_array($bookingProductSlot->slots) || ! count($bookingProductSlot->slots)) {
+        if (
+            ! is_array($bookingProductSlot->slots)
+            || ! count($bookingProductSlot->slots)
+        ) {
             return [];
         }
 
@@ -31,14 +34,15 @@ class DefaultSlot extends Booking
         $currentTime = Carbon::now();
 
         $availableFrom = $bookingProduct->available_from
-                         ? Carbon::createFromTimeString($bookingProduct->available_from)
-                         : Carbon::createFromTimeString($currentTime->format('Y-m-d 00:00:00'));
+            ? Carbon::createFromTimeString($bookingProduct->available_from)
+            : Carbon::createFromTimeString($currentTime->format('Y-m-d 00:00:00'));
 
         $availableTo = $bookingProduct->available_to
-                       ? Carbon::createFromTimeString($bookingProduct->available_to)
-                       : Carbon::createFromTimeString('2080-01-01 00:00:00');
+            ? Carbon::createFromTimeString($bookingProduct->available_to)
+            : Carbon::createFromTimeString('2080-01-01 00:00:00');
 
-        if ($requestedDate < $availableFrom
+        if (
+            $requestedDate < $availableFrom
             || $requestedDate > $availableTo
         ) {
             return [];
@@ -47,8 +51,8 @@ class DefaultSlot extends Booking
         $slots = [];
 
         return $bookingProductSlot->booking_type == 'one'
-               ? $this->getOneBookingForManyDaysSlots($bookingProductSlot, $requestedDate)
-               : $this->getManyBookingsforOneDaySlots($bookingProductSlot, $requestedDate);
+            ? $this->getOneBookingForManyDaysSlots($bookingProductSlot, $requestedDate)
+            : $this->getManyBookingsForOneDaySlots($bookingProductSlot, $requestedDate);
     }
 
     /**
@@ -94,23 +98,26 @@ class DefaultSlot extends Booking
      * @param  string  $requestedDate
      * @return array
      */
-    public function getManyBookingsforOneDaySlots($bookingProductSlot, $requestedDate)
+    public function getManyBookingsForOneDaySlots($bookingProductSlot, $requestedDate)
     {
         $bookingProduct = $bookingProductSlot->booking_product;
 
         $currentTime = Carbon::now();
 
         $availableFrom = $bookingProduct->available_from
-                         ? Carbon::createFromTimeString($bookingProduct->available_from)
-                         : Carbon::createFromTimeString($currentTime->format('Y-m-d 00:00:00'));
+            ? Carbon::createFromTimeString($bookingProduct->available_from)
+            : Carbon::createFromTimeString($currentTime->format('Y-m-d 00:00:00'));
 
         $availableTo = $bookingProduct->available_to
-                       ? Carbon::createFromTimeString($bookingProduct->available_to)
-                       : Carbon::createFromTimeString('2080-01-01 00:00:00');
+            ? Carbon::createFromTimeString($bookingProduct->available_to)
+            : Carbon::createFromTimeString('2080-01-01 00:00:00');
 
         $timeDuration = $bookingProductSlot->slots[$requestedDate->format('w')] ?? [];
 
-        if (! count($timeDuration) || ! $timeDuration['status']) {
+        if (
+            ! count($timeDuration)
+            || ! $timeDuration['status']
+        ) {
             return [];
         }
 
@@ -141,17 +148,33 @@ class DefaultSlot extends Booking
 
             $to = clone $tempStartDayTime;
 
-            if (($startDayTime <= $from && $from <= $availableTo)
-                && ($availableTo >= $to && $to >= $startDayTime)
-                && ($startDayTime <= $from && $from <= $endDayTime)
-                && ($endDayTime >= $to && $to >= $startDayTime)
+            if (
+                (
+                    $startDayTime <= $from
+                    && $from <= $availableTo
+                )
+                && (
+                    $availableTo >= $to
+                    && $to >= $startDayTime
+                )
+                && (
+                    $startDayTime <= $from
+                    && $from <= $endDayTime
+                )
+                && (
+                    $endDayTime >= $to
+                    && $to >= $startDayTime
+                )
             ) {
                 // Get already ordered qty for this slot
                 $orderedQty = 0;
 
                 $qty = isset($timeDuration['qty']) ? ( $timeDuration['qty'] - $orderedQty ) : 1;
 
-                if ($qty && $currentTime <= $from) {
+                if (
+                    $qty
+                    && $currentTime <= $from
+                ) {
                     $slots[] = [
                         'from'      => $from->format('h:i A'), 
                         'to'        => $to->format('h:i A'), 

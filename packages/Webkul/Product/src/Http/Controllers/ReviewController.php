@@ -16,22 +16,13 @@ class ReviewController extends Controller
     protected $_config;
 
     /**
-     * Product review repository instance.
-     *
-     * @var \Webkul\Product\Repositories\ProductReviewRepository
-     */
-    protected $productReviewRepository;
-
-    /**
      * Create a new controller instance.
      *
      * @param  \Webkul\Product\Repositories\ProductReviewRepository  $productReview
      * @return void
      */
-    public function __construct(ProductReviewRepository $productReviewRepository)
+    public function __construct(protected ProductReviewRepository $productReviewRepository)
     {
-        $this->productReviewRepository = $productReviewRepository;
-
         $this->_config = request('_config');
     }
 
@@ -70,7 +61,11 @@ class ReviewController extends Controller
      */
     public function update($id)
     {
-        $this->productReviewRepository->update(request()->all(), $id);
+        Event::dispatch('customer.review.update.before', $id);
+
+        $review = $this->productReviewRepository->update(request()->all(), $id);
+
+        Event::dispatch('customer.review.update.after', $review);
 
         session()->flash('success', trans('admin::app.response.update-success', ['name' => 'Review']));
 
@@ -88,7 +83,11 @@ class ReviewController extends Controller
         $this->productReviewRepository->findOrFail($id);
 
         try {
+            Event::dispatch('customer.review.delete.before', $id);
+
             $this->productReviewRepository->delete($id);
+
+            Event::dispatch('customer.review.delete.after', $id);
 
             return response()->json(['message' => trans('admin::app.response.delete-success', ['name' => 'Review'])]);
         } catch (\Exception $e) {
@@ -108,13 +107,15 @@ class ReviewController extends Controller
         $suppressFlash = false;
 
         if (request()->isMethod('post')) {
-            $data = request()->all();
-
             $indexes = explode(',', request()->input('indexes'));
 
-            foreach ($indexes as $key => $value) {
+            foreach ($indexes as $index) {
                 try {
-                    $this->productReviewRepository->delete($value);
+                    Event::dispatch('customer.review.delete.before', $index);
+
+                    $this->productReviewRepository->delete($index);
+
+                    Event::dispatch('customer.review.delete.after', $index);
                 } catch (\Exception $e) {
                     $suppressFlash = true;
 
@@ -152,7 +153,7 @@ class ReviewController extends Controller
             $indexes = explode(',', request()->input('indexes'));
 
             foreach ($indexes as $key => $value) {
-                $review = $this->productReviewRepository->findOneByField('id', $value);
+                $review = $this->productReviewRepository->find($value);
 
                 try {
                     if (! isset($data['massaction-type'])) {

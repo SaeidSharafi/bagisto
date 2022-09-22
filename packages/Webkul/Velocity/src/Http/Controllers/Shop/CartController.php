@@ -4,9 +4,7 @@ namespace Webkul\Velocity\Http\Controllers\Shop;
 
 use Cart;
 use Illuminate\Support\Facades\Log;
-use Webkul\Velocity\Helpers\Helper;
 use Webkul\Checkout\Contracts\Cart as CartModel;
-use Webkul\Product\Repositories\ProductRepository;
 
 class CartController extends Controller
 {
@@ -14,7 +12,7 @@ class CartController extends Controller
      * Retrives the mini cart details
      *
      * @return \Illuminate\Http\Response
-    */
+     */
     public function getMiniCartDetails()
     {
         $cart = cart()->getCart();
@@ -59,16 +57,20 @@ class CartController extends Controller
      * Function for guests user to add the product in the cart.
      *
      * @return array
-    */
+     */
     public function addProductToCart()
     {
         try {
             $cart = Cart::getCart();
+
             $id = request()->get('product_id');
 
             $cart = Cart::addProduct($id, request()->all());
 
-            if (is_array($cart) && isset($cart['warning'])) {
+            if (
+                is_array($cart)
+                && isset($cart['warning'])
+            ) {
                 $response = [
                     'status'  => 'warning',
                     'message' => $cart['warning'],
@@ -76,12 +78,6 @@ class CartController extends Controller
             }
 
             if ($cart instanceof CartModel) {
-                $formattedItems = [];
-
-                foreach ($cart->items as $item) {
-                    array_push($formattedItems, $this->velocityHelper->formatCartItem($item));
-                }
-
                 $response = [
                     'status'         => 'success',
                     'totalCartItems' => sizeof($cart->items),
@@ -97,7 +93,6 @@ class CartController extends Controller
                 }
             }
         } catch(\Exception $exception) {
-
             session()->flash('warning', __($exception->getMessage()));
 
             $product = $this->productRepository->find($id);
@@ -123,12 +118,10 @@ class CartController extends Controller
      *
      * @param  int  $itemId
      * @return \Illuminate\Http\Response
-    */
+     */
     public function removeProductFromCart($itemId)
     {
         $result = Cart::removeItem($itemId);
-
-        session()->forget('cart');
 
         if ($result) {
             $response = [
@@ -143,5 +136,21 @@ class CartController extends Controller
             'label'   => trans('velocity::app.shop.general.alert.error'),
             'message' => trans('velocity::app.error.something_went_wrong'),
         ]);
+    }
+
+    /**
+     * Removes the item from the cart if it exists.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function removeAllItems()
+    {
+        $result = Cart::removeAllItems();
+
+        if ($result) {
+            session()->flash('success', trans('shop::app.checkout.cart.item.success-all-remove'));
+        }
+
+        return redirect()->back();
     }
 }

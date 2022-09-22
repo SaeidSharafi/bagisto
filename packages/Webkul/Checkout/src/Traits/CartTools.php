@@ -3,7 +3,6 @@
 namespace Webkul\Checkout\Traits;
 
 use App\Shop\Cart;
-use Illuminate\Support\Facades\Log;
 
 /**
  * Cart tools. In this trait, you will get all sorted collections of
@@ -15,6 +14,23 @@ use Illuminate\Support\Facades\Log;
 trait CartTools
 {
     /**
+     * Remove cart and destroy the session
+     *
+     * @param  \Webkul\Checkout\Contracts\Cart  $cart
+     * @return void
+     */
+    public function removeCart($cart)
+    {
+        $this->cartRepository->delete($cart->id);
+
+        if (session()->has('cart')) {
+            session()->forget('cart');
+        }
+
+        $this->resetCart();
+    }
+
+    /**
      * Save cart for guest.
      *
      * @param  Cart  $cart
@@ -23,7 +39,10 @@ trait CartTools
     public function putCart($cart)
     {
         if (! auth()->guard()->check()) {
-            session()->put('cart', $cart);
+            $cartTemp = new \stdClass();
+            $cartTemp->id = $cart->id;
+
+            session()->put('cart', $cartTemp);
         }
     }
 
@@ -34,7 +53,6 @@ trait CartTools
      */
     public function mergeCart(): void
     {
-
         if (session()->has('cart')) {
             $cart = $this->cartRepository->findOneWhere([
                 'customer_id' => auth()->guard()->user()->id,
@@ -78,7 +96,7 @@ trait CartTools
 
             foreach ($guestCart->items as $guestCartItem) {
                 try {
-                    $this->addProduct($guestCartItem->product_id, $guestCartItem->additional);
+                    $cart = $this->addProduct($guestCartItem->product_id, $guestCartItem->additional);
                 } catch (\Exception $e) {
                     //Ignore exception
                     report($e);
@@ -87,9 +105,7 @@ trait CartTools
 
             $this->collectTotals();
 
-            $this->cartRepository->delete($guestCart->id);
-
-            session()->forget('cart');
+            $this->removeCart($guestCart);
         }
     }
 
@@ -134,7 +150,6 @@ trait CartTools
 
                 $this->deleteCart();
             }
-
         }
     }
 
@@ -145,13 +160,15 @@ trait CartTools
      */
     public function activateCartIfSessionHasDeactivatedCartId(): void
     {
-        if (session()->has('deactivated_cart_id')) {
-            $deactivatedCartId = session()->get('deactivated_cart_id');
-
-            $this->activateCart($deactivatedCartId);
-
-            session()->forget('deactivated_cart_id');
-        }
+        session()->forget('deactivated_cart_id');
+        //
+        //if (session()->has('deactivated_cart_id')) {
+        //    $deactivatedCartId = session()->get('deactivated_cart_id');
+        //
+        //    $this->activateCart($deactivatedCartId);
+        //
+        //    session()->forget('deactivated_cart_id');
+        //}
     }
 
     /**
@@ -177,7 +194,7 @@ trait CartTools
      */
     public function deActivateCart(): void
     {
-        $this>$this->deleteCart();
+        $this->deleteCart();
         //if ($cart = $this->getCart()) {
         //    $this->cartRepository->update(['is_active' => false], $cart->id);
         //
@@ -213,7 +230,10 @@ trait CartTools
         }
 
         if (! $wishlistItem->additional) {
-            $wishlistItem->additional = ['product_id' => $wishlistItem->product_id, 'quantity' => 1];
+            $wishlistItem->additional = [
+                'product_id' => $wishlistItem->product_id,
+                'quantity'   => 1,
+            ];
         }
 
         request()->merge($wishlistItem->additional);
