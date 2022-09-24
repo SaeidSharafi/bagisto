@@ -51,10 +51,7 @@ class AppServiceProvider extends ServiceProvider
         //$this->mergeConfigFrom(
         //    dirname(__DIR__).'/../config/system.php', 'core'
         //);
-        // Laravel IDE helper
-        if (!$this->app->environment() !== 'production') {
-            $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
-        }
+
         $this->mergeConfigFrom(
             dirname(__DIR__).'/../config/product_types.php', 'product_types'
         );
