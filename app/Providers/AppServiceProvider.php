@@ -2,13 +2,11 @@
 
 namespace App\Providers;
 
-
 use App\Models\Shop\JeduCustomer;
 use App\Models\Shop\JeduSlider;
 use Carbon\Carbon;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
-use Opcodes\LogViewer\Facades\LogViewer;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,14 +18,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
-        include_once __DIR__ . '/../Helpers/jdf.php';
+        include_once __DIR__.'/../Helpers/jdf.php';
 
-        Carbon::macro('jdate', function ($format="", $tr_num = 'fa') {
-            if (app()->getLocale() ==="fa"){
-                $format= $format ?: 'j F Y H:i:s';
+        Carbon::macro('jdate', function ($format = "", $tr_num = 'fa') {
+            if (app()->getLocale() === "fa") {
+                $format = $format ?: 'j F Y H:i:s';
                 return jdate($format, self::this()->timestamp, '', '', $tr_num);
             }
-            $format= $format ?: 'Y-m-d';
+            $format = $format ?: 'Y-m-d';
             return self::this()->format($format);
         });
 
@@ -53,7 +51,10 @@ class AppServiceProvider extends ServiceProvider
         //$this->mergeConfigFrom(
         //    dirname(__DIR__).'/../config/system.php', 'core'
         //);
-
+        // Laravel IDE helper
+        if (!$this->app->environment() !== 'production') {
+            $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+        }
         $this->mergeConfigFrom(
             dirname(__DIR__).'/../config/product_types.php', 'product_types'
         );
@@ -61,7 +62,7 @@ class AppServiceProvider extends ServiceProvider
             dirname(__DIR__).'/../config/sms.php', 'sms'
         );
         $this->app->concord->registerModel(
-           \Webkul\Customer\Models\Customer::class, JeduCustomer::class
+            \Webkul\Customer\Models\Customer::class, JeduCustomer::class
         );
         $this->app->concord->registerModel(
             \Webkul\Core\Models\Slider::class, JeduSlider::class
