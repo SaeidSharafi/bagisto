@@ -80,7 +80,7 @@ class AttributeTableSeeder extends Seeder
                 'created_at'          => $now,
                 'updated_at'          => $now,
                 'is_comparable'       => '0',
-            ],[
+            ], [
                 'id'                  => '4',
                 'code'                => 'url_key',
                 'admin_name'          => 'نامک',
@@ -384,7 +384,7 @@ class AttributeTableSeeder extends Seeder
                 'created_at'          => $now,
                 'updated_at'          => $now,
                 'is_comparable'       => '0',
-            ],[
+            ], [
                 'id'                  => '20',
                 'code'                => 'guest_checkout',
                 'admin_name'          => 'مهمان میتواند خرید کند',
@@ -482,9 +482,9 @@ class AttributeTableSeeder extends Seeder
             ], [
                 'id'                  => '25',
                 'code'                => 'completing',
-                'admin_name'          => 'در حال تکیمل',
+                'admin_name'          => 'در حال تکمیل',
                 'type'                => 'boolean',
-                'validation'          => NULL,
+                'validation'          => null,
                 'position'            => '1',
                 'is_required'         => '0',
                 'is_unique'           => '0',
@@ -834,7 +834,7 @@ class AttributeTableSeeder extends Seeder
             ], [
                 'id'           => '25',
                 'locale'       => 'fa',
-                'name'         => 'در حال تکیمل',
+                'name'         => 'در حال تکمیل',
                 'attribute_id' => '25',
             ], [
                 'id'           => '26',

@@ -35,7 +35,12 @@
                                     </a>
                                 </td>
                             @else
-                                <td  class="fw6">{{ $attribute['value'] }}</td>
+                                @if ($attribute['code'] === "completing")
+                                    <td class="fw6">{{ $attribute['value'] != '' ?: 'متعاقبا اعلام میگردد' }}</td>
+                                @else
+                                    <td class="fw6">{{ $attribute['value'] }}</td>
+                                @endif
+
                             @endif
                         </tr>
                     @endforeach
