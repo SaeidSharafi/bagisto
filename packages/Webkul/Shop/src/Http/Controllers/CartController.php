@@ -55,16 +55,17 @@ class CartController extends Controller
      */
     public function index()
     {
-        Cart::collectTotals();
-        $coupons = CartRule::query()
-            ->with('cart_rule_coupon')
-            ->where('show_in_list', 1)
-            ->get()
-            ->pluck('name', 'coupon_code')
-            ->toArray();
-        return view($this->_config['view'])
-            ->with('cart', Cart::getCart())
-            ->with('coupons',$coupons);
+       return redirect()->route('shop.checkout.onepage.index');
+        //Cart::collectTotals();
+        //$coupons = CartRule::query()
+        //    ->with('cart_rule_coupon')
+        //    ->where('show_in_list', 1)
+        //    ->get()
+        //    ->pluck('name', 'coupon_code')
+        //    ->toArray();
+        //return view($this->_config['view'])
+        //    ->with('cart', Cart::getCart())
+        //    ->with('coupons',$coupons);
     }
 
     /**

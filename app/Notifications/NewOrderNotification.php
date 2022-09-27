@@ -53,8 +53,8 @@ class NewOrderNotification extends Notification implements ShouldQueue
     public function toSms($notifiable)
     {
         // TODO implement other status messages
-        if (in_array($this->order->status, $this->enabled_status, false)) {
-            \Log::info("No need to send sms");
+        if (!in_array($this->order->status, $this->enabled_status, false)) {
+            \Log::info("No need to send sms: ".$this->order->status);
             return null;
         }
 

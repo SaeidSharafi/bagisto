@@ -50,13 +50,16 @@ trait Sms
 
         try {
             /**
-             * Email to customer.
+             * Sms to customer.
              */
             $configKey = 'sms.general.notifications.new-order.status';
             \Log::info("core()->getConfigData($configKey)");
             if (core()->getConfigData($configKey)) {
-                Notification::route('phone',$order->customer_phone)
-                    ->notify(new NewOrderNotification($order));
+                if ($order->status === 'processing'){
+                    Notification::route('phone',$order->customer_phone)
+                        ->notify(new NewOrderNotification($order));
+                }
+
             }
 
         } catch (\Exception $e) {

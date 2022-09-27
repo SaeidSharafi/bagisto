@@ -66,9 +66,9 @@
                             <div class="section-title d-flex justify-content-between">
                                 <span>{{ __('shop::app.customer.account.order.view.products-ordered') }}</span>
                                 @if ($order->invoices->count())
-                                <a href="{{ route('customer.orders.print', $order->invoices->first()->id) }}" class="text-dark">
-                                    <i class="fa-lg fa fa-print"></i>
-                                </a>
+                                    <a href="{{ route('customer.orders.print', $order->invoices->first()->id) }}" class="text-dark">
+                                        <i class="fa-lg fa fa-print"></i>
+                                    </a>
                                 @endif
                             </div>
                             <div class="section-content">
@@ -208,7 +208,6 @@
                             </div>
                         </div>
                     </tab>
-
 
 
                     @if ($order->refunds->count())

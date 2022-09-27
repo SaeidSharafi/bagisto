@@ -88,27 +88,31 @@ class MellatController extends Controller
     public function callback()
     {
         \Log::info("request ", \request()->all());
-        if (!Cart::getCart()) {
-            return redirect()->route('shop.checkout.cart.index');
-        }
+        //if (!Cart::getCart()) {
+        //
+        //    return redirect()->route('shop.checkout.cart.index');
+        //}
         $request = \request()->all();
 
         if ($request['ResCode'] != "0") {
-            return redirect()->route('mellat.cancel');
+            $order = $this->mellatService->cancelOrder($request);
+            \Log::info("canceled order , ID". $order->id);
+            session()->flash('error', 'پرداخت ناموفق');
+            Cart::deActivateCart();
+            return redirect()->route('customer.orders.view', $request['SaleOrderId']);
         }
 
         try {
-            $order = $this->mellatService->processCart($request);
+            $order = $this->mellatService->verifyOrder($request);
+            \Log::info("verified order ,ID ". $order->id);
         } catch (VerifyException|SettleException|SendException $e) {
+            Cart::deActivateCart();
             if ($e->orderId) {
                 session()->flash('error', 'خطا در تایید تراکنش');
-                return redirect()->route('customer.orders.view', $e->orderId);
+                return redirect()->route('customer.orders.view', $request['SaleOrderId']);
             }
-            return redirect()->route('mellat.cancel');
         }
-
         Cart::deActivateCart();
-
         session()->flash('order', $order);
 
         return redirect()->route('shop.checkout.success');

@@ -68,7 +68,7 @@ class OnepageController extends Controller
             if (auth()->guard('customer')->user()->is_suspended) {
                 session()->flash('warning', trans('shop::app.checkout.cart.suspended-account-message'));
 
-                return redirect()->route('shop.checkout.cart.index');
+                return redirect()->route('shop.home.index');
             }
 
             if (auth()->guard('customer')->user()->incomplete) {
@@ -79,7 +79,7 @@ class OnepageController extends Controller
         }
 
         if (Cart::hasError()) {
-            return redirect()->route('shop.checkout.cart.index');
+            return redirect()->route('shop.home.index');
         }
 
         $cart = Cart::getCart();
@@ -103,6 +103,7 @@ class OnepageController extends Controller
 
         Cart::collectTotals();
         if ($cart->base_grand_total == 0) {
+            \Log::info("base_grand_total is 0 ");
             Cart::savePaymentMethod(['method' => 'mellat']);
             $order = $this->orderRepository->create(Cart::prepareDataForOrder());
             $order = $this->orderRepository->update(['status' => 'processing'],
