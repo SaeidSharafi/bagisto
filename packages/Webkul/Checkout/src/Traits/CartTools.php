@@ -62,18 +62,22 @@ trait CartTools
             /**
              * Delete old cart since we don't need it
              */
-            $this->cartRepository->delete($cart->id);
+            if ($cart) {
+                $this->cartRepository->delete($cart->id);
+            }
 
-            $guestCart = session()->get('cart');
+            $guestCart = $this->cartRepository->find(session()->get('cart')->id);
 
             /**
              * When the logged in customer is not having any of the cart instance previously and are active.
              */
-            if (! $cart) {
+            if (!$cart) {
 
                 foreach ($guestCart->items as $guestCartItem) {
                     try {
-                        if ($this->customerRepository->hasOrder(auth()->guard('customer')->user()->id,$guestCartItem->product_id)){
+                        if ($this->customerRepository->hasOrder(auth()->guard('customer')->user()->id,
+                            $guestCartItem->product_id)
+                        ) {
                             $guestCartItem->delete();
                             session()->flash('info' , __('app.checkout.cart.item.order-exist-add'));
                         }
@@ -178,6 +182,7 @@ trait CartTools
      */
     public function deleteCart(): void
     {
+
         if ($cart = $this->getCart()) {
             $this->cartRepository->delete($cart->id);
 

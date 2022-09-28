@@ -6,8 +6,8 @@ use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
-use Webkul\Checkout\Models\CartAddress;
 use Webkul\Checkout\Models\Cart as CartModel;
+use Webkul\Checkout\Models\CartAddress;
 use Webkul\Checkout\Models\CartPayment;
 use Webkul\Checkout\Repositories\CartAddressRepository;
 use Webkul\Checkout\Repositories\CartItemRepository;
@@ -839,7 +839,7 @@ class Cart
 
         $data['payment'] = $cart->payment->toArray();
 
-        $data['items'] = $cart->items->toArray();
+        $data['items'] = $cart->items()->with('children')->get()->toArray();
 
         return $data;
     }
