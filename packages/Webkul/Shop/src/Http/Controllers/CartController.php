@@ -5,7 +5,6 @@ namespace Webkul\Shop\Http\Controllers;
 use Cart;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
-use Webkul\CartRule\Models\CartRule;
 use Webkul\CartRule\Repositories\CartRuleCouponRepository;
 use Webkul\Customer\Repositories\WishlistRepository;
 use Webkul\Product\Repositories\ProductRepository;
@@ -40,16 +39,17 @@ class CartController extends Controller
      */
     public function index()
     {
-        Cart::collectTotals();
-        $coupons = CartRule::query()
-            ->with('cart_rule_coupon')
-            ->where('show_in_list', 1)
-            ->get()
-            ->pluck('name', 'coupon_code')
-            ->toArray();
-        return view($this->_config['view'])
-            ->with('cart', Cart::getCart())
-            ->with('coupons',$coupons);
+        return redirect()->route('shop.checkout.onepage.index');
+        //Cart::collectTotals();
+        //$coupons = CartRule::query()
+        //    ->with('cart_rule_coupon')
+        //    ->where('show_in_list', 1)
+        //    ->get()
+        //    ->pluck('name', 'coupon_code')
+        //    ->toArray();
+        //return view($this->_config['view'])
+        //    ->with('cart', Cart::getCart())
+        //    ->with('coupons',$coupons);
     }
 
     /**

@@ -8,8 +8,6 @@ use App\Notifications\OrderCommentNotification;
 use App\Notifications\OrderCompletedNotification;
 use App\Notifications\OrderRefundNotification;
 use Illuminate\Support\Facades\Notification;
-use Kuro\LaravelSms\SmsChannel;
-
 
 trait Sms
 {
@@ -50,7 +48,7 @@ trait Sms
 
         try {
             /**
-             * Email to customer.
+             * Sms to customer.
              */
             $configKey = 'sms.general.notifications.new-order.status';
             \Log::info("core()->getConfigData($configKey)");

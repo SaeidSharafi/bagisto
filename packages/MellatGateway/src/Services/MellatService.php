@@ -2,8 +2,6 @@
 
 namespace MellatGateway\Services;
 
-use Codeception\Util\Soap;
-
 use Illuminate\Support\Facades\Log;
 use MellatGateway\Exceptions\SendException;
 use MellatGateway\Exceptions\SettleException;
@@ -77,8 +75,8 @@ class MellatService
     protected $WSDL = 'https://bpm.shaparak.ir/pgwchannel/services/pgw?wsdl';
     protected $endPoint = 'https://bpm.shaparak.ir/pgwchannel/startpay.mellat';
 
-    protected $testWSDL = 'https://banktest.ir/gateway/bpm.shaparak.ir/pgwchannel/services/pgw?wsdl';
-    protected $testEndPoint = 'https://banktest.ir/gateway/pgw.bpm.bankmellat.ir/pgwchannel/startpay.mellat';
+    protected $testWSDL = 'https://sandbox.banktest.ir/mellat/bpm.shaparak.ir/pgwchannel/services/pgw?wsdl';
+    protected $testEndPoint = 'https://sandbox.banktest.ir/mellat/bpm.shaparak.ir/pgwchannel/startpay.mellat';
 
     /**
      * Create a new helper instance.
@@ -111,9 +109,10 @@ class MellatService
     public function send()
     {
         $cart = $this->mellat->getCart();
-        $cart->transaction_id = $cart->id.now()->timestamp;
-        $cart->save();
-        $this->orderId = $cart->transaction_id;
+        $this->order = $this->orderRepository->create(Cart::prepareDataForOrder());
+        //$cart->transaction_id = $this->order.now()->timestamp;
+        //$cart->save();
+        $this->orderId = $this->order->id;
         Log::info("ORder ID:".$this->orderId, []);
         $wsdl = $this->mellat->getConfigData('sandbox') ? $this->testWSDL
             : $this->WSDL;
@@ -131,7 +130,7 @@ class MellatService
             'userName'       => $username,
             'userPassword'   => $password,
             'orderId'        => $this->orderId,
-            'amount'         => $cart->grand_total,
+            'amount'         => $this->order->grand_total,
             'localDate'      => now()->format('Ymd'),
             'localTime'      => now()->format('His'),
             'additionalData' => '',
@@ -156,25 +155,51 @@ class MellatService
     }
 
     /**
+     * This function cancel the order
+     *
+     * @param  array  $post
+     *
+     * @return Order|Exception
+     */
+    public function cancelOrder($post)
+    {
+        $this->post = $post;
+
+        try {
+            Log::info("Order Cancled, ID:".$this->post['SaleOrderId'], []);
+            $this->order = $this->orderRepository->find($this->post['SaleOrderId']);
+            $this->response['status'] = Request::CANCEL;
+            $this->processOrder();
+            return $this->order;
+        } catch (VerifyException|SettleException|SendException $e) {
+            if ($this->order) {
+                $this->orderRepository->update(['status' => 'canceled'],
+                    $this->order->id);
+                $e->orderId = $this->order->id;
+            }
+
+            throw $e;
+        }
+
+    }
+
+    /**
      * This function process the IPN sent from paypal end.
      *
      * @param  array  $post
      *
      * @return Order|Exception
      */
-    public function processCart($post)
+    public function verifyOrder($post)
     {
         $this->post = $post;
-        $cart = $this->mellat->getCart();
 
-        $this->orderId = $cart->transaction_id;
         try {
-            Log::info("ORder ID:".$this->orderId, []);
-            $this->order = $this->orderRepository->create(Cart::prepareDataForOrder());
+            Log::info("Verify Order, ID:".$this->post['SaleOrderId'], []);
+            $this->order = $this->orderRepository->find($this->post['SaleOrderId']);
 
             $this->verify();
 
-            Log::info("Order ID:".$this->orderId, []);
             $this->settle();
 
             $this->processOrder();
@@ -214,17 +239,28 @@ class MellatService
      */
     protected function processOrder()
     {
+        $order = null;
+        Log::info("processOrder Order ID:".$this->order->id);
+        Log::info("processOrder response status:".$this->response['status']);
+
         if ($this->response['status'] === Request::SUCCESS) {
-            $this->orderRepository->update(['status' => 'processing'],
+            Log::info("set status processing:");
+            $this->order = $this->orderRepository->update(['status' => 'processing'],
                 $this->order->id);
             if ($this->order->canInvoice()) {
                 $invoice
                     = $this->invoiceRepository->create($this->prepareInvoiceData());
+                $transaction = $this->orderTransactionRepository->create($this->prepareTransactionData($invoice,
+                    ($this->response['status'] === Request::CANCEL || $this->response['status'] === Request::FAIL)));
             }
-            $transaction = $this->orderTransactionRepository->create($this->prepareTransactionData($invoice));
-            return;
+
         }
-        throw new VerifyException("Process order End");
+        if ($this->response['status'] === Request::CANCEL || $this->response['status'] === Request::FAIL) {
+            Log::info("set status canceled:");
+            $this->order = $this->orderRepository->update(['status' => 'canceled'],
+                $this->order->id);
+        }
+
     }
 
     /**
@@ -248,17 +284,17 @@ class MellatService
      *
      * @return array
      */
-    protected function prepareTransactionData($invoice)
+    protected function prepareTransactionData($invoice, $cancel = false)
     {
         return [
             'order_id'       => $this->order->id,
-            'transaction_id' => $this->mellat->getCart()->transaction_id,
-            'status'         => "موفق",
+            'transaction_id' => $this->order->id,
+            'status'         => $cancel ? "ناموفق" : "موفق",
             'payment_method' => "mellat",
             'invoice_id'     => $invoice->id,
             'data'           => json_encode(
                 [
-                    'transaction_id' => $this->post['RefId'] ?? '',
+                    'transaction_id'  => $this->post['RefId'] ?? '',
                     'SaleReferenceId' => $this->post['SaleReferenceId'] ?? '',
                     'CardHolderPan'   => $this->post['CardHolderPan'] ?? '',
                     'CardHolderInfo'  => $this->post['CardHolderInfo'] ?? ''
@@ -283,16 +319,15 @@ class MellatService
         $terminalID = $this->mellat->getConfigData('terminal_id');
         Log::info($wsdl);
         Log::info($endpoint);
-        Log::info($username);
-        Log::info($password);
         $data = [
             'terminalId'      => $terminalID,
             'userName'        => $username,
             'userPassword'    => $password,
-            'orderId'         => $this->orderId,
+            'orderId'         => $this->order->id,
             'saleOrderId'     => $this->post['SaleOrderId'],
             'saleReferenceId' => $this->post['SaleReferenceId'],
         ];
+
         $response = Request::verify($wsdl, $data);
         Log::info('verificiation response recived from gateway', $response);
 
@@ -323,13 +358,11 @@ class MellatService
         $terminalID = $this->mellat->getConfigData('terminal_id');
         Log::info($wsdl);
         Log::info($endpoint);
-        Log::info($username);
-        Log::info($password);
         $data = [
             'terminalId'      => $terminalID,
             'userName'        => $username,
             'userPassword'    => $password,
-            'orderId'         => $this->orderId,
+            'orderId'         => $this->order->id,
             'saleOrderId'     => $this->post['SaleOrderId'],
             'saleReferenceId' => $this->post['SaleReferenceId'],
         ];

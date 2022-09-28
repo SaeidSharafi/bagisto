@@ -10,7 +10,8 @@ class Request
     public const SUCCESS=1;
     public const ERROR=-1;
     public const EXIST=2;
-    public const FAIL=3;
+    public const FAIL = 3;
+    public const CANCEL = 4;
     /**
      * Make http request to Pay.ir
      *

@@ -231,15 +231,15 @@ class Sms
      */
     public function send()
     {
-        if ($this->dry_run){
-            \Log::info("Sending [".implode($this->parameters)."] sms to [" .implode(",",$this->to) ."]");
+        if ($this->dry_run || config('sms.sandbox')) {
+            \Log::info("Sending [".implode($this->parameters)."] sms to [".implode(",", $this->to)."]");
             return "Simualted Sms Sending";
         }
         if ($this->pattern) {
-            \Log::info("Sending [".$this->pattern."] sms to [" .implode(",",$this->to) ."]");
+            \Log::info("Sending [".$this->pattern."] sms to [".implode(",", $this->to)."]");
             $response = $this->gateway->sendPatternSms();
 
-        }else{
+        } else {
             $response = $this->gateway->sendSms();
         }
 

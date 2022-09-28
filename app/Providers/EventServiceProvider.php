@@ -5,10 +5,8 @@ namespace App\Providers;
 use App\Listeners\Category;
 use App\Listeners\OrderListener;
 use App\Listeners\Product;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -26,7 +24,8 @@ class EventServiceProvider extends ServiceProvider
                 [OrderListener::class, 'sendNewOrderSms']
             ],
             'sales.order.update-status.after' => [
-                [OrderListener::class, 'UpdateRegistration']
+                OrderListener::class.'@UpdateRegistration',
+                OrderListener::class.'@sendNewOrderSms'
             ]
         ];
     // protected $listen = [

@@ -36,13 +36,17 @@ class UpdateRegisteration implements ShouldQueue
      */
     public function handle()
     {
-        if ($this->order){
-            $request = new HttpRequestService($this->order,HttpRequestService::OP_UPDATE_REGISTERATION);
+        if (app()->isLocal()) {
+            \Log::info("runing on local, skiping ims calls");
+            return;
+        }
+        if ($this->order) {
+            $request = new HttpRequestService($this->order, HttpRequestService::OP_UPDATE_REGISTERATION);
             \Log::info("sending API Request");
             try {
                 $response = $request->build();
                 \Log::info($response);
-            }catch (\Exception $e){
+            } catch (\Exception $e) {
                 $this->fail($e);
             }
         }
