@@ -3,7 +3,6 @@
 namespace Webkul\Checkout\Traits;
 
 use App\Shop\Cart;
-use Illuminate\Support\Facades\Log;
 
 /**
  * Cart tools. In this trait, you will get all sorted collections of
@@ -44,14 +43,16 @@ trait CartTools
             /**
              * Delete old cart since we don't need it
              */
-            $this->cartRepository->delete($cart->id);
+            if ($cart) {
+                $this->cartRepository->delete($cart->id);
+            }
 
             $guestCart = session()->get('cart');
 
             /**
              * When the logged in customer is not having any of the cart instance previously and are active.
              */
-            if (! $cart) {
+            if (!$cart) {
 
                 foreach ($guestCart->items as $guestCartItem) {
                     try {
