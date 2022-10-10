@@ -135,7 +135,7 @@ class MellatService
             'localTime'      => now()->format('His'),
             'additionalData' => '',
             'callBackUrl'    => route('mellat.callback'),
-            'payerId'        => auth()->id(),
+            'payerId'        => 0,
         ];
         Log::info('data to send for gateway', $data);
 
