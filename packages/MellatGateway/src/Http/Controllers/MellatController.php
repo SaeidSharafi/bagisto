@@ -8,7 +8,6 @@ use MellatGateway\Exceptions\SettleException;
 use MellatGateway\Exceptions\VerifyException;
 use MellatGateway\Services\MellatService;
 use Webkul\Checkout\Facades\Cart;
-use Webkul\Sales\Repositories\OrderRepository;
 
 class MellatController extends Controller
 {
@@ -48,8 +47,8 @@ class MellatController extends Controller
             $refID = $send['refID'];
         } catch (SendException $e) {
             session()->flash('error', 'خطا در ارتباط با درگاه بانکی');
-            Log::info("send error");
-            return redirect()->route('shop.checkout.cart.index');
+            Log::info($e->getMessage());
+            return redirect()->route('customer.orders.index');
         }
         //return redirect($paymentUrl);
 
@@ -65,7 +64,7 @@ class MellatController extends Controller
     {
         session()->flash('error', 'پرداخت ناموفق');
 
-        return redirect()->route('shop.checkout.onepage.index');
+        return redirect()->route('customer.orders.index');
     }
 
     /**
@@ -77,7 +76,7 @@ class MellatController extends Controller
     {
         session()->flash('error', 'Payment verification failed');
         Cart::deActivateCart();
-        return redirect()->route('order');
+        return redirect()->route('customer.orders.index');
     }
 
     /**
@@ -108,6 +107,7 @@ class MellatController extends Controller
         } catch (VerifyException|SettleException|SendException $e) {
             Cart::deActivateCart();
             if ($e->orderId) {
+                \Log::warning($e->getMessage());
                 session()->flash('error', 'خطا در تایید تراکنش');
                 return redirect()->route('customer.orders.view', $request['SaleOrderId']);
             }

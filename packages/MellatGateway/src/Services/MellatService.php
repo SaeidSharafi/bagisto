@@ -113,7 +113,7 @@ class MellatService
         //$cart->transaction_id = $this->order.now()->timestamp;
         //$cart->save();
         $this->orderId = $this->order->id;
-        Log::info("ORder ID:".$this->orderId, []);
+        Log::info("Order ID:".$this->orderId, []);
         $wsdl = $this->mellat->getConfigData('sandbox') ? $this->testWSDL
             : $this->WSDL;
         $endpoint = $this->mellat->getConfigData('sandbox') ? $this->testEndPoint
@@ -121,10 +121,7 @@ class MellatService
         $username = $this->mellat->getConfigData('username');
         $password = $this->mellat->getConfigData('password');
         $terminalID = $this->mellat->getConfigData('terminal_id');
-        Log::info($wsdl);
-        Log::info($endpoint);
-        Log::info($username);
-        Log::info($password);
+
         $data = [
             'terminalId'     => $terminalID,
             'userName'       => $username,
@@ -149,8 +146,12 @@ class MellatService
 
                 return $params['response'];
             }
-            throw new SendException('', $send['response']);
+
+            $this->orderRepository->cancel($this->order->id);
+            throw new SendException('خطا در اتصال به درگاه بانک ملت، مشکلی در اطلاعات ارسالی وجود دارد.',
+                $send['response']);
         }
+        $this->orderRepository->cancel($this->order->id);
         throw new SendException('خطا در ارسال اطلاعات به درگاه بانتک ملت. لطفا از برقرار بودن اینترنت و در دسترس بودن بانک ملت اطمینان حاصل کنید');
     }
 
@@ -195,10 +196,10 @@ class MellatService
         $this->post = $post;
 
         try {
-            Log::info("Verify Order, ID:".$this->post['SaleOrderId'], []);
+            Log::info("Verifing Order, ID:".$this->post['SaleOrderId'], []);
             $this->order = $this->orderRepository->find($this->post['SaleOrderId']);
             if ($this->order->status === 'canceled' || $this->order->status === 'closed') {
-                throw new VerifyException();
+                throw new VerifyException('Order status is canceled or Closed');
             }
             $this->verify();
 
@@ -207,6 +208,7 @@ class MellatService
             $this->processOrder();
             return $this->order;
         } catch (VerifyException|SettleException|SendException $e) {
+            Log::info($e->getMessage()." : ".$e->getCode());
             if ($this->order) {
                 $this->orderRepository->update(['status' => 'canceled'],
                     $this->order->id);
@@ -241,7 +243,7 @@ class MellatService
      */
     protected function processOrder()
     {
-        $order= null;
+        $order = null;
         Log::info("processOrder Order ID:".$this->order->id);
         Log::info("processOrder response status:".$this->response['status']);
 
@@ -257,13 +259,11 @@ class MellatService
             }
 
         }
-        if ( $this->response['status'] === Request::CANCEL || $this->response['status'] === Request::FAIL) {
+        if ($this->response['status'] === Request::CANCEL || $this->response['status'] === Request::FAIL) {
             Log::info("set status canceled:");
             $this->order = $this->orderRepository->update(['status' => 'canceled'],
                 $this->order->id);
         }
-
-
 
     }
 
@@ -288,7 +288,7 @@ class MellatService
      *
      * @return array
      */
-    protected function prepareTransactionData($invoice,$cancel = false)
+    protected function prepareTransactionData($invoice, $cancel = false)
     {
         return [
             'order_id'       => $this->order->id,
@@ -298,7 +298,7 @@ class MellatService
             'invoice_id'     => $invoice->id,
             'data'           => json_encode(
                 [
-                    'transaction_id' => $this->post['RefId'] ?? '',
+                    'transaction_id'  => $this->post['RefId'] ?? '',
                     'SaleReferenceId' => $this->post['SaleReferenceId'] ?? '',
                     'CardHolderPan'   => $this->post['CardHolderPan'] ?? '',
                     'CardHolderInfo'  => $this->post['CardHolderInfo'] ?? ''
@@ -340,7 +340,8 @@ class MellatService
                 $this->response['status'] = Request::SUCCESS;
                 return;
             }
-            throw new VerifyException('', $response['response']);
+            throw new VerifyException('Verification failed, check response code for more detail',
+                $response['response']);
         }
 
         throw new SendException('خطا در ارسال اطلاعات به درگاه بانتک ملت. لطفا از برقرار بودن اینترنت و در دسترس بودن بانک ملت اطمینان حاصل کنید');
@@ -379,7 +380,7 @@ class MellatService
                 $this->response['status'] = Request::SUCCESS;
                 return;
             }
-            throw new SettleException('', $response['response']);
+            throw new SettleException('Settle failed, check response code for more detail', $response['response']);
         }
 
         throw new SendException('خطا در ارسال اطلاعات به درگاه بانتک ملت. لطفا از برقرار بودن اینترنت و در دسترس بودن بانک ملت اطمینان حاصل کنید');
