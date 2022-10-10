@@ -30,6 +30,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('product:price-rule:index')->dailyAt('3:00');
         $schedule->command('moodle:users')->everyMinute()->withoutOverlapping();
         $schedule->command('moodle:enrol')->everyMinute()->withoutOverlapping();
+        $schedule->command('order:cancel-pending')->everyMinute()->withoutOverlapping();
         $schedule->command('user:generate-token')->everyMinute()->withoutOverlapping();
         $schedule->command('model:prune',[
             '--model' => [SmsLog::class]
