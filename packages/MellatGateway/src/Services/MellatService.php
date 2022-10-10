@@ -2,8 +2,6 @@
 
 namespace MellatGateway\Services;
 
-use Codeception\Util\Soap;
-
 use Illuminate\Support\Facades\Log;
 use MellatGateway\Exceptions\SendException;
 use MellatGateway\Exceptions\SettleException;
@@ -199,7 +197,9 @@ class MellatService
         try {
             Log::info("Verify Order, ID:".$this->post['SaleOrderId'], []);
             $this->order = $this->orderRepository->find($this->post['SaleOrderId']);
-
+            if ($this->order->status === 'canceled' || $this->order->status === 'closed') {
+                throw new VerifyException();
+            }
             $this->verify();
 
             $this->settle();
