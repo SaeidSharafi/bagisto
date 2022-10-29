@@ -5,6 +5,7 @@ namespace App\Imports;
 use \App\Models\Shop\JeduCustomer;
 use App\Rules\Nationalcode;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -92,6 +93,10 @@ class CustomersImport implements ToModel, WithHeadingRow, WithChunkReading, With
 
     public function prepareForValidation($data, $index)
     {
+        if (!$data || !array_key_exists('national_code',$data)){
+            Log::error('No National COde Field exist',$data);
+            return $data;
+        }
         $data['email'] = $data['email'] ?? $data['national_code']."@jedu.ir";
         $data['father_name'] = $data['father_name'] ?? null;
         $data['education_field'] = $data['education_field'] ?? null;
