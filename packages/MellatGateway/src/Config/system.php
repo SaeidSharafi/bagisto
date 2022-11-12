@@ -52,8 +52,16 @@ return [
             ],
             [
                 'name'          => 'terminal_id',
-                'title'         => 'password::app.admin.system.terminalid',
-                'info'          => 'password::app.admin.system.terminalid-info',
+                'title'         => 'mellatgateway::app.admin.system.terminalid',
+                'info'          => 'mellatgateway::app.admin.system.terminalid-info',
+                'type'          => 'depends',
+                'depend'        => 'active:1',
+                'validation'    => 'required_if:active,1',
+            ],
+            [
+                'name'          => 'payer_id',
+                'title'         => 'mellatgateway::app.admin.system.payerid',
+                'info'          => 'mellatgateway::app.admin.system.payerid-info',
                 'type'          => 'depends',
                 'depend'        => 'active:1',
                 'validation'    => 'required_if:active,1',

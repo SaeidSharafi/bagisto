@@ -121,7 +121,7 @@ class MellatService
         $username = $this->mellat->getConfigData('username');
         $password = $this->mellat->getConfigData('password');
         $terminalID = $this->mellat->getConfigData('terminal_id');
-
+        $payerId = $this->mellat->getConfigData('payer_id') ?: 0;
         $data = [
             'terminalId'     => $terminalID,
             'userName'       => $username,
@@ -132,7 +132,7 @@ class MellatService
             'localTime'      => now()->format('His'),
             'additionalData' => '',
             'callBackUrl'    => route('mellat.callback'),
-            'payerId'        => 1510009600101161,
+            'payerId'        => $payerId,
         ];
         Log::info('data to send for gateway', $data);
 
