@@ -148,6 +148,8 @@ class MellatService
             }
 
             $this->orderRepository->cancel($this->order->id);
+            //$this->orderRepository->update(['status' => 'canceled'],
+            //    $this->order->id);
             throw new SendException('خطا در اتصال به درگاه بانک ملت، مشکلی در اطلاعات ارسالی وجود دارد.',
                 $send['response']);
         }
@@ -174,8 +176,10 @@ class MellatService
             return $this->order;
         } catch (VerifyException|SettleException|SendException $e) {
             if ($this->order) {
-                $this->orderRepository->update(['status' => 'canceled'],
-                    $this->order->id);
+                $this->orderRepository->cancel($this->order->id);
+
+                //$this->orderRepository->update(['status' => 'canceled'],
+                //    $this->order->id);
                 $e->orderId = $this->order->id;
             }
 
@@ -210,8 +214,9 @@ class MellatService
         } catch (VerifyException|SettleException|SendException $e) {
             Log::info($e->getMessage()." : ".$e->getCode());
             if ($this->order) {
-                $this->orderRepository->update(['status' => 'canceled'],
-                    $this->order->id);
+                //$this->orderRepository->update(['status' => 'canceled'],
+                //    $this->order->id);
+                $this->orderRepository->cancel($this->order->id);
                 $e->orderId = $this->order->id;
             }
 
@@ -249,8 +254,8 @@ class MellatService
 
         if ($this->response['status'] === Request::SUCCESS) {
             Log::info("set status processing:");
-            $this->order = $this->orderRepository->update(['status' => 'processing'],
-                $this->order->id);
+            $this->orderRepository->updateOrderStatus($this->order, 'processing');
+            $this->order->refresh();
             if ($this->order->canInvoice()) {
                 $invoice
                     = $this->invoiceRepository->create($this->prepareInvoiceData());
@@ -261,8 +266,9 @@ class MellatService
         }
         if ($this->response['status'] === Request::CANCEL || $this->response['status'] === Request::FAIL) {
             Log::info("set status canceled:");
-            $this->order = $this->orderRepository->update(['status' => 'canceled'],
-                $this->order->id);
+            $this->orderRepository->cancel($this->order->id);
+            //$this->order = $this->orderRepository->update(['status' => 'canceled'],
+            //    $this->order->id);
         }
 
     }
