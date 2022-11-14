@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SpotLicense;
 use App\Services\MoodleFormatService;
 use App\Services\MoodleService;
+use Illuminate\Support\Facades\Http;
 use Webkul\Product\Repositories\ProductFlatRepository;
 use Webkul\Sales\Repositories\OrderRepository;
 
@@ -102,6 +104,32 @@ class MoodleController extends Controller
             .'&wantsurl='.$base_url.'/course/view.php?id='.request()->course_id;
 
         return redirect()->to($moodle_url);
+
+    }
+
+    public function redirectToSpotPlayer(SpotLicense $spotLicense)
+    {
+        if (!auth()->guard('customer')->check()) {
+            session()->flash("Unathrozied user");
+            redirect()->back();
+        }
+
+        $base_url = config("moodle.moodle_address");
+
+        if (array_key_exists('X', $_COOKIE)) {
+            $X = $_COOKIE['X'];
+        } else {
+            $X = sha1(time());
+        }
+        if (!array_key_exists('X', $_COOKIE) || (microtime(true) * 1000) > hexdec(substr($X, 24, 12))) {
+            $cookie = Http::withHeaders(['cookie: X='.$X])
+                ->get('https://app.spotplayer.ir/');
+            dd($cookie->body());
+            preg_match('/X=([a-f0-9]+);/', $cookie, $mm);
+            setcookie('X', $mm[1], time() + (3600 * 24 * 365 * 100), '/', 'bag.laravel.ir', true, false);
+        }
+
+        return view('shop.spotplayer', compact('spotLicense'));
 
     }
 }

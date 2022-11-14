@@ -30,10 +30,10 @@ use App\Http\Controllers\Shop\Customer\JeduForgotPassword;
 use App\Http\Controllers\Shop\Customer\JeduLoginRegistrationController;
 use App\Http\Controllers\Shop\Customer\JeduResetPasswordController;
 use App\Http\Controllers\Shop\Customer\JeduSessionController;
-use Webkul\Admin\Http\Controllers\Sales\OrderController;
-use Webkul\Shop\Http\Controllers\OnepageController;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
+use Webkul\Admin\Http\Controllers\Sales\OrderController;
+use Webkul\Shop\Http\Controllers\OnepageController;
 
 Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
     function () {
@@ -43,7 +43,7 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
 
         Route::group(['middleware' => ['cart.merger']], function () {
 
-            Route::view('/about-us','shop.aboutus')
+            Route::view('/about-us', 'shop.aboutus')
                 ->name('shop.aboutus');
 
             /**
@@ -151,11 +151,17 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
                         'view' => 'shop::customers.account.profile.index'
                     ])->name('customer.moodle.index');
 
-                    /**
-                     * Moodle
-                     */
                     Route::get('moodle/redirect', [MoodleController::class, 'redirectToCourse'])
                         ->name('customer.moodle.redirect');
+
+                    /**
+                     * SpotPlayer
+                     */
+                    Route::get('spot/{spotLicense}', [MoodleController::class, 'redirectToSpotPlayer'])
+                        ->defaults('_config', [
+                            'view' => 'shop::customers.account.profile.index'
+                        ])->name('customer.spot.player');
+
                 });
 
                 //Route::redirect('login',route('customer.register.index'));

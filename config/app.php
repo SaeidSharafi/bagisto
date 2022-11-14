@@ -394,4 +394,17 @@ return [
         'Sms' => Kuro\LaravelSms\Facade\Sms::class,
 
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | SpotPlayer Configs
+    |--------------------------------------------------------------------------
+    |
+    |
+    */
+
+    'spot_player' => [
+        'sandbox' => env('SPOT_PLAYER_SANDBOX', false),
+    ]
+
 ];

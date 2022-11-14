@@ -2,6 +2,7 @@
 
 namespace Webkul\Sales\Models;
 
+use App\Models\SpotLicense;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -100,6 +101,14 @@ class Order extends Model implements OrderContract
     {
         return $this->hasMany(OrderItemProxy::modelClass())
             ->whereNull('parent_id');
+    }
+
+    /**
+     * Get the Spot Licenese.
+     */
+    public function spot_license(): HasOne
+    {
+        return $this->hasOne(SpotLicense::class);
     }
 
     /**
@@ -345,7 +354,7 @@ class Order extends Model implements OrderContract
         //    ->orWhere('grand_total',0)
         //    ->first();
         $pendingInvoice = $this->invoices->filter(function ($value,$key){
-           return $value['state'] === 'pending' || $value['grand_total'] == 0;
+            return $value['state'] === 'pending' || $value['grand_total'] == 0;
         })->first();
         if ($pendingInvoice) {
             return true;
@@ -389,7 +398,7 @@ class Order extends Model implements OrderContract
         }
 
         if ($this->base_grand_total_invoiced - $this->base_grand_total_refunded - $this->refunds()
-            ->sum('base_adjustment_fee') > 0) {
+                ->sum('base_adjustment_fee') > 0) {
             return true;
         }
 
