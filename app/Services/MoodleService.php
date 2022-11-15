@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Shop\JeduCustomer;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Http;
 use Webkul\Customer\Contracts\Customer;
 use Webkul\Sales\Models\Order;
@@ -573,7 +572,7 @@ class MoodleService
     {
 
         $user = self::getUser($customer->national_code);
-        if (!$user) {
+        if ($user) {
             return $user;
         }
 
