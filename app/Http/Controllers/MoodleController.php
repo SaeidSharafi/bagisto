@@ -61,12 +61,14 @@ class MoodleController extends Controller
             session()->flash("Unathrozied user");
             redirect()->back();
         }
+
         $orders = $this->orderRepository
             ->getModel()::query()
             ->with('items', function ($query) {
                 return $query->select('product_id', 'order_id');
             })
             ->where('status', 'completed')
+            ->where('customer_id', $this->currentCustomer->id)
             ->get()
             ->pluck('items')
             ->flatten()
