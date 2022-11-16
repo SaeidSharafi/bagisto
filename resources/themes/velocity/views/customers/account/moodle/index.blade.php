@@ -45,6 +45,21 @@
                     @endforeach
                 </div>
             @endif
+
+            @if ($spots)
+
+                <div class="account-heading pt-4 pb-2">
+                    دوره های آموزش مجازی ویدئویی
+                </div>
+                <div class="row remove-padding-margin">
+                    @foreach($spots as $spot)
+                        @include('shop::customers.account.moodle.card', [
+                      'cardClass' => 'category-product-image-container',
+                      'item' => $spot
+                  ])
+                    @endforeach
+                </div>
+            @endif
         </div>
     </div>
 

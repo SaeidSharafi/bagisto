@@ -13,6 +13,7 @@ class SpotLicense extends Model
     protected $fillable
         = [
             'order_id',
+            'product_id',
             '_id',
             'key',
             'url',

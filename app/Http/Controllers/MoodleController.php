@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\SpotLicense;
 use App\Services\MoodleFormatService;
 use App\Services\MoodleService;
+use App\Services\SpotService;
 use Illuminate\Support\Facades\Http;
+use Webkul\Product\Models\Product;
 use Webkul\Product\Repositories\ProductFlatRepository;
 use Webkul\Sales\Repositories\OrderRepository;
 
@@ -67,16 +69,18 @@ class MoodleController extends Controller
             ->with('items', function ($query) {
                 return $query->select('product_id', 'order_id');
             })
+            ->with('spot_license')
             ->where('status', 'completed')
             ->where('customer_id', $this->currentCustomer->id)
-            ->get()
-            ->pluck('items')
+            ->get();
+        $order_items = $orders->pluck('items')
             ->flatten()
             ->pluck('product_id');
         $products = $this->productFlatRepository
-            ->getModel()::whereIn('id', $orders)
+            ->getModel()::whereIn('id', $order_items)
             ->whereNotNull('moodle_id')
             ->get();
+
 
         $enrollments = MoodleService::getUserCourses($this->currentCustomer);
         if ($enrollments) {
@@ -85,7 +89,18 @@ class MoodleController extends Controller
 
         $products = MoodleFormatService::formatProduct($products, $this->currentCustomer);
 
-        return view('shop::customers.account.moodle.index', compact('products', 'enrollments'));
+        $spots = $this->productFlatRepository
+            ->getModel()::query()
+            ->select('product_flat.*',
+                'spot_licenses.id as spot_id', 'spot_licenses._id', 'spot_licenses.key', 'spot_licenses.url')
+            ->whereIn('product_flat.product_id', $order_items)
+            ->whereNotNull('spot_id')
+            ->join('spot_licenses', 'product_flat.product_id', '=', 'spot_licenses.product_id')
+            ->get();
+
+        $spots = SpotService::formatProduct($spots, $this->currentCustomer);
+
+        return view('shop::customers.account.moodle.index', compact('products', 'enrollments','spots'));
     }
 
     public function redirectToCourse()
@@ -116,19 +131,19 @@ class MoodleController extends Controller
             redirect()->back();
         }
 
-        $base_url = config("moodle.moodle_address");
+        $X = \Cookie::get('X');
 
-        if (array_key_exists('X', $_COOKIE)) {
-            $X = $_COOKIE['X'];
-        } else {
-            $X = sha1(time());
-        }
-        if (!array_key_exists('X', $_COOKIE) || (microtime(true) * 1000) > hexdec(substr($X, 24, 12))) {
+        //\Cookie::make('X','test',time() + (3600 * 24 * 365 * 100),'/','.laravel.ir', true, false);
+        if (!$X || (microtime(true) * 1000) > hexdec(substr($X, 24, 12))) {
             $cookie = Http::withHeaders(['cookie: X='.$X])
-                ->get('https://app.spotplayer.ir/');
-            dd($cookie->body());
-            preg_match('/X=([a-f0-9]+);/', $cookie, $mm);
-            setcookie('X', $mm[1], time() + (3600 * 24 * 365 * 100), '/', 'bag.laravel.ir', true, false);
+                ->get('https://app.spotplayer.ir/')
+                ->cookies();
+            $x_cookie = $cookie->getCookieByName('X')?->getValue();
+
+            \Cookie::forget('X');
+            \Cookie::queue('X', $x_cookie, time() + (3600 * 24 * 365 * 100), '/', '.laravel.ir', true, false);
+            //\Cookie::make('X',$x_cookie,time() + (3600 * 24 * 365 * 100),'/','bag.laravel.ir', true, false);
+            //setcookie('X', $x_cookie, time() + (3600 * 24 * 365 * 100), '/', 'bag.laravel.ir', true, false);
         }
 
         return view('shop.spotplayer', compact('spotLicense'));

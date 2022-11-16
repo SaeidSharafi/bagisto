@@ -29,7 +29,7 @@ class OrderListener
             foreach ($order->items as $item) {
                 if ($item->product->spot_id) {
                     Log::info($item->product->spot_id);
-                    $result = SpotService::generateLicense($order);
+                    $result = SpotService::generateLicense($order,$item);
                 }
             }
         }

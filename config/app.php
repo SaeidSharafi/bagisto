@@ -405,6 +405,7 @@ return [
 
     'spot_player' => [
         'sandbox' => env('SPOT_PLAYER_SANDBOX', false),
+        'api_key' => env('SPOT_PLAYER_API_KEY', null),
     ]
 
 ];
