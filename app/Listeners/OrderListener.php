@@ -4,7 +4,7 @@ namespace App\Listeners;
 
 use App\Jobs\UpdateRegisteration;
 use App\Services\MoodleService;
-use App\Services\SpotService;
+use App\Services\SpotPlayerService;
 use App\Traits\Sms;
 use Illuminate\Support\Facades\Log;
 use Webkul\Sales\Models\Order;
@@ -29,7 +29,7 @@ class OrderListener
             foreach ($order->items as $item) {
                 if ($item->product->spot_id) {
                     Log::info($item->product->spot_id);
-                    $result = SpotService::generateLicense($order,$item);
+                    $result = SpotPlayerService::generateLicense($order, $item);
                 }
             }
         }

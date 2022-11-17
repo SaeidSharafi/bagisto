@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\SpotLicense;
 use App\Services\MoodleFormatService;
 use App\Services\MoodleService;
-use App\Services\SpotService;
+use App\Services\SpotPlayerService;
 use Illuminate\Support\Facades\Http;
-use Webkul\Product\Models\Product;
 use Webkul\Product\Repositories\ProductFlatRepository;
 use Webkul\Sales\Repositories\OrderRepository;
 
@@ -77,10 +76,11 @@ class MoodleController extends Controller
             ->flatten()
             ->pluck('product_id');
         $products = $this->productFlatRepository
-            ->getModel()::whereIn('id', $order_items)
+            ->getModel()::query()
+            ->whereIn('id', $order_items)
             ->whereNotNull('moodle_id')
+            ->WhereNot('moodle_id', '')
             ->get();
-
 
         $enrollments = MoodleService::getUserCourses($this->currentCustomer);
         if ($enrollments) {
@@ -98,9 +98,9 @@ class MoodleController extends Controller
             ->join('spot_licenses', 'product_flat.product_id', '=', 'spot_licenses.product_id')
             ->get();
 
-        $spots = SpotService::formatProduct($spots, $this->currentCustomer);
+        $spots = SpotPlayerService::formatProduct($spots, $this->currentCustomer);
 
-        return view('shop::customers.account.moodle.index', compact('products', 'enrollments','spots'));
+        return view('shop::customers.account.moodle.index', compact('products', 'enrollments', 'spots'));
     }
 
     public function redirectToCourse()

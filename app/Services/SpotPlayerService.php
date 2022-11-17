@@ -6,16 +6,22 @@ use App\Models\SpotLicense;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Webkul\Sales\Models\Order;
 
-class SpotService
+class SpotPlayerService
 {
     protected const API_ENDPOINT = "https://panel.spotplayer.ir/license/edit/";
 
     public static function generateLicense($order, $order_item)
     {
         //$order->update(['status' => Order::STATUS_PROCESSING]);
-
+        $license = SpotLicense::query()
+            ->where('order_id', $order->id)
+            ->where('product_id', $order_item->product_id)
+            ->exists();
+        if ($license && !config('app.spot_player.sandbox')) {
+            Log::error('License Already Exit');
+            return;
+        }
         $courses = $order->items->map(function ($item) {
             return $item->product->spot_id;
         });
@@ -25,7 +31,7 @@ class SpotService
         $data['name'] = $order->customer_first_name." ".$order->customer_last_name;
         $data['payload'] = $order->increment_id;
         $data['test'] = config('app.spot_player.sandbox');
-        $data["watermark"] = ["texts" => [["text" => $order->customer_phone]]];
+        $data["watermark"] = ["texts" => [["text" => $order->increment_id]]];
 
         $api_key = config('app.spot_player.api_key');
         if (!$api_key) {
@@ -47,8 +53,11 @@ class SpotService
             report($exception);
             return;
         }
-
-        SpotLicense::create($response);
+        if ($order->spot_license === null) {
+            $order->spot_license()->create($response);
+        } else {
+            $order->spot_license->update($response);
+        }
 
     }
 
@@ -57,7 +66,7 @@ class SpotService
 
         return $products->map(function ($product) use ($customer) {
             //$item['id'] = $product->spot_id;
-            $item['moodle_url'] = route('customer.spot.player',$product->spot_id);
+            $item['moodle_url'] = route('customer.spot.player', $product->spot_id);
             $item['fullname'] = $product->short_name;
             $item['image'] = productimage()->getProductBaseImage($product)['medium_image_url'];
             return $item;

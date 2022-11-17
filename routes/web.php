@@ -157,7 +157,7 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
                     /**
                      * SpotPlayer
                      */
-                    Route::get('spot/{spotLicense}', [MoodleController::class, 'redirectToSpotPlayer'])
+                    Route::get('vc/{spotLicense}', [MoodleController::class, 'redirectToSpotPlayer'])
                         ->defaults('_config', [
                             'view' => 'shop::customers.account.profile.index'
                         ])->name('customer.spot.player');

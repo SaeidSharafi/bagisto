@@ -35,8 +35,9 @@ class MoodleFormatService
         $base_url = config("moodle.moodle_address");
 
         return $products->map(function ($product) use ($base_url, $customer) {
-            $item['moodle_url'] = $base_url.'/auth/userkey/login.php?key='.$customer->moodle_login_key
-                .'&wantsurl='.$base_url.'/course/view.php?id='.$product->moodle_id;
+            //$item['moodle_url'] = $base_url.'/auth/userkey/login.php?key='.$customer->moodle_login_key
+            //    .'&wantsurl='.$base_url.'/course/view.php?id='.$product->moodle_id;
+            $item['moodle_url'] = route('customer.moodle.redirect', ['course_id' => $product->moodle_id]);
             $item['fullname'] = $product->short_name;
             $item['image'] = productimage()->getProductBaseImage($product)['medium_image_url'];
             return $item;
