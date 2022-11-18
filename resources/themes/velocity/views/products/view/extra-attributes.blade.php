@@ -1,6 +1,6 @@
 {!! view_render_event('bagisto.shop.products.view.attributes.before', ['product' => $product]) !!}
 @php
-    $customAttributeValues = $customAttributeValues->filter(fn($attribute) => $attribute['value']);
+    $customAttributeValues = $customAttributeValues->filter(fn($attribute) => ($attribute['value'] &&  $attribute['value'] !== "[]"));
     $attr = $customAttributeValues->pluck('code');
 @endphp
 @if ($customAttributeValues)
