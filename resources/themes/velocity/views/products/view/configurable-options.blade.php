@@ -193,7 +193,7 @@
                             }
 
                             this.reloadPrice();
-                            this.changeProductImages();
+                            // this.changeProductImages();
                             this.changeStock(this.simpleProduct);
                         },
 
