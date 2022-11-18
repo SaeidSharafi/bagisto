@@ -1,28 +1,38 @@
 {!! view_render_event('bagisto.shop.products.view.attributes.before', ['product' => $product]) !!}
-
-
+@php
+    $customAttributeValues = $customAttributeValues->filter(fn($attribute) => $attribute['value']);
+    $attr = $customAttributeValues->pluck('code');
+@endphp
 @if ($customAttributeValues)
     <ul class="nav nav-tabs nav-fill d-none d-md-flex" id="extra-attributes" role="tablist">
         <li class="nav-item active" role="presentation">
             <a class="nav-link" id="curriculums-tab" data-toggle="tab"
                href="#curriculums" role="tab" aria-controls="curriculums" aria-selected="true">سرفصل های دوره</a>
         </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" id="prerequisites-tab" data-toggle="tab" href="#prerequisites" role="tab"
-               aria-controls="prerequisites" aria-selected="false">پیش نیاز ها</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" id="sources-tab" data-toggle="tab" href="#sources" role="tab"
-               aria-controls="sources" aria-selected="false">منابع آموزشی</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" id="future_job-tab" data-toggle="tab" href="#future_job" role="tab"
-               aria-controls="future_job" aria-selected="false">آینده شغلی</a>
-        </li>
-        <li class="nav-item" role="portfolio">
-            <a class="nav-link" id="portfolio-tab" data-toggle="tab" href="#portfolio" role="tab"
-               aria-controls="portfolio" aria-selected="false">نمونه کار فراگیر</a>
-        </li>
+        @if ($attr->contains('prerequisites'))
+            <li class="nav-item" role="prerequisites">
+                <a class="nav-link" id="prerequisites-tab" data-toggle="tab" href="#prerequisites" role="tab"
+                   aria-controls="prerequisites" aria-selected="false">پیش نیاز ها</a>
+            </li>
+        @endif
+        @if ($attr->contains('sources'))
+            <li class="nav-item" role="sources">
+                <a class="nav-link" id="sources-tab" data-toggle="tab" href="#sources" role="tab"
+                   aria-controls="sources" aria-selected="false">منابع آموزشی</a>
+            </li>
+        @endif
+        @if ($attr->contains('future_job'))
+            <li class="nav-item" role="future_job">
+                <a class="nav-link" id="future_job-tab" data-toggle="tab" href="#future_job" role="tab"
+                   aria-controls="future_job" aria-selected="false">آینده شغلی</a>
+            </li>
+        @endif
+        @if ($attr->contains('portfolio'))
+            <li class="nav-item" role="portfolio">
+                <a class="nav-link" id="portfolio-tab" data-toggle="tab" href="#portfolio" role="tab"
+                   aria-controls="portfolio" aria-selected="false">نمونه کار فراگیر</a>
+            </li>
+        @endif
         <li class="nav-item" role="presentation">
             <a class="nav-link" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab"
                aria-controls="reviews" aria-selected="false">نظرات</a>
@@ -41,8 +51,10 @@
                         <div class="row portfolio-gallery">
                             @if ($images)
                                 @foreach($images as $image)
-                                    <div class="col-md-3 col-6">
-                                        <img src="{{$image->url}}" class="w-100">
+                                    <div class="col-md-3 col-6 mb-3">
+                                        <a href="{{$image->url}}" target="_blank">
+                                            <img src="{{$image->url}}" class="w-100">
+                                        </a>
                                     </div>
                                 @endforeach
                             @endif
