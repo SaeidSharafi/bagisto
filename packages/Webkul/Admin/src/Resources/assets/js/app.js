@@ -7,7 +7,8 @@ import './bootstrap';
 import Echo from 'laravel-echo';
 import pagination from 'laravel-vue-pagination';
 import moment from 'moment';
-
+import vSelect from "vue-select";
+import "vue-select/dist/vue-select.css";
 /**
  * Lang imports.
  */
@@ -85,7 +86,9 @@ Vue.component(
 );
 Vue.component('pagination', pagination);
 
-$(function() {
+Vue.component("v-select", vSelect);
+
+$(function () {
     Vue.config.ignoredElements = ['option-wrapper', 'group-form', 'group-list'];
 
     let app = new Vue({

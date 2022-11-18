@@ -6,22 +6,22 @@
 
 @push('css')
     <style>
-       @media only screen and (max-width: 728px){
-            .content-container .content .page-header .page-title{
+        @media only screen and (max-width: 728px) {
+            .content-container .content .page-header .page-title {
                 width: 100%;
             }
 
             .content-container .content .page-header .page-title .control-group {
-                margin-top: 20px!important;
-                width: 100%!important;
-                margin-left: 0!important;
+                margin-top: 20px !important;
+                width: 100% !important;
+                margin-left: 0 !important;
             }
 
             .content-container .content .page-header .page-action {
-                margin-top: 10px!important;
+                margin-top: 10px !important;
                 float: left;
             }
-       }
+        }
     </style>
 @endpush
 
@@ -87,7 +87,7 @@
                 <input name="_method" type="hidden" value="PUT">
 
                 @foreach ($product->attribute_family->attribute_groups as $index => $attributeGroup)
-                    <?php $customAttributes = $product->getEditableAttributes($attributeGroup); ?>
+                        <?php $customAttributes = $product->getEditableAttributes($attributeGroup); ?>
 
                     @if (count($customAttributes))
 
@@ -98,11 +98,13 @@
                                    :active="{{$index == 0 ? 'true' : 'false'}}">
                             <div slot="body">
                                 {!! view_render_event('bagisto.admin.catalog.product.edit_form_accordian.' . $attributeGroup->name . '.controls.before', ['product' => $product]) !!}
+                                @if ($attributeGroup->code == 'teacher_detail')
 
+                                @endif
                                 @foreach ($customAttributes as $attribute)
 
-                                    <?php
-                                        if ($attribute->code == 'guest_checkout' && ! core()->getConfigData('catalog.products.guest-checkout.allow-guest-checkout')) {
+                                        <?php
+                                        if ($attribute->code == 'guest_checkout' && !core()->getConfigData('catalog.products.guest-checkout.allow-guest-checkout')) {
                                             continue;
                                         }
 
@@ -117,19 +119,21 @@
                                         }
 
                                         if ($attribute->type == 'file') {
-                                            $retVal = (core()->getConfigData('catalog.products.attribute.file_attribute_upload_size')) ? core()->getConfigData('catalog.products.attribute.file_attribute_upload_size') : '2048' ;
-                                            array_push($validations, 'size:' . $retVal);
+                                            $retVal = (core()->getConfigData('catalog.products.attribute.file_attribute_upload_size'))
+                                                ? core()->getConfigData('catalog.products.attribute.file_attribute_upload_size') : '2048';
+                                            array_push($validations, 'size:'.$retVal);
                                         }
 
                                         if ($attribute->type == 'image') {
-                                            $retVal = (core()->getConfigData('catalog.products.attribute.image_attribute_upload_size')) ? core()->getConfigData('catalog.products.attribute.image_attribute_upload_size') : '2048' ;
-                                            array_push($validations, 'size:' . $retVal . '|mimes:bmp,jpeg,jpg,png,webp');
+                                            $retVal = (core()->getConfigData('catalog.products.attribute.image_attribute_upload_size'))
+                                                ? core()->getConfigData('catalog.products.attribute.image_attribute_upload_size') : '2048';
+                                            array_push($validations, 'size:'.$retVal.'|mimes:bmp,jpeg,jpg,png,webp');
                                         }
 
                                         array_push($validations, $attribute->validation);
 
                                         $validations = implode('|', array_filter($validations));
-                                    ?>
+                                        ?>
 
                                     @if (view()->exists($typeView = 'admin::catalog.products.field-types.' . $attribute->type))
 
@@ -145,24 +149,27 @@
                                                     <span class="currency-code">({{ core()->currencySymbol(core()->getBaseCurrencyCode()) }})</span>
                                                 @endif
 
-                                                <?php
-                                                $channel_locale = [];
+                                                    <?php
+                                                    $channel_locale = [];
 
-                                                if ($attribute->value_per_channel) {
-                                                    array_push($channel_locale, $channel);
-                                                }
+                                                    if ($attribute->value_per_channel) {
+                                                        array_push($channel_locale, $channel);
+                                                    }
 
-                                                if ($attribute->value_per_locale) {
-                                                    array_push($channel_locale, $locale);
-                                                }
-                                                ?>
+                                                    if ($attribute->value_per_locale) {
+                                                        array_push($channel_locale, $locale);
+                                                    }
+                                                    ?>
 
                                                 @if (count($channel_locale))
                                                     <span class="locale">[{{ implode(' - ', $channel_locale) }}]</span>
                                                 @endif
                                             </label>
-
-                                            @include ($typeView)
+                                            @if($attribute->code === 'teacher_id')
+                                                @include ('admin::catalog.products.field-types.teacher')
+                                            @else
+                                                @include ($typeView)
+                                            @endif
 
                                             <span class="control-error"
                                                   @if ($attribute->type == 'multiselect') v-if="errors.has('{{ $attribute->code }}[]')"

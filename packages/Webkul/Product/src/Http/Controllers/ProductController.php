@@ -19,6 +19,7 @@ use Webkul\Product\Repositories\ProductDownloadableLinkRepository;
 use Webkul\Product\Repositories\ProductDownloadableSampleRepository;
 use Webkul\Product\Repositories\ProductInventoryRepository;
 use Webkul\Product\Repositories\ProductRepository;
+use Webkul\User\Repositories\AdminRepository;
 
 class ProductController extends Controller
 {
@@ -28,6 +29,13 @@ class ProductController extends Controller
      * @var array
      */
     protected $_config;
+
+    /**
+     * Admin repository instance.
+     *
+     * @var \Webkul\User\Repositories\AdminRepository
+     */
+    protected $adminRepository;
 
     /**
      * Category repository instance.
@@ -88,6 +96,7 @@ class ProductController extends Controller
     /**
      * Create a new controller instance.
      *
+     * @param  \Webkul\User\Repositories\AdminRepository  $adminRepository
      * @param  \Webkul\Category\Repositories\CategoryRepository  $categoryRepository
      * @param  \Webkul\Product\Repositories\ProductRepository  $productRepository
      * @param  \Webkul\Product\Repositories\ProductDownloadableLinkRepository  $productDownloadableLinkRepository
@@ -99,6 +108,7 @@ class ProductController extends Controller
      * @return void
      */
     public function __construct(
+        AdminRepository $adminRepository,
         CategoryRepository $categoryRepository,
         ProductRepository $productRepository,
         ProductDownloadableLinkRepository $productDownloadableLinkRepository,
@@ -109,6 +119,8 @@ class ProductController extends Controller
         ProductInventoryRepository $productInventoryRepository
     ) {
         $this->_config = request('_config');
+
+        $this->adminRepository = $adminRepository;
 
         $this->categoryRepository = $categoryRepository;
 
@@ -175,7 +187,7 @@ class ProductController extends Controller
         ) {
             return redirect(url()->current().'?type='.request()->input('type').'&family='
                 .request()->input('attribute_family_id').'&sku='.request()->input('sku')
-            .'&product_template_id='.request()->input('product_template_id'));
+                .'&product_template_id='.request()->input('product_template_id'));
         }
 
         if (
@@ -207,7 +219,7 @@ class ProductController extends Controller
             $product_template->type = $data['type'];
             $product_template->sku = $data['sku'];
 
-            $product = $this->productRepository->copy($product_template,$data, true);
+            $product = $this->productRepository->copy($product_template, $data, true);
 
             session()->flash('success', trans('admin::app.response.create-success', ['name' => 'Product']));
             return redirect()->route($this->_config['redirect'], ['id' => $product->id]);
@@ -232,12 +244,16 @@ class ProductController extends Controller
         $categories = $this->categoryRepository->getCategoryTree();
 
         $inventorySources = $this->inventorySourceRepository->findWhere(['status' => 1]);
+        $selected_teacher = null;
+        if ($product->teacher_id) {
+            $selected_teacher = $this->adminRepository->find($product->teacher_id);
+        }
 
         if ($product->type == "template") {
             return view('admin::catalog.products.edit-template', compact('product', 'categories', 'inventorySources'));
         }
 
-        return view($this->_config['view'], compact('product', 'categories', 'inventorySources'));
+        return view($this->_config['view'], compact('product', 'categories', 'inventorySources', 'selected_teacher'));
     }
 
     /**
@@ -497,6 +513,35 @@ class ProductController extends Controller
         } else {
             return view($this->_config['view']);
         }
+    }
+
+    /**
+     * Result of search product.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\Response
+     */
+    public function teacherSearch()
+    {
+
+        //dd(request()->string('query'));
+        $results = [];
+        $teachers = $this->adminRepository
+            ->getModel()::query()->where([
+                'role_id' => config('app.teacher.role_id'),
+                ['name', 'LIKE', '%'.request()->input('query').'%']
+            ])
+            ->limit(10)
+            ->get();
+
+        foreach ($teachers as $row) {
+            $results[] = [
+                'id'   => $row->id,
+                'name' => $row->name,
+            ];
+        }
+
+        return response()->json($results);
+
     }
 
     /**

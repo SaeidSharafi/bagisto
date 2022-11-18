@@ -67,7 +67,12 @@ Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => conf
             'view' => 'admin::catalog.products.edit',
         ])->name('admin.catalog.products.productlinksearch');
 
-        Route::get('products/search-simple-products', [ProductController::class, 'searchSimpleProducts'])->name('admin.catalog.products.search_simple_product');
+        Route::get('products/teacher-search', [ProductController::class, 'teacherSearch'])->defaults('_config', [
+            'view' => 'admin::catalog.products.edit',
+        ])->name('admin.catalog.products.teachersearch');
+
+        Route::get('products/search-simple-products', [ProductController::class, 'searchSimpleProducts'])
+            ->name('admin.catalog.products.search_simple_product');
 
         Route::get('/products/{id}/{attribute_id}', [ProductController::class, 'download'])->defaults('_config', [
             'view' => 'admin.catalog.products.edit',

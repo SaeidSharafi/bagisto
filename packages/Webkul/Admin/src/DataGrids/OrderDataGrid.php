@@ -4,7 +4,6 @@ namespace Webkul\Admin\DataGrids;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Webkul\Sales\Models\OrderAddress;
 use Webkul\Ui\DataGrid\DataGrid;
 
 class OrderDataGrid extends DataGrid
@@ -30,19 +29,26 @@ class OrderDataGrid extends DataGrid
      */
     public function prepareQueryBuilder()
     {
-        $queryBuilder = DB::table('orders')
-            ->leftJoin('addresses as order_address_shipping', function ($leftJoin) {
-                $leftJoin->on('order_address_shipping.order_id', '=', 'orders.id')
-                    ->where('order_address_shipping.address_type', OrderAddress::ADDRESS_TYPE_SHIPPING);
-            })
-            ->leftJoin('addresses as order_address_billing', function ($leftJoin) {
-                $leftJoin->on('order_address_billing.order_id', '=', 'orders.id')
-                    ->where('order_address_billing.address_type', OrderAddress::ADDRESS_TYPE_BILLING);
-            })
-            ->addSelect('orders.id', 'orders.customer_phone', 'orders.increment_id', 'orders.base_sub_total', 'orders.base_grand_total', 'orders.created_at', 'channel_name', 'status')
-            ->addSelect(DB::raw('CONCAT(' . DB::getTablePrefix() . 'orders.customer_first_name, " ", ' . DB::getTablePrefix() . 'orders.customer_last_name) as billed_to'));
+        $product_ids = [];
+        if (auth()->guard('admin')->user()?->role_id == config('app.teacher.role_id')) {
+            $product_ids = DB::table('products')->select('id')
+                ->where('teacher_id', auth()->guard('admin')->user()->id)->get()->pluck('id')->flatten()->toArray();
+        }
 
-        $this->addFilter('billed_to', DB::raw('CONCAT(' . DB::getTablePrefix() . 'order_address_billing.first_name, " ", ' . DB::getTablePrefix() . 'order_address_billing.last_name)'));
+        $queryBuilder = DB::table('orders')
+            ->when($product_ids, function ($query) use ($product_ids) {
+                $query->leftJoin('order_items', 'order_items.order_id', '=', 'orders.id')
+                    ->whereIn('order_items.product_id', $product_ids);
+            })
+            ->groupBy('orders.id')
+            ->addSelect('orders.id', 'orders.customer_phone', 'orders.increment_id', 'orders.base_sub_total',
+                'orders.base_grand_total', 'orders.created_at', 'channel_name', 'status')
+            ->addSelect(DB::raw('CONCAT('.DB::getTablePrefix().'orders.customer_first_name, " ", '.DB::getTablePrefix()
+                .'orders.customer_last_name) as billed_to'));
+
+        $this->addFilter('billed_to',
+            DB::raw('CONCAT('.DB::getTablePrefix().'order_address_billing.first_name, " ", '.DB::getTablePrefix()
+                .'order_address_billing.last_name)'));
         $this->addFilter('increment_id', 'orders.increment_id');
         $this->addFilter('created_at', 'orders.created_at');
 
@@ -81,7 +87,6 @@ class OrderDataGrid extends DataGrid
 
         ];
     }
-
 
     /**
      * Add columns.
@@ -124,8 +129,8 @@ class OrderDataGrid extends DataGrid
             'sortable'   => true,
             'searchable' => false,
             'filterable' => true,
-            'closure' => function ($value) {
-                return Carbon::createFromFormat('Y-m-d H:i:s',  $value->created_at)
+            'closure'    => function ($value) {
+                return Carbon::createFromFormat('Y-m-d H:i:s', $value->created_at)
                     ->jdate();
             }
         ]);
@@ -138,19 +143,26 @@ class OrderDataGrid extends DataGrid
             'filterable' => true,
             'closure'    => function ($value) {
                 if ($value->status == 'processing') {
-                    return '<span class="badge badge-md badge-success">' . trans('admin::app.sales.orders.order-status-processing') . '</span>';
+                    return '<span class="badge badge-md badge-success">'
+                        .trans('admin::app.sales.orders.order-status-processing').'</span>';
                 } elseif ($value->status == 'completed') {
-                    return '<span class="badge badge-md badge-success">' . trans('admin::app.sales.orders.order-status-success') . '</span>';
+                    return '<span class="badge badge-md badge-success">'
+                        .trans('admin::app.sales.orders.order-status-success').'</span>';
                 } elseif ($value->status == 'canceled') {
-                    return '<span class="badge badge-md badge-danger">' . trans('admin::app.sales.orders.order-status-canceled') . '</span>';
+                    return '<span class="badge badge-md badge-danger">'
+                        .trans('admin::app.sales.orders.order-status-canceled').'</span>';
                 } elseif ($value->status == 'closed') {
-                    return '<span class="badge badge-md badge-info">' . trans('admin::app.sales.orders.order-status-closed') . '</span>';
+                    return '<span class="badge badge-md badge-info">'
+                        .trans('admin::app.sales.orders.order-status-closed').'</span>';
                 } elseif ($value->status == 'pending') {
-                    return '<span class="badge badge-md badge-warning">' . trans('admin::app.sales.orders.order-status-pending') . '</span>';
+                    return '<span class="badge badge-md badge-warning">'
+                        .trans('admin::app.sales.orders.order-status-pending').'</span>';
                 } elseif ($value->status == 'pending_payment') {
-                    return '<span class="badge badge-md badge-warning">' . trans('admin::app.sales.orders.order-status-pending-payment') . '</span>';
+                    return '<span class="badge badge-md badge-warning">'
+                        .trans('admin::app.sales.orders.order-status-pending-payment').'</span>';
                 } elseif ($value->status == 'fraud') {
-                    return '<span class="badge badge-md badge-danger">' . trans('admin::app.sales.orders.order-status-fraud') . '</span>';
+                    return '<span class="badge badge-md badge-danger">'
+                        .trans('admin::app.sales.orders.order-status-fraud').'</span>';
                 }
             },
         ]);
@@ -163,7 +175,7 @@ class OrderDataGrid extends DataGrid
             'sortable'   => true,
             'filterable' => true,
         ]);
-                $this->addColumn([
+        $this->addColumn([
             'index'      => 'customer_phone',
             'label'      => trans('admin::app.datagrid.phone'),
             'type'       => 'string',
