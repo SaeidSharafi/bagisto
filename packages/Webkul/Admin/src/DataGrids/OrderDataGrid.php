@@ -47,8 +47,8 @@ class OrderDataGrid extends DataGrid
                 .'orders.customer_last_name) as billed_to'));
 
         $this->addFilter('billed_to',
-            DB::raw('CONCAT('.DB::getTablePrefix().'order_address_billing.first_name, " ", '.DB::getTablePrefix()
-                .'order_address_billing.last_name)'));
+            DB::raw('CONCAT('.DB::getTablePrefix().'orders.customer_first_name, " ", '.DB::getTablePrefix()
+                .'orders.customer_last_name)'));
         $this->addFilter('increment_id', 'orders.increment_id');
         $this->addFilter('created_at', 'orders.created_at');
 
