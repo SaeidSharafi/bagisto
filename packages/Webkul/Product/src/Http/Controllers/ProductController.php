@@ -212,6 +212,10 @@ class ProductController extends Controller
 
         $data = request()->all();
 
+        if (!$data['teacher_id']) {
+            unset($data['teacher_id']);
+        }
+
         if (request()->get('product_template_id')) {
             $product_template = $this->productRepository->findOrFail(request()->get('product_template_id'));
 
@@ -267,6 +271,10 @@ class ProductController extends Controller
     public function update(ProductForm $request, $id)
     {
         $data = request()->all();
+
+        if (!$data['teacher_id']) {
+            unset($data['teacher_id']);
+        }
 
         Cache::forget('featured_products');
         Cache::forget('new_products');

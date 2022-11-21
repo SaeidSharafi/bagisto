@@ -175,14 +175,16 @@ class OrderDataGrid extends DataGrid
             'sortable'   => true,
             'filterable' => true,
         ]);
-        $this->addColumn([
-            'index'      => 'customer_phone',
-            'label'      => trans('admin::app.datagrid.phone'),
-            'type'       => 'string',
-            'searchable' => true,
-            'sortable'   => true,
-            'filterable' => true,
-        ]);
+        if (auth()->guard('admin')->user()?->role_id != config('app.teacher.role_id')) {
+            $this->addColumn([
+                'index'      => 'customer_phone',
+                'label'      => trans('admin::app.datagrid.phone'),
+                'type'       => 'string',
+                'searchable' => true,
+                'sortable'   => true,
+                'filterable' => true,
+            ]);
+        }
 
     }
 
@@ -193,12 +195,15 @@ class OrderDataGrid extends DataGrid
      */
     public function prepareActions()
     {
-        $this->addAction([
-            'title'  => trans('admin::app.datagrid.view'),
-            'method' => 'GET',
-            'route'  => 'admin.sales.orders.view',
-            'icon'   => 'icon eye-icon',
-        ]);
+        if (auth()->guard('admin')->user()?->role_id != config('app.teacher.role_id')) {
+            $this->addAction([
+                'title'  => trans('admin::app.datagrid.view'),
+                'method' => 'GET',
+                'route'  => 'admin.sales.orders.view',
+                'icon'   => 'icon eye-icon',
+            ]);
+        }
+
         $this->addAction([
             'title'  => trans('admin.datagrid.complete'),
             'method' => 'GET',
