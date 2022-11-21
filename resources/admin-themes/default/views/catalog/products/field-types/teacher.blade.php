@@ -21,8 +21,8 @@
                     هیچ موردی یافت نشد
                 </template>
             </v-select>
-            <input v-validate="'required'" type="hidden" id="teacher_id" name="teacher_id" :value="(selected) ? selected.id : ''"
-                   data-vv-as="&quot;کاربر استاد&quot;">
+            <input v-validate="'{{ $validations }}'" type="hidden" id="teacher_id" name="teacher_id" :value="(selected) ? selected.id : ''"
+                   data-vv-as="&quot;{{ $attribute->admin_name }}&quot;">
         </div>
     </script>
 
