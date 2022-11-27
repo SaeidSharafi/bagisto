@@ -13,7 +13,7 @@ class JeduTemplate extends Simple
         = [
             'product_number', 'url_key', 'visible_individually',
             'tax_category_id', 'new', 'featured', 'teacher_bio',
-            'status', 'short_name', 'teacher_name', 'teacher_image','teacher_id'
+            'status', 'short_name', 'teacher_name', 'teacher_image','teacher_id',
             'meta_title', 'meta_keywords', 'meta_description', 'guest_checkout',
             'inventories', 'images', 'meta_description', 'banner',
             'videos', 'categories', 'channels', 'banner','variants',
