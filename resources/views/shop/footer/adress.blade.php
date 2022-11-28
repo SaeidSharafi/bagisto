@@ -7,7 +7,7 @@
                     <i class="fa fa-map-marker-alt"></i>
                     <div>
                         <span class="font-weight-bold">آدرس مرکز یک: </span>
-                        قزوین، چهارراه ولیعصر(عج) جنب بانک سپه
+                        قزوین، چهارراه ولیعصر(عج)، جنب بانک سپه
                     </div>
                 </div>
 
@@ -17,7 +17,7 @@
                     <i class="fa fa-map-marker-alt"></i>
                     <div>
                         <span class="font-weight-bold">آدرس مرکز دو: </span>
-                        قزوین، خیابان دانشگاه کوچه خاکعلی(۲۹) پلاک ۱۵
+                        قزوین، خیابان دانشگاه، کوچه شهید خاکعلی(۲۹)، پلاک ۱۵
                     </div>
                 </div>
             </li>
@@ -26,7 +26,7 @@
 
                     <i class="fa fa-phone"></i>
                     <div>
-                        <span class="font-weight-bold">تلفن مرکز آموزش:<br></span>
+                        <span class="font-weight-bold">تلفن مرکز یک:<br></span>
                         <a href="tel:+982833376797">33376797-9(028)</a>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
 
                     <i class="fa fa-phone"></i>
                     <div>
-                        <span class="font-weight-bold">تلفن مرکز زبان:</span><br>
+                        <span class="font-weight-bold">تلفن مرکز دو:</span><br>
                         <a href="tel:+982833667001">33667001(028)</a>
                     </div>
                 </div>

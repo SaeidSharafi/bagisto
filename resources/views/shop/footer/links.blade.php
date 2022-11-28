@@ -8,7 +8,7 @@
                 <a target="_blank" href="http://jdfarhangi.ir/Default.aspx?bcode=30" title="معاونت فرهنگی">معاونت فرهنگی</a>
             </li>
             <li><em class="porto-icon-right-dir theme-color"></em>
-                <a target="_blank" href="/" title="معاونت آموزشی">معاونت آموزشی</a>
+                <a target="_blank" href="/" title="معاونت پژوهشی">معاونت پژوهشی</a>
             </li>
             <li><em class="porto-icon-right-dir theme-color"></em>
                 <a target="_blank" href="http://jdqazvin.ir/artcenter/#home" title="هنر و معماری">هنر و معماری</a></li>
