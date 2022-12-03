@@ -272,9 +272,6 @@ class ProductController extends Controller
     {
         $data = request()->all();
 
-        if (!$data['teacher_id']) {
-            unset($data['teacher_id']);
-        }
         if (array_key_exists('teacher_id',$data) && !$data['teacher_id']) {
             unset($data['teacher_id']);
         }
