@@ -1,10 +1,13 @@
 <?php
 return [
     'meta-data' =>[
-        'blog' => 'پست منتخب بلاگ',
-        'blog_title' => 'عنوان پست',
-        'blog_url' => 'آدرس پست',
-        'blog_image' => 'تصویر پست',
+        'blog'          => 'پست منتخب بلاگ',
+        'blog_title'    => 'عنوان پست',
+        'blog_url'      => 'آدرس پست',
+        'blog_image'    => 'تصویر پست',
+        'special'       => 'دوره ویژه',
+        'special_id'    => 'شناسه دوره ویژه',
+        'special_image' => 'تصویر دوره ویژه',
     ],
     'catalog'       => [
         'products' => [

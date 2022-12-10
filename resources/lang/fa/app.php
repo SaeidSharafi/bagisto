@@ -29,7 +29,9 @@ return [
     'product'=>[
         'free'=> 'رایگان'
     ],
+
     'velocity'  => [
+        'title'          => 'تنظیمات صفحه اول',
         'admin'          => [
             'meta-data' => [
                 'advertisement-top' => 'تصویر تبلیغاتی نوار بالا'

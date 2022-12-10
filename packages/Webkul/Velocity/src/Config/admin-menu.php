@@ -3,7 +3,7 @@
 return [
     [
         'key'        => 'settings.velocity',
-        'name'       => 'velocity::app.admin.layouts.velocity',
+        'name'       => 'app.velocity.title',
         'route'      => 'velocity.admin.content.index',
         'sort'       => 9,
         'icon-class' => '',
