@@ -64,8 +64,7 @@ class OrderCommentNotification extends Notification implements ShouldQueue
             ->password($password)
             ->to([$this->comment->order->customer_phone])
             ->line($this->comment->comment ?: "آزمایشی")
-            ->initGateway(core()->getConfigData('sms.configure.sms_settings.gateway'))
-            ->dryRun();
+            ->initGateway(core()->getConfigData('sms.configure.sms_settings.gateway'));
     }
 
     /**
