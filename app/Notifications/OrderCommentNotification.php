@@ -58,11 +58,12 @@ class OrderCommentNotification extends Notification implements ShouldQueue
 
         \Log::info("Sending Sms With Notifications");
 
+        $to = $this->comment->order->customer_phone ?: $this->comment->order->customer->phone;
         return (new Sms)
             ->from($from)
             ->username($username)
             ->password($password)
-            ->to([$this->comment->order->customer_phone])
+            ->to([$to])
             ->line($this->comment->comment ?: "آزمایشی")
             ->initGateway(core()->getConfigData('sms.configure.sms_settings.gateway'));
     }

@@ -76,7 +76,6 @@ class Sms
      */
     public $dry_run;
 
-
     /**
      * The numebr which SMS will be sent
      *
@@ -231,27 +230,33 @@ class Sms
      */
     public function send()
     {
-        if ($this->dry_run){
-            \Log::info("Sending [".implode($this->parameters)."] sms to [" .implode(",",$this->to) ."]");
+        if ($this->dry_run) {
+            if (is_array($this->parameters)) {
+                \Log::info("Sending [".implode($this->parameters)."] sms to [".implode(",", $this->to)."]");
+            } else {
+                \Log::info("Sending {$this->getContent()} sms to [".implode(",", $this->to)."]");
+
+            }
+
             return "Simualted Sms Sending";
         }
         if ($this->pattern) {
-            \Log::info("Sending [".$this->pattern."] sms to [" .implode(",",$this->to) ."]");
+            \Log::info("Sending [".$this->pattern."] sms to [".implode(",", $this->to)."]");
             $response = $this->gateway->sendPatternSms();
 
-        }else{
+        } else {
             $response = $this->gateway->sendSms();
         }
 
-        if (isset($response)){
-           $log = SmsLog::create([
-                'response'=>$response,
-                'from' => $this->from,
-                'to' => implode(",",$this->to),
-                'pattern' => $this->pattern,
-                'content' => $this->getContent()
+        if (isset($response)) {
+            $log = SmsLog::create([
+                'response' => $response,
+                'from'     => $this->from,
+                'to'       => implode(",", $this->to),
+                'pattern'  => $this->pattern,
+                'content'  => $this->getContent()
             ]);
-           //$log->save();
+            //$log->save();
         }
 
         return $response;

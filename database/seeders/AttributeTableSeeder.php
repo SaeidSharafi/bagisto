@@ -711,8 +711,8 @@ class AttributeTableSeeder extends Seeder
             ],
             [
                 'id'                  => '37',
-                'code'                => 'moodle_id',
-                'admin_name'          => 'کد دوره سامانه آموزش مجازی',
+                'code'                => 'teacher_id',
+                'admin_name'          => 'کاربر استاد',
                 'type'                => 'text',
                 'validation'          => null,
                 'position'            => '3',
@@ -934,7 +934,7 @@ class AttributeTableSeeder extends Seeder
             ], [
                 'id'           => '37',
                 'locale'       => 'fa',
-                'name'         => 'کد دوره سامانه آموزش مجازی',
+                'name'         => 'کاربر استاد',
                 'attribute_id' => '37',
             ], [
                 'id'           => '38',

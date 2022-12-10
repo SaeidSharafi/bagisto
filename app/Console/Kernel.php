@@ -13,14 +13,16 @@ class Kernel extends ConsoleKernel
      *
      * @var array
      */
-    protected $commands = [
-        //
-    ];
+    protected $commands
+        = [
+            //
+        ];
 
     /**
      * Define the application's command schedule.
      *
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     *
      * @return void
      */
     protected function schedule(Schedule $schedule)
@@ -32,7 +34,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('moodle:enrol')->everyMinute()->withoutOverlapping();
         $schedule->command('order:cancel-pending')->everyMinute()->withoutOverlapping();
         $schedule->command('user:generate-token')->everyMinute()->withoutOverlapping();
-        $schedule->command('model:prune',[
+        $schedule->command('order:fix-phone')->everyMinute()->withoutOverlapping();
+        $schedule->command('model:prune', [
             '--model' => [SmsLog::class]
         ])->daily();
     }

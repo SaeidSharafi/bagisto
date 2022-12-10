@@ -65,7 +65,6 @@ class OrderCompletedNotification extends Notification implements ShouldQueue
         $password = core()->getConfigData('sms.configure.sms_settings.password')
             ?: config('sms.gateway.rangine.password');
 
-
         $pattern = $this->pattern
             ?: core()->getConfigData('sms.general.notifications.new-invoice.pattern');
 
@@ -73,12 +72,12 @@ class OrderCompletedNotification extends Notification implements ShouldQueue
         \Log::info("order status is -> {$this->order->status}");
         $parameters = ['invoice_no' => $this->order->increment_id];
 
-
+        $to = $this->comment->order->customer_phone ?: $this->comment->order->customer->phone;
         return (new Sms)
             ->from($from)
             ->username($username)
             ->password($password)
-            ->to([$this->order->customer_phone])
+            ->to([$to])
             ->pattern($pattern ?: "s3u9issn2i")
             ->parameters($parameters)
             ->initGateway(core()->getConfigData('sms.configure.sms_settings.gateway'));
