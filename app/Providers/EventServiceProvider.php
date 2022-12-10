@@ -26,6 +26,7 @@ class EventServiceProvider extends ServiceProvider
             'sales.order.update-status.after' => [
                 OrderListener::class.'@UpdateRegistration',
                 OrderListener::class.'@sendNewOrderSms',
+                OrderListener::class.'@sendOrderUpdateSms',
                 OrderListener::class.'@UpdateSpotLicense',
             ]
 

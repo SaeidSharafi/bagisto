@@ -9,8 +9,6 @@ use Webkul\Checkout\Http\Requests\CustomerAddressForm;
 use Webkul\Customer\Repositories\CustomerRepository;
 use Webkul\Payment\Facades\Payment;
 use Webkul\Sales\Repositories\OrderRepository;
-use Webkul\Shipping\Facades\Shipping;
-use Webkul\Shop\Http\Controllers\Controller;
 
 class OnepageController extends Controller
 {
@@ -106,8 +104,10 @@ class OnepageController extends Controller
             \Log::info("base_grand_total is 0 ");
             Cart::savePaymentMethod(['method' => 'mellat']);
             $order = $this->orderRepository->create(Cart::prepareDataForOrder());
-            $order = $this->orderRepository->update(['status' => 'processing'],
-                $order->id);
+            $this->orderRepository->updateOrderStatus($order, 'processing');
+            $order->refresh();
+            //$order = $this->orderRepository->update(['status' => 'processing'],
+            //    $order->id);
             session()->flash('order', $order);
             return redirect()->route('shop.checkout.success');
         }

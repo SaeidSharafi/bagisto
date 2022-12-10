@@ -70,7 +70,9 @@
                     @if (!empty($special_product))
                         <a href="/{{$special_product->url_key}}" class="d-block h-100">
                             <div class="item w-100 rounded overflow-hidden farsi-number"
-                                 style="background-image: url('{{asset("/images/temp/special-discount.png")}}');">
+                                 style="background-image: url('{{ $velocityMetaData->special_image
+                                                                ? asset('/storage/'.$velocityMetaData->special_image)
+                                                                : asset("/images/temp/special-discount.png")}}');">
 
                                 <div class="item-details">
                                     <span class="title">{{$special_product->short_name}}</span>

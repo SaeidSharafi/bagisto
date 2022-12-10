@@ -197,6 +197,41 @@
                     </div>
                 </div>
             </accordian>
+            <accordian :title="'{{ __('admin.meta-data.special') }}'" :active="false">
+
+                <div slot="body">
+                    <div class="control-group special-id">
+                        <label style="width:100%;">
+                            {{ __('admin.meta-data.special_id') }}
+                        </label>
+
+                        <input
+                            type="text"
+                            class="control"
+                            id="special_id"
+                            name="special_id"
+                            value="{{ $metaData ? $metaData->special_id : '' }}"/>
+                    </div>
+                    <div class="control-group">
+                        <label>{{ __('admin.meta-data.special_image') }}</label>
+                        @if(isset($metaData->special_image) && $metaData->special_image)
+
+                            <image-wrapper
+                                :multiple="false"
+                                input-name="special_image"
+                                :images='"{{ Storage::url($metaData->special_image) }}"'
+                                :button-label="'{{ __('velocity::app.admin.meta-data.add-image-btn-title') }}'">
+                            </image-wrapper>
+                        @else
+                            <image-wrapper
+                                :multiple="false"
+                                input-name="special_image"
+                                :button-label="'{{ __('velocity::app.admin.meta-data.add-image-btn-title') }}'">
+                            </image-wrapper>
+                        @endif
+                    </div>
+                </div>
+            </accordian>
             <accordian :title="'{{ __('velocity::app.admin.meta-data.images') }}'" :active="false">
                 @php
                     $images = [

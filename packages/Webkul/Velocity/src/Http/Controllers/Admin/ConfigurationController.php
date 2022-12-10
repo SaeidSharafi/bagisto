@@ -2,11 +2,11 @@
 
 namespace Webkul\Velocity\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Webkul\Core\Traits\Sanitizer;
 use Webkul\Velocity\Helpers\Helper;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
 use Webkul\Velocity\Repositories\VelocityMetadataRepository;
 
 class ConfigurationController extends Controller
@@ -36,8 +36,7 @@ class ConfigurationController extends Controller
     public function __construct (
         Helper $velocityHelper,
         VelocityMetadataRepository $velocityMetadataRepository
-    )
-    {
+    ) {
         $this->_config = request('_config');
 
         $this->velocityHelper = $velocityHelper;
@@ -84,12 +83,12 @@ class ConfigurationController extends Controller
         /* check if radio button value */
         if (request()->get('slides') == "on") {
             $params = request()->all() + [
-                'slider' => 1,
-            ];
+                    'slider' => 1,
+                ];
         } else {
             $params = request()->all() + [
-                'slider' => 0,
-            ];
+                    'slider' => 0,
+                ];
         }
 
         $velocityMetaData = $this->velocityMetaDataRepository->findOneWhere([
@@ -104,25 +103,39 @@ class ConfigurationController extends Controller
         if (request()->hasFile('blog_image')){
             Storage::deleteDirectory($dir);
             $params['blog_image'] = collect(request()->file('blog_image'))->first()->store($dir);
-        }else{
-            if (!isset($params['blog_image'])){
+        } else {
+            if (!isset($params['blog_image'])) {
                 $params['blog_image'] = null;
                 Storage::deleteDirectory($dir);
-            }else{
+            } else {
                 unset($params['blog_image']);
             }
 
         }
 
+        $dir = 'velocity/images/special';
+
+        if (request()->hasFile('special_image')) {
+            Storage::deleteDirectory($dir);
+            $params['special_image'] = collect(request()->file('special_image'))->first()->store($dir);
+        } else {
+            if (!isset($params['special_image'])) {
+                $params['special_image'] = null;
+                Storage::deleteDirectory($dir);
+            } else {
+                unset($params['special_image']);
+            }
+
+        }
 
         if (isset($params['images'])) {
             foreach ($params['images'] as $index => $images) {
-                $params['advertisement'][$index] =  $this->uploadAdvertisementImages($images, $index, $advertisement);
+                $params['advertisement'][$index] = $this->uploadAdvertisementImages($images, $index, $advertisement);
             }
 
             if ($advertisement) {
                 foreach ($advertisement as $key => $image_array) {
-                    if (! isset($params['images'][$key])) {
+                    if (!isset($params['images'][$key])) {
                         foreach ($advertisement[$key] as $image) {
                             Storage::delete($image);
                         }

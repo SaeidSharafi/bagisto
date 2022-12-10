@@ -2,10 +2,8 @@
 
 namespace Webkul\Shop\Http\Controllers;
 
-use Webkul\Product\Repositories\ProductFlatRepository;
-use Webkul\Product\Repositories\ProductRepository;
-use Webkul\Shop\Http\Controllers\Controller;
 use Webkul\Core\Repositories\SliderRepository;
+use Webkul\Product\Repositories\ProductFlatRepository;
 use Webkul\Product\Repositories\SearchRepository;
 
 class HomeController extends Controller
@@ -37,6 +35,7 @@ class HomeController extends Controller
      * @param  \Webkul\Core\Repositories\SliderRepository  $sliderRepository
      * @param  \Webkul\Product\Repositories\SearchRepository  $searchRepository
      * @param  \Webkul\Product\Repositories\ProductFlatRepository  $productFlatRepository
+     *
      * @return void
      */
     public function __construct(
@@ -61,9 +60,16 @@ class HomeController extends Controller
     public function index()
     {
         $sliderData = $this->sliderRepository->getActiveSliders();
-        $special_product = $this->productFlatRepository->findOneWhere(['featured' => 1]);
 
-        return view($this->_config['view'], compact('sliderData','special_product'));
+        $special_id = app('Webkul\Velocity\Helpers\Helper')->getVelocityMetaData()->special_id;
+        $special_product = null;
+        if ($special_id) {
+            $special_product = $this->productFlatRepository->find($special_id);
+        } else {
+            $special_product = $this->productFlatRepository->findOneWhere(['featured' => 1]);
+        }
+
+        return view($this->_config['view'], compact('sliderData', 'special_product'));
     }
 
     /**

@@ -24,7 +24,6 @@ class OrderListener
 
     public function UpdateSpotLicense($order)
     {
-        Log::info('UpdateSpotLicense', $order->toArray());
         if ($order->status === Order::STATUS_COMPLETED) {
             foreach ($order->items as $item) {
                 if ($item->product->spot_id) {

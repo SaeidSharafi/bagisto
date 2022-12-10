@@ -8,8 +8,7 @@ use App\Notifications\OrderCommentNotification;
 use App\Notifications\OrderCompletedNotification;
 use App\Notifications\OrderRefundNotification;
 use Illuminate\Support\Facades\Notification;
-use Kuro\LaravelSms\SmsChannel;
-
+use Webkul\Sales\Models\Order;
 
 trait Sms
 {
@@ -53,10 +52,12 @@ trait Sms
              * Sms to customer.
              */
             $configKey = 'sms.general.notifications.new-order.status';
-            \Log::info("core()->getConfigData($configKey)");
+            \Log::info("core()->getConfigData($configKey)".core()->getConfigData($configKey));
+            \Log::info("order->status".$order->status);
+
             if (core()->getConfigData($configKey)) {
-                if ($order->status === 'processing'){
-                    Notification::route('phone',$order->customer_phone)
+                if ($order->status === 'processing') {
+                    Notification::route('phone', $order->customer_phone)
                         ->notify(new NewOrderNotification($order));
                 }
 
@@ -81,15 +82,15 @@ trait Sms
             $configKey = 'sms.general.notifications.new-order.pattern';
             $notification = null;
             switch ($order->status) {
-                case 'closed':
+                case Order::STATUS_CLOSED:
                     $configKey = 'sms.general.notifications.new-refund.pattern';
                     $notification = new OrderRefundNotification($order);
                     break;
-                case 'completed':
+                case Order::STATUS_COMPLETED:
                     $configKey = 'sms.general.notifications.completed-order.pattern';
                     $notification = new OrderCompletedNotification($order);
                     break;
-                case 'canceled':
+                case Order::STATUS_CANCELED:
                     $configKey = 'sms.general.notifications.cancel-order.pattern';
                     $notification = new OrderCancelNotification($order);
                     break;
@@ -100,7 +101,7 @@ trait Sms
                 return;
             }
 
-            \Log::info("core()->getConfigData($configKey)");
+            \Log::info("core()->getConfigData($configKey)".core()->getConfigData($configKey));
             if (core()->getConfigData($configKey)) {
                 Notification::route('phone',$order->customer_phone)
                     ->notify($notification);
