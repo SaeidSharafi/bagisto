@@ -17,28 +17,36 @@ class Configurable extends AbstractType
      *
      * @var array
      */
-    protected $skipAttributes = ['price', 'cost', 'special_price', 'special_price_from', 'special_price_to', 'length', 'width', 'height', 'weight'];
+    protected $skipAttributes
+        = [
+            'price', 'cost', 'special_price', 'special_price_from', 'special_price_to', 'length', 'width', 'height',
+            'weight'
+        ];
 
     /**
      * These are the types which can be fillable when generating variant.
      *
      * @var array
      */
-    protected $fillableTypes = ['sku', 'name', 'url_key', 'short_description', 'description', 'price', 'weight', 'status'];
+    protected $fillableTypes
+        = [
+            'sku', 'name', 'url_key', 'short_description', 'description', 'price', 'weight', 'status'
+        ];
 
     /**
      * These blade files will be included in product edit page.
      *
      * @var array
      */
-    protected $additionalViews = [
-        'admin::catalog.products.accordians.images',
-        'admin::catalog.products.accordians.videos',
-        'admin::catalog.products.accordians.categories',
-        'admin::catalog.products.accordians.variations',
-        'admin::catalog.products.accordians.channels',
-        'admin::catalog.products.accordians.product-links',
-    ];
+    protected $additionalViews
+        = [
+            'admin::catalog.products.accordians.images',
+            'admin::catalog.products.accordians.videos',
+            'admin::catalog.products.accordians.categories',
+            'admin::catalog.products.accordians.variations',
+            'admin::catalog.products.accordians.channels',
+            'admin::catalog.products.accordians.product-links',
+        ];
 
     /**
      * Is a composite product type.
@@ -90,6 +98,7 @@ class Configurable extends AbstractType
      * Set default variant id.
      *
      * @param  int  $defaultVariantId
+     *
      * @return void
      */
     public function setDefaultVariantId($defaultVariantId)
@@ -119,6 +128,7 @@ class Configurable extends AbstractType
      * Create configurable product.
      *
      * @param  array  $data
+     *
      * @return \Webkul\Product\Contracts\Product
      */
     public function create(array $data)
@@ -147,9 +157,10 @@ class Configurable extends AbstractType
     /**
      * Update configurable product.
      *
-     * @param  array   $data
-     * @param  int     $id
+     * @param  array  $data
+     * @param  int  $id
      * @param  string  $attribute
+     *
      * @return \Webkul\Product\Contracts\Product
      */
     public function update(array $data, $id, $attribute = 'id')
@@ -174,7 +185,7 @@ class Configurable extends AbstractType
 
                         $variant = $this->createVariant($product, $permutation, $variantData);
 
-                        $this->productImageRepository->upload($variant, $variantData['images'] ?? null);
+                        $this->productImageRepository->upload($variant, $variantData['images'] ?? null, 'images');
                     } else {
                         if (is_numeric($index = $previousVariantIds->search($variantId))) {
                             $previousVariantIds->forget($index);
@@ -200,15 +211,16 @@ class Configurable extends AbstractType
      * Create variant.
      *
      * @param  \Webkul\Product\Contracts\Product  $product
-     * @param  array                              $permutation
-     * @param  array                              $data
+     * @param  array  $permutation
+     * @param  array  $data
+     *
      * @return \Webkul\Product\Contracts\Product
      */
     public function createVariant($product, $permutation, $data = [])
     {
-        if (! count($data)) {
+        if (!count($data)) {
             $data = [
-                'sku'         => $product->sku . '-variant-' . implode('-', $permutation),
+                'sku'         => $product->sku.'-variant-'.implode('-', $permutation),
                 'name'        => '',
                 'inventories' => [],
                 'price'       => 0,
@@ -220,9 +232,11 @@ class Configurable extends AbstractType
         $data = $this->fillRequiredFields($data);
 
         $typeOfVariants = 'simple';
-        $productInstance = app(config('product_types.' . $product->type . '.class'));
+        $productInstance = app(config('product_types.'.$product->type.'.class'));
 
-        if (isset($productInstance->variantsType) && ! in_array($productInstance->variantsType, ['bundle', 'configurable', 'grouped'])) {
+        if (isset($productInstance->variantsType)
+            && !in_array($productInstance->variantsType, ['bundle', 'configurable', 'grouped'])
+        ) {
             $typeOfVariants = $productInstance->variantsType;
         }
 
@@ -234,7 +248,7 @@ class Configurable extends AbstractType
         ]);
 
         foreach ($this->fillableTypes as $attributeCode) {
-            if (! isset($data[$attributeCode])) {
+            if (!isset($data[$attributeCode])) {
                 continue;
             }
 
@@ -300,7 +314,8 @@ class Configurable extends AbstractType
      * Update variant.
      *
      * @param  array  $data
-     * @param  int    $id
+     * @param  int  $id
+     *
      * @return \Webkul\Product\Contracts\Product
      */
     public function updateVariant(array $data, $id)
@@ -310,7 +325,7 @@ class Configurable extends AbstractType
         $variant->update(['sku' => $data['sku']]);
 
         foreach ($this->fillableTypes as $attributeCode) {
-            if (! isset($data[$attributeCode])) {
+            if (!isset($data[$attributeCode])) {
                 continue;
             }
 
@@ -323,7 +338,7 @@ class Configurable extends AbstractType
                 'locale'       => $attribute->value_per_locale ? $data['locale'] : null,
             ]);
 
-            if (! $attributeValue) {
+            if (!$attributeValue) {
                 $this->attributeValueRepository->create([
                     'product_id'   => $id,
                     'attribute_id' => $attribute->id,
@@ -348,6 +363,7 @@ class Configurable extends AbstractType
      *
      * @param  array  $data
      * @param  int  $id
+     *
      * @return \Webkul\Product\Contracts\Product
      */
     public function fillRequiredFields(array $data): array
@@ -367,6 +383,7 @@ class Configurable extends AbstractType
      *
      * @param  array  $data
      * @param  \Webkul\Product\Contracts\Product  $product
+     *
      * @return bool
      */
     public function checkVariantOptionAvailabiliy($data, $product)
@@ -381,7 +398,7 @@ class Configurable extends AbstractType
             $matchCount = 0;
 
             foreach ($superAttributeCodes as $attributeCode) {
-                if (! isset($data[$attributeCode])) {
+                if (!isset($data[$attributeCode])) {
                     return false;
                 }
 
@@ -412,6 +429,7 @@ class Configurable extends AbstractType
      * Is item have quantity.
      *
      * @param  \Webkul\Checkout\Contracts\CartItem  $cartItem
+     *
      * @return bool
      */
     public function isItemHaveQuantity($cartItem)
@@ -438,6 +456,7 @@ class Configurable extends AbstractType
      * Return true if item can be moved to cart from wishlist.
      *
      * @param  \Webkul\Customer\Contracts\Wishlist  $item
+     *
      * @return bool
      */
     public function canBeMovedFromWishlistToCart($item)
@@ -453,6 +472,7 @@ class Configurable extends AbstractType
      * Get product minimal price.
      *
      * @param  int  $qty
+     *
      * @return float
      */
     public function getMinimalPrice($qty = null)
@@ -537,7 +557,7 @@ class Configurable extends AbstractType
         $productFlat = ProductFlat::join('products', 'product_flat.product_id', '=', 'products.id')
             ->distinct()
             ->where('products.parent_id', $this->product->id)
-            ->selectRaw('MAX(' . DB::getTablePrefix() . 'product_flat.price) AS max_price')
+            ->selectRaw('MAX('.DB::getTablePrefix().'product_flat.price) AS max_price')
             ->where('product_flat.channel', core()->getCurrentChannelCode())
             ->where('product_flat.locale', app()->getLocale())
             ->first();
@@ -572,14 +592,16 @@ class Configurable extends AbstractType
     public function getPriceHtml()
     {
         if ($this->haveOffer()) {
-            return '<div class="sticker sale">' . trans('shop::app.products.sale') . '</div>'
-            . '<span class="price-label">' . trans('shop::app.products.price-label') . '</span>'
-            . '<span class="regular-price">' . core()->currency($this->evaluatePrice($this->getMinimalPrice())) . '</span>'
-            . '<span class="final-price">' . core()->currency($this->evaluatePrice($this->getOfferPrice())) . '</span>';
+            return '<div class="sticker sale">'.trans('shop::app.products.sale').'</div>'
+                .'<span class="price-label">'.trans('shop::app.products.price-label').'</span>'
+                .'<span class="regular-price">'.core()->currency($this->evaluatePrice($this->getMinimalPrice()))
+                .'</span>'
+                .'<span class="final-price">'.core()->currency($this->evaluatePrice($this->getOfferPrice())).'</span>';
         } else {
-            return '<span class="price-label">' . trans('shop::app.products.price-label') . '</span>'
-            . ' '
-            . '<span class="final-price">' . core()->currency($this->evaluatePrice($this->getMinimalPrice())) . '</span>';
+            return '<span class="price-label">'.trans('shop::app.products.price-label').'</span>'
+                .' '
+                .'<span class="final-price">'.core()->currency($this->evaluatePrice($this->getMinimalPrice()))
+                .'</span>';
         }
     }
 
@@ -587,11 +609,12 @@ class Configurable extends AbstractType
      * Add product. Returns error message if can't prepare product.
      *
      * @param  array  $data
+     *
      * @return array|string
      */
     public function prepareForCart($data)
     {
-        if (! isset($data['selected_configurable_option']) || ! $data['selected_configurable_option']) {
+        if (!isset($data['selected_configurable_option']) || !$data['selected_configurable_option']) {
             if ($this->getDefaultVariantId()) {
                 $data['selected_configurable_option'] = $this->getDefaultVariantId();
             } else {
@@ -603,7 +626,7 @@ class Configurable extends AbstractType
 
         $childProduct = $this->productRepository->find($data['selected_configurable_option']);
 
-        if (! $childProduct->haveSufficientQuantity($data['quantity'])) {
+        if (!$childProduct->haveSufficientQuantity($data['quantity'])) {
             return trans('shop::app.checkout.cart.quantity.inventory_warning');
         }
 
@@ -643,6 +666,7 @@ class Configurable extends AbstractType
      *
      * @param  array  $options1
      * @param  array  $options2
+     *
      * @return bool
      */
     public function compareOptions($options1, $options2)
@@ -655,11 +679,11 @@ class Configurable extends AbstractType
             return $options1['selected_configurable_option'] === $options2['selected_configurable_option'];
         }
 
-        if (! isset($options1['selected_configurable_option'])) {
+        if (!isset($options1['selected_configurable_option'])) {
             return false;
         }
 
-        if (! isset($options2['selected_configurable_option'])) {
+        if (!isset($options2['selected_configurable_option'])) {
             return false;
         }
     }
@@ -668,11 +692,13 @@ class Configurable extends AbstractType
      * Return additional information for items.
      *
      * @param  array  $data
+     *
      * @return array
      */
     public function getAdditionalOptions($data)
     {
-        $childProduct = app('Webkul\Product\Repositories\ProductRepository')->findOneByField('id', $data['selected_configurable_option']);
+        $childProduct = app('Webkul\Product\Repositories\ProductRepository')->findOneByField('id',
+            $data['selected_configurable_option']);
 
         foreach ($this->product->super_attributes as $attribute) {
             $option = $attribute->options()->where('id', $childProduct->{$attribute->code})->first();
@@ -691,6 +717,7 @@ class Configurable extends AbstractType
      * Get actual ordered item.
      *
      * @param  \Webkul\Checkout\Contracts\CartItem  $item
+     *
      * @return \Webkul\Checkout\Contracts\CartItem|\Webkul\Sales\Contracts\OrderItem|\Webkul\Sales\Contracts\InvoiceItem|\Webkul\Sales\Contracts\ShipmentItem|\Webkul\Customer\Contracts\Wishlist
      */
     public function getOrderedItem($item)
@@ -702,6 +729,7 @@ class Configurable extends AbstractType
      * Get product base image.
      *
      * @param  \Webkul\Customer\Contracts\Wishlist|\Webkul\Checkout\Contracts\CartItem  $item
+     *
      * @return array
      */
     public function getBaseImage($item)
@@ -731,6 +759,7 @@ class Configurable extends AbstractType
      * Validate cart item product price.
      *
      * @param  \Webkul\Product\Type\CartItem  $item
+     *
      * @return \Webkul\Product\Datatypes\CartItemValidationResult
      */
     public function validateCartItem(CartItemModel $item): CartItemValidationResult
@@ -764,6 +793,7 @@ class Configurable extends AbstractType
      * Get product options.
      *
      * @param  string  $product
+     *
      * @return array
      */
     public function getProductOptions($product = '')
@@ -778,13 +808,14 @@ class Configurable extends AbstractType
      * Is product have sufficient quantity.
      *
      * @param  int  $qty
+     *
      * @return bool
      */
     public function haveSufficientQuantity(int $qty): bool
     {
         $backorders = core()->getConfigData('catalog.inventory.stock_options.backorders');
 
-        $backorders = ! is_null($backorders) ? $backorders : false;
+        $backorders = !is_null($backorders) ? $backorders : false;
 
         foreach ($this->product->variants as $variant) {
             if ($variant->haveSufficientQuantity($qty)) {
