@@ -323,14 +323,14 @@
                             });
 
                             // let priceLabelElement = document.querySelector('.price-label');
-                            let productDiscounts = document.querySelectorAll('.discount');
-                            let discountAmounts = document.querySelectorAll('.discount-amount');
-                            let priceElements = document.querySelectorAll('.final-price');
-                            let regularPriceElements = document.querySelectorAll('.regular-price');
+                            let productDiscounts = document.querySelectorAll('.product-detail .discount');
+                            let discountAmounts = document.querySelectorAll('.product-detail .discount-amount');
+                            let priceElements = document.querySelectorAll('.product-detail .final-price');
+                            let regularPriceElements = document.querySelectorAll('.product-detail .regular-price');
                             // console.log(priceLabelElement);
                             if (this.childAttributes.length === selectedOptionCount) {
                                 // priceLabelElement.style.display = 'none';
-                                if(productDiscounts && discountAmounts){
+                                if (productDiscounts && discountAmounts) {
                                     productDiscounts.forEach((el) => {
                                         el.classList.add('d-none');
                                     });
