@@ -1,6 +1,6 @@
 <div class="map-container container">
     <h4 class="text-center">
-        معاونت آموزشی جهاد دانشگاهی قزوین
+        معاونت آموزش و کارآفرینی
     </h4>
     <div class="row">
         <div class="col-md-6">
