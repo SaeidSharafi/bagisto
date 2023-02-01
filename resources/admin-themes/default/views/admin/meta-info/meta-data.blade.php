@@ -212,6 +212,22 @@
                             name="special_id"
                             value="{{ $metaData ? $metaData->special_id : '' }}"/>
                     </div>
+                    <div class="control">
+                        <p-date-picker
+                            name="special_from"
+                            id="special_from"
+                            clearable
+                            initial-value="{{  old($metaData->special_fom) ?: $metaData->special_fom}}"
+                            placeholder="از تاریخ"></p-date-picker>
+                    </div>
+                    <div class="control">
+                        <p-date-picker
+                            name="special_to"
+                            id="special_to"
+                            clearable
+                            initial-value="{{  old($metaData->special_to) ?: $metaData->special_to}}"
+                            placeholder="تا تاریخ"></p-date-picker>
+                    </div>
                     <div class="control-group">
                         <label>{{ __('admin.meta-data.special_image') }}</label>
                         @if(isset($metaData->special_image) && $metaData->special_image)

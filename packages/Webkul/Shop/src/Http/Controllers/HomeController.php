@@ -2,6 +2,7 @@
 
 namespace Webkul\Shop\Http\Controllers;
 
+use Carbon\Carbon;
 use Webkul\Core\Repositories\SliderRepository;
 use Webkul\Product\Repositories\ProductFlatRepository;
 use Webkul\Product\Repositories\SearchRepository;
@@ -60,15 +61,22 @@ class HomeController extends Controller
     public function index()
     {
         $sliderData = $this->sliderRepository->getActiveSliders();
-
+        $velocity = app('Webkul\Velocity\Helpers\Helper')->getVelocityMetaData();
         $special_id = app('Webkul\Velocity\Helpers\Helper')->getVelocityMetaData()->special_id;
         $special_product = null;
+        info('Special id:'.$special_id);
         if ($special_id) {
-            $special_product = $this->productFlatRepository->find($special_id);
+            $special_product = $this->productFlatRepository->findOneWhere(['sku' => $velocity->special_id]);
+            $special_product = [
+                'short_name'           => $special_product->short_name,
+                'special_price_to'     => $velocity->special_to,
+                'url_key'              => $special_product->url_key,
+                'specialOfferTimeLeft' => Carbon::parse($velocity->special_to)->diff(Carbon::now())
+                    ->format('%d:%H:%I:%S'),
+            ];
         } else {
             $special_product = $this->productFlatRepository->findOneWhere(['featured' => 1]);
         }
-
         return view($this->_config['view'], compact('sliderData', 'special_product'));
     }
 

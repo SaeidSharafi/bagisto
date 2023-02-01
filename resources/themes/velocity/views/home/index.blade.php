@@ -68,17 +68,17 @@
             <div class="col-6 col-md-5 col-lg-4">
                 <div class="slider-side">
                     @if (!empty($special_product))
-                        <a href="/{{$special_product->url_key}}" class="d-block h-100">
+                        <a href="/{{$special_product['url_key']}}" class="d-block h-100">
                             <div class="item w-100 rounded overflow-hidden farsi-number"
                                  style="background-image: url('{{ $velocityMetaData->special_image
                                                                 ? asset('/storage/'.$velocityMetaData->special_image)
                                                                 : asset("/images/temp/special-discount.png")}}');">
 
                                 <div class="item-details">
-                                    <span class="title">{{$special_product->short_name}}</span>
+                                    <span class="title">{{$special_product['short_name']}}</span>
 
-                                    <span class="timer" id="countdown-timer" data-countdown="{{$special_product->special_price_to}} 00:00:00">
-                                    {{$special_product->specialOfferTimeLeft}}
+                                    <span class="timer" id="countdown-timer" data-countdown="{{$special_product['special_price_to']}}">
+                                    {{$special_product['specialOfferTimeLeft']}}
                                 </span>
                                 </div>
                             </div>

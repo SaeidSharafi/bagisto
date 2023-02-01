@@ -36,7 +36,8 @@
 
             var date = timerElement.dataset.countdown;
             var countDownDate = new Date(date).getTime();
-            console.log(date, countDownDate);
+            console.log(date);
+            console.log(countDownDate);
 
             var x = setInterval(function () {
                 let timerElement = document.getElementById("countdown-timer");
@@ -44,7 +45,7 @@
                 var now = new Date().getTime();
 
                 // Find the distance between now and the count down date
-                if(!countDownDate){
+                if (!countDownDate) {
                     timerElement.innerHTML = "0:00:00:00";
                     return;
                 }
