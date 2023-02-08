@@ -39,13 +39,12 @@ class OrderDataGrid extends DataGrid
             ->when($product_ids, function ($query) use ($product_ids) {
                 $query->leftJoin('order_items', 'order_items.order_id', '=', 'orders.id')
                     ->whereIn('order_items.product_id', $product_ids);
-            })
+            })->when(!$product_ids, fn($q) => $q->leftJoin('order_items', 'order_items.order_id', '=', 'orders.id'))
             ->groupBy('orders.id')
             ->addSelect('orders.id', 'orders.customer_phone', 'orders.increment_id', 'orders.base_sub_total',
-                'orders.base_grand_total', 'orders.created_at', 'channel_name', 'status')
+                'orders.base_grand_total', 'orders.created_at', 'order_items.name', 'channel_name', 'orders.status')
             ->addSelect(DB::raw('CONCAT('.DB::getTablePrefix().'orders.customer_first_name, " ", '.DB::getTablePrefix()
                 .'orders.customer_last_name) as billed_to'));
-
         $this->addFilter('billed_to',
             DB::raw('CONCAT('.DB::getTablePrefix().'orders.customer_first_name, " ", '.DB::getTablePrefix()
                 .'orders.customer_last_name)'));
@@ -103,7 +102,14 @@ class OrderDataGrid extends DataGrid
             'sortable'   => true,
             'filterable' => true,
         ]);
-
+        $this->addColumn([
+            'index'      => 'name',
+            'label'      => trans('admin::app.datagrid.name'),
+            'type'       => 'string',
+            'searchable' => false,
+            'sortable'   => true,
+            'filterable' => true,
+        ]);
         $this->addColumn([
             'index'      => 'base_sub_total',
             'label'      => trans('admin::app.datagrid.sub-total'),
