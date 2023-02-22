@@ -13,7 +13,7 @@ class JeduCustomerRegistrationRequest
      * @var array
      */
     private $rules = [
-        'phone' => 'string|required|regex:/^(09|9)([0-9]{9})/',
+        'phone' => ['string','required','regex:/^(09|9)([0-9]{9})/'],
     ];
 
     /**
