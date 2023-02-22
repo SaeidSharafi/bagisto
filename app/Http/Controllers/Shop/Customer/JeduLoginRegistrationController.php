@@ -59,9 +59,12 @@ class JeduLoginRegistrationController
         //$otp =  new SendOTP($options);
         //$bl = $otp->build();
         //$bl->sendSMS();
-
+        $phone =  request()->input()['phone'];
+        if (!str_starts_with($phone,'0')){
+            $phone = '0'.$phone;
+        }
         $customer = $this->customerRepository->findOneByField('phone',
-            request()->input()['phone']);
+            $phone);
 
         if (!$customer) {
             $is_verified
@@ -74,7 +77,7 @@ class JeduLoginRegistrationController
                 'is_verified'               => $is_verified,
                 'customer_group_id'         => $this->customerGroupRepository->findOneWhere(['code' => 'general'])->id,
                 'token'                     => md5(uniqid(rand(), true))
-                    .md5(request()->input()['phone']),
+                    .md5($phone),
                 'subscribed_to_news_letter' => isset(request()->input()['is_subscribed'])
                     ? 1 : 0,
             ]);

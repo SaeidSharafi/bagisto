@@ -34,7 +34,7 @@
                                 type="text"
                                 class="form-style rounded"
                                 name="phone"
-                                v-validate="'required|regex:^09([0-9]{9})'"
+                                v-validate="'required|regex:^(09|9)([0-9]{9})'"
                                 value="{{ old('phone') }}"
                                 data-vv-as="&quot;{{ __('shop::app.customer.signup-form.phone') }}&quot;"
                                 data-vv-validate-on="submit"/>
