@@ -37,18 +37,18 @@
         <div class="prodcut-images-main asd" :title="images.length">
 
             <slick-carousel
-                ref="galleryCarousel"
-                style="max-height: 350px"
-                id="product-gallery-carousel"
-                v-bind="sliderSetting"
-                @beforeChange="changeThumb"
-                v-if="images.length">
+                    ref="galleryCarousel"
+                    style="max-height: 350px"
+                    id="product-gallery-carousel"
+                    v-bind="sliderSetting"
+                    @beforeChange="changeThumb"
+                    v-if="images.length">
                 <div
-                    :id="`slide-${index}`"
-                    :class="`main-image img-main-${index}`"
-                    v-bind:key="index"
-                    v-for="(image, index) in images">
-                    <video v-if="image.type == 'video'" width="100%" preload="none" controls>
+                        :id="`slide-${index}`"
+                        :class="`main-image img-main-${index}`"
+                        v-bind:key="index"
+                        v-for="(image, index) in images">
+                    <video v-if="image.type == 'videos'" width="100%" preload="none" controls>
                         <source :src="image.large_image_url" type="video/mp4">
                     </video>
                     <img loading="lazy" v-else
@@ -61,25 +61,23 @@
             <ul>
                 <li v-for="(thumb, index) in thumbs" v-bind:key="index" @click="showImage(index)"
                     :class="`carousel-dot ${'dot-'+index} ${index === 0 ? 'is-active' : ''}`">
-
                 </li>
             </ul>
         </div>
         <ul :class="`thumb-list w-100 row ltr d-none d-md-block ${thumbs.length < 5 ? 'is-rtl' : ''}`">
             <slick-carousel
-                ref="thumbsCarousel"
-                style="max-height: 350px"
-                id="product-gallery-carousel"
-                v-bind="thumbnailSetting"
-                v-if="thumbs.length">
+                    ref="thumbsCarousel"
+                    style="max-height: 350px"
+                    id="product-gallery-carousel"
+                    v-bind="thumbnailSetting"
+                    v-if="thumbs.length">
                 <div v-for="(thumb, index) in thumbs" v-bind:key="index"
                      :id="`thumb-${index}`">
                     <li
-                        @click="showImage(index)"
-                        :class="`thumb-frame ${index + 1 == 4 ? '' : 'mr5'} ${thumb.large_image_url == currentLargeImageUrl ? 'active' : ''} ${'thumb-'+index} ${index == 0 ? 'is-active' : ''}`"
+                            @click="showImage(index)"
+                            :class="`thumb-frame ${index + 1 == 4 ? '' : 'mr5'} ${thumb.large_image_url == currentLargeImageUrl ? 'active' : ''} ${'thumb-'+index} ${index == 0 ? 'is-active' : ''}`"
                     >
-
-                        <div v-if="thumb.type == 'video'"
+                        <div v-if="thumb.type == 'videos'"
                              class="bg-video"
                         >
                             <i class="fas fa-play-circle"></i>

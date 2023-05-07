@@ -3,12 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Imports\CustomersImport;
-use App\Imports\EnrolmentsImport;
-use App\Services\CustomerBulkUploadService;
-use App\Services\MoodleService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Webkul\Customer\Repositories\CustomerRepository;
 
 class CustomerController extends \App\Http\Controllers\Controller
@@ -51,8 +47,11 @@ class CustomerController extends \App\Http\Controllers\Controller
                 $row['date_of_birth'] = Carbon::make($row['date_of_birth'])->jdate("Y-m-d");
             }
             $data[$index]['values'] = $row;
-            if (array_key_exists($index, $errors)) {
-                $data[$index]['errors'] = $errors[$index];
+            $data[$index]['errors'] = [];
+            if ($errors) {
+                if (array_key_exists($index, $errors)) {
+                    $data[$index]['errors'] = $errors[$index];
+                }
             }
         }
         $keys = $collection->first()->keys()->toArray();
