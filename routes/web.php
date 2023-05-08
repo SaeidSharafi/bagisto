@@ -23,6 +23,7 @@
 
 use App\Http\Controllers\Admin\CmsCategoryController;
 use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\ResetCustomerPasswordController;
 use App\Http\Controllers\MoodleController;
 use App\Http\Controllers\Shop\API\JeduShopController;
 use App\Http\Controllers\Shop\Customer\JeduCustomerController;
@@ -237,6 +238,11 @@ Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => conf
     });
 
     Route::prefix('customers')->group(function () {
+        Route::post('/reset-password/{id}', ResetCustomerPasswordController::class)
+            ->defaults('_config', [
+                'redirect' => 'admin.customer.index',
+            ])->name('admin.customers.reset-password');
+
         Route::get('/upload', [CustomerController::class, 'index'])
             ->name('admin.customers.bulk.index');
         Route::post('/upload', [CustomerController::class, 'uploadCSV'])

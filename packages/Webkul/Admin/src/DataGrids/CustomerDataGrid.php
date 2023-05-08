@@ -176,22 +176,27 @@ class CustomerDataGrid extends DataGrid
         $this->addAction([
             'method' => 'GET',
             'route'  => 'admin.customer.edit',
-            'icon'   => 'icon pencil-lg-icon',
-            'title'  => trans('admin::app.customers.customers.edit-help-title'),
+            'icon' => 'icon pencil-lg-icon',
+            'title' => trans('admin::app.customers.customers.edit-help-title'),
         ]);
 
         $this->addAction([
             'method' => 'GET',
-            'route'  => 'admin.customer.note.create',
-            'icon'   => 'icon note-icon',
-            'title'  => trans('admin::app.customers.note.help-title'),
+            'route' => 'admin.customer.note.create',
+            'icon' => 'icon note-icon',
+            'title' => trans('admin::app.customers.note.help-title'),
         ]);
-
         $this->addAction([
             'method' => 'POST',
-            'route'  => 'admin.customer.delete',
-            'icon'   => 'icon trash-icon',
-            'title'  => trans('admin::app.customers.customers.delete-help-title'),
+            'route' => 'admin.customers.reset-password',
+            'icon' => 'icon account-icon',
+            'title' => trans('shop::app.customer.reset-password.title'),
+        ]);
+        $this->addAction([
+            'method' => 'POST',
+            'route' => 'admin.customer.delete',
+            'icon' => 'icon trash-icon',
+            'title' => trans('admin::app.customers.customers.delete-help-title'),
         ]);
     }
 
