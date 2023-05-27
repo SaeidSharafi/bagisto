@@ -89,10 +89,10 @@ class JeduSessionController
      */
     public function create(JeduCustomerLoginRequest $request)
     {
-
         $request->validated();
         $credentials = $request->only('token', 'otp', 'password');
         $credentials['token'] = trim($credentials['token']);
+
 
         if (array_key_exists('password', $credentials) && !auth()->guard('customer')->attempt($credentials)) {
             session()->flash('error',
@@ -129,10 +129,16 @@ class JeduSessionController
          * Event passed to prepare cart after login.
          */
         Event::dispatch('customer.after.login', $request->get('token'));
-
         $customer = $this->customerRepository->findOneByField('token',
             $request->get('token'));
         OtpService::clearOTP($customer);
+
+        if (auth()->guard('customer')->user()->incomplete) {
+            session()->flash('warning', 'لطفا پروفایل خود را تکمیل نمایید');
+            return redirect()->route('customer.profile.edit');
+        }
+
+
         $intended_url = session()->get('url.cart', route($this->_config['redirect']));
 
         session()->forget('url.cart');

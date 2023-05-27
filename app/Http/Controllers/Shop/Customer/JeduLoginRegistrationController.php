@@ -48,17 +48,6 @@ class JeduLoginRegistrationController
     public function store(JeduCustomerRegistrationRequest $request
     ): RedirectResponse {
 
-        //dd((strtotime('+300 seconds')));
-        //$request->validated();
-        //$params = ['code' => "123456"];
-        //$options = [
-        //    'numbers'    => ["09359933642"],
-        //    'pattern'    => 'mdoe1j1587',
-        //    'parameters' => $params,
-        //];
-        //$otp =  new SendOTP($options);
-        //$bl = $otp->build();
-        //$bl->sendSMS();
         $phone =  request()->input()['phone'];
         if (!str_starts_with($phone,'0')){
             $phone = '0'.$phone;
@@ -109,32 +98,6 @@ class JeduLoginRegistrationController
             return redirect()->back();
         }
 
-        /*if (isset($data['is_subscribed'])) {
-            $subscription
-                = $this->subscriptionRepository->findOneWhere(['email' => $data['email']]);
-
-            if ($subscription) {
-                $this->subscriptionRepository->update([
-                    'customer_id' => $customer->id,
-                ], $subscription->id);
-            } else {
-                $this->subscriptionRepository->create([
-                    'email'         => $data['email'],
-                    'customer_id'   => $customer->id,
-                    'channel_id'    => core()->getCurrentChannel()->id,
-                    'is_subscribed' => 1,
-                    'token'         => $token = md5(uniqid(rand(), true)),
-                ]);
-
-                try {
-                    Mail::queue(new SubscriptionEmail([
-                        'email' => $data['email'],
-                        'token' => $token,
-                    ]));
-                } catch (\Exception $e) {
-                }
-            }
-        }*/
 
         if (core()->getConfigData('customer.settings.email.verification')) {
             try {
@@ -211,10 +174,13 @@ class JeduLoginRegistrationController
                 ['token' => $request->token]);
         }
         $customer->update(['is_verified' => 1]);
-        session()->flash('success',
-            trans('shop::app.customer.signup-form.verified'));
         auth()->guard('customer')->loginUsingId($customer->id);
+        Event::dispatch('customer.after.login', $request->get('token'));
         OtpService::clearOTP($customer);
+        if (auth()->guard('customer')->user()->incomplete) {
+            session()->flash('warning', 'لطفا پروفایل خود را تکمیل نمایید');
+            return redirect()->route('customer.profile.edit');
+        }
         return redirect()->route('customer.session.index');
 
     }

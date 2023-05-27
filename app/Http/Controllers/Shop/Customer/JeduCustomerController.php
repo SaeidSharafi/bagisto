@@ -163,7 +163,7 @@ class JeduCustomerController extends Controller
 
                 if ($subscription) {
                     $this->subscriptionRepository->update([
-                        'customer_id'   => $customer->id,
+                        'customer_id' => $customer->id,
                         'is_subscribed' => 0,
                     ], $subscription->id);
                 }
@@ -173,7 +173,11 @@ class JeduCustomerController extends Controller
 
             Session()->flash('success',
                 trans('shop::app.customer.account.profile.edit-success'));
-
+            $intended_url = session()->get('url.cart', route($this->_config['redirect']));
+            if ($intended_url) {
+                session()->forget('url.cart');
+                return redirect()->to($intended_url);
+            }
             return redirect()->route($this->_config['redirect']);
         }
         Session()->flash('success',
