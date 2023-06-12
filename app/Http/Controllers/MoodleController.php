@@ -141,7 +141,7 @@ class MoodleController extends Controller
             $x_cookie = $cookie->getCookieByName('X')?->getValue();
 
             \Cookie::forget('X');
-            \Cookie::queue('X', $x_cookie, time() + (3600 * 24 * 365 * 100), '/', '.laravel.ir', true, false);
+            \Cookie::queue('X', $x_cookie, time() + (3600 * 24 * 365 * 100), '/', config('app.domain'), true, false);
             //\Cookie::make('X',$x_cookie,time() + (3600 * 24 * 365 * 100),'/','bag.laravel.ir', true, false);
             //setcookie('X', $x_cookie, time() + (3600 * 24 * 365 * 100), '/', 'bag.laravel.ir', true, false);
         }
