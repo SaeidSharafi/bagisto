@@ -93,9 +93,10 @@ class MoodleController extends Controller
             ->getModel()::query()
             ->select('product_flat.*',
                 'spot_licenses.id as spot_id', 'spot_licenses._id', 'spot_licenses.key', 'spot_licenses.url')
-            ->whereIn('product_flat.product_id', $order_items)
-            ->whereNotNull('spot_id')
             ->join('spot_licenses', 'product_flat.product_id', '=', 'spot_licenses.product_id')
+            ->whereIn('product_flat.product_id', $order_items)
+            ->whereIn('spot_licenses.order_id', $orders->pluck('id'))
+            ->whereNotNull('spot_id')
             ->get();
 
         $spots = SpotPlayerService::formatProduct($spots, $this->currentCustomer);
