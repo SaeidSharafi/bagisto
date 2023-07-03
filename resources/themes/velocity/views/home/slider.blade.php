@@ -16,24 +16,31 @@
                                         @endif
                                         @if($slide['slider_path'])
                                             <a href="{{$slide['slider_path']}}" class="btn">
-                                                <span class="btn-inner">{{$slide['description'] ?: 'مشاهده مطلب'}}</span>
+                                                <span class="btn-inner">{{$slide['button'] ?: 'مشاهده مطلب'}}</span>
                                             </a>
                                         @endif
                                     </div>
                                 </div>
                             @else
-                                <div class="slide-content">
-                                    <div class="caption">
-                                        <div class="title"></div>
+                                @if($slide['slider_path'])
+                                    <a class="slide-content" href="{{$slide['slider_path']}}">
+                                        <div class="caption">
+                                            <div class="title"></div>
+                                        </div>
+                                    </a>
+                                @else
+                                    <div class="slide-content">
+                                        <div class="caption">
+                                            <div class="title"></div>
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                             @endif
 
                             <div class="image-container {{$slide['show_content'] ? 'has-description' : ''}}">
                                 <img loading="lazy" src="{{asset('/storage/'.$slide['path'])}}" alt="" class="image">
                             </div>
                         </div>
-
 
                     @empty
                         <div class="slide is-active">
@@ -69,7 +76,7 @@
                 <div class="arrows">
                     <div class="arrow prev">
           <span class="svg svg-arrow-left">
-            <svg version="1.1" id="svg4-Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="14px" height="26px"
+            <svg version="1.1" id="svg4-Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="14px" height="26px"
                  viewBox="0 0 14 26" enable-background="new 0 0 14 26" xml:space="preserve"> <path
                     d="M13,26c-0.256,0-0.512-0.098-0.707-0.293l-12-12c-0.391-0.391-0.391-1.023,0-1.414l12-12c0.391-0.391,1.023-0.391,1.414,0s0.391,1.023,0,1.414L2.414,13l11.293,11.293c0.391,0.391,0.391,1.023,0,1.414C13.512,25.902,13.256,26,13,26z"/> </svg>
             <span class="alt sr-only"></span>
@@ -77,7 +84,8 @@
                     </div>
                     <div class="arrow next">
           <span class="svg svg-arrow-right">
-            <svg version="1.1" id="svg5-Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="14px" height="26px"
+            <svg version="1.1" id="svg5-Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="14px"
+                 height="26px"
                  viewBox="0 0 14 26" enable-background="new 0 0 14 26" xml:space="preserve"> <path
                     d="M1,0c0.256,0,0.512,0.098,0.707,0.293l12,12c0.391,0.391,0.391,1.023,0,1.414l-12,12c-0.391,0.391-1.023,0.391-1.414,0s-0.391-1.023,0-1.414L11.586,13L0.293,1.707c-0.391-0.391-0.391-1.023,0-1.414C0.488,0.098,0.744,0,1,0z"/> </svg>
             <span class="alt sr-only"></span>
