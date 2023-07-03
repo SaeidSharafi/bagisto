@@ -182,6 +182,10 @@ nav#sidebar-level-0 {
     align-items: center;
 }
 
+.sidebar .category-content {
+    position: relative;
+}
+
 .sidebar .category-content .category-icon {
     width: 30px;
     height: auto;
@@ -1801,6 +1805,7 @@ body.rtl .category-list-container li a {
 .category-list-container .sub-categories {
     height: auto !important;
     min-height: auto !important;
+    left: -102% !important;
 }
 
 .category-page-wrapper .category-container {
