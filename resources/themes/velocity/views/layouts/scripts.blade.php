@@ -65,7 +65,7 @@
                 // If the count down is finished, write some text
                 if (distance < 0) {
                     clearInterval(x);
-                    timerElement.innerHTML = "EXPIRED";
+                    timerElement.innerHTML = "پایان یافته";
                 }
             }, 1000);
         }
