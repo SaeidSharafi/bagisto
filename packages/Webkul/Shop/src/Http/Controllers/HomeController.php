@@ -67,13 +67,16 @@ class HomeController extends Controller
         info('Special id:'.$special_id);
         if ($special_id) {
             $special_product = $this->productFlatRepository->findOneWhere(['sku' => $velocity->special_id]);
-            $special_product = [
-                'short_name'           => $special_product->short_name,
-                'special_price_to'     => $velocity->special_to,
-                'url_key'              => $special_product->url_key,
-                'specialOfferTimeLeft' => Carbon::parse($velocity->special_to)->diff(Carbon::now())
-                    ->format('%d:%H:%I:%S'),
-            ];
+            if ($special_product) {
+                $special_product = [
+                    'short_name' => $special_product->short_name,
+                    'special_price_to' => $velocity->special_to,
+                    'url_key' => $special_product->url_key,
+                    'specialOfferTimeLeft' => Carbon::parse($velocity->special_to)->diff(Carbon::now())
+                        ->format('%d:%H:%I:%S'),
+                ];
+            }
+
         } else {
             $special_product = $this->productFlatRepository->findOneWhere(['featured' => 1]);
         }
