@@ -115,7 +115,6 @@ class ACECRService
         $endpoint = $this->endPoint;
         $terminalID = $this->acecr->getConfigData('terminal_id');
         $data = [
-            'terminalId' => $terminalID,
             'orderId' => $this->orderId,
             'price' => $this->order->grand_total,
             'localDate' => now()->format('Ymd'),

@@ -119,6 +119,7 @@
             "Webkul\\Marketing\\": "packages/Webkul/Marketing/src",
             "PayIr\\": "packages/PayIr/src",
             "MellatGateway\\": "packages/MellatGateway/src",
+            "ACECRGateway\\": "packages/ACECRGateway/src",
             "Kuro\\LaravelSms\\": "packages/Kuro/LaravelSms/src",
             "Webkul\\Notification\\": "packages/Webkul/Notification/src",
             "Ridhima\\MediaManager\\": "packages/Ridhima/MediaManager/src"

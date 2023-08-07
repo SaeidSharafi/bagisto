@@ -299,6 +299,7 @@ return [
         //Payments
         PayIr\Providers\PayIrServiceProvider::class,
         MellatGateway\Providers\MellatServiceProvider::class,
+        ACECRGateway\Providers\ACECRServiceProvider::class,
 
         //Media Manager
         Ridhima\MediaManager\Providers\MediaManagerServiceProvider::class,
