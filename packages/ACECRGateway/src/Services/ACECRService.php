@@ -73,7 +73,7 @@ class ACECRService
     protected $invoiceRepository;
 
     protected $endPoint = 'https://pay.acecr.ac.ir/Mellat';
-
+    protected $mellatEndPoint = 'https://bpm.shaparak.ir/pgwchannel/startpay.mellat';
 
     /**
      * Create a new helper instance.
@@ -115,22 +115,21 @@ class ACECRService
         $endpoint = $this->endPoint;
         $terminalID = $this->acecr->getConfigData('terminal_id');
         $data = [
-            'orderId' => $this->orderId,
-            'price' => $this->order->grand_total,
-            'localDate' => now()->format('Ymd'),
-            'localTime' => now()->format('His'),
+            'orderId' => $this->orderId."",
+            'price' => (int) $this->order->grand_total,
+            "description" => '',
             'additionalData' => '',
             'returnurl' => route('acecr.callback'),
-            'merchantID' => $terminalID,
+            'merchantID' => "Integrated:{$terminalID}",
         ];
         Log::info('data to send for gateway', $data);
 
         $send = Request::make($endpoint.'/ProceedPayment', $data);
-        Log::info('response recived from gateway', $send);
+        Log::info('response received from gateway', $send);
         $params = [];
         if (isset($send['status']) && isset($send['response'])) {
             if ($send['status'] === Request::SUCCESS) {
-                $params['response']['payment_url'] = $endpoint;
+                $params['response']['payment_url'] = $this->mellatEndPoint;
                 $params['response']['refID'] = $send['response'];
 
                 return $params['response'];
@@ -138,8 +137,7 @@ class ACECRService
 
             $this->orderRepository->cancel($this->order->id);
 
-            throw new SendException('خطا در اتصال به درگاه بانک ملت، مشکلی در اطلاعات ارسالی وجود دارد.',
-                $send['response']);
+            throw new SendException('خطا در اتصال به درگاه بانک ملت، مشکلی در اطلاعات ارسالی وجود دارد.'.'\n'.$send['response']);
         }
         $this->orderRepository->cancel($this->order->id);
         throw new SendException('خطا در ارسال اطلاعات به درگاه بانتک ملت. لطفا از برقرار بودن اینترنت و در دسترس بودن بانک ملت اطمینان حاصل کنید');
@@ -315,7 +313,7 @@ class ACECRService
             'resCode' => $this->post['ResCode'],
         ];
 
-        $response = Request::make($endpoint.'/TrasnactionisValid', $data);
+        $response = Request::verify($endpoint.'/TrasnactionisValid', $data);
         Log::info('verificiation response recived from gateway', $response);
 
         if (isset($response['status']) && isset($response['response'])) {
@@ -323,8 +321,7 @@ class ACECRService
                 $this->response['status'] = Request::SUCCESS;
                 return;
             }
-            throw new VerifyException('Verification failed, check response code for more detail',
-                $response);
+            throw new VerifyException('Verification failed, check response code for more detail'.'\n'.$response['response']);
         }
 
         throw new SendException('خطا در ارسال اطلاعات به درگاه بانتک ملت. لطفا از برقرار بودن اینترنت و در دسترس بودن بانک ملت اطمینان حاصل کنید');
@@ -347,7 +344,7 @@ class ACECRService
             'resCode' => $this->post['ResCode'],
         ];
 
-        $response = Request::make($endpoint.'/PayElectronically', $data);
+        $response = Request::settle($endpoint.'/PayElectronically', $data);
         Log::info('settle response recived from gateway', $response);
 
         if (isset($response['status']) && isset($response['response'])) {
@@ -355,7 +352,7 @@ class ACECRService
                 $this->response['status'] = Request::SUCCESS;
                 return;
             }
-            throw new SettleException('Settle failed, check response code for more detail', $response);
+            throw new SettleException('Settle failed, check response code for more detail'.'\n'.$response['response']);
         }
 
         throw new SendException('خطا در ارسال اطلاعات به درگاه بانتک ملت. لطفا از برقرار بودن اینترنت و در دسترس بودن بانک ملت اطمینان حاصل کنید');

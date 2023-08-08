@@ -26,9 +26,9 @@ class Request
         try {
 
             $response = self::sendCurlRequest($url, $params);
+            Log::info('makeRequest response', ['return' => $response]);
 
             if (preg_match("/\('([^']+)'/", $response, $matches)) {
-                Log::info('bpPayRequest response', ['return' => $response]);
 
                 $ref = $matches[1];
                 return [
@@ -54,10 +54,11 @@ class Request
     {
         try {
             $response = self::sendCurlRequest($url, $params);
+            Log::info('verify response', ['response' => $response]);
+
             $result = json_decode($response, true, 512, JSON_THROW_ON_ERROR)['item1'];
 
             if ($result === true) {
-                Log::info('bpPayRequest response', ['response' => $response]);
                 return [
                     'status' => self::SUCCESS,
                     'response' => true,
@@ -79,10 +80,11 @@ class Request
     {
         try {
             $response = self::sendCurlRequest($url, $params);
+            Log::info('settle response', ['response' => $response]);
+
             $result = json_decode($response, true, 512, JSON_THROW_ON_ERROR)['item1'];
 
             if ($result === true) {
-                Log::info('bpPayRequest response', ['response' => $response]);
 
                 return [
                     'status' => self::SUCCESS,
