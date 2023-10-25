@@ -6,14 +6,14 @@ use App\Models\Shop\JeduCustomer;
 use Illuminate\Console\Command;
 use Webkul\Sales\Models\Order;
 
-class FixCustomerPhone extends Command
+class FixOrderCustomer extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'order:fix-phone';
+    protected $signature = 'order:fix-customer';
 
     /**
      * The console command description.
@@ -31,6 +31,9 @@ class FixCustomerPhone extends Command
     {
         $orders = Order::query()
             ->whereNull('customer_phone')
+            ->orWhereNull('customer_email')
+            ->orWhereNull('customer_first_name')
+            ->orWhereNull('customer_last_name')
             ->limit(50)
             ->get();
         $success = 0;
@@ -39,6 +42,9 @@ class FixCustomerPhone extends Command
             $customer = JeduCustomer::find($order->customer_id);
             if ($customer) {
                 $order->customer_phone = $customer->phone;
+                $order->customer_email = $customer->email;
+                $order->customer_first_name = $customer->first_name;
+                $order->customer_last_name = $customer->last_name;
                 $order->save();
                 $success++;
                 continue;
