@@ -308,19 +308,19 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                         </h5>
                         <div class="w-100 p-3">
                             @if ($product->product->categories->pluck('id')->contains(16))
-                                <a href="{{asset('images/certs/icdl.jpg')}}" target="_blank">
+                                <a href="{{asset('images/certs/icdl_big.jpg')}}" target="_blank">
                                     <img src="{{asset('images/certs/icdl.jpg')}}" class="w-100">
                                 </a>
                             @elseif ($product->product->categories->pluck('id')->contains(11))
-                                <a href="{{asset('images/certs/doc.jpg')}}" target="_blank">
+                                <a href="{{asset('images/certs/doc_big.jpg')}}" target="_blank">
                                     <img src="{{asset('images/certs/doc.jpg')}}" class="w-100">
                                 </a>
                             @elseif ($product->product->categories->pluck('id')->contains(6))
-                                <a href="{{asset('images/certs/zaban.jpg')}}" target="_blank">
+                                <a href="{{asset('images/certs/zaban_big.jpg')}}" target="_blank">
                                     <img src="{{asset('images/certs/zaban.jpg')}}" class="w-100">
                                 </a>
                             @else
-                                <a href="{{asset('images/certs/all.jpg')}}" target="_blank">
+                                <a href="{{asset('images/certs/all_big.jpg')}}" target="_blank">
                                     <img src="{{asset('images/certs/all.jpg')}}" class="w-100">
                                 </a>
                             @endif
