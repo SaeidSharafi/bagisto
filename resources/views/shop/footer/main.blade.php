@@ -1,5 +1,5 @@
 <div class="footer-statics">
-    <div class="container">
+    <div class="container" style="font-size: 1.4rem;line-height: 25px;">
         <div class="row">
             <div class="col-lg-4 col-md-6">
                 @include('shop.footer.adress')

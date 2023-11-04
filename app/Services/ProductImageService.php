@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Storage;
-use function PHPUnit\Framework\isNull;
 
 class ProductImageService extends \Webkul\Product\ProductImage
 {
@@ -36,6 +35,7 @@ class ProductImageService extends \Webkul\Product\ProductImage
             }
 
             $images[] = [
+                'image_alt' => $product->name,
                 'small_image_url'    => url('cache/small/'.$image->path),
                 'medium_image_url'   => url('cache/medium/'.$image->path),
                 'large_image_url'    => url('cache/large/'.$image->path),
@@ -47,6 +47,7 @@ class ProductImageService extends \Webkul\Product\ProductImage
             && !count($product->videos)
         ) {
             $images[] = [
+                'image_alt' => $product->name,
                 'small_image_url'    => asset('images/shop/product/small-product-placeholder.jpg'),
                 'medium_image_url'   => asset('images/shop/product/meduim-product-placeholder.jpg'),
                 'large_image_url'    => asset('images/shop/product/large-product-placeholder.jpg'),

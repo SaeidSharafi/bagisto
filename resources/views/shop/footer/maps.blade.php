@@ -1,11 +1,11 @@
 <div class="map-container container">
-    <h4 class="text-center">
+    <span class="text-center font-weight-bold d-block mb-2" style="font-size: 1.6rem;">
         معاونت آموزش و کارآفرینی
-    </h4>
+    </span>
     <div class="row">
         <div class="col-md-6">
-            <h5 style="text-align: center;">مرکز یک</h5>
-            <p style="text-align: center;">قزوین، چهارراه ولیعصر(عج) جنب بانک سپه</p>
+            <span class="d-block text-center font-weight-bold mb-2" style="font-size: 1.5rem;">مرکز یک</span>
+            <p class="text-center" style="font-size: 1.4rem;">قزوین، چهارراه ولیعصر(عج) جنب بانک سپه</p>
             <div class="map-responsive">
                 <img src="{{asset('images/shop/map2.png')}}" loading="lazy"
                      data-src="{{asset('images/shop/map2.png')}}" class="w-100 lazyload" data-width="890"
@@ -13,8 +13,8 @@
             </div>
         </div>
         <div class="col-md-6 second-map">
-            <h5 style="text-align: center;">مرکز دو</h5>
-            <p style="text-align: center;">قزوین، سه راه خیام، جنب پاساژ علوی</p>
+            <span class="d-block text-center font-weight-bold mb-2" style="font-size: 1.6rem;">مرکز دو</span>
+            <p class="text-center" style="font-size: 1.4rem;">قزوین، سه راه خیام، جنب پاساژ علوی</p>
             <div class="map-responsive">
                 <img src="{{asset('images/shop/map1.jpg')}}" loading="lazy"
                      data-src="{{asset('images/shop/map1.jpg')}}" class="w-100 lazyload" data-width="890"

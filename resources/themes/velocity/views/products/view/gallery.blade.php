@@ -15,6 +15,7 @@
 
     foreach ($images as $key => $image) {
         $imageData[$key]['type'] = '';
+        $imageData[$key]['image_alt']          = $image['image_alt'];
         $imageData[$key]['large_image_url']    = $image['large_image_url'];
         $imageData[$key]['small_image_url']    = $image['small_image_url'];
         $imageData[$key]['medium_image_url']   = $image['medium_image_url'];
@@ -85,6 +86,8 @@
                         <div v-else
                              class="bg-image"
                              :style="`background-image: url(${thumb.small_image_url})`">
+                            <img :src="thumb.small_image_url" class="w-100" style="object-fit: contain"
+                                 :alt="thumb.image_alt"/>
                         </div>
                     </li>
                 </div>

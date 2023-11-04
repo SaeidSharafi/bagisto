@@ -141,8 +141,9 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                             {{-- right-section --}}
                             <div class="product-info col-md-6 col-lg-7">
                                 <div class="pt-4 px-3">
+                                    <h1 class="mb-4 font-weight-bold">{{$product->name}}</h1>
                                     {{-- product-info-section --}}
-                                    <div class="attributes asd">
+                                    <div class="attributes">
                                         @include ('shop::products.view.attributes',['active' => true,'customAttributeValues'=>$course_details])
                                         @include ('shop::products.view.stock', ['product' => $product])
                                     </div>
@@ -197,7 +198,8 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
 
                                     @if ($product->getTypeInstance()->showQuantityBox() && false)
                                         <div>
-                                            <quantity-changer quantity-text="{{ __('shop::app.products.quantity') }}"></quantity-changer>
+                                            <quantity-changer
+                                                    quantity-text="{{ __('shop::app.products.quantity') }}"></quantity-changer>
                                         </div>
                                     @else
                                         <input type="hidden" name="quantity" value="1">
@@ -306,13 +308,21 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                         </h5>
                         <div class="w-100 p-3">
                             @if ($product->product->categories->pluck('id')->contains(16))
-                                <img src="{{asset('images/certs/icdl.jpg')}}" class="w-100">
+                                <a href="{{asset('images/certs/icdl.jpg')}}" target="_blank">
+                                    <img src="{{asset('images/certs/icdl.jpg')}}" class="w-100">
+                                </a>
                             @elseif ($product->product->categories->pluck('id')->contains(11))
-                                <img src="{{asset('images/certs/doc.jpg')}}" class="w-100">
+                                <a href="{{asset('images/certs/doc.jpg')}}" target="_blank">
+                                    <img src="{{asset('images/certs/doc.jpg')}}" class="w-100">
+                                </a>
                             @elseif ($product->product->categories->pluck('id')->contains(6))
-                                <img src="{{asset('images/certs/zaban.jpg')}}" class="w-100">
+                                <a href="{{asset('images/certs/zaban.jpg')}}" target="_blank">
+                                    <img src="{{asset('images/certs/zaban.jpg')}}" class="w-100">
+                                </a>
                             @else
-                                <img src="{{asset('images/certs/all.jpg')}}" class="w-100">
+                                <a href="{{asset('images/certs/all.jpg')}}" target="_blank">
+                                    <img src="{{asset('images/certs/all.jpg')}}" class="w-100">
+                                </a>
                             @endif
 
                         </div>
@@ -335,11 +345,11 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
 
     <script type="text/x-template" id="product-view-template">
         <form
-            method="POST"
-            id="product-form"
-            @click="onSubmit($event)"
-            data-vv-scope="form-buy"
-            action="{{ route('cart.add', $product->product_id) }}">
+                method="POST"
+                id="product-form"
+                @click="onSubmit($event)"
+                data-vv-scope="form-buy"
+                action="{{ route('cart.add', $product->product_id) }}">
 
             <input type="hidden" name="is_buy_now" v-model="is_buy_now">
 
