@@ -27,6 +27,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('customer:delete-non-active')->dailyAt('1:00');
         $schedule->command('booking:cron')->dailyAt('3:00');
         $schedule->command('invoice:cron')->dailyAt('3:00');
         $schedule->command('product:price-rule:index')->dailyAt('3:00');
