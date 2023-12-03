@@ -177,7 +177,8 @@ trait ProvideCollection
             $collection->where(function ($collection) use ($info) {
                 foreach ($this->completeColumnDetails as $column) {
                     if ($column['searchable'] == true) {
-                        $this->resolve($collection, $column['index'], 'like', '%' . $info['all'] . '%', 'orWhere');
+                        $cm =  array_key_exists('db_name',$column) ? $column['db_name'] : $column['index'];
+                        $this->resolve($collection, $cm, 'like', '%' . $info['all'] . '%', 'orWhere');
                     }
                 }
             });

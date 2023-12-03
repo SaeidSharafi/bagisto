@@ -40,11 +40,15 @@ class OrderDataGrid extends DataGrid
                 $query->leftJoin('order_items', 'order_items.order_id', '=', 'orders.id')
                     ->whereIn('order_items.product_id', $product_ids);
             })->when(!$product_ids, fn($q) => $q->leftJoin('order_items', 'order_items.order_id', '=', 'orders.id'))
+            ->leftJoin('product_categories','order_items.product_id','product_categories.product_id')
+            ->leftJoin('category_translations','product_categories.category_id','category_translations.category_id')
             ->groupBy('orders.id')
             ->addSelect('orders.id', 'orders.customer_phone', 'orders.increment_id', 'orders.base_sub_total',
                 'orders.base_grand_total', 'orders.created_at', 'order_items.name', 'channel_name', 'orders.status')
             ->addSelect(DB::raw('CONCAT('.DB::getTablePrefix().'orders.customer_first_name, " ", '.DB::getTablePrefix()
-                .'orders.customer_last_name) as billed_to'));
+                .'orders.customer_last_name) as billed_to'))
+            ->addSelect(DB::raw('order_items.name as product_name'))
+            ->addSelect(DB::raw('category_translations.name as category_name'));
         $this->addFilter('billed_to',
             DB::raw('CONCAT('.DB::getTablePrefix().'orders.customer_first_name, " ", '.DB::getTablePrefix()
                 .'orders.customer_last_name)'));
@@ -103,10 +107,20 @@ class OrderDataGrid extends DataGrid
             'filterable' => true,
         ]);
         $this->addColumn([
-            'index'      => 'name',
+            'index'      => 'product_name',
+            'db_name'    => 'order_items.name',
             'label'      => trans('admin::app.datagrid.name'),
             'type'       => 'string',
-            'searchable' => false,
+            'searchable' => true,
+            'sortable'   => true,
+            'filterable' => true,
+        ]);
+        $this->addColumn([
+            'index'      => 'category_name',
+            'db_name'    => 'category_translations.name',
+            'label'      => trans('admin::app.category'),
+            'type'       => 'string',
+            'searchable' => true,
             'sortable'   => true,
             'filterable' => true,
         ]);
