@@ -199,7 +199,7 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                                     @if ($product->getTypeInstance()->showQuantityBox() && false)
                                         <div>
                                             <quantity-changer
-                                                    quantity-text="{{ __('shop::app.products.quantity') }}"></quantity-changer>
+                                                quantity-text="{{ __('shop::app.products.quantity') }}"></quantity-changer>
                                         </div>
                                     @else
                                         <input type="hidden" name="quantity" value="1">
@@ -308,21 +308,21 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                         </h5>
                         <div class="w-100 p-3">
                             @if ($product->product->categories->pluck('id')->contains(16))
-                                <a href="{{asset('images/certs/icdl_big.jpg')}}" target="_blank">
+                                <div>
                                     <img src="{{asset('images/certs/icdl.jpg')}}" class="w-100">
-                                </a>
+                                </div>
                             @elseif ($product->product->categories->pluck('id')->contains(11))
-                                <a href="{{asset('images/certs/doc_big.jpg')}}" target="_blank">
+                                <div>
                                     <img src="{{asset('images/certs/doc.jpg')}}" class="w-100">
-                                </a>
+                                </div>
                             @elseif ($product->product->categories->pluck('id')->contains(6))
-                                <a href="{{asset('images/certs/zaban_big.jpg')}}" target="_blank">
+                                <div>
                                     <img src="{{asset('images/certs/zaban.jpg')}}" class="w-100">
-                                </a>
+                                </div>
                             @else
-                                <a href="{{asset('images/certs/all_big.jpg')}}" target="_blank">
+                                <div>
                                     <img src="{{asset('images/certs/all.jpg')}}" class="w-100">
-                                </a>
+                                </div>
                             @endif
 
                         </div>
@@ -345,11 +345,11 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
 
     <script type="text/x-template" id="product-view-template">
         <form
-                method="POST"
-                id="product-form"
-                @click="onSubmit($event)"
-                data-vv-scope="form-buy"
-                action="{{ route('cart.add', $product->product_id) }}">
+            method="POST"
+            id="product-form"
+            @click="onSubmit($event)"
+            data-vv-scope="form-buy"
+            action="{{ route('cart.add', $product->product_id) }}">
 
             <input type="hidden" name="is_buy_now" v-model="is_buy_now">
 
