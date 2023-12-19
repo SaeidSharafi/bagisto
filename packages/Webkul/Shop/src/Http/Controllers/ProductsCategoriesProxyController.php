@@ -3,10 +3,10 @@
 namespace Webkul\Shop\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Webkul\Category\Repositories\CategoryRepository;
 use Webkul\Core\Repositories\SliderRepository;
 use Webkul\Customer\Repositories\CustomerRepository;
 use Webkul\Product\Repositories\ProductRepository;
-use Webkul\Category\Repositories\CategoryRepository;
 
 class ProductsCategoriesProxyController extends Controller
 {
@@ -78,7 +78,9 @@ class ProductsCategoriesProxyController extends Controller
 
         // support url for chinese, japanese, arbic and english with numbers.
         if (preg_match('/^([\x{0621}-\x{064A}\x{4e00}-\x{9fa5}\x{3402}-\x{FA6D}\x{3041}-\x{30A0}\x{30A0}-\x{31FF}_a-z0-9-]+\/?)+$/u', $slugOrPath)) {
-
+            if ($slugOrPath == 'virtual') {
+                return redirect('/virtual-learning');
+            }
             if ($category = $this->categoryRepository->findByPath($slugOrPath)) {
 
                 return view($this->_config['category_view'], compact('category'));
