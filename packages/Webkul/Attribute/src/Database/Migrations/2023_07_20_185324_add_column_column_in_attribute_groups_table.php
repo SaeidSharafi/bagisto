@@ -29,7 +29,7 @@ return new class extends Migration
                 ]);
             
             $generalGroup = DB::table('attribute_groups')
-                ->where('name', 'General')
+                ->where('code', 'general')
                 ->where('attribute_family_id', $family->id)
                 ->first();
             

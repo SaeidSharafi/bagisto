@@ -2,7 +2,7 @@
 
 return [
     [
-        'key' => 'sales.paymentmethods.mellat',
+        'key' => 'sales.payment_methods.mellat',
         'name' => 'Mellat',
         'sort' => 0,
         'fields' => [

@@ -1,14 +1,13 @@
 <?php
 
-use ACECRGateway\Payment\ACECR;
-
 return [
     'acecr' => [
         'code' => 'acecr',
         'title' => 'ACECR',
         'description' => 'ACECR bank payment gateway',
-        'class' => ACECR::class,
+        'class' => 'ACECRGateway\Payment\ACECR',
         'active' => true,
-        'sort' => 1,
+        'sort' => 0,
+
     ],
 ];

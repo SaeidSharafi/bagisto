@@ -1,7 +1,7 @@
 <?php
 return [
     'default' => 'azinweb',
-
+    'sort' => 1,
     'gateway' => [
         'tsms' => [
             'website' => 'http://tsms.ir',

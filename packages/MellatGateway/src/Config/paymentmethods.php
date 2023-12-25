@@ -9,6 +9,6 @@ return [
         'description' => 'Mellat bank payment gateway',
         'class' => Mellat::class,
         'active' => true,
-        'sort' => 1,
+        'sort' => 5,
     ],
 ];

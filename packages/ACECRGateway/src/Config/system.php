@@ -2,7 +2,7 @@
 
 return [
     [
-        'key' => 'sales.paymentmethods.acecr',
+        'key' => 'sales.payment_methods.acecr',
         'name' => 'ACECR',
         'sort' => 0,
         'fields' => [

@@ -75,6 +75,7 @@
 
             mounted() {
                 this.getProducts();
+                this.play();
             },
 
             methods: {
@@ -100,6 +101,13 @@
 
                     container.scrollLeft += this.offset;
                 },
+                play() {
+                    let self = this;
+
+                    setInterval(() => {
+                        this.swipeRight();
+                    }, 5000);
+                }
             },
         });
     </script>

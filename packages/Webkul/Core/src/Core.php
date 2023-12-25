@@ -2,9 +2,10 @@
 
 namespace Webkul\Core;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Config;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
+use Webkul\Core\Models\Channel;
 use Webkul\Core\Repositories\ChannelRepository;
 use Webkul\Core\Repositories\CoreConfigRepository;
 use Webkul\Core\Repositories\CountryRepository;
@@ -14,7 +15,6 @@ use Webkul\Core\Repositories\ExchangeRateRepository;
 use Webkul\Core\Repositories\LocaleRepository;
 use Webkul\Customer\Repositories\CustomerGroupRepository;
 use Webkul\Tax\Repositories\TaxCategoryRepository;
-use Webkul\Core\Models\Channel;
 
 class Core
 {
@@ -899,6 +899,9 @@ class Core
         }
 
         usort($items, function ($a, $b) {
+            if ($a['sort'] == $b['sort']) {
+                return 0;
+            }
             if ($a['sort'] == $b['sort']) {
                 return 0;
             }

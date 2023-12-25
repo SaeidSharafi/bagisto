@@ -223,6 +223,15 @@ return [
         Webkul\Tax\Providers\TaxServiceProvider::class,
         Webkul\Theme\Providers\ThemeServiceProvider::class,
         Webkul\User\Providers\UserServiceProvider::class,
+
+        //Payments
+//        MellatGateway\Providers\MellatServiceProvider::class,
+        ACECRGateway\Providers\ACECRServiceProvider::class,
+
+        //SMS provider
+        Kuro\LaravelSms\Providers\SmsServiceProvider::class,
+
+
     ])->toArray(),
 
     /*
