@@ -2,6 +2,20 @@
 <html lang="{{ app()->getLocale() }}">
 
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KFQ1CRSG4Y"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-KFQ1CRSG4Y');
+    </script>
+
     {{-- title --}}
     <title>@yield('page_title')</title>
 
@@ -12,15 +26,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="base-url" content="{{ url()->to('/') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VDGXL6JN2L"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-VDGXL6JN2L');
-    </script>
     {!! view_render_event('bagisto.shop.layout.head') !!}
 
     {{-- for extra head data --}}
