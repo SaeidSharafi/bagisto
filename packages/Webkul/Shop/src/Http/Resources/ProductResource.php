@@ -9,7 +9,7 @@ class ProductResource extends JsonResource
 {
     /**
      * Create a new resource instance.
-     * 
+     *
      * @param  mixed  $resource
      * @return void
      */
@@ -19,7 +19,7 @@ class ProductResource extends JsonResource
 
         parent::__construct($resource);
     }
-    
+
 
     /**
      * Transform the resource into an array.
@@ -49,6 +49,7 @@ class ProductResource extends JsonResource
             'prices'      => $productTypeInstance->getProductPrices(),
             'price_html'  => $productTypeInstance->getPriceHtml(),
             'avg_ratings' => round($this->reviewHelper->getAverageRating($this)),
+            'teacher_name' => $this->getAttribute('teacher_name')
         ];
     }
 }

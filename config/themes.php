@@ -24,6 +24,17 @@ return [
                 'package_assets_directory' => 'src/Resources/assets',
             ],
         ],
+        'jedu' => [
+            'name'        => 'Jedu',
+            'assets_path' => 'public/themes/shop/jedu',
+            'views_path'  => 'resources/themes/jedu/views',
+
+            'vite'        => [
+                'hot_file'                 => 'shop-jedu-vite.hot',
+                'build_directory'          => 'themes/shop/jedu/build',
+                'package_assets_directory' => 'assets',
+            ],
+        ],
     ],
 
     /*
