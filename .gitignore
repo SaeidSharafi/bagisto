@@ -27,3 +27,8 @@ package-lock.json
 /vendor
 yarn.lock
 yarn-error.log
+/public/themes/
+/_ide_helper.php
+/cert.cer
+/.phpstorm.meta.php
+/packages/Webkul/Ui/node_modules/

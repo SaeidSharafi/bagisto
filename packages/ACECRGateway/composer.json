@@ -1,0 +1,24 @@
+{
+  "name": "saeedsharafi/laravel-acecr-gateway",
+  "authors": [
+    {
+      "name": "Saeid Sharafi",
+      "email": "saeed_sharafi12@yahoo.com"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "MellatGateway\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "ACECRGateway\\src\\Providers\\ACECRGatewayServiceProvider"
+      ],
+      "aliases": {}
+    }
+  },
+  "minimum-stability": "dev"
+}

@@ -7,6 +7,12 @@
         "laravel"
     ],
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "packages/Kuro/LaravelSms"
+        }
+    ],
     "require": {
         "php": "^8.1",
         "ext-calendar": "*",
@@ -29,6 +35,7 @@
         "kalnoy/nestedset": "^6.0",
         "khaled.alshamaa/ar-php": "^6.0.0",
         "konekt/concord": "^1.2",
+        "kuro/laravel-sms": "@dev",
         "laravel/framework": "^10.0",
         "laravel/octane": "^2.0",
         "laravel/sanctum": "^3.2",
@@ -36,6 +43,8 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^4.0",
         "maatwebsite/excel": "^3.1.46",
+        "mpdf/mpdf": "^8.1",
+        "opcodesio/log-viewer": "^1.3",
         "paypal/paypal-checkout-sdk": "1.0.1",
         "predis/predis": "^2.2",
         "prettus/l5-repository": "^2.6",
@@ -88,7 +97,11 @@
             "Webkul\\SocialShare\\": "packages/Webkul/SocialShare/src",
             "Webkul\\Tax\\": "packages/Webkul/Tax/src",
             "Webkul\\Theme\\": "packages/Webkul/Theme/src",
-            "Webkul\\User\\": "packages/Webkul/User/src"
+            "Webkul\\User\\": "packages/Webkul/User/src",
+            "PayIr\\": "packages/PayIr/src",
+            "MellatGateway\\": "packages/MellatGateway/src",
+            "ACECRGateway\\": "packages/ACECRGateway/src",
+            "Kuro\\LaravelSms\\": "packages/Kuro/LaravelSms/src"
         }
     },
     "autoload-dev": {
