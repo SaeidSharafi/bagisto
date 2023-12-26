@@ -2,6 +2,7 @@
 
 namespace Webkul\Admin\Http\Controllers\Sales;
 
+use App\Services\HttpRequestService;
 use Illuminate\Support\Facades\Event;
 use Webkul\Admin\DataGrids\OrderDataGrid;
 use Webkul\Admin\Http\Controllers\Controller;
@@ -126,6 +127,27 @@ class OrderController extends Controller
 
     }
 
+    /**
+     * Complete order
+     *
+     * @param  int  $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function syncIms($id)
+    {
+        $order = $this->orderRepository->find($id);
+
+        $request = new HttpRequestService($order, HttpRequestService::OP_UPDATE_REGISTERATION);
+        $response = $request->build();
+        if($response) {
+            session()->flash('success', trans('app.response.sync-ims-success', ['name' => 'Order']));
+            return redirect()->back();
+        }
+        session()->flash('error', trans('app.response.sync-ims-fail', ['name' => 'Order']));
+        return redirect()->back();
+
+    }
     /**
      * Add comment to the order
      *

@@ -414,6 +414,11 @@ return [
     |
     */
 
+    'ims' => [
+        'base_url' => env('IMS_BASE_URL', ''),
+        'api_key' => env('IMS_API_KEY', ''),
+    ],
+
     'teacher' => [
         'role_id' => env('TEACHER_ROLE_ID', 3),
     ]

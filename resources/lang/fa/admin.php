@@ -22,7 +22,6 @@ return [
             'booking'          => 'نوبت دهی',
             'configurable'     => 'قابل پیکربندی',
             'downloadable'     => 'اطلاعات قابل بارگیری',
-
         ]
     ],
     'customers'     => [
@@ -37,7 +36,12 @@ return [
     'sales'         => [
         'orders'       => [
             'product_number' => 'کد دوره',
-            'complete'       => 'تایید ثبت نام'
+            'complete'       => 'تایید ثبت نام',
+            'ims'              => [
+                'column' => 'وضعیت همگام سازی',
+                'synced'  => 'همگام سازی',
+                'not_synced'  => 'عدم همگام سازی',
+            ],
         ],
         'transactions' => [
             'transaction_id'  => 'کد یکتای پداختی',
@@ -45,9 +49,11 @@ return [
             'CardHolderPan'   => 'شماره کارت پرداخت کننده',
             'CardHolderInfo'  => 'اطلاعات پرداخت کننده',
         ],
+
     ],
     'datagrid'      => [
-        'complete' => 'تایید ثبت نام'
+        'complete' => 'تایید ثبت نام',
+        'sync-ims' => 'ثبت در IMS',
     ],
     'response'      => [
         'complete-error' => 'امکان تکمیل ثبت نام نمیباشد.'

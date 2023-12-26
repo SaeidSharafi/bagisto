@@ -19,7 +19,7 @@ class OrderListener
         //$response = $request->build();
 
         MoodleService::updateUserEnrolment($order);
-        //UpdateRegisteration::dispatch($order);
+        UpdateRegisteration::dispatch($order);
     }
 
     public function UpdateSpotLicense($order)

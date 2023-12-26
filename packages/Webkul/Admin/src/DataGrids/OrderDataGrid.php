@@ -39,19 +39,34 @@ class OrderDataGrid extends DataGrid
             ->when($product_ids, function ($query) use ($product_ids) {
                 $query->leftJoin('order_items', 'order_items.order_id', '=', 'orders.id')
                     ->whereIn('order_items.product_id', $product_ids);
-            })->when(!$product_ids, fn($q) => $q->leftJoin('order_items', 'order_items.order_id', '=', 'orders.id'))
-            ->leftJoin('product_categories','order_items.product_id','product_categories.product_id')
-            ->leftJoin('category_translations','product_categories.category_id','category_translations.category_id')
+            })->when(!$product_ids, fn ($q) => $q->leftJoin('order_items', 'order_items.order_id', '=', 'orders.id'))
+            ->leftJoin('product_categories', 'order_items.product_id', 'product_categories.product_id')
+            ->leftJoin('category_translations', 'product_categories.category_id', 'category_translations.category_id')
             ->groupBy('orders.id')
-            ->addSelect('orders.id', 'orders.customer_phone', 'orders.increment_id', 'orders.base_sub_total',
-                'orders.base_grand_total', 'orders.created_at', 'order_items.name', 'channel_name', 'orders.status')
+            ->addSelect(
+                'orders.id',
+                'orders.ims_synced_at',
+                'orders.ims_enrolment_id',
+                'orders.customer_phone',
+                'orders.increment_id',
+                'orders.base_sub_total',
+                'orders.base_grand_total',
+                'orders.created_at',
+                'order_items.name',
+                'channel_name',
+                'orders.status',
+                'orders.status as order_status',
+                'order_items.product_number'
+            )
             ->addSelect(DB::raw('CONCAT('.DB::getTablePrefix().'orders.customer_first_name, " ", '.DB::getTablePrefix()
                 .'orders.customer_last_name) as billed_to'))
             ->addSelect(DB::raw('order_items.name as product_name'))
             ->addSelect(DB::raw('category_translations.name as category_name'));
-        $this->addFilter('billed_to',
+        $this->addFilter(
+            'billed_to',
             DB::raw('CONCAT('.DB::getTablePrefix().'orders.customer_first_name, " ", '.DB::getTablePrefix()
-                .'orders.customer_last_name)'));
+                .'orders.customer_last_name)')
+        );
         $this->addFilter('increment_id', 'orders.increment_id');
         $this->addFilter('created_at', 'orders.created_at');
 
@@ -114,6 +129,9 @@ class OrderDataGrid extends DataGrid
             'searchable' => true,
             'sortable'   => true,
             'filterable' => true,
+            'closure'    => function ($value) {
+                return $value->product_number ? "{$value->product_name} ({$value->product_number})" : $value->product_name;
+            }
         ]);
         $this->addColumn([
             'index'      => 'category_name',
@@ -186,7 +204,26 @@ class OrderDataGrid extends DataGrid
                 }
             },
         ]);
-
+        $this->addColumn([
+            'index'      => 'ims_synced_at',
+            'label'      => trans('admin.sales.orders.ims.column'),
+            'type'       => 'select',
+            'sortable'   => true,
+            'searchable' => true,
+            'filterable' => true,
+            'closure'    => function ($value) {
+                if ($value->order_status == 'completed' && $value->product_number) {
+                    if ($value->ims_synced_at) {
+                        return '<span class="badge badge-md badge-success">'
+                            .trans('admin.sales.orders.ims.synced').'</span>';
+                    } else {
+                        return '<span class="badge badge-md badge-warning">'
+                        .trans('admin.sales.orders.ims.not_synced').'</span>';
+                    }
+                }
+                return '';
+            },
+        ]);
         $this->addColumn([
             'index'      => 'billed_to',
             'label'      => trans('admin::app.datagrid.billed-to'),
@@ -223,12 +260,17 @@ class OrderDataGrid extends DataGrid
                 'icon'   => 'icon eye-icon',
             ]);
         }
-
         $this->addAction([
-            'title'  => trans('admin.datagrid.complete'),
+            'title'  => trans('admin.datagrid.sync_ims'),
             'method' => 'GET',
             'route'  => 'admin.sales.orders.complete',
             'icon'   => 'icon completed-icon'
+        ]);
+        $this->addAction([
+            'title'  => trans('admin.datagrid.sync-ims'),
+            'method' => 'GET',
+            'route'  => 'admin.sales.orders.sync-ims',
+            'icon'   => 'icon processing-icon'
         ]);
     }
 }

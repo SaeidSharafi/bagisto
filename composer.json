@@ -37,6 +37,7 @@
         "konekt/concord": "^1.2",
         "kuro/laravel-sms": "@dev",
         "laravel/framework": "^9.9",
+        "laravel/sail": "^1.26",
         "laravel/sanctum": "^2.12",
         "laravel/scout": "^9.0",
         "laravel/socialite": "^5.0",
@@ -171,7 +172,10 @@
     "config": {
         "preferred-install": "stable",
         "sort-packages": true,
-        "optimize-autoloader": true
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": false
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

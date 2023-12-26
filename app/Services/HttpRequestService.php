@@ -5,13 +5,14 @@ namespace App\Services;
 use App\Listeners\OrderListener;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Webkul\Sales\Models\Order;
 
 class HttpRequestService
 {
     protected $order;
     protected $operation;
 
-    protected $key = '0bynTwlxQNducjLvsARtmhmbrbEg3UAY';
 
     const OP_UPDATE_REGISTERATION = 1;
     const OP_REGISTER_STUDENT = 2;
@@ -37,17 +38,20 @@ class HttpRequestService
     public function UpdateRegisteration()
     {
         $registrations = [];
-        if ($this->order->status !== "completed"
-            && $this->order->status !== "closed"
-            && $this->order->status !== "canceled"
-        ) {
-            return "unnecssary update";
-        }
-        $customer = $this->order->customer;
-        if ($customer->incomplete) {
-            return "customer profile incomplete";
+        if ($this->order->status !== "completed") {
+            return false;
         }
 
+        $customer = $this->order->customer;
+        if ($customer->incomplete) {
+            return false;
+        }
+
+        foreach ($this->order->items as $item) {
+            if(!$item->product_number){
+                return false;
+            }
+        }
         $date_of_birth = $customer->date_of_birth;
         if ($date_of_birth instanceof Carbon) {
             $date_of_birth = $date_of_birth->format('Y-m-d');
@@ -63,20 +67,20 @@ class HttpRequestService
             'student'            => [
                 'national_code'  => $customer->national_code,
                 'created'        => $customer->created_at->format('Y-m-d h:i:s'),
-                'student_name'   => $customer->first_name,
-                'student_family' => $customer->last_name,
-                'tel'            => $customer->phone,
-                'details'        => $customer->notes,
+                'first_name'   => $customer->first_name,
+                'last_name' => $customer->last_name,
+                'phone'            => $customer->phone,
+                'note'        => $customer->notes,
                 'field_of_study' => $customer->education_field,
                 'father_name'    => $customer->father_name,
-                'birthday'       => $date_of_birth,
+                'date_of_birth'       => $date_of_birth,
                 'gender'         => ($customer->gender == 'Male') ? 1 : 2,
             ],
 
             'intro_method'  => 3,
             'contact_way'   => 5,
             'discount_code' => $this->order->coupon_code ?: '',
-            'details'       => $comments,
+            'note'       => $comments,
         ];
 
         foreach ($this->order->items as $item) {
@@ -88,36 +92,45 @@ class HttpRequestService
             }
 
             $registration = [
-                'course_id' => $product_number,
+                'course_code' => $product_number,
                 'payment'   => [
-                    'pay'  => $item->price - $item->discount_amount,
-                    'bill' => "{$this->order->increment_id}-{$item->id}",
+                    'discount_type'  => $item->base_discount_amount > 0 ? 'manual' : 'none',
+                    'discount_amount' => (int)$item->discount_amount,
+                    'amount'  => (int)$item->base_total_invoiced,
+                    'bill' => $this->order->increment_id,
                     'date' => $item->created_at->format('Y-m-d'),
                 ],
             ];
             $registrations['registeraions'][] = $registration;
         }
         $data = [
-            'key'  => $this->key,
+            'key'  => config('app.ims.api_key'),
             'data' => $registrations
         ];
 
+        $url = config('app.ims.base_url') . '/api/v1/enrol';
+
         $respons = Http::asForm()
-            ->post('https://ims.jedu.ir/jedu/sql/insert/sync_test.php', $data);
-        echo $respons->getBody();
-        \Log::info($respons->getBody());
-        if ($respons->successful()) {
-            return $respons;
+            ->post($url, $data);
+
+        if ($respons->ok()) {
+            $enrolment = $respons->json('enrolment');
+            if(!$this->order->ims_synced_at) {
+                Order::where('id', $this->order->id)->update([
+                    'ims_synced_at' => $enrolment['created_at'],
+                    'ims_enrolment_id' => $enrolment['id']
+                    ]);
+            }
+            return true;
+        }
+        if ($respons->status() === 404) {
+            Log::error('Course does not exist inside IMS: \n' . $respons->json('message'));
+
         }
         if ($respons->failed()) {
-            return $respons;
+            Log::error('Registring enrolment in IMS failed: \n' . $respons->body());
         }
-        if ($respons->clientError()) {
-            return $respons;
-        }
-        if ($respons->serverError()) {
-            return "serverError";
-        }
-        return $respons;
+
+        return false;
     }
 }

@@ -190,6 +190,8 @@ Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => conf
         Route::prefix('orders')->group(function () {
             Route::get('complete/{id}', [OrderController::class, 'complete'])
                 ->name('admin.sales.orders.complete');
+                Route::get('sync-ims/{id}', [OrderController::class, 'syncIms'])
+                ->name('admin.sales.orders.sync-ims');
 
             Route::get('/upload', [\App\Http\Controllers\Admin\OrderController::class, 'index'])
                 ->name('admin.sales.order.bulk.index');
