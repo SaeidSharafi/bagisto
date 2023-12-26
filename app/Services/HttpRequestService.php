@@ -11,7 +11,6 @@ class HttpRequestService
     protected $order;
     protected $operation;
 
-    protected $key = '0bynTwlxQNducjLvsARtmhmbrbEg3UAY';
 
     const OP_UPDATE_REGISTERATION = 1;
     const OP_REGISTER_STUDENT = 2;
@@ -63,13 +62,13 @@ class HttpRequestService
             'student'            => [
                 'national_code'  => $customer->national_code,
                 'created'        => $customer->created_at->format('Y-m-d h:i:s'),
-                'student_name'   => $customer->first_name,
-                'student_family' => $customer->last_name,
-                'tel'            => $customer->phone,
-                'details'        => $customer->notes,
+                'first_name'   => $customer->first_name,
+                'last_name' => $customer->last_name,
+                'phone'            => $customer->phone,
+                'note'        => $customer->notes,
                 'field_of_study' => $customer->education_field,
                 'father_name'    => $customer->father_name,
-                'birthday'       => $date_of_birth,
+                'date_of_birth'       => $date_of_birth,
                 'gender'         => ($customer->gender == 'Male') ? 1 : 2,
             ],
 
@@ -88,22 +87,26 @@ class HttpRequestService
             }
 
             $registration = [
-                'course_id' => $product_number,
+                'course_code' => $product_number,
                 'payment'   => [
-                    'pay'  => $item->price - $item->discount_amount,
-                    'bill' => "{$this->order->increment_id}-{$item->id}",
+                    'discount_type'  => $item->base_discount_amount > 0 ? 'manual' : 'none',
+                    'discount_amount' => (int)$item->discount_amount,
+                    'amount'  => (int)$item->base_total_invoiced,
+                    'bill' => $this->order->increment_id,
                     'date' => $item->created_at->format('Y-m-d'),
                 ],
             ];
             $registrations['registeraions'][] = $registration;
         }
         $data = [
-            'key'  => $this->key,
+            'key'  => config('app.ims.api_key'),
             'data' => $registrations
         ];
 
+        $url = config('app.ims.base_url') . '/api/v1/enrol';
+
         $respons = Http::asForm()
-            ->post('https://ims.jedu.ir/jedu/sql/insert/sync_test.php', $data);
+            ->post($url, $data);
         echo $respons->getBody();
         \Log::info($respons->getBody());
         if ($respons->successful()) {
