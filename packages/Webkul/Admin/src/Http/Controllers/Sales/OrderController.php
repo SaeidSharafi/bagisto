@@ -3,6 +3,7 @@
 namespace Webkul\Admin\Http\Controllers\Sales;
 
 use App\Services\HttpRequestService;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Event;
 use Webkul\Admin\DataGrids\OrderDataGrid;
 use Webkul\Admin\Http\Controllers\Controller;
@@ -137,15 +138,23 @@ class OrderController extends Controller
     public function syncIms($id)
     {
         $order = $this->orderRepository->find($id);
-
-        $request = new HttpRequestService($order, HttpRequestService::OP_UPDATE_REGISTERATION);
-        $response = $request->build();
-        if($response) {
-            session()->flash('success', trans('app.response.sync-ims-success', ['name' => 'Order']));
+        try {
+            $request = new HttpRequestService($order, HttpRequestService::OP_UPDATE_REGISTERATION);
+            $response = $request->build();
+            if($response) {
+                session()->flash('success', trans('app.response.sync-ims-success', ['name' => 'Order']));
+                return redirect()->back();
+            }
+            session()->flash('error', trans('app.response.sync-ims-fail', ['name' => 'Order']));
+            return redirect()->back();
+        } catch(\InvalidArgumentException $e) {
+            session()->flash('error', $e->getMessage());
+            return redirect()->back();
+        } catch(AuthenticationException $e) {
+            session()->flash('error', trans('app.response.sync-ims-unauthorized', ['name' => 'Order']));
             return redirect()->back();
         }
-        session()->flash('error', trans('app.response.sync-ims-fail', ['name' => 'Order']));
-        return redirect()->back();
+
 
     }
     /**

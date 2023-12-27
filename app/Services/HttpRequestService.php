@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Listeners\OrderListener;
 use Carbon\Carbon;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Webkul\Sales\Models\Order;
@@ -37,6 +38,9 @@ class HttpRequestService
 
     public function UpdateRegisteration()
     {
+        if(! $api_key = config('app.ims.api_key')){
+            throw new \InvalidArgumentException(__('app.response.sync-ims-api-key'));
+        }
         $registrations = [];
         if ($this->order->status !== "completed") {
             return false;
@@ -44,12 +48,12 @@ class HttpRequestService
 
         $customer = $this->order->customer;
         if ($customer->incomplete) {
-            return false;
+            throw new \InvalidArgumentException(__('app.response.sync-ims-customer-incomplete'));
         }
 
         foreach ($this->order->items as $item) {
-            if(!$item->product_number){
-                return false;
+            if(!$item->product_number) {
+                throw new \InvalidArgumentException(__('app.response.sync-ims-porduct-number'));
             }
         }
         $date_of_birth = $customer->date_of_birth;
@@ -104,17 +108,18 @@ class HttpRequestService
             $registrations['registeraions'][] = $registration;
         }
         $data = [
-            'key'  => config('app.ims.api_key'),
             'data' => $registrations
         ];
 
         $url = config('app.ims.base_url') . '/api/v1/enrol';
 
-        $respons = Http::asForm()
+        $respons = Http::withToken($api_key)
+            ->asForm()
             ->post($url, $data);
 
         if ($respons->ok()) {
             $enrolment = $respons->json('enrolment');
+            dd($respons->json());
             if(!$this->order->ims_synced_at) {
                 Order::where('id', $this->order->id)->update([
                     'ims_synced_at' => $enrolment['created_at'],
@@ -124,8 +129,10 @@ class HttpRequestService
             return true;
         }
         if ($respons->status() === 404) {
-            Log::error('Course does not exist inside IMS: \n' . $respons->json('message'));
-
+            throw new \InvalidArgumentException(__('app.response.sync-ims-course-notfound'));
+        }
+        if ($respons->unauthorized()) {
+            throw new AuthenticationException($respons->json('message'));
         }
         if ($respons->failed()) {
             Log::error('Registring enrolment in IMS failed: \n' . $respons->body());

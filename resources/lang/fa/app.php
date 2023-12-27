@@ -60,6 +60,11 @@ return [
     'response' =>[
         'sync-ims-success' => 'ثبت نام با موفقیت در سامانه IMS ثبت شد',
         'sync-ims-fail' => 'ثبت اطلاعات در سامانه IMS با خطا مواجه شد',
+        'sync-ims-api-key' => 'کلید API سامانه IMS وجود ندارد',
+        'sync-ims-unauthorized' => 'دسترسی غیرمجاز به سامانه IMS',
+        'sync-ims-porduct-number' => 'کد دوره ثبت نشده است',
+        'sync-ims-customer-incomplete' => 'اطلاعات فراگیر کامل نمی باشد',
+        'sync-ims-course-notfound' => 'اطلاعات دوره در سامانه IMS یافت نشد',
 
         'complete-success' => 'ثبت نام با موفقیت تایید شد',
         'too-many-attemps' => 'تعداد درخواست بیش از حد مجاز میباشد. لطفا چند دقیقه صبر کرده و مجددا تلاش فرمایید'
