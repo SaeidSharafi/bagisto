@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\SpotLicense;
 use App\Services\MoodleFormatService;
 use App\Services\MoodleService;
+use App\Services\ProductService;
 use App\Services\SpotPlayerService;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Webkul\Product\Repositories\ProductFlatRepository;
 use Webkul\Sales\Repositories\OrderRepository;
 
@@ -72,36 +74,54 @@ class MoodleController extends Controller
             ->where('status', 'completed')
             ->where('customer_id', $this->currentCustomer->id)
             ->get();
+
         $order_items = $orders->pluck('items')
             ->flatten()
             ->pluck('product_id');
-        $products = $this->productFlatRepository
-            ->getModel()::query()
-            ->whereIn('id', $order_items)
-            ->whereNotNull('moodle_id')
-            ->WhereNot('moodle_id', '')
-            ->get();
 
-        $enrollments = MoodleService::getUserCourses($this->currentCustomer);
-        if ($enrollments) {
-            $enrollments = MoodleFormatService::formatUserCourses($enrollments, $this->currentCustomer, $products);
-        }
-
-        $products = MoodleFormatService::formatProduct($products, $this->currentCustomer);
 
         $spots = $this->productFlatRepository
             ->getModel()::query()
-            ->select('product_flat.*',
-                'spot_licenses.id as spot_id', 'spot_licenses._id', 'spot_licenses.key', 'spot_licenses.url')
+            ->select(
+                'product_flat.*',
+                'spot_licenses.id as spot_id',
+                'spot_licenses._id',
+                'spot_licenses.key',
+                'spot_licenses.url'
+            )
             ->join('spot_licenses', 'product_flat.product_id', '=', 'spot_licenses.product_id')
             ->whereIn('product_flat.product_id', $order_items)
             ->whereIn('spot_licenses.order_id', $orders->pluck('id'))
             ->whereNotNull('spot_id')
             ->get();
 
+        $products = $this->productFlatRepository
+            ->getModel()::query()
+            ->whereIn('product_id', $order_items->diff($spots->pluck('product_id')))
+            ->get();
+
+        $offlineProducts = $products
+            ->filter(function ($product) {
+                return empty($product->moodle_id) && empty($product->spot_id);
+            });
+
+        $moodleProducts =$products
+            ->filter(function ($product) {
+                return !empty($product->moodle_id);
+            });
+
+        $offlineCourses = ProductService::formatProductCard($offlineProducts);
+
+        $enrollments = MoodleService::getUserCourses($this->currentCustomer);
+        $moodleCourses = [];
+        if ($enrollments) {
+            $moodleCourses = MoodleFormatService::formatUserCourses($enrollments, $this->currentCustomer, $moodleProducts);
+        }
+
+
         $spots = SpotPlayerService::formatProduct($spots, $this->currentCustomer);
 
-        return view('shop::customers.account.moodle.index', compact('products', 'enrollments', 'spots'));
+        return view('shop::customers.account.moodle.index', compact('offlineCourses', 'moodleCourses', 'spots'));
     }
 
     public function redirectToCourse()

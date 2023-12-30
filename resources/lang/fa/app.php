@@ -10,7 +10,7 @@ return [
             ],
             'moodle'=>[
                 'index'=>[
-                'page-title' => 'دوره های مجازی'
+                'page-title' => 'دوره های من'
                 ]
             ]
         ],

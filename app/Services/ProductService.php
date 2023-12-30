@@ -5,6 +5,7 @@ namespace App\Services;
 
 
 use App\Shop\Facades\ProductImage;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProductService
 {
@@ -63,5 +64,17 @@ class ProductService
             'category_name' => $product->category_name,
             'teacher_name' => $product->teacher_name ?? '',
         ];
+    }
+
+    public static function formatProductCard(Collection $products)
+    {
+
+        return $products->map(function ($product) {
+            //$item['id'] = $product->spot_id;
+            $item['moodle_url'] = '#';
+            $item['fullname'] = $product->short_name;
+            $item['image'] = productimage()->getProductBaseImage($product)['medium_image_url'];
+            return $item;
+        });
     }
 }
