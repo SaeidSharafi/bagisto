@@ -36,7 +36,8 @@ use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 use Webkul\Admin\Http\Controllers\Sales\OrderController;
 use Webkul\Shop\Http\Controllers\OnepageController;
 
-Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
+Route::group(
+    ['middleware' => ['web', 'locale', 'theme', 'currency']],
     function () {
 
         Route::get('/checkout/get-pyaments', [OnepageController::class, 'getPaymentMethods'])
@@ -55,8 +56,10 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
                 /**
                  * Login & register routes.
                  */
-                Route::get('login-register',
-                    [JeduLoginRegistrationController::class, 'show'])
+                Route::get(
+                    'login-register',
+                    [JeduLoginRegistrationController::class, 'show']
+                )
                     ->defaults('_config', [
                         'view' => 'shop::customers.auth.index'
                     ])->name('customer.auth.create');
@@ -69,37 +72,44 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
 
                 // Login.
                 Route::post('login', [JeduSessionController::class, 'create'])->defaults('_config', [
-                    'redirect' => 'customer.moodle.index',
+                    'redirect' => 'customer.my-course.index',
                 ])->middleware('web_throttle:10,1')->name('customer.session.create');
 
                 /**
                  * Registration routes.
                  */
                 //// Show registration form.
-                Route::get('register',
+                Route::get(
+                    'register',
                     static function () {
                         return redirect()->route('customer.auth.create');
                     }
                 )->name('customer.register.show');
 
                 // Store new registered user.
-                Route::post('register',
-                    [JeduLoginRegistrationController::class, 'store'])
+                Route::post(
+                    'register',
+                    [JeduLoginRegistrationController::class, 'store']
+                )
                     ->defaults('_config', [
                         'redirect'        => 'customer.session.index',
                         'redirect_verify' => 'customer.sms.verify.show',
                     ])->name('customer.register.create');
 
                 // Verify account.
-                Route::get('register/confirm/{token}',
-                    [JeduLoginRegistrationController::class, 'showVerify'])
+                Route::get(
+                    'register/confirm/{token}',
+                    [JeduLoginRegistrationController::class, 'showVerify']
+                )
                     ->defaults('_config', [
                         'view' => 'shop::customers.signup.verify'
                     ])->name('customer.sms.verify.show');
 
                 // Verify account.
-                Route::post('register/confirm/{token}',
-                    [JeduLoginRegistrationController::class, 'verifyAccountWithSMS'])
+                Route::post(
+                    'register/confirm/{token}',
+                    [JeduLoginRegistrationController::class, 'verifyAccountWithSMS']
+                )
                     ->defaults('_config', ['redirect_on_fail' => 'customer.sms.verify.show'])
                     ->middleware('web_throttle:10,1')
                     ->name('customer.sms.verify.complete');
@@ -148,12 +158,12 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
                     /**
                      * Moodle
                      */
-                    Route::get('moodle', [MyCourseController::class, 'index'])->defaults('_config', [
+                    Route::get('my-courses', [MyCourseController::class, 'index'])->defaults('_config', [
                         'view' => 'shop::customers.account.profile.index'
-                    ])->name('customer.moodle.index');
+                    ])->name('customer.my-course.index');
 
                     Route::get('moodle/redirect', [MyCourseController::class, 'redirectToCourse'])
-                        ->name('customer.moodle.redirect');
+                        ->name('customer.my-course.redirect');
 
                     /**
                      * SpotPlayer
@@ -168,8 +178,10 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
                 //Route::redirect('login',route('customer.register.index'));
             });
 
-            Route::get('/category-details',
-                [JeduShopController::class, 'categoryDetails'])
+            Route::get(
+                '/category-details',
+                [JeduShopController::class, 'categoryDetails']
+            )
                 ->name('velocity.category.details');
 
             Route::get('/category-products/{categoryId}', [JeduShopController::class, 'getCategoryProducts'])
@@ -184,14 +196,15 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
             //Route::get('page/{category}/{url_key}',
             //    [\Webkul\CMS\Http\Controllers\Shop\PagePresenterController::class, 'presenter'])->name('shop.cms.page');
         });
-    });
+    }
+);
 Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => config('app.admin_url')], function () {
     Route::prefix('sales')->group(function () {
         Route::prefix('orders')->group(function () {
             Route::get('complete/{id}', [OrderController::class, 'complete'])
                 ->name('admin.sales.orders.complete');
-                Route::get('sync-ims/{id}', [OrderController::class, 'syncIms'])
-                ->name('admin.sales.orders.sync-ims');
+            Route::get('sync-ims/{id}', [OrderController::class, 'syncIms'])
+            ->name('admin.sales.orders.sync-ims');
 
             Route::get('/upload', [\App\Http\Controllers\Admin\OrderController::class, 'index'])
                 ->name('admin.sales.order.bulk.index');
@@ -253,8 +266,8 @@ Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => conf
 
 });
 
-Breadcrumbs::for('customer.moodle.index', function (BreadcrumbTrail $trail) {
+Breadcrumbs::for('customer.my-course.index', function (BreadcrumbTrail $trail) {
     $trail->parent('customer.profile.index');
 
-    $trail->push(trans('app.customer.account.moodle.index.page-title'), route('customer.moodle.index'));
+    $trail->push(trans('app.customer.account.moodle.index.page-title'), route('customer.my-course.index'));
 });
