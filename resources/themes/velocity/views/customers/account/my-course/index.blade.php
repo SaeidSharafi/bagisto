@@ -27,13 +27,12 @@
             </div>
             <div class="row remove-padding-margin">
                 @foreach($offlineCourses as $offlineCourse)
-                @include('shop::customers.account.moodle.card', [ 'cardClass' =>
-                'category-product-image-container', 'item' => $offlineCourse ])
-                @endforeach
+                @include('shop::customers.account.my-course.card', [ 'cardClass'
+                => 'category-product-image-container', 'item' => $offlineCourse
+                ]) @endforeach
             </div>
         </div>
-        @endif
-        @if ($moodleCourses)
+        @endif @if ($moodleCourses)
         <div class="mb-4">
             <div
                 class="account-heading py-3 px-3"
@@ -43,13 +42,12 @@
             </div>
             <div class="row remove-padding-margin">
                 @foreach($moodleCourses as $moodleCourse)
-                @include('shop::customers.account.moodle.card', [ 'cardClass' =>
-                'category-product-image-container', 'item' => $moodleCourse ])
-                @endforeach
+                @include('shop::customers.account.my-course.card', [ 'cardClass'
+                => 'category-product-image-container', 'item' => $moodleCourse
+                ]) @endforeach
             </div>
         </div>
-        @endif
-        @if ($spots->isNotEmpty())
+        @endif @if ($spots->isNotEmpty())
         <div class="mb-4">
             <div
                 class="account-heading py-3 px-3"
@@ -59,8 +57,8 @@
             </div>
             <div class="row remove-padding-margin">
                 @foreach($spots as $spot)
-                @include('shop::customers.account.moodle.card', [ 'cardClass' =>
-                'category-product-image-container', 'item' => $spot ])
+                @include('shop::customers.account.my-course.card', [ 'cardClass'
+                => 'category-product-image-container', 'item' => $spot ])
                 @endforeach
             </div>
         </div>

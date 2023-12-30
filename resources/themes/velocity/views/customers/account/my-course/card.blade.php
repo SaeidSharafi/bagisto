@@ -1,6 +1,6 @@
 <div class="px-2 my-2 product-card-wrapper">
     <a target="_blank"
-       href="{{$item['moodle_url']}}"
+       href="{{$item['url']}}"
        title="{{$item['fullname']}}" class="unset">
         <div class="card grid-card product-card border" style="aspect-ratio: auto;">
             <div class="product-image-container">

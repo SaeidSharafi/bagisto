@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 use Webkul\Product\Repositories\ProductFlatRepository;
 use Webkul\Sales\Repositories\OrderRepository;
 
-class MoodleController extends Controller
+class MyCourseController extends Controller
 {
 
     /**
@@ -121,7 +121,7 @@ class MoodleController extends Controller
 
         $spots = SpotPlayerService::formatProduct($spots, $this->currentCustomer);
 
-        return view('shop::customers.account.moodle.index', compact('offlineCourses', 'moodleCourses', 'spots'));
+        return view('shop::customers.account.my-course.index', compact('offlineCourses', 'moodleCourses', 'spots'));
     }
 
     public function redirectToCourse()

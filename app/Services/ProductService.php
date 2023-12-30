@@ -71,7 +71,7 @@ class ProductService
 
         return $products->map(function ($product) {
             //$item['id'] = $product->spot_id;
-            $item['moodle_url'] = '#';
+            $item['url'] = "/{$product->url_key}";
             $item['fullname'] = $product->short_name;
             $item['image'] = productimage()->getProductBaseImage($product)['medium_image_url'];
             return $item;

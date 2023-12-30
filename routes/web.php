@@ -24,7 +24,7 @@
 use App\Http\Controllers\Admin\CmsCategoryController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\ResetCustomerPasswordController;
-use App\Http\Controllers\MoodleController;
+use App\Http\Controllers\MyCourseController;
 use App\Http\Controllers\Shop\API\JeduShopController;
 use App\Http\Controllers\Shop\Customer\JeduCustomerController;
 use App\Http\Controllers\Shop\Customer\JeduForgotPassword;
@@ -148,17 +148,17 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']],
                     /**
                      * Moodle
                      */
-                    Route::get('moodle', [MoodleController::class, 'index'])->defaults('_config', [
+                    Route::get('moodle', [MyCourseController::class, 'index'])->defaults('_config', [
                         'view' => 'shop::customers.account.profile.index'
                     ])->name('customer.moodle.index');
 
-                    Route::get('moodle/redirect', [MoodleController::class, 'redirectToCourse'])
+                    Route::get('moodle/redirect', [MyCourseController::class, 'redirectToCourse'])
                         ->name('customer.moodle.redirect');
 
                     /**
                      * SpotPlayer
                      */
-                    Route::get('vc/{spotLicense}', [MoodleController::class, 'redirectToSpotPlayer'])
+                    Route::get('vc/{spotLicense}', [MyCourseController::class, 'redirectToSpotPlayer'])
                         ->defaults('_config', [
                             'view' => 'shop::customers.account.profile.index'
                         ])->name('customer.spot.player');

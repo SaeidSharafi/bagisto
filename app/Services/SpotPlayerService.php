@@ -66,7 +66,7 @@ class SpotPlayerService
 
         return $products->map(function ($product) use ($customer) {
             //$item['id'] = $product->spot_id;
-            $item['moodle_url'] = route('customer.spot.player', $product->spot_id);
+            $item['url'] = route('customer.spot.player', $product->spot_id);
             $item['fullname'] = $product->short_name;
             $item['image'] = productimage()->getProductBaseImage($product)['medium_image_url'];
             return $item;
