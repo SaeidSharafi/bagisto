@@ -1,5 +1,5 @@
 @extends('shop::customers.account.index') @section('page_title')
-{{ __('shop::app.customer.account.order.index.page-title') }}
+{{ __('app.customer.account.moodle.index.page-title') }}
 @endsection @section('page-detail-wrapper')
 <div class="account-head mb-10">
     <span class="back-icon">
