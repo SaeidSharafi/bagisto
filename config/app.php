@@ -421,6 +421,8 @@ return [
 
     'teacher' => [
         'role_id' => env('TEACHER_ROLE_ID', 3),
-    ]
+    ],
+
+    'shop_phone' => env('SHOP_PHONE', '02833376797')
 
 ];

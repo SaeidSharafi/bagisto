@@ -74,6 +74,7 @@ class OrderCompletedNotification extends Notification implements ShouldQueue
         $parameters = [
             'name'   => $this->order->customer_first_name.' '.$this->order->customer_last_name,
             'course' => $this->order->items->first()->name,
+            'phone'  => config('app.shop_phone'),
         ];
 
         $to = $this->order->customer_phone ?: $this->order->customer->phone;
