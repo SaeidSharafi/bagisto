@@ -74,7 +74,6 @@ class NewOrderNotification extends Notification implements ShouldQueue
             'name'   => $this->order->customer_first_name.' '.$this->order->customer_last_name,
             'course' => $this->order->items->first()->name,
             'order'  => $this->order->increment_id,
-            'phone'  => config('app.shop_phone'),
         ];
 
         $to = $this->order->customer_phone ?: $this->order->customer->phone;
