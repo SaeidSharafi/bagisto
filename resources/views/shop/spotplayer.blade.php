@@ -88,7 +88,7 @@
              }
         </style>
         <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-        <link rel="stylesheet" type="text/css" href="/css/spot.css">
+        <link rel="stylesheet" type="text/css" href="/spot.css">
     </head>
     <body style="margin: 0">
         <div class="">
