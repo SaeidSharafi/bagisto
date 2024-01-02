@@ -72,8 +72,9 @@ class HomeController extends Controller
                     'short_name' => $special_product->short_name,
                     'special_price_to' => $velocity->special_to,
                     'url_key' => $special_product->url_key,
-                    'specialOfferTimeLeft' => Carbon::parse($velocity->special_to)->diff(Carbon::now())
-                        ->format('%d:%H:%I:%S'),
+                    'specialOfferTimeLeft' => $velocity->special_to
+                    ? Carbon::parse($velocity->special_to)->diff(Carbon::now())->format('%d:%H:%I:%S')
+                    : '00:00:00:00',
                 ];
             }
 
