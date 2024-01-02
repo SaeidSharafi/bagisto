@@ -259,10 +259,11 @@
                         <p class="font-bold text-2xl text-[#243fb3] mb-10">
                             راهنمای نصب
                         </p>
-                        <img
-                            src="/images/shop/spot/poster.jpg"
-                            class="object-contain w-full"
-                        />
+                        <video class="object-contain w-full" controls poster="/images/shop/spot/poster.jpg">
+                            <source src="/spot_guide.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                          </video>
+
                     </div>
                 </section>
             </main>
