@@ -128,7 +128,7 @@ class MoodleService
             \Log::error("USER IS INCOMPLETE");
             return false;
         }
-        $user = self::getUser($customer->national_code);
+        $user = self::getUserByUsername($customer->national_code);
         if ($user) {
             \Log::info("USER Already Exist");
             return $user;
@@ -248,7 +248,7 @@ class MoodleService
             return;
         }
 
-        $user = self::getUser($customer->national_code);
+        $user = self::getUserByUsername($customer->national_code);
         if (!$user) {
             \Log::error("USER NOT FOUND");
             return;
@@ -378,7 +378,7 @@ class MoodleService
         }
         $customer = $order->customer;
 
-        $user = self::getUser($customer->national_code);
+        $user = self::getUserByUsername($customer->national_code);
         if (!$user) {
             \Log::error("USER NOT FOUND");
             return;
@@ -465,7 +465,7 @@ class MoodleService
         return false;
     }
 
-    public static function getUser($username)
+    public static function getUserByUsername($username)
     {
         $token = config('moodle.moodle_core_token');
         $functionname = 'core_user_get_users_by_field';
@@ -504,7 +504,45 @@ class MoodleService
         }
         return null;
     }
+    public static function getUserByEmail($email)
+    {
+        $token = config('moodle.moodle_core_token');
+        $functionname = 'core_user_get_users_by_field';
+        $root = config('moodle.moodle_address');
 
+        if (!$root) {
+            \Log::error("MOODLE ADDRESS EMPTY");
+            return;
+        }
+
+        if (!$token) {
+            \Log::error("AUTH TOKEN EMPTY");
+            return;
+        }
+
+        //$user1 = new stdClass();
+        $data = [
+            'field'  => 'email',
+            'values' => [
+                $email
+            ]
+        ];
+
+        $url = $root.'/webservice/rest/server.php'.'?wstoken='.$token.'&wsfunction='.$functionname
+            .'&moodlewsrestformat=json';
+
+        try {
+            $response = Http::asForm()
+                ->post($url, $data)
+                ->throw();
+
+            return json_decode($response->body(), true);
+        } catch (\Exception $exception) {
+
+            report($exception);
+        }
+        return null;
+    }
     public static function getUserCourses(JeduCustomer $customer)
     {
         $token = config('moodle.moodle_core_token');
@@ -571,7 +609,10 @@ class MoodleService
     protected static function checkUser($customer)
     {
 
-        $user = self::getUser($customer->national_code);
+        $user = self::getUserByUsername($customer->national_code);
+        if (! $user) {
+            $user =  self::getUserByEmail($customer->email);
+        }
         if ($user) {
             return $user;
         }

@@ -51,8 +51,9 @@ class CompleteOrders extends Command
             }
 
         } catch (\Exception $e) {
+            $this->orderRepository->updateOrderStatus($order, 'processing');
+            Log::error("$order->increment_id :" . $e->getMessage(), $order->toArray());
             throw $e;
-            Log::error($e->getMessage());
         }
     }
 }
