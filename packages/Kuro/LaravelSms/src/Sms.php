@@ -230,7 +230,7 @@ class Sms
      */
     public function send()
     {
-        if ($this->dry_run) {
+        if ($this->dry_run  || config('sms.sandbox')) {
             if (is_array($this->parameters)) {
                 \Log::info("Sending [".implode($this->parameters)."] sms to [".implode(",", $this->to)."]");
             } else {

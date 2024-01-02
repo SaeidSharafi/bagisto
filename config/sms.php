@@ -1,7 +1,7 @@
 <?php
 return [
     'default' => 'rangine',
-
+    'sandbox' => env('SMS_SANDBOX', true),
     'gateway' => [
         'melipayamak'   => [
             'website'    => 'http://melipayamak.ir',
