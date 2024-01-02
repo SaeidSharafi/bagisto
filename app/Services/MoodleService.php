@@ -283,7 +283,7 @@ class MoodleService
 
     public static function updateUserEnrolment(Order $order)
     {
-        if (!$order->items->first()->product->moodle_id) {
+        if (!$order->items->first()?->product?->moodle_id) {
             \Log::info("Order item is not moodle type.");
             return null;
         }

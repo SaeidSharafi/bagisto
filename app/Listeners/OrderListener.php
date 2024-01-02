@@ -28,7 +28,7 @@ class OrderListener
         if ($order->status === Order::STATUS_COMPLETED) {
             Log::info("UpdateSpotLicense",$order->toArray());
             foreach ($order->items as $item) {
-                if ($item->product->spot_id) {
+                if ($item->product?->spot_id) {
                     Log::info("UpdateSpotLicense: {$item->product->spot_id}");
                     $result = SpotPlayerService::generateLicense($order, $item);
                 }

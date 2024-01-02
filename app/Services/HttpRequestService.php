@@ -38,7 +38,7 @@ class HttpRequestService
 
     public function UpdateRegisteration()
     {
-        if(! $api_key = config('app.ims.api_key')){
+        if(! $api_key = config('app.ims.api_key')) {
             throw new \InvalidArgumentException(__('app.response.sync-ims-api-key'));
         }
         $registrations = [];
@@ -61,7 +61,7 @@ class HttpRequestService
             $date_of_birth = $date_of_birth->format('Y-m-d');
         }
 
-        $comments = $this->order->comments->pluck('comment')->join(" || ");
+        $comments = $this->order->comments->pluck('comment')->prepend('ثبت‌نام آنلاین')->join(" || ");
         $registrations = [
             'user_id'            => self::SYSTEM_USER_ID,
             'created'            => $this->order->created_at->format('Y-m-d h:i:s'),
@@ -84,7 +84,6 @@ class HttpRequestService
             'intro_method'  => 3,
             'contact_way'   => 5,
             'discount_code' => $this->order->coupon_code ?: '',
-            'note'       => $comments,
         ];
 
         foreach ($this->order->items as $item) {
@@ -104,6 +103,7 @@ class HttpRequestService
                     'bill' => $this->order->increment_id,
                     'date' => $item->created_at->format('Y-m-d'),
                 ],
+                'note'       =>  $comments,
             ];
             $registrations['registeraions'][] = $registration;
         }
@@ -119,7 +119,6 @@ class HttpRequestService
 
         if ($respons->ok()) {
             $enrolment = $respons->json('enrolment');
-            dd($respons->json());
             if(!$this->order->ims_synced_at) {
                 Order::where('id', $this->order->id)->update([
                     'ims_synced_at' => $enrolment['created_at'],
