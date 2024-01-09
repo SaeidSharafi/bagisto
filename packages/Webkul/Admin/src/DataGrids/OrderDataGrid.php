@@ -56,7 +56,8 @@ class OrderDataGrid extends DataGrid
                 'channel_name',
                 'orders.status',
                 'orders.status as order_status',
-                'order_items.product_number'
+                'order_items.product_number',
+                'order_items.sku',
             )
             ->addSelect(DB::raw('CONCAT('.DB::getTablePrefix().'orders.customer_first_name, " ", '.DB::getTablePrefix()
                 .'orders.customer_last_name) as billed_to'))
@@ -132,6 +133,15 @@ class OrderDataGrid extends DataGrid
             'closure'    => function ($value) {
                 return $value->product_number ? "{$value->product_name} ({$value->product_number})" : $value->product_name;
             }
+        ]);
+        $this->addColumn([
+            'index'      => 'sku',
+            'db_name'    => 'order_items.sku',
+            'label'      => trans('admin::app.datagrid.sku'),
+            'type'       => 'string',
+            'searchable' => true,
+            'sortable'   => false,
+            'filterable' => false,
         ]);
         $this->addColumn([
             'index'      => 'category_name',
