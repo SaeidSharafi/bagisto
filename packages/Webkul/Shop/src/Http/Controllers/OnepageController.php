@@ -261,6 +261,7 @@ class OnepageController extends Controller
         }
 
         $order = $this->orderRepository->create(Cart::prepareDataForOrder());
+        $order->orderRepository->updateOrderStatus($order,'processing');
 
         Cart::deActivateCart();
 
