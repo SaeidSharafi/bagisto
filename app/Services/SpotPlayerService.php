@@ -4,8 +4,11 @@ namespace App\Services;
 
 use App\Models\SpotLicense;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Webkul\Sales\Repositories\OrderRepository;
+
 
 class SpotPlayerService
 {
@@ -31,7 +34,13 @@ class SpotPlayerService
         $data['name'] = $order->customer_first_name." ".$order->customer_last_name;
         $data['payload'] = $order->increment_id;
         $data['test'] = config('app.spot_player.sandbox');
-        $data["watermark"] = ["texts" => [["text" => $order->increment_id]]];
+        $data["watermark"] = [
+            "texts" => [
+                ["text" => $order->increment_id],
+                ["text" => $order->customer?->national_code],
+                ["text" => $order->customer?->phone],
+            ]
+        ];
 
         $api_key = config('app.spot_player.api_key');
         if (!$api_key) {
