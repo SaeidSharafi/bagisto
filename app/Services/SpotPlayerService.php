@@ -36,7 +36,6 @@ class SpotPlayerService
         $data['test'] = config('app.spot_player.sandbox');
         $data["watermark"] = [
             "texts" => [
-                ["text" => $order->increment_id],
                 ["text" => $order->customer?->national_code],
                 ["text" => $order->customer?->phone],
             ]
