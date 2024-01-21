@@ -198,6 +198,13 @@ class CustomerDataGrid extends DataGrid
             'icon' => 'icon trash-icon',
             'title' => trans('admin::app.customers.customers.delete-help-title'),
         ]);
+        $this->addAction([
+            'method' => 'GET',
+            'route' => 'admin.customers.impersonate',
+            'icon' => 'icon eye-icon',
+            'target' => '_blank',
+            'title' => trans('admin::app.customers.customers.impersonate'),
+        ]);
     }
 
     /**

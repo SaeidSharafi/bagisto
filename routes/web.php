@@ -220,6 +220,7 @@ Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => conf
     Route::get('sms', [\App\Http\Controllers\Admin\SmsController::class, 'index'])
         ->name('admin.sms.index');
 
+
     Route::prefix('blog')->group(function () {
         Route::prefix('category')->group(function () {
             Route::get('/', [CmsCategoryController::class, 'index'])->defaults('_config', [
@@ -262,6 +263,10 @@ Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => conf
             ->name('admin.customers.bulk.index');
         Route::post('/upload', [CustomerController::class, 'uploadCSV'])
             ->name('admin.customers.bulk.upload');
+
+
+        Route::get('impersonate/{customer}', [\App\Http\Controllers\Admin\CustomerController::class, 'impersonate'])
+            ->name('admin.customers.impersonate');
     });
 
 });

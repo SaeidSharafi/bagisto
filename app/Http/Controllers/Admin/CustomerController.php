@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Imports\CustomersImport;
+use App\Models\Shop\JeduCustomer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Webkul\Customer\Repositories\CustomerRepository;
@@ -19,6 +20,15 @@ class CustomerController extends \App\Http\Controllers\Controller
     public function index(Request $request)
     {
         return view('admin::customers.bulk')->with('data', null);
+    }
+
+    public function impersonate(JeduCustomer $customer){
+        if (auth()->guard('admin')->check()
+            && auth()->guard('admin')->user()->hasPermission('customers.customers.impersonate')){
+            auth()->guard('customer')->loginUsingId($customer->id);
+            return redirect()->route('customer.my-course.index');
+        }
+        abort(403);
     }
 
     public function uploadCSV(Request $request)

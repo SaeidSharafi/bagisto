@@ -31,7 +31,8 @@ return [
             'is_moodle_user'  => 'کاربر مودل',
             'bulk-btn-title'  => 'وارد کردن',
             'is_foriegn' => 'اتباع خارجی'
-        ]
+        ],
+        'impersonate' => 'ورود در قالب فراگیر',
     ],
     'sales'         => [
         'orders'       => [

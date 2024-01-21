@@ -12,5 +12,11 @@ return [
         'name' => 'shop::app.customer.reset-password.title',
         'route' => 'admin.customers.reset-password',
         'sort' => 1,
+    ],
+    [
+        'key' => 'customers.customers.impersonate',
+        'name' => 'admin.customers.impersonate',
+        'route' => 'admin.customers.impersonate',
+        'sort' => 1,
     ]
 ];
