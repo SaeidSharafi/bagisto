@@ -149,7 +149,7 @@
                         ></div>
                     </div>
                     <div
-                        class="-translate-y-1/2 w-full object-contain relative -mt-24 z-40 h-full -mb-80 md:-mb-48 pointer-events-none"
+                        class="-translate-y-1/2 w-full object-contain relative -mt-24 z-40 h-full -mb-80 md:-mb-48" style="pointer-events: none"
                     >
                         <img
                             src="/images/shop/spot/pc.png"
