@@ -22,13 +22,10 @@ class CustomerController extends \App\Http\Controllers\Controller
         return view('admin::customers.bulk')->with('data', null);
     }
 
-    public function impersonate(JeduCustomer $customer){
-        if (auth()->guard('admin')->check()
-            && auth()->guard('admin')->user()->hasPermission('customers.customers.impersonate')){
-            auth()->guard('customer')->loginUsingId($customer->id);
-            return redirect()->route('customer.my-course.index');
-        }
-        abort(403);
+    public function impersonate(JeduCustomer $customer)
+    {
+        auth()->guard('customer')->loginUsingId($customer->id);
+        return redirect()->route('customer.my-course.index');
     }
 
     public function uploadCSV(Request $request)
