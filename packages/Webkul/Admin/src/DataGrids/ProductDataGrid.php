@@ -96,7 +96,10 @@ class ProductDataGrid extends DataGrid
             ->leftJoin('attribute_families', 'products.attribute_family_id', '=', 'attribute_families.id')
             ->leftJoin('product_inventories', 'product_flat.product_id', '=', 'product_inventories.product_id')
             ->leftJoin('product_categories', 'product_categories.product_id', '=', 'products.id')
-            ->leftJoin('category_translations', 'product_categories.category_id', '=', 'category_translations.category_id')
+            ->leftJoin('category_translations', function ($query) {
+                $query->on('category_translations.category_id', '=', 'product_categories.category_id')
+                    ->where('category_translations.locale', core()->getRequestedLocaleCode());
+            })
             ->select(
                 'product_flat.locale',
                 'product_flat.channel',
