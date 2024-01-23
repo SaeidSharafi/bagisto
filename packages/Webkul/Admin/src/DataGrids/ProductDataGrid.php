@@ -108,7 +108,8 @@ class ProductDataGrid extends DataGrid
                 'product_flat.status',
                 'product_flat.price',
                 'attribute_families.name as attribute_family',
-                'category_translations.name as category_name',
+                //'category_translations.name as category_name',
+                DB::raw('GROUP_CONCAT(category_translations.name) AS category_name'),
                 DB::raw('SUM(' . DB::getTablePrefix() . 'product_inventories.qty) as quantity')
             );
 
@@ -176,8 +177,8 @@ class ProductDataGrid extends DataGrid
             'label'      => trans('admin::app.category'),
             'type'       => 'string',
             'searchable' => true,
-            'sortable'   => true,
-            'filterable' => true,
+            'sortable'   => false,
+            'filterable' => false,
         ]);
         $this->addColumn([
             'index'      => 'attribute_family',
