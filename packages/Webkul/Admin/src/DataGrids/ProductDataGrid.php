@@ -95,6 +95,8 @@ class ProductDataGrid extends DataGrid
             ->leftJoin('products', 'product_flat.product_id', '=', 'products.id')
             ->leftJoin('attribute_families', 'products.attribute_family_id', '=', 'attribute_families.id')
             ->leftJoin('product_inventories', 'product_flat.product_id', '=', 'product_inventories.product_id')
+            ->leftJoin('product_categories', 'product_categories.product_id', '=', 'products.id')
+            ->leftJoin('category_translations', 'product_categories.category_id', '=', 'category_translations.category_id')
             ->select(
                 'product_flat.locale',
                 'product_flat.channel',
@@ -106,6 +108,7 @@ class ProductDataGrid extends DataGrid
                 'product_flat.status',
                 'product_flat.price',
                 'attribute_families.name as attribute_family',
+                'category_translations.name as category_name',
                 DB::raw('SUM(' . DB::getTablePrefix() . 'product_inventories.qty) as quantity')
             );
 
@@ -167,7 +170,15 @@ class ProductDataGrid extends DataGrid
             'sortable'   => true,
             'filterable' => true,
         ]);
-
+        $this->addColumn([
+            'index'      => 'category_name',
+            'db_name'    => 'category_translations.name',
+            'label'      => trans('admin::app.category'),
+            'type'       => 'string',
+            'searchable' => true,
+            'sortable'   => true,
+            'filterable' => true,
+        ]);
         $this->addColumn([
             'index'      => 'attribute_family',
             'label'      => trans('admin::app.datagrid.attribute-family'),
