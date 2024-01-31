@@ -99,7 +99,8 @@ class HttpRequestService
                 'payment'   => [
                     'discount_type'  => $item->base_discount_amount > 0 ? 'manual' : 'none',
                     'discount_amount' => (int)$item->discount_amount,
-                    'amount'  => (int)$item->base_total_invoiced,
+                    'discount_code' => $item->coupon_code,
+                    'amount'  => (int)$item->grand_total,
                     'bill' => $this->order->increment_id,
                     'date' => $item->created_at->format('Y-m-d'),
                 ],
