@@ -47,20 +47,17 @@ class SpotPlayerService
             return;
         }
 
-        try {
-            $response = Http::withBody(json_encode($data, JSON_THROW_ON_ERROR), 'application/json')
+        $response = Http::withBody(json_encode($data, JSON_THROW_ON_ERROR), 'application/json')
                 ->withHeaders([
                     '$API' => $api_key
                 ])
                 ->post(self::API_ENDPOINT)
                 ->throw()
                 ->json();
-            $response['order_id'] = $order->id;
-            $response['product_id'] = $order_item->product_id;
-        } catch (\Exception $exception) {
-            report($exception);
-            return;
-        }
+        Log::info('Spot Response:',$response);
+        $response['order_id'] = $order->id;
+        $response['product_id'] = $order_item->product_id;
+
         if ($order->spot_license === null) {
             $order->spot_license()->create($response);
         } else {

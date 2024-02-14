@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Jobs\GenereateSpotLicenseJob;
 use App\Jobs\UpdateRegisteration;
 use App\Services\MoodleService;
 use App\Services\SpotPlayerService;
@@ -30,7 +31,8 @@ class OrderListener
             foreach ($order->items as $item) {
                 if ($item->product?->spot_id) {
                     Log::info("UpdateSpotLicense: {$item->product->spot_id}");
-                    $result = SpotPlayerService::generateLicense($order, $item);
+
+                     GenereateSpotLicenseJob::dispatch($order,$item);
                 }
             }
         }
