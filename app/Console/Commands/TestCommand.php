@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Services\HttpRequestService;
+use App\Services\RouyeshAPIService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\Process\Process;
@@ -43,16 +44,16 @@ class TestCommand extends Command
     {
         $order = $this->orderRepository->findOneWhere([
             'status' => 'completed',
-            'id' => 1154
+            'id' => 1688
         ]);
         try {
 
-            $request = new HttpRequestService($order, HttpRequestService::OP_UPDATE_REGISTERATION);
-            \Log::info("sending API Request");
+            $request = new RouyeshAPIService($order, HttpRequestService::OP_UPDATE_REGISTERATION);
+            echo "sending API Request";
 
             $response = $request->build();
 
-            \Log::info($response);
+            dump($response);
         } catch (\Exception $e) {
             echo $e->getMessage();
             Log::error($e->getMessage());
