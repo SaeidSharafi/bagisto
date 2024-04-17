@@ -40,8 +40,13 @@ return [
             'complete'       => 'تایید ثبت نام',
             'ims'              => [
                 'column' => 'وضعیت همگام سازی',
-                'synced'  => 'همگام سازی',
-                'not_synced'  => 'عدم همگام سازی',
+                'synced'  => 'همگام سازی IMS',
+                'not_synced'  => 'عدم همگام سازی IMS',
+            ],
+            'rouyesh'              => [
+                'column' => 'وضعیت همگام سازی',
+                'synced'  => 'همگام سازی رویش',
+                'not_synced'  => 'عدم همگام سازی رویش',
             ],
         ],
         'transactions' => [

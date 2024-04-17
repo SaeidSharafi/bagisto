@@ -38,6 +38,19 @@
                                 {{ moment(notification.order.created_at).fromNow() }}
                             </div>
                         </a>
+                        <a v-if="notification.type === 'rouyesh'" href="#" @click.prevent="readOne(notification)">
+                            <div class="notif-icon canceled">
+                                <span :class="ordertype['canceled'].icon"></span>
+                            </div>
+
+                            <div class="notif-content">
+                                {{ notification.message}}
+                            </div>
+
+                            <div class="notif-content">
+                                {{ moment(notification.created_at).fromNow() }}
+                            </div>
+                        </a>
                         <a v-else href="#" @click.prevent="readOne(notification)">
                             <div class="notif-icon completed">
                                 <span :class="ordertype['completed'].icon"></span>

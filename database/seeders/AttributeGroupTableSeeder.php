@@ -236,6 +236,11 @@ class AttributeGroupTableSeeder extends Seeder
                 'attribute_group_id' => '1',
                 'position'           => '2',
             ],
+            [
+                'attribute_id'       => '39',
+                'attribute_group_id' => '1',
+                'position'           => '2',
+            ],
         ]);
 
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');

@@ -44,7 +44,7 @@ class TestCommand extends Command
     {
         $order = $this->orderRepository->findOneWhere([
             'status' => 'completed',
-            'id' => 1688
+            'id' => 1700
         ]);
         try {
 

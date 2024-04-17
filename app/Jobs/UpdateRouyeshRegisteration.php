@@ -11,7 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class UpdateRegisteration implements ShouldQueue
+class UpdateRouyeshRegisteration implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -37,13 +37,9 @@ class UpdateRegisteration implements ShouldQueue
      */
     public function handle()
     {
-        // if (app()->isLocal()){
-        //     \Log::info("runing on local, skiping ims calls");
-        //     return;
-        // }
         if ($this->order) {
-            $request = new HttpRequestService($this->order, HttpRequestService::OP_UPDATE_REGISTERATION);
-            \Log::info("sending API Request");
+            $request = new RouyeshAPIService($this->order, HttpRequestService::OP_UPDATE_REGISTERATION);
+            \Log::info("sending Rouyesh API Request");
             try {
                 $request->build();
             } catch (\Exception $e) {

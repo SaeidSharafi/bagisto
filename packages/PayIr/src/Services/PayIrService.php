@@ -43,6 +43,8 @@ class PayIrService
      */
     protected $order;
 
+    protected $orderId;
+
     /**
      * OrderRepository $orderRepository
      *
@@ -88,11 +90,13 @@ class PayIrService
         $cart = $this->payir->getCart();
         $api_key = $this->payir->getConfigData('sandbox') ? "test"
             : $this->payir->getConfigData('api_key');
+        $this->order = $this->orderRepository->create(Cart::prepareDataForOrder());
+        $this->orderId = $this->order->id;
         $data = [
             'api'          => $api_key,
             'redirect'     => route('paydotir.callback'),
-            'amount'       => $cart->sub_total,
-            'factorNumber' => $cart->id,
+            'amount'       => (int) $this->order->grand_total,
+            'factorNumber' => $this->orderId."",
             'mobile'       => "",
             'description'  => ""
         ];
@@ -123,9 +127,6 @@ class PayIrService
 
         try {
             $this->verify();
-            $this->order
-                = $this->orderRepository->create(Cart::prepareDataForOrder());
-            //$this->getOrder();
             $this->processOrder();
             return $this->order;
         } catch (VerifyException $e) {
@@ -161,6 +162,7 @@ class PayIrService
      */
     protected function processOrder()
     {
+        $this->order = $this->orderRepository->find($this->response['factorNumber']);
         if ($this->response['status'] === 1) {
             if ($this->response['amount'] != $this->order->grand_total) {
                 throw new VerifyException("Process order Amount");

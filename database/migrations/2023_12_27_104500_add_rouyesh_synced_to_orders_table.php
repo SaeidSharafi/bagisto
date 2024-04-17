@@ -13,10 +13,10 @@ return new class extends Migration {
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            if (!Schema::hasColumn('orders', 'ims_synced_at')) {
-                $table->dateTime('rouyesh_synced_at')->nullable()->after('ims_enrolment_id');
-                $table->bigInteger('rouyesh_enrolment_id')->nullable()->after('rouyesh_synced_at');
+            if (!Schema::hasColumn('orders', 'rouyesh_synced_at')) {
+                $table->dateTime('rouyesh_synced_at')->nullable()->after('ims_synced_at');
             }
+
 
         });
     }
@@ -31,9 +31,6 @@ return new class extends Migration {
         Schema::table('orders', function (Blueprint $table) {
             if (Schema::hasColumn('orders', 'rouyesh_synced_at')) {
                 $table->dropColumn('rouyesh_synced_at');
-            }
-            if (Schema::hasColumn('orders', 'rouyesh_enrolment_id')) {
-                $table->dropColumn('rouyesh_enrolment_id');
             }
         });
     }

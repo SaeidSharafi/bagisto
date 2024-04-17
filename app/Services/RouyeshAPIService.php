@@ -10,12 +10,14 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Webkul\Notification\Repositories\NotificationRepository;
 use Webkul\Sales\Models\Order;
 
 class RouyeshAPIService
 {
     protected $order;
     protected $operation;
+    protected $notificationRepository;
 
     const OP_UPDATE_REGISTERATION = 1;
     const OP_REGISTER_STUDENT = 2;
@@ -27,6 +29,7 @@ class RouyeshAPIService
     {
         $this->order = $order;
         $this->operation = $operation;
+        $this->notificationRepository = new NotificationRepository(app());
     }
 
     public function build()
@@ -43,25 +46,21 @@ class RouyeshAPIService
         if ($this->order->status !== "completed") {
             return false;
         }
-
+        if ($this->order->rouyesh_synced_at){
+            return false;
+        }
         $username = config('app.rouyesh.username');
         $password = config('app.rouyesh.password');
         $apiUrl = config('app.rouyesh.base_url');
         if (!$username || !$password) {
             throw new \InvalidArgumentException(__('app.response.sync-ims-api-key'));
         }
-        $registrations = [];
 
         $customer = $this->order->customer;
         if ($customer->incomplete) {
             throw new \InvalidArgumentException(__('app.response.sync-ims-customer-incomplete'));
         }
 
-        //foreach ($this->order->items as $item) {
-        //    if (!$item->product_number) {
-        //        throw new \InvalidArgumentException(__('app.response.sync-ims-porduct-number'));
-        //    }
-        //}
 
         $respons = Http::asJson()
             ->post($apiUrl.'/Users/login', [
@@ -121,25 +120,33 @@ class RouyeshAPIService
                         "email"      => $customer->email,
                     ]
                 ]);
-            $resposne = $cutomerResposne->json();
-            if ($errors = data_get($resposne, 'errors')) {
-                dump($errors);
-                Log::error($errors);
-                throw new \Exception('Customer Creation failed');
-            }
-            $userId = data_get($resposne, 'data.UserID');
-            if (!$userId) {
-                throw new \Exception('َسثق Creation failed');
+            $response = $cutomerResposne->json();
+            if ($response->status() === 400) {
+                $responseJson = $response->json();
+                Log::error('encountered error while trying ot create user in rouyesh', $responseJson);
+                $this->notifyError($responseJson, $customer);
+                throw new \Exception('User Creation failed');
             }
 
-            $resposne = Http::withToken($token)
+            $userId = data_get($response, 'data.UserID');
+            if (!$userId) {
+                throw new \Exception('User Creation failed');
+            }
+
+            $response = Http::withToken($token)
                 ->asJson()
                 ->post($apiUrl.'/Students/'.$cityCode, [
                     "isActive" => true,
                     'userID'   => $userId,
                 ]);
+            if ($response->status() === 400) {
+                $responseJson = $response->json();
+                Log::error('encountered error while trying ot create student in rouyesh', $responseJson);
+                $this->notifyError($responseJson, $customer);
+                throw new \Exception('Customer Creation failed');
 
-            $studentId = $resposne->json('StudentID');
+            }
+            $studentId = $response->json('StudentID');
             if (!$studentId) {
                 throw new \Exception('Customer Creation failed');
             }
@@ -157,49 +164,72 @@ class RouyeshAPIService
             }
 
             $registration = [
-                'studentID'       => $studentId,
-                'classroomID'     => $product->rouyesh_code,
-                'RegisterTypeID' => 1,
-                'discountInfo'    => [
-                    'discountTypeID' => 4,
-                    'discountPrice'   => 2000
+                'studentID'              => $studentId,
+                'classroomID'            => $product->rouyesh_code,
+                'RegisterTypeID'         => 1,
+                'discountInfo'           => [
+                    'DiscountCode'    => '',
+                    'DiscountGroupID' => -1,
+                    'DiscountPercent' => 0,
+                    'discountTypeID'  => (int) $item->discount_amount > 0 ? 4 : 5,
+                    'discountPrice'   => (int) $item->discount_amount
                 ],
-                'cashPaymentInfo' => [
+                'cashPaymentInfo'        => [
                     "accountNumberID" => 75,
-                    "receiptNumber"   => "Order-".$this->order->increment_id,
-                    "receiptDate"     => $this->order->created_at->jdate('Y/m/d', 'en'),
+                    "receiptNumber"   => "shop-".$this->order->increment_id,
+                    "receiptDate"     => $item->created_at->jdate('Y/m/d', 'en'),
                     "paymentedAmount" => (int) $this->order->grand_total
                 ],
-                'description'     => $comments,
+                'description'            => $comments,
+                'CheqPaymentInfo'        => null,
+                'HekmatPaymentInfo'      => null,
+                'OrganizationContractID' => null,
+                'InstallmentCountForPay' => 1,
             ];
 
             $response = Http::withToken($token)
                 ->asJson()
                 ->post($apiUrl.'/Students/Register/', $registration);
-            dd($response);
-            if ($respons->ok()) {
-                $enrolment = $respons->json('enrolment');
-                if (!$this->order->rouyesh_synced_at) {
-                    Order::where('id', $this->order->id)->update([
-                        'rouyesh_synced_at'    => now(),
-                        'rouyesh_enrolment_id' => $enrolment['StudentRegisterID']
-                    ]);
-                }
+
+            if ($response->ok()) {
+                Order::where('id', $this->order->id)->update([
+                    'rouyesh_synced_at' => now(),
+                ]);
                 return true;
             }
 
-            if ($respons->status() === 404) {
+            if ($response->status() === 400) {
+                $responseJson = $response->json();
+                Log::error('encountered error while trying ot enrol user in rouyesh', $responseJson);
+                $this->notifyError($responseJson, $customer);
+                return false;
+            }
+            if ($response->status() === 404) {
                 throw new \InvalidArgumentException(__('app.response.sync-ims-course-notfound'));
             }
-            if ($respons->unauthorized()) {
+            if ($response->unauthorized()) {
                 throw new AuthenticationException($respons->json('message'));
             }
-            if ($respons->failed()) {
+            if ($response->failed()) {
                 Log::error('Registring enrolment in IMS failed: \n'.$respons->body());
             }
 
         }
 
         return false;
+    }
+
+    protected function notifyError(array $response, $customer)
+    {
+        if ($errors = data_get($response, 'errors')) {
+            $msg = __('admin::app.admin.system.customer').' '.$customer->first_name.' '.$customer->last_name;
+            $msg .= '، سفارش '.$this->order->increment_id.' خطا: ';
+            $msg .= $errors[0]['propertyErrors'][0];
+            $this->notificationRepository->create([
+                'type'     => 'rouyesh',
+                'message'  => $msg,
+                'order_id' => null
+            ]);
+        }
     }
 }

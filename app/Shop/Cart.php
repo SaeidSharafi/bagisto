@@ -18,6 +18,7 @@ use Webkul\Checkout\Traits\CartValidators;
 use Webkul\Customer\Repositories\CustomerAddressRepository;
 use Webkul\Customer\Repositories\CustomerRepository;
 use Webkul\Customer\Repositories\WishlistRepository;
+use Webkul\Product\Models\ProductFlat;
 use Webkul\Product\Repositories\ProductRepository;
 use Webkul\Shipping\Facades\Shipping;
 use Webkul\Tax\Helpers\Tax;
@@ -776,11 +777,12 @@ class Cart
     public function prepareDataForOrderItem($data): array
     {
         $locale = ['locale' => core()->getCurrentLocale()->code];
-
+        $product_flat = ProductFlat::where('product_id',$data['product_id'])->first();
         $finalData = [
-            'product'              => $this->productRepository->find($data['product_id']),
+            'product'              =>  $this->productRepository->find($data['product_id']),
             'sku'                  => $data['sku'],
             'product_number'       => $data['product_number'],
+            'rouyesh_code'         => $product_flat->rouyesh_code,
             'type'                 => $data['type'],
             'name'                 => $data['name'],
             'weight'               => $data['weight'],

@@ -39,14 +39,16 @@ class OrderDataGrid extends DataGrid
             ->when($product_ids, function ($query) use ($product_ids) {
                 $query->leftJoin('order_items', 'order_items.order_id', '=', 'orders.id')
                     ->whereIn('order_items.product_id', $product_ids);
-            })->when(!$product_ids, fn ($q) => $q->leftJoin('order_items', 'order_items.order_id', '=', 'orders.id'))
+            })->when(!$product_ids, fn($q) => $q->leftJoin('order_items', 'order_items.order_id', '=', 'orders.id'))
             ->leftJoin('product_categories', 'order_items.product_id', 'product_categories.product_id')
+            ->leftJoin('product_flat', 'order_items.product_id', 'product_flat.product_id')
             ->leftJoin('category_translations', 'product_categories.category_id', 'category_translations.category_id')
             ->groupBy('orders.id')
             ->addSelect(
                 'orders.id',
                 'orders.ims_synced_at',
                 'orders.ims_enrolment_id',
+                'orders.rouyesh_synced_at',
                 'orders.customer_phone',
                 'orders.increment_id',
                 'orders.base_sub_total',
@@ -58,6 +60,7 @@ class OrderDataGrid extends DataGrid
                 'orders.status as order_status',
                 'order_items.product_number',
                 'order_items.sku',
+                'product_flat.rouyesh_code',
             )
             ->addSelect(DB::raw('CONCAT('.DB::getTablePrefix().'orders.customer_first_name, " ", '.DB::getTablePrefix()
                 .'orders.customer_last_name) as billed_to'))
@@ -131,7 +134,8 @@ class OrderDataGrid extends DataGrid
             'sortable'   => true,
             'filterable' => true,
             'closure'    => function ($value) {
-                return $value->product_number ? "{$value->product_name} ({$value->product_number})" : $value->product_name;
+                return $value->product_number ? "{$value->product_name} ({$value->product_number})"
+                    : $value->product_name;
             }
         ]);
         $this->addColumn([
@@ -193,25 +197,32 @@ class OrderDataGrid extends DataGrid
                 if ($value->status == 'processing') {
                     return '<span class="badge badge-md badge-success">'
                         .trans('admin::app.sales.orders.order-status-processing').'</span>';
-                } elseif ($value->status == 'completed') {
+                }
+                if ($value->status == 'completed') {
                     return '<span class="badge badge-md badge-success">'
                         .trans('admin::app.sales.orders.order-status-success').'</span>';
-                } elseif ($value->status == 'canceled') {
+                }
+                if ($value->status == 'canceled') {
                     return '<span class="badge badge-md badge-danger">'
                         .trans('admin::app.sales.orders.order-status-canceled').'</span>';
-                } elseif ($value->status == 'closed') {
+                }
+                if ($value->status == 'closed') {
                     return '<span class="badge badge-md badge-info">'
                         .trans('admin::app.sales.orders.order-status-closed').'</span>';
-                } elseif ($value->status == 'pending') {
+                }
+                if ($value->status == 'pending') {
                     return '<span class="badge badge-md badge-warning">'
                         .trans('admin::app.sales.orders.order-status-pending').'</span>';
-                } elseif ($value->status == 'pending_payment') {
+                }
+                if ($value->status == 'pending_payment') {
                     return '<span class="badge badge-md badge-warning">'
                         .trans('admin::app.sales.orders.order-status-pending-payment').'</span>';
-                } elseif ($value->status == 'fraud') {
+                }
+                if ($value->status == 'fraud') {
                     return '<span class="badge badge-md badge-danger">'
                         .trans('admin::app.sales.orders.order-status-fraud').'</span>';
                 }
+                return '';
             },
         ]);
         $this->addColumn([
@@ -222,16 +233,28 @@ class OrderDataGrid extends DataGrid
             'searchable' => true,
             'filterable' => true,
             'closure'    => function ($value) {
+                $response = '';
+                $margin = $value->rouyesh_code && $value->product_number ? 'mb-10' : '';
                 if ($value->order_status == 'completed' && $value->product_number) {
                     if ($value->ims_synced_at) {
-                        return '<span class="badge badge-md badge-success">'
-                            .trans('admin.sales.orders.ims.synced').'</span>';
+                        $response = "<div class='badge badge-md badge-success {$margin}'>"
+                            .trans('admin.sales.orders.ims.synced')."</div>";
                     } else {
-                        return '<span class="badge badge-md badge-warning">'
-                        .trans('admin.sales.orders.ims.not_synced').'</span>';
+                        $response = "<div class='badge badge-md badge-warning {$margin}'>"
+                            .trans('admin.sales.orders.ims.not_synced')."</div>";
                     }
                 }
-                return '';
+                if ($value->order_status == 'completed' && $value->rouyesh_code) {
+                    if ($value->rouyesh_synced_at) {
+                        $response .= '<div class="badge badge-md badge-success">'
+                            .trans('admin.sales.orders.rouyesh.synced').'</div>';
+                    } else {
+                        $response .= '<div class="badge badge-md badge-warning">'
+                            .trans('admin.sales.orders.rouyesh.not_synced').'</div>';
+                    }
+                }
+
+                return $response;
             },
         ]);
         $this->addColumn([

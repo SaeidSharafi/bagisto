@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Jobs\GenereateSpotLicenseJob;
 use App\Jobs\UpdateRegisteration;
+use App\Jobs\UpdateRouyeshRegisteration;
 use App\Services\MoodleService;
 use App\Services\SpotPlayerService;
 use App\Traits\Sms;
@@ -21,6 +22,7 @@ class OrderListener
 
         MoodleService::updateUserEnrolment($order);
         UpdateRegisteration::dispatch($order);
+        UpdateRouyeshRegisteration::dispatch($order);
     }
 
     public function UpdateSpotLicense($order)
