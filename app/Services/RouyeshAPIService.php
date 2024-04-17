@@ -72,13 +72,8 @@ class RouyeshAPIService
         $cityCode = data_get($data, 'data.UserCityCenters.0.CityID');
         $token = data_get($data, 'token');
 
-        $date_of_birth = $customer->date_of_birth;
-        if ($date_of_birth instanceof Carbon) {
-            $date_of_birth = $date_of_birth->format('Y-m-d');
-        }
-
         $isForeigner = Validator::make(
-            ['string' => '123'],
+            ['string' => $customer->national_code],
             ['string' => new Nationalcode()]
         )->fails();
 
@@ -90,8 +85,8 @@ class RouyeshAPIService
                         [
                             'data'     => $isForeigner ? 'User_PassportNumber' : 'User_NationalCode',
                             'latinopt' => '=',
-                            'search'   => ['value' => '123'],
-                            //'search'   => ['value' => $customer->national_code],
+                            //'search'   => ['value' => '123'],
+                            'search'   => ['value' => $customer->national_code],
                         ]
                     ]
             ]);
@@ -106,13 +101,13 @@ class RouyeshAPIService
                     "lastName"       => $customer->last_name,
                     "password"       => $customer->national_code,
                     "retypePassword" => $customer->national_code,
-                    "username"       => '123Username',
+                    "username"       => $customer->national_code,
                     "cityID"         => $cityCode,
                     "sex"            => $customer->gender === 'Male',
                     "isActive"       => true,
                     "isForeigner"    => $isForeigner,
                     "nationalCode"   => $isForeigner ? null : $customer->national_code,
-                    "passportNumber" => $isForeigner ? '123' : null,
+                    "passportNumber" => $isForeigner ? $customer->national_code : null,
                     "mobile"         => $customer->phone,
                     "otherInfo"      => [
                         "fatherName" => $customer->father_name,
