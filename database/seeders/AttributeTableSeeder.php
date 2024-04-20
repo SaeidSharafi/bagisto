@@ -747,25 +747,6 @@ class AttributeTableSeeder extends Seeder
                 'created_at'          => $now,
                 'updated_at'          => $now,
                 'is_comparable'       => '0',
-            ],[
-                'id'                  => '39',
-                'code'                => 'rouyesh_code',
-                'admin_name'          => 'کد کلاس رویش',
-                'type'                => 'text',
-                'validation'          => null,
-                'position'            => '3',
-                'is_required'         => '0',
-                'is_unique'           => '1',
-                'value_per_locale'    => '0',
-                'value_per_channel'   => '0',
-                'is_filterable'       => '0',
-                'is_configurable'     => '0',
-                'is_user_defined'     => '0',
-                'is_visible_on_front' => '0',
-                'use_in_flat'         => '1',
-                'created_at'          => $now,
-                'updated_at'          => $now,
-                'is_comparable'       => '0',
             ],
         ]);
 
@@ -961,12 +942,6 @@ class AttributeTableSeeder extends Seeder
                 'name'         => 'کد دوره در اسپات پلیر',
                 'attribute_id' => '38',
             ],
-            [
-                'id'           => '39',
-                'locale'       => 'fa',
-                'name'         => 'کد کلاس در رویش',
-                'attribute_id' => '39',
-            ]
         ]);
     }
 }
