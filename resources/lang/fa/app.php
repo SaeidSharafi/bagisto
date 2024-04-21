@@ -66,6 +66,16 @@ return [
         'sync-ims-customer-incomplete' => 'اطلاعات فراگیر کامل نمی باشد',
         'sync-ims-course-notfound' => 'اطلاعات دوره در سامانه IMS یافت نشد',
 
+        'sync-rouyesh-success' => 'ثبت نام با موفقیت در سامانه رویش ثبت شد',
+        'sync-rouyesh-fail' => 'ثبت اطلاعات در سامانه رویش با خطا مواجه شد',
+        'sync-rouyesh-api-key' => 'کلید API سامانه رویش وجود ندارد',
+        'sync-rouyesh-unauthorized' => 'دسترسی غیرمجاز به سامانه رویش',
+        'sync-rouyesh-porduct-number' => 'کد دوره ثبت نشده است',
+        'sync-rouyesh-customer-incomplete' => 'اطلاعات فراگیر کامل نمی باشد',
+        'sync-rouyesh-course-notfound' => 'اطلاعات دوره در سامانه رویش یافت نشد',
+
+
+
         'complete-success' => 'ثبت نام با موفقیت تایید شد',
         'too-many-attemps' => 'تعداد درخواست بیش از حد مجاز میباشد. لطفا چند دقیقه صبر کرده و مجددا تلاش فرمایید'
     ]

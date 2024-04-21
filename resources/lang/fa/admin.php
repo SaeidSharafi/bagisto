@@ -60,6 +60,7 @@ return [
     'datagrid'      => [
         'complete' => 'تایید ثبت نام',
         'sync-ims' => 'ثبت در IMS',
+        'sync-rouyesh' => 'ثبت در رویش',
     ],
     'response'      => [
         'complete-error' => 'امکان تکمیل ثبت نام نمیباشد.'

@@ -3,6 +3,7 @@
 namespace Webkul\Admin\Http\Controllers\Sales;
 
 use App\Services\HttpRequestService;
+use App\Services\RouyeshAPIService;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Event;
 use Webkul\Admin\DataGrids\OrderDataGrid;
@@ -155,6 +156,26 @@ class OrderController extends Controller
             return redirect()->back();
         }
 
+    }
+    public function syncRouyesh($id)
+    {
+        $order = $this->orderRepository->find($id);
+        try {
+            $request = new RouyeshAPIService($order, HttpRequestService::OP_UPDATE_REGISTERATION);
+            $response = $request->build();
+            if($response) {
+                session()->flash('success', trans('app.response.sync-rouyesh-success', ['name' => 'Order']));
+                return redirect()->back();
+            }
+            session()->flash('error', trans('app.response.sync-rouyesh-fail', ['name' => 'Order']));
+            return redirect()->back();
+        } catch(\InvalidArgumentException $e) {
+            session()->flash('error', $e->getMessage());
+            return redirect()->back();
+        } catch(AuthenticationException $e) {
+            session()->flash('error', trans('app.response.sync-rouyesh-unauthorized', ['name' => 'Order']));
+            return redirect()->back();
+        }
 
     }
     /**

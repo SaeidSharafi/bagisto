@@ -295,7 +295,7 @@ class OrderDataGrid extends DataGrid
             ]);
         }
         $this->addAction([
-            'title'  => trans('admin.datagrid.sync_ims'),
+            'title'  => trans('admin.datagrid.complete'),
             'method' => 'GET',
             'route'  => 'admin.sales.orders.complete',
             'icon'   => 'icon completed-icon'
@@ -304,6 +304,12 @@ class OrderDataGrid extends DataGrid
             'title'  => trans('admin.datagrid.sync-ims'),
             'method' => 'GET',
             'route'  => 'admin.sales.orders.sync-ims',
+            'icon'   => 'icon processing-icon'
+        ]);
+        $this->addAction([
+            'title'  => trans('admin.datagrid.sync-rouyesh'),
+            'method' => 'GET',
+            'route'  => 'admin.sales.orders.sync-rouyesh',
             'icon'   => 'icon processing-icon'
         ]);
     }
