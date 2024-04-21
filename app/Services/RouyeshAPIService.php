@@ -46,6 +46,9 @@ class RouyeshAPIService
         if ($this->order->status !== "completed") {
             return false;
         }
+        if (!$this->order->rouyesh_code){
+            return false;
+        }
         if ($this->order->rouyesh_synced_at){
             return false;
         }
@@ -94,7 +97,7 @@ class RouyeshAPIService
         $studentId = data_get($rouyeshStudent, '0.StudentID');
 
         if (!$studentId) {
-            $cutomerResposne = Http::asJson()
+            $response = Http::asJson()
                 ->withToken($token)
                 ->post($apiUrl.'/Users', [
                     "firstName"      => $customer->first_name,
@@ -115,15 +118,14 @@ class RouyeshAPIService
                         "email"      => $customer->email,
                     ]
                 ]);
-            $response = $cutomerResposne->json();
-            if ($response->status() === 400) {
-                $responseJson = $response->json();
+            $responseJson = $response->json();
+            if ($cutomerResposne->status() === 400) {
                 Log::error('encountered error while trying ot create user in rouyesh', $responseJson);
                 $this->notifyError($responseJson, $customer);
                 throw new \Exception('User Creation failed');
             }
 
-            $userId = data_get($response, 'data.UserID');
+            $userId = data_get($responseJson, 'data.UserID');
             if (!$userId) {
                 throw new \Exception('User Creation failed');
             }
