@@ -188,6 +188,7 @@ class OrderDataGrid extends DataGrid
         ]);
         $this->addColumn([
             'index'      => 'status',
+            'db_name'    => 'orders.status',
             'label'      => trans('admin::app.datagrid.status'),
             'type'       => 'select',
             'sortable'   => true,
