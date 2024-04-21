@@ -150,17 +150,16 @@ class RouyeshAPIService
 
         $comments = $this->order->comments->pluck('comment')->prepend('ثبت‌نام آنلاین')->join(" || ");
         foreach ($this->order->items as $item) {
-            $product = $item->product->product_flats->first();
+            $rouyesh_code = $item->rouyesh_code;
             if ($item->type === 'configurable') {
-                $child = $item->child->product->product_flats->first();
-                if ($child->rouyesh_code) {
-                    $product = $child;
+                if ($item->child->rouyesh_code) {
+                    $rouyesh_code = $item->child->rouyesh_code;
                 }
             }
 
             $registration = [
                 'studentID'              => $studentId,
-                'classroomID'            => $product->rouyesh_code,
+                'classroomID'            => $rouyesh_code,
                 'RegisterTypeID'         => 1,
                 'discountInfo'           => [
                     'DiscountCode'    => '',
