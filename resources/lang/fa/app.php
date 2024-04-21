@@ -70,7 +70,7 @@ return [
         'sync-rouyesh-fail' => 'ثبت اطلاعات در سامانه رویش با خطا مواجه شد',
         'sync-rouyesh-api-key' => 'کلید API سامانه رویش وجود ندارد',
         'sync-rouyesh-unauthorized' => 'دسترسی غیرمجاز به سامانه رویش',
-        'sync-rouyesh-porduct-number' => 'کد دوره ثبت نشده است',
+        'sync-rouyesh-porduct-number' => 'کد کلاس رویش ثبت نشده است',
         'sync-rouyesh-customer-incomplete' => 'اطلاعات فراگیر کامل نمی باشد',
         'sync-rouyesh-course-notfound' => 'اطلاعات دوره در سامانه رویش یافت نشد',
 

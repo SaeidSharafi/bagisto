@@ -46,22 +46,26 @@ class RouyeshAPIService
         if ($this->order->status !== "completed") {
             return false;
         }
-        if (!$this->order->rouyesh_code){
-            return false;
-        }
+
         if ($this->order->rouyesh_synced_at){
             return false;
+        }
+
+        foreach ($this->order->items as $item) {
+            if (!$item->rouyesh_code) {
+                throw new \InvalidArgumentException(__('app.response.sync-rouyesh-porduct-number'));
+            }
         }
         $username = config('app.rouyesh.username');
         $password = config('app.rouyesh.password');
         $apiUrl = config('app.rouyesh.base_url');
         if (!$username || !$password) {
-            throw new \InvalidArgumentException(__('app.response.sync-ims-api-key'));
+            throw new \InvalidArgumentException(__('app.response.sync-rouyesh-api-key'));
         }
 
         $customer = $this->order->customer;
         if ($customer->incomplete) {
-            throw new \InvalidArgumentException(__('app.response.sync-ims-customer-incomplete'));
+            throw new \InvalidArgumentException(__('app.response.sync-rouyesh-customer-incomplete'));
         }
 
 
