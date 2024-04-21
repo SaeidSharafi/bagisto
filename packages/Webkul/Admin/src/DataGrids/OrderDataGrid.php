@@ -310,7 +310,7 @@ class OrderDataGrid extends DataGrid
             'title'  => trans('admin.datagrid.sync-rouyesh'),
             'method' => 'GET',
             'route'  => 'admin.sales.orders.sync-rouyesh',
-            'icon'   => 'icon processing-icon'
+            'icon'   => 'icon processing-icon green'
         ]);
     }
 }
