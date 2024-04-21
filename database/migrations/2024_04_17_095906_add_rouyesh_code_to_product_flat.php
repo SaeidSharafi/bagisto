@@ -29,8 +29,8 @@ return new class extends Migration {
             'is_user_defined'     => '0',
             'is_visible_on_front' => '0',
             'use_in_flat'         => '1',
-            'created_at'          => now(),
-            'updated_at'          => now(),
+            'created_at'          => date('Y-m-d H:i:s'),
+            'updated_at'          => date('Y-m-d H:i:s'),
             'is_comparable'       => '0',
         ];
 
