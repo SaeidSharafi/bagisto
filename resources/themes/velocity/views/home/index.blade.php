@@ -52,7 +52,7 @@
         <div class="w-100 d-none d-md-block">
             @include('shop::home.slider')
         </div>
-        <div class="row align-items-stretch justify-content-center featured-slider mx-0">
+        <div class="row align-items-stretch justify-content-center featured-slider mx-0 d-none">
             <div class="col-6 col-md-5 col-lg-4">
                 <div class="slider-side">
                     <a target="_blank" href="{{$velocityMetaData->blog_url}}" class="d-block h-100">
