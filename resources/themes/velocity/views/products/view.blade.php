@@ -72,7 +72,7 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
 
     <meta property="og:image" content="{{ $productBaseImage['medium_image_url'] }}"/>
 
-    <meta property="og:description" content="{{ $product->description }}"/>
+    <meta property="og:description" content="{{ trim($product->meta_description) != "" ? $product->meta_description : \Illuminate\Support\Str::limit(strip_tags($product->description), 120, '') }}"/>
 
     <meta property="og:url" content="{{ route('shop.productOrCategory.index', $product->url_key) }}"/>
 @stop
