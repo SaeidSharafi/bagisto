@@ -11,13 +11,13 @@ mix.webpackConfig({
 require('laravel-mix-merge-manifest');
 require('laravel-mix-clean');
 
-const prodPublicPath = path.join('publishable', 'assets');
+const prodPublicPath = path.join('public');
 const devPublicPath = path.join('public');
 const publicPath = mix.inProduction() ? prodPublicPath : devPublicPath;
 
 console.log((`Assets will be published in: ${publicPath}`));
 
-const assetsPath = path.join('Resources', 'assets');
+const assetsPath = path.join('resources', 'assets');
 const jsPath = path.join(assetsPath, 'js');
 const imagesPath = path.join(assetsPath, 'images');
 

@@ -1519,10 +1519,18 @@ body.rtl .product-detail .thumb-list {
 
             a {
                 color: #999;
+                .cls-1{
+                    fill: #999;
+                }
 
                 &:hover {
                     color: #ffffff;
+                    .cls-1{
+                        fill: #ffffff;
+
+                    }
                 }
+
             }
 
             .info-line {

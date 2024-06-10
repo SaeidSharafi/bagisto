@@ -113,23 +113,23 @@
                 href="{{ route('shop.reviews.index', ['slug' => $product->url_key ]) }}"
                 class="btn btn-outline-dark mx-2"
             >{{ __('velocity::app.products.view-all-reviews') }}</a>
-            @if ($hasOrder)
+{{--            @if ($hasOrder)--}}
                 <button type="button" class="btn btn-md btn-primary" @click="showModal('addReview')">
                     {{ __('shop::app.products.write-review-btn') }}
                 </button>
-            @endif
+{{--            @endif--}}
         </div>
     @endif
 @else
-    @if ($hasOrder)
+{{--    @if ($hasOrder)--}}
         <button type="button" class="btn btn-md btn-primary" @click="showModal('addReview')">
             {{ __('shop::app.products.write-review-btn') }}
         </button>
-    @endif
+{{--    @endif--}}
 @endif
 
 @if (core()->getConfigData('catalog.products.review.guest_review') || auth()->guard('customer')->check())
-    @if ($hasOrder)
+
         <modal id="addReview" :is-open="modalIds.addReview">
 
             <h3 slot="header">{{ __('shop::app.products.write-review-btn') }}</h3>
@@ -163,6 +163,7 @@
                                     name="title"
                                     class="control"
                                     v-validate="'required'"
+                                    data-vv-as="{{ __('shop::app.reviews.title') }}"
                                     value="{{ old('title') }}"/>
 
                                 <span :class="`control-error ${errors.has('title') ? '' : 'hide'}`" v-text="errors.first('title')"></span>
@@ -173,7 +174,10 @@
                                     <label for="title" class="required">
                                         {{ __('shop::app.reviews.name') }}
                                     </label>
-                                    <input type="text" class="control" name="name" v-validate="'required'" value="{{ old('name') }}">
+                                    <input type="text" class="control" name="name"
+                                           v-validate="'required'" value="{{ old('name') }}"
+                                           data-vv-as="{{ __('shop::app.reviews.name') }}"
+                                    >
                                     <span :class="`control-error ${errors.has('name') ? '' : 'hide'}`" v-text="errors.first('name')"></span>
                                 </div>
                             @endif
@@ -187,6 +191,7 @@
                                     class="control"
                                     name="comment"
                                     v-validate="'required'"
+                                    data-vv-as="{{ __('admin::app.customers.reviews.comment') }}"
                                     value="{{ old('comment') }}">
                             </textarea>
                                 <span :class="`control-error ${errors.has('comment') ? '' : 'hide'}`" v-text="errors.first('comment')"></span>
@@ -204,7 +209,6 @@
                 </div>
             </div>
         </modal>
-    @endif
 @endif
 
 {!! view_render_event('bagisto.shop.products.review.after', ['product' => $product]) !!}

@@ -9,6 +9,7 @@
             </div>
             <div class="col-lg-4 col-md-6">
                 @include('shop.footer.enamad')
+                @include('shop.footer.social')
             </div>
         </div>
     </div>

@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
+@php
+    $channel = core()->getCurrentChannel();
 
+    $homeSEO = json_decode($channel->home_seo);
+@endphp
 <head>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-KFQ1CRSG4Y"></script>
@@ -43,6 +47,8 @@
 
     {{-- all styles --}}
     @include('shop::layouts.styles')
+
+    <meta property="og:title" content="{{ $homeSEO->meta_title }}"/>
 
 </head>
 

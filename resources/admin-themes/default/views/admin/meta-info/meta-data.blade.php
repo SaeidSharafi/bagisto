@@ -307,6 +307,46 @@
                 <div slot="body">
                     <div class="control-group">
                         <label style="width:100%;">
+                            {{ __('admin.meta-data.telegram_url') }}
+                        </label>
+                        <input
+                            class="control"
+                            id="telegram_url"
+                            name="telegram_url"
+                        value=" {{ $metaData ? $metaData->telegram_url : null }}"/>
+                    </div>
+                    <div class="control-group">
+                        <label style="width:100%;">
+                            {{ __('admin.meta-data.instagram_url') }}
+                        </label>
+                        <input
+                            class="control"
+                            id="instagram_url"
+                            name="instagram_url"
+                            value=" {{ $metaData ? $metaData->instagram_url : null }}"/>
+                    </div>
+                    <div class="control-group">
+                        <label style="width:100%;">
+                            {{ __('admin.meta-data.aparat_url') }}
+                        </label>
+                        <input
+                            class="control"
+                            id="aparat_url"
+                            name="aparat_url"
+                            value=" {{ $metaData ? $metaData->aparat_url : null }}"/>
+                    </div>
+                    <div class="control-group">
+                        <label style="width:100%;">
+                            {{ __('admin.meta-data.bale_url') }}
+                        </label>
+                        <input
+                            class="control"
+                            id="bale_url"
+                            name="bale_url"
+                            value=" {{ $metaData ? $metaData->bale_url : null }}"/>
+                    </div>
+                    <div class="control-group">
+                        <label style="width:100%;">
                             {{ __('velocity::app.admin.meta-data.subscription-content') }}
                             <span class="locale">[{{ $channel }} - {{ $locale }}]</span>
                         </label>
