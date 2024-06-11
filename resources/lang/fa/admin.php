@@ -1,6 +1,6 @@
 <?php
 return [
-    'meta-data' =>[
+    'meta-data'     => [
         'blog'          => 'پست منتخب بلاگ',
         'blog_title'    => 'عنوان پست',
         'blog_url'      => 'آدرس پست',
@@ -8,6 +8,10 @@ return [
         'special'       => 'دوره ویژه',
         'special_id'    => 'شناسه دوره ویژه',
         'special_image' => 'تصویر دوره ویژه',
+        'telegram_url'  => 'آدرس تلگرام',
+        'instagram_url' => 'آدرس اینستاگرام',
+        'aparat_url'    => 'آدرس آپارات',
+        'bale_url'      => 'آدرس بله',
     ],
     'catalog'       => [
         'products' => [
@@ -25,12 +29,12 @@ return [
         ]
     ],
     'customers'     => [
-        'customers' => [
+        'customers'   => [
             'bulk-title'      => 'وارد کردن',
             'bulk-page-title' => 'وارد کردن فراگیران',
             'is_moodle_user'  => 'کاربر مودل',
             'bulk-btn-title'  => 'وارد کردن',
-            'is_foriegn' => 'اتباع خارجی'
+            'is_foriegn'      => 'اتباع خارجی'
         ],
         'impersonate' => 'ورود در قالب فراگیر',
     ],
@@ -38,15 +42,15 @@ return [
         'orders'       => [
             'product_number' => 'کد دوره',
             'complete'       => 'تایید ثبت نام',
-            'ims'              => [
-                'column' => 'وضعیت همگام سازی',
-                'synced'  => 'همگام سازی IMS',
-                'not_synced'  => 'عدم همگام سازی IMS',
+            'ims'            => [
+                'column'     => 'وضعیت همگام سازی',
+                'synced'     => 'همگام سازی IMS',
+                'not_synced' => 'عدم همگام سازی IMS',
             ],
-            'rouyesh'              => [
-                'column' => 'وضعیت همگام سازی',
-                'synced'  => 'همگام سازی رویش',
-                'not_synced'  => 'عدم همگام سازی رویش',
+            'rouyesh'        => [
+                'column'     => 'وضعیت همگام سازی',
+                'synced'     => 'همگام سازی رویش',
+                'not_synced' => 'عدم همگام سازی رویش',
             ],
         ],
         'transactions' => [
@@ -58,8 +62,8 @@ return [
 
     ],
     'datagrid'      => [
-        'complete' => 'تایید ثبت نام',
-        'sync-ims' => 'ثبت در IMS',
+        'complete'     => 'تایید ثبت نام',
+        'sync-ims'     => 'ثبت در IMS',
         'sync-rouyesh' => 'ثبت در رویش',
     ],
     'response'      => [
@@ -70,28 +74,28 @@ return [
             'users' => ':success کاربر در مودل ثبت شد. ثبت :fail کاربر با خطا مواجه شد.'
         ]
     ],
-    'promotions'=>[
-        'cart-rules'=>[
+    'promotions'    => [
+        'cart-rules' => [
             'show_in_list' => 'نمایش در لیست'
         ],
     ],
-    'users' =>[
-      'users'=>[
-          'username'=>'نام کاربری'
-      ]
+    'users'         => [
+        'users' => [
+            'username' => 'نام کاربری'
+        ]
     ],
-    'layouts' => [
-      'visit-moodle'=>'سامانه آموزش مجازی'
+    'layouts'       => [
+        'visit-moodle' => 'سامانه آموزش مجازی'
     ],
-    'cms'=>[
-        'categories' =>[
-            'title' => 'دسته بندی ها',
-            'add-title' => 'دسته بندی جدید',
-            'edit-title' => 'ویرایش دسته بندی',
+    'cms'           => [
+        'categories' => [
+            'title'            => 'دسته بندی ها',
+            'add-title'        => 'دسته بندی جدید',
+            'edit-title'       => 'ویرایش دسته بندی',
             'create-btn-title' => 'ذخیره دسته بندی',
-            'edit-btn-title' => 'ویرایش دسته بندی',
-            'category' => 'دسته بندی',
-            'categories' => 'دسته بندی ها'
+            'edit-btn-title'   => 'ویرایش دسته بندی',
+            'category'         => 'دسته بندی',
+            'categories'       => 'دسته بندی ها'
         ]
     ],
     'admin'         => [

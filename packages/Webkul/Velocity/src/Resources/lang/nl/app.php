@@ -106,7 +106,7 @@ return [
             'product-view-image' => 'Product View Image',
             'advertisement-two' => 'Advertisement Two Images',
             'advertisement-one' => 'Advertisement One Images',
-            'footer-middle-content' => 'Footer Middle Content',
+            'footer-middle-content' => 'Third column',
             'advertisement-four' => 'Advertisement Four Images',
             'advertisement-three' => 'Advertisement Three Images',
             'images' => 'Afbeeldingen',
