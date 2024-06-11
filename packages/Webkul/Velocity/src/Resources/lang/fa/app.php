@@ -171,7 +171,7 @@ return [
         'profile' => 'مشخصات',
         'wishlist' => 'لیست علاقه مندیها',
         'all-categories' => 'همه دسته بندی ها',
-        'search-text' => 'محصولات را در اینجا جستجو کنید',
+        'search-text' => 'چی میخوای یاد بگیری؟',
         'welcome-message' => ':customer_name, خوش آمدی',
         'dropdown-text' => 'مدیریت سبد خرید, سفارشات و لیست دلخواه',
     ],
