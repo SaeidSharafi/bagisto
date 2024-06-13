@@ -3,6 +3,8 @@
 namespace Webkul\Shop\Http\Controllers;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Webkul\Category\Repositories\CategoryRepository;
 use Webkul\Core\Repositories\SliderRepository;
 use Webkul\Product\Repositories\ProductFlatRepository;
 use Webkul\Product\Repositories\SearchRepository;
@@ -31,24 +33,35 @@ class HomeController extends Controller
     protected $productFlatRepository;
 
     /**
+     * Category repository instance.
+     *
+     * @var \Webkul\Category\Repositories\CategoryRepository
+     */
+    protected $categoryRepository;
+
+    /**
      * Create a new controller instance.
      *
      * @param  \Webkul\Core\Repositories\SliderRepository  $sliderRepository
      * @param  \Webkul\Product\Repositories\SearchRepository  $searchRepository
      * @param  \Webkul\Product\Repositories\ProductFlatRepository  $productFlatRepository
+     * @param  \Webkul\Category\Repositories\CategoryRepository  $categoryRepository
      *
      * @return void
      */
     public function __construct(
         SliderRepository $sliderRepository,
         SearchRepository $searchRepository,
-        ProductFlatRepository $productFlatRepository
+        ProductFlatRepository $productFlatRepository,
+        CategoryRepository $categoryRepository
     ) {
         $this->sliderRepository = $sliderRepository;
 
         $this->searchRepository = $searchRepository;
 
         $this->productFlatRepository = $productFlatRepository;
+
+        $this->categoryRepository = $categoryRepository;
 
         parent::__construct();
     }
@@ -81,7 +94,14 @@ class HomeController extends Controller
         } else {
             $special_product = $this->productFlatRepository->findOneWhere(['featured' => 1]);
         }
-        return view($this->_config['view'], compact('sliderData', 'special_product'));
+        $carousels = $this->categoryRepository->withCount('products')->findWhere(['is_carousel' => 1])->filter(function ($item) {
+            return $item->products_count != 0;
+        })->map(function ($item) {
+
+            $item->image = $item->image ? Storage::url($item->image)  : '/images/category-base.png';
+            return $item;
+        });
+        return view($this->_config['view'], compact('sliderData', 'special_product','carousels'));
     }
 
     /**

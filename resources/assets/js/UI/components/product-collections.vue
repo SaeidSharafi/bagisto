@@ -1,7 +1,7 @@
 <template>
     <div class="w-100">
         <template v-if="hasProduct">
-            <div class="row no-gutters carousel-products" :class="additionalClass">
+            <div class="row no-gutters carousel-products" :class="additionalClass" :style="getColor()">
                 <div class="col-md-3 col-lg-2 d-none d-md-block">
                     <div class="category-header">
                         <div class="category-title">
@@ -70,6 +70,10 @@ export default {
         additionalClass: {
             type: String,
             default: 'purple'
+        },
+        colorCode: {
+            type: String,
+            default: ''
         },
         count: {
             type: String,
@@ -169,6 +173,12 @@ export default {
     },
 
     methods: {
+        getColor: function (){
+            if (this.colorCode){
+                return 'background-color:' + this.colorCode;
+            }
+            return '';
+        },
         /* fetch product collections */
         getProducts: function () {
             this.$http.get(this.productRoute)

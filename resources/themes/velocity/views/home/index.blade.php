@@ -106,14 +106,13 @@
     <div class="full-content-wrapper py-lg-3 py-md-1">
         {!! view_render_event('bagisto.shop.home.content.before') !!}
 
-        @if ($velocityMetaData)
+        @if ($carousels)
+            @foreach($carousels as $category)
+
+                @include('shop::home.carousel-products')
+            @endforeach
+        @elseif ($velocityMetaData)
             {!! DbView::make($velocityMetaData)->field('home_page_content')->render() !!}
-        @else
-            @include('shop::home.advertisements.advertisement-four')
-            @include('shop::home.featured-products')
-            @include('shop::home.advertisements.advertisement-three')
-            @include('shop::home.new-products')
-            @include('shop::home.advertisements.advertisement-two')
         @endif
 
         {{ view_render_event('bagisto.shop.home.content.after') }}

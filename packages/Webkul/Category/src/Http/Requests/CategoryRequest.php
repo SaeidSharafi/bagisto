@@ -30,6 +30,8 @@ class CategoryRequest extends FormRequest
             return [
                 $locale . '.slug' => ['required', new ProductCategoryUniqueSlug('category_translations', $id)],
                 $locale . '.name' => 'required',
+                'color'       => 'nullable',
+                'is_carousel'       => ['required','boolean'],
                 'image.*'         => 'mimes:bmp,jpeg,jpg,png,webp',
             ];
         }
@@ -37,6 +39,8 @@ class CategoryRequest extends FormRequest
         return [
             'slug'        => ['required', new ProductCategoryUniqueSlug],
             'name'        => 'required',
+            'color'       => 'nullable',
+            'is_carousel'       => ['required','boolean'],
             'image.*'     => 'mimes:bmp,jpeg,jpg,png,webp',
             'description' => 'required_if:display_mode,==,description_only,products_and_description',
         ];

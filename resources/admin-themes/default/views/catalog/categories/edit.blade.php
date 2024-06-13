@@ -88,7 +88,24 @@
                                 <input type="text" v-validate="'required|numeric'" class="control" id="position" name="position" value="{{ old('position') ?: $category->position }}" data-vv-as="&quot;{{ __('admin::app.catalog.categories.position') }}&quot;"/>
                                 <span class="control-error" v-if="errors.has('position')">@{{ errors.first('position') }}</span>
                             </div>
-
+                            <div class="control-group" :class="[errors.has('is_carousel') ? 'has-error' : '']">
+                                <label for="is_carousel" class="required">{{ __('admin.catalog.categories.is_carousel') }}</label>
+                                <select class="control" v-validate="'required'" id="is_carousel" name="is_carousel" data-vv-as="&quot;{{ __('admin.catalog.categories.is_carousel') }}&quot;">
+                                    <option value="1" {{ $category->is_carousel ? 'selected' : '' }}>
+                                        {{ __('admin::app.catalog.categories.yes') }}
+                                    </option>
+                                    <option value="0" {{ $category->is_carousel ? '' : 'selected' }}>
+                                        {{ __('admin::app.catalog.categories.no') }}
+                                    </option>
+                                </select>
+                                <span class="control-error" v-if="errors.has('is_carousel')">@{{ errors.first('is_carousel') }}</span>
+                            </div>
+                            <div class="control-group" :class="[errors.has('color') ? 'has-error' : '']">
+                                <label for="color" class="required">{{ __('admin.catalog.categories.color') }}
+                                </label>
+                                <input type="color"  class="control" id="color" name="color" value="{{ old('color') ?? ($category->color ?? '#c61590') }}"/>
+                                <span class="control-error" v-if="errors.has('color')">@{{ errors.first('color') }}</span>
+                            </div>
                             {!! view_render_event('bagisto.admin.catalog.category.edit_form_accordian.general.controls.after', ['category' => $category]) !!}
                         </div>
                     </accordian>

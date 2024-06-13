@@ -43,6 +43,7 @@ services:
       - 'sail-mysql:/var/lib/mysql'
       - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
       - './my.cnf:/etc/mysql/my.cnf'
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
     networks:
       - sail
     healthcheck:

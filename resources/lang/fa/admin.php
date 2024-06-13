@@ -13,7 +13,12 @@ return [
         'aparat_url'    => 'آدرس آپارات',
         'bale_url'      => 'آدرس بله',
     ],
+
     'catalog'       => [
+        'categories' => [
+            'color' => 'رنگ پس‌زمینه نوار نقاله',
+            'is_carousel' => 'نوار نقاله صفحه اول'
+        ],
         'products' => [
             'banner'           => 'بنر',
             'product_number'   => 'کد دوره',
