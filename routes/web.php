@@ -23,6 +23,8 @@
 
 use App\Http\Controllers\Admin\CmsCategoryController;
 use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\CarouselCategoryController;
+use App\Http\Controllers\Admin\CarouselItemController;
 use App\Http\Controllers\Admin\ResetCustomerPasswordController;
 use App\Http\Controllers\MyCourseController;
 use App\Http\Controllers\Shop\API\JeduShopController;
@@ -221,6 +223,67 @@ Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => conf
 
     Route::get('sms', [\App\Http\Controllers\Admin\SmsController::class, 'index'])
         ->name('admin.sms.index');
+
+    Route::prefix('carousel')->group(function () {
+        Route::prefix('category')->group(function () {
+            Route::get('/', [CarouselCategoryController::class, 'index'])->defaults('_config', [
+                'view' => 'admin.carousel.category.index',
+            ])->name('admin.carousel.category.index');
+
+            Route::get('create', [CarouselCategoryController::class, 'create'])->defaults('_config', [
+                'view' => 'admin.carousel.category.create',
+            ])->name('admin.carousel.category.create');
+
+            Route::post('create', [CarouselCategoryController::class, 'store'])->defaults('_config', [
+                'redirect' => 'admin.carousel.category.index',
+            ])->name('admin.carousel.category.store');
+
+            Route::get('edit/{id}', [CarouselCategoryController::class, 'edit'])->defaults('_config', [
+                'view' => 'admin.carousel.category.edit',
+            ])->name('admin.carousel.category.edit');
+
+            Route::post('edit/{id}', [CarouselCategoryController::class, 'update'])->defaults('_config', [
+                'redirect' => 'admin.carousel.category.index',
+            ])->name('admin.carousel.category.update');
+
+            Route::post('/delete/{id}', [CarouselCategoryController::class, 'delete'])->defaults('_config', [
+                'redirect' => 'admin.carousel.category.index',
+            ])->name('admin.carousel.category.delete');
+
+            Route::post('/massdelete', [CarouselCategoryController::class, 'massDelete'])->defaults('_config', [
+                'redirect' => 'admin.carousel.category.index',
+            ])->name('admin.carousel.category.mass-delete');
+        });
+        Route::prefix('item')->group(function () {
+            Route::get('/', [CarouselItemController::class, 'index'])->defaults('_config', [
+                'view' => 'admin.carousel.item.index',
+            ])->name('admin.carousel.item.index');
+
+            Route::get('create', [CarouselItemController::class, 'create'])->defaults('_config', [
+                'view' => 'admin.carousel.item.create',
+            ])->name('admin.carousel.item.create');
+
+            Route::post('create', [CarouselItemController::class, 'store'])->defaults('_config', [
+                'redirect' => 'admin.carousel.item.index',
+            ])->name('admin.carousel.item.store');
+
+            Route::get('edit/{id}', [CarouselItemController::class, 'edit'])->defaults('_config', [
+                'view' => 'admin.carousel.item.edit',
+            ])->name('admin.carousel.item.edit');
+
+            Route::post('edit/{id}', [CarouselItemController::class, 'update'])->defaults('_config', [
+                'redirect' => 'admin.carousel.item.index',
+            ])->name('admin.carousel.item.update');
+
+            Route::post('/delete/{id}', [CarouselItemController::class, 'delete'])->defaults('_config', [
+                'redirect' => 'admin.carousel.item.index',
+            ])->name('admin.carousel.item.delete');
+
+            Route::post('/massdelete', [CarouselItemController::class, 'massDelete'])->defaults('_config', [
+                'redirect' => 'admin.carousel.item.index',
+            ])->name('admin.carousel.item.mass-delete');
+        });
+    });
 
 
     Route::prefix('blog')->group(function () {

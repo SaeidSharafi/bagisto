@@ -2,13 +2,25 @@
     <div class="w-100 " :class="localeDirection">
         <slick-carousel
             v-bind="sliderSetting">
-            <div
-                :id="`slide-${index}`"
-                v-for="index in 21">
-                <div class="contract-image">
-                    <img :src="`images/shop/contracts/cont${index}.jpg`" class="w-100">
+            <template v-if="items">
+                <div
+                    :id="`slide-${index}`"
+                    v-for="(item,index) in items">
+                    <div class="contract-image">
+                        <img :src="item.image" class="w-100" :alt="item.title">
+                    </div>
                 </div>
-            </div>
+            </template>
+            <template v-else>
+                <div
+                    :id="`slide-${index}`"
+                    v-for="index in 21">
+                    <div class="contract-image">
+                        <img :src="`images/shop/contracts/cont${index}.jpg`" class="w-100">
+                    </div>
+                </div>
+            </template>
+
         </slick-carousel>
     </div>
 </template>
@@ -24,6 +36,14 @@ export default {
         localeDirection: {
             String,
             default: 'rtl'
+        },
+        title:{
+            type: String,
+            default: 'title'
+        },
+        items:{
+            type: Array,
+            default: null
         }
     },
     data: function () {

@@ -106,8 +106,8 @@
     <div class="full-content-wrapper py-lg-3 py-md-1">
         {!! view_render_event('bagisto.shop.home.content.before') !!}
 
-        @if ($carousels)
-            @foreach($carousels as $category)
+        @if ($productCarousels)
+            @foreach($productCarousels as $category)
 
                 @include('shop::home.carousel-products')
             @endforeach
@@ -121,10 +121,14 @@
 @endsection
 
 @section('full-width-content-bot')
-{{--    @include('shop.quotes')--}}
     <div class="container">
-{{--        @include('shop.teachers')--}}
-        @include('shop.contracts')
+        @if ($carousels)
+            @foreach($carousels as $carousel)
+                @include('shop.carousel', ['carousel' => $carousel])
+            @endforeach
+        @else
+            @include('shop.contracts')
+        @endif
     </div>
 @endsection
 

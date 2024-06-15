@@ -16,7 +16,31 @@ return [
             'route'      => 'admin.sms.index',
             'sort'       => 8,
             'icon-class' => '',
-        ]
+        ],
+        [
+            'key'        => 'carousel',
+            'name'       => 'admin.carousel.category.title',
+            'route'      => 'admin.carousel.category.index',
+            'sort'       => 5,
+            'icon-class' => 'catalog-icon',
+
+        ],
+        [
+            'key'        => 'carousel.category',
+            'name'       => 'admin.carousel.category.title',
+            'route'      => 'admin.carousel.category.index',
+            'sort'       => 2,
+            'icon-class' => '',
+
+        ],
+        [
+            'key'        => 'carousel.item',
+            'name'       => 'admin.carousel.item.title',
+            'route'      => 'admin.carousel.item.index',
+            'sort'       => 2,
+            'icon-class' => 'temp-icon',
+        ],
+
     ],
 
     'customer' => [

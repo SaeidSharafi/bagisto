@@ -13,13 +13,36 @@ return [
         'aparat_url'    => 'آدرس آپارات',
         'bale_url'      => 'آدرس بله',
     ],
+    'carousel'      => [
+        'title'    => 'نوار نقاله',
+        'category' => [
+            'title'            => 'نوار نقاله',
+            'titles'            => 'نوارهای نقاله',
+            'add-title'        => 'اضافه کردن',
+            'create-btn-title' => 'ایجاد نوار نقاله',
+            'edit-title'       => 'ویرایش نوار نقاله',
+            'edit-btn-title'   => 'ویرایش نوار نقاله',
+        ],
+        'item'     => [
+            'title'            => 'آیتم نوار نقاله',
+            'titles'            => 'آیتم‌های نوار نقاله',
+            'add-title'        => 'اضافه کردن',
+            'create-btn-title' => 'ایجاد آیتم نوار نقاله',
+            'edit-title'       => 'ویرایش آیتم نوار نقاله',
+            'edit-btn-title'   => 'ویرایش آیتم نوار نقاله',
+            'image'            => 'تصویر',
+            'url'              => 'لینک',
+            'delete-success'   => 'حذف آیتم با موفقیت انجام شد.',
+            'delete-failur'    => 'خطا در حذف آیتم.',
+        ]
 
+    ],
     'catalog'       => [
         'categories' => [
-            'color' => 'رنگ پس‌زمینه نوار نقاله',
+            'color'       => 'رنگ پس‌زمینه نوار نقاله',
             'is_carousel' => 'نوار نقاله صفحه اول'
         ],
-        'products' => [
+        'products'   => [
             'banner'           => 'بنر',
             'product_number'   => 'کد دوره',
             'product_template' => 'قالب دوره',
@@ -133,5 +156,6 @@ return [
             'sms-verification' => 'نیاز به تایید پیامکی بعد از ثبت نام',
             'sms-settings'     => 'تنظیمات پیامک',
         ]
-    ]
+    ],
+
 ];

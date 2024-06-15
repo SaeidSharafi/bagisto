@@ -2,6 +2,7 @@
 
 namespace Webkul\Shop\Http\Controllers;
 
+use App\Models\Admin\CarouselCategory;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Webkul\Category\Repositories\CategoryRepository;
@@ -82,26 +83,48 @@ class HomeController extends Controller
             $special_product = $this->productFlatRepository->findOneWhere(['sku' => $velocity->special_id]);
             if ($special_product) {
                 $special_product = [
-                    'short_name' => $special_product->short_name,
-                    'special_price_to' => $velocity->special_to,
-                    'url_key' => $special_product->url_key,
+                    'short_name'           => $special_product->short_name,
+                    'special_price_to'     => $velocity->special_to,
+                    'url_key'              => $special_product->url_key,
                     'specialOfferTimeLeft' => $velocity->special_to
-                    ? Carbon::parse($velocity->special_to)->diff(Carbon::now())->format('%d:%H:%I:%S')
-                    : '00:00:00:00',
+                        ? Carbon::parse($velocity->special_to)->diff(Carbon::now())->format('%d:%H:%I:%S')
+                        : '00:00:00:00',
                 ];
             }
 
         } else {
             $special_product = $this->productFlatRepository->findOneWhere(['featured' => 1]);
         }
-        $carousels = $this->categoryRepository->withCount('products')->findWhere(['is_carousel' => 1])->filter(function ($item) {
-            return $item->products_count != 0;
-        })->map(function ($item) {
+        $productCarousels = $this->categoryRepository->withCount('products')->findWhere(['is_carousel' => 1])
+            ->filter(function ($item) {
+                return $item->products_count != 0;
+            })->map(function ($item) {
 
-            $item->image = $item->image ? Storage::url($item->image)  : '/images/category-base.png';
+            $item->image = $item->image ? Storage::url($item->image) : '/images/category-base.png';
             return $item;
         });
-        return view($this->_config['view'], compact('sliderData', 'special_product','carousels'));
+
+        $carousels = CarouselCategory::query()->with('carousel_items')
+            ->get()
+            ->filter(function ($item) {
+                return $item->carousel_items->count() != 0;
+            })
+            ->map(function ($item) {
+                $items = $item->carousel_items
+                    ->map(function ($item) {
+                        return [
+                            'image' => Storage::url($item->image),
+                            'title' => $item->title,
+                            'url'   => $item->url,
+                        ];
+                    });
+                return [
+                    'title' => $item->title,
+                    'items' => $items,
+                ];
+
+            })->toArray();
+        return view($this->_config['view'], compact('sliderData', 'special_product', 'productCarousels', 'carousels'));
     }
 
     /**
