@@ -305,24 +305,9 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                             نمونه گواهی دوره
                         </h5>
                         <div class="w-100 p-3">
-                            @if ($product->product->categories->pluck('id')->contains(16))
-                                <div>
-                                    <img src="{{asset('images/certs/icdl.jpg')}}" class="w-100">
-                                </div>
-                            @elseif ($product->product->categories->pluck('id')->contains(11))
-                                <div>
-                                    <img src="{{asset('images/certs/doc.jpg')}}" class="w-100">
-                                </div>
-                            @elseif ($product->product->categories->pluck('id')->contains(6))
-                                <div>
-                                    <img src="{{asset('images/certs/zaban.jpg')}}" class="w-100">
-                                </div>
-                            @else
-                                <div>
-                                    <img src="{{asset('images/certs/all.jpg')}}" class="w-100">
-                                </div>
+                            @if ($product->product->certificate_sample)
+                                <img src="/storage/{{$product->product->certificate_sample}}" alt="certificate_image" class="w-100">
                             @endif
-
                         </div>
                     </div>
                 </div>

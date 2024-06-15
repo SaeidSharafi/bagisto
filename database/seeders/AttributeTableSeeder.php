@@ -748,6 +748,46 @@ class AttributeTableSeeder extends Seeder
                 'updated_at'          => $now,
                 'is_comparable'       => '0',
             ],
+            [
+                'id'                  => '39',
+                'code'                => 'rouyesh_code',
+                'admin_name'          => 'کد کلاس رویش',
+                'type'                => 'text',
+                'validation'          => null,
+                'position'            => '3',
+                'is_required'         => '0',
+                'is_unique'           => '1',
+                'value_per_locale'    => '0',
+                'value_per_channel'   => '0',
+                'is_filterable'       => '0',
+                'is_configurable'     => '0',
+                'is_user_defined'     => '0',
+                'is_visible_on_front' => '0',
+                'use_in_flat'         => '1',
+                'created_at'          => date('Y-m-d H:i:s'),
+                'updated_at'          => date('Y-m-d H:i:s'),
+                'is_comparable'       => '0',
+            ],
+            [
+                'id'                  => '40',
+                'code'                => 'certificate_sample',
+                'admin_name'          => 'نمونه گواهی‌نامه',
+                'type'                => 'image',
+                'validation'          => null,
+                'position'            => '4',
+                'is_required'         => '0',
+                'is_unique'           => '0',
+                'value_per_locale'    => '0',
+                'value_per_channel'   => '0',
+                'is_filterable'       => '0',
+                'is_configurable'     => '0',
+                'is_user_defined'     => '0',
+                'is_visible_on_front' => '1',
+                'use_in_flat'         => '0',
+                'created_at'          => $now,
+                'updated_at'          => $now,
+                'is_comparable'       => '0',
+            ],
         ]);
 
         DB::table('attribute_translations')->insert([
@@ -756,191 +796,240 @@ class AttributeTableSeeder extends Seeder
                 'locale'       => 'fa',
                 'name'         => 'SKU',
                 'attribute_id' => '1',
-            ], [
+            ],
+            [
                 'id'           => '2',
                 'locale'       => 'fa',
                 'name'         => 'نام دوره',
                 'attribute_id' => '2',
-            ], [
+            ],
+            [
                 'id'           => '3',
                 'locale'       => 'fa',
                 'name'         => 'نام کوتاه دوره',
                 'attribute_id' => '3',
-            ], [
+            ],
+            [
                 'id'           => '4',
                 'locale'       => 'fa',
                 'name'         => 'نامک',
                 'attribute_id' => '4',
-            ], [
+            ],
+            [
                 'id'           => '5',
                 'locale'       => 'fa',
                 'name'         => 'دسته‌بندی مالیاتی',
                 'attribute_id' => '5',
-            ], [
+            ],
+            [
                 'id'           => '6',
                 'locale'       => 'fa',
                 'name'         => 'جدید',
                 'attribute_id' => '6',
-            ], [
+            ],
+            [
                 'id'           => '7',
                 'locale'       => 'fa',
                 'name'         => 'ویژه',
                 'attribute_id' => '7',
-            ], [
+            ],
+            [
                 'id'           => '8',
                 'locale'       => 'fa',
                 'name'         => 'قابل مشاهده در فروشگاه',
                 'attribute_id' => '8',
-            ], [
+            ],
+            [
                 'id'           => '9',
                 'locale'       => 'fa',
                 'name'         => 'وضعیت',
                 'attribute_id' => '9',
-            ], [
+            ],
+            [
                 'id'           => '10',
                 'locale'       => 'fa',
                 'name'         => 'توضیحات مختصر',
                 'attribute_id' => '10',
-            ], [
+            ],
+            [
                 'id'           => '11',
                 'locale'       => 'fa',
                 'name'         => 'توضیحات',
                 'attribute_id' => '11',
-            ], [
+            ],
+            [
                 'id'           => '12',
                 'locale'       => 'fa',
                 'name'         => 'قیمت',
                 'attribute_id' => '12',
-            ], [
+            ],
+            [
                 'id'           => '13',
                 'locale'       => 'fa',
                 'name'         => 'هزینه',
                 'attribute_id' => '13',
-            ], [
+            ],
+            [
                 'id'           => '14',
                 'locale'       => 'fa',
                 'name'         => 'قیمت ویژه',
                 'attribute_id' => '14',
-            ], [
+            ],
+            [
                 'id'           => '15',
                 'locale'       => 'fa',
                 'name'         => 'تاریخ شروع قیمت ویژه',
                 'attribute_id' => '15',
-            ], [
+            ],
+            [
                 'id'           => '16',
                 'locale'       => 'fa',
                 'name'         => 'تاریخ پایان قیمت ویژه',
                 'attribute_id' => '16',
-            ], [
+            ],
+            [
                 'id'           => '17',
                 'locale'       => 'fa',
                 'name'         => 'عنوان متا',
                 'attribute_id' => '17',
-            ], [
+            ],
+            [
                 'id'           => '18',
                 'locale'       => 'fa',
                 'name'         => 'کلیدواژه‌های متا',
                 'attribute_id' => '18',
-            ], [
+            ],
+            [
                 'id'           => '19',
                 'locale'       => 'fa',
                 'name'         => 'توضیحات متا',
                 'attribute_id' => '19',
-            ], [
+            ],
+            [
                 'id'           => '20',
                 'locale'       => 'fa',
                 'name'         => 'مهمان میتواند خرید کند',
                 'attribute_id' => '20',
-            ], [
+            ],
+            [
                 'id'           => '21',
                 'locale'       => 'fa',
                 'name'         => 'شماره محصول',
                 'attribute_id' => '21',
-            ], [
+            ],
+            [
                 'id'           => '22',
                 'locale'       => 'fa',
                 'name'         => 'نام استاد',
                 'attribute_id' => '22',
-            ], [
+            ],
+            [
                 'id'           => '23',
                 'locale'       => 'fa',
                 'name'         => 'تصویر استاد',
                 'attribute_id' => '23',
-            ], [
+            ],
+            [
                 'id'           => '24',
                 'locale'       => 'fa',
                 'name'         => 'درباره استاد',
                 'attribute_id' => '24',
-            ], [
+            ],
+            [
                 'id'           => '25',
                 'locale'       => 'fa',
                 'name'         => 'در حال تکیمل',
                 'attribute_id' => '25',
-            ], [
+            ],
+            [
                 'id'           => '26',
                 'locale'       => 'fa',
                 'name'         => 'مدت زمان',
                 'attribute_id' => '26',
-            ], [
+            ],
+            [
                 'id'           => '27',
                 'locale'       => 'fa',
                 'name'         => 'جنسیت',
                 'attribute_id' => '27',
-            ], [
+            ],
+            [
                 'id'           => '28',
                 'locale'       => 'fa',
                 'name'         => 'روزهای هفته',
                 'attribute_id' => '28',
-            ], [
+            ],
+            [
                 'id'           => '29',
                 'locale'       => 'fa',
                 'name'         => 'نوع دوره',
                 'attribute_id' => '29',
-            ], [
+            ],
+            [
                 'id'           => '30',
                 'locale'       => 'fa',
                 'name'         => 'محل برگزاری',
                 'attribute_id' => '30',
-            ], [
+            ],
+            [
                 'id'           => '31',
                 'locale'       => 'fa',
                 'name'         => 'سرفصل ها',
                 'attribute_id' => '31',
-            ], [
+            ],
+            [
                 'id'           => '32',
                 'locale'       => 'fa',
                 'name'         => 'پیش‌نیازها',
                 'attribute_id' => '32',
-            ], [
+            ],
+            [
                 'id'           => '33',
                 'locale'       => 'fa',
                 'name'         => 'منابع آموزشی',
                 'attribute_id' => '33',
-            ], [
+            ],
+            [
                 'id'           => '34',
                 'locale'       => 'fa',
                 'name'         => 'آینده شغلی',
                 'attribute_id' => '34',
-            ], [
+            ],
+            [
                 'id'           => '35',
                 'locale'       => 'fa',
                 'name'         => 'نمونه‌کار فراگیر',
                 'attribute_id' => '35',
-            ], [
+            ],
+            [
                 'id'           => '36',
                 'locale'       => 'fa',
                 'name'         => 'کد دوره در سامانه آموزش مجازی',
                 'attribute_id' => '36',
-            ], [
+            ],
+            [
                 'id'           => '37',
                 'locale'       => 'fa',
                 'name'         => 'کاربر استاد',
                 'attribute_id' => '37',
-            ], [
+            ],
+            [
                 'id'           => '38',
                 'locale'       => 'fa',
                 'name'         => 'کد دوره در اسپات پلیر',
                 'attribute_id' => '38',
+            ],
+            [
+                'id'           => '39',
+                'locale'       => 'fa',
+                'name'         => 'کد کلاس رویش',
+                'attribute_id' => '39',
+            ],
+            [
+                'id'           => '40',
+                'locale'       => 'fa',
+                'name'         => 'نمونه گواهی‌نامه',
+                'attribute_id' => '40',
             ],
         ]);
     }
