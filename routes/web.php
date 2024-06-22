@@ -49,7 +49,8 @@ Route::group(
 
             Route::view('/about-us', 'shop.aboutus')
                 ->name('shop.aboutus');
-
+            Route::view('/contact-us', 'shop.contactus')
+                ->name('shop.contactus');
             /**
              * Customer routes.
              */
