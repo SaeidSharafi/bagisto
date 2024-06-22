@@ -62,9 +62,9 @@
                     </form>
                     <p class="foot-note pt-3 text-center">
                         ورود شما به معنای پذیرش
-                        <a href="#" class="text-nowrap">شرایط جهاد دانشگاهی قزوین</a>
+                        <a href="/page/terms-conditions" class="text-nowrap">شرایط جهاد دانشگاهی قزوین</a>
                         و
-                        <a href="#" class="text-nowrap">قوانین حریم‌خصوصی</a>
+                        <a href="/page/privacy-policy" class="text-nowrap">قوانین حریم‌خصوصی</a>
                         است
                     </p>
                     {!! view_render_event('bagisto.shop.customers.signup.after') !!}
