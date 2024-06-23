@@ -21,7 +21,9 @@
  * group.
  */
 
+use App\Http\Controllers\Admin\CenterController;
 use App\Http\Controllers\Admin\CmsCategoryController;
+use App\Http\Controllers\Admin\ContactRequestController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\CarouselCategoryController;
 use App\Http\Controllers\Admin\CarouselItemController;
@@ -49,7 +51,9 @@ Route::group(
 
             Route::view('/about-us', 'shop.aboutus')
                 ->name('shop.aboutus');
-            Route::view('/contact-us', 'shop.contactus')
+            Route::get('/contact-us', [\App\Http\Controllers\Shop\ContactusController::class,'view'])
+                ->name('shop.contactus');
+            Route::post('/contact-us', [\App\Http\Controllers\Shop\ContactusController::class,'store'])
                 ->name('shop.contactus');
             /**
              * Customer routes.
@@ -225,6 +229,23 @@ Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => conf
     Route::get('sms', [\App\Http\Controllers\Admin\SmsController::class, 'index'])
         ->name('admin.sms.index');
 
+    Route::prefix('contact-request')->group(function () {
+        Route::get('/', [ContactRequestController::class, 'index'])->defaults('_config', [
+            'view' => 'admin.contact-request.index',
+        ])->name('admin.contact-request.index');
+
+        Route::get('view/{id}', [ContactRequestController::class, 'view'])->defaults('_config', [
+            'view' => 'admin.contact-request.view',
+        ])->name('admin.contact-request.view');
+
+        Route::post('/delete/{id}', [ContactRequestController::class, 'delete'])->defaults('_config', [
+            'redirect' => 'admin.contact-request.index',
+        ])->name('admin.contact-request.delete');
+
+        Route::post('/massdelete', [ContactRequestController::class, 'massDelete'])->defaults('_config', [
+            'redirect' => 'admin.contact-request.index',
+        ])->name('admin.contact-request.mass-delete');
+    });
     Route::prefix('carousel')->group(function () {
         Route::prefix('category')->group(function () {
             Route::get('/', [CarouselCategoryController::class, 'index'])->defaults('_config', [
@@ -286,6 +307,35 @@ Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => conf
         });
     });
 
+    Route::prefix('center')->group(function () {
+        Route::get('/', [CenterController::class, 'index'])->defaults('_config', [
+            'view' => 'admin.center.index',
+        ])->name('admin.center.index');
+
+        Route::get('create', [CenterController::class, 'create'])->defaults('_config', [
+            'view' => 'admin.center.create',
+        ])->name('admin.center.create');
+
+        Route::post('create', [CenterController::class, 'store'])->defaults('_config', [
+            'redirect' => 'admin.center.index',
+        ])->name('admin.center.store');
+
+        Route::get('edit/{id}', [CenterController::class, 'edit'])->defaults('_config', [
+            'view' => 'admin.center.edit',
+        ])->name('admin.center.edit');
+
+        Route::post('edit/{id}', [CenterController::class, 'update'])->defaults('_config', [
+            'redirect' => 'admin.center.index',
+        ])->name('admin.center.update');
+
+        Route::post('/delete/{id}', [CenterController::class, 'delete'])->defaults('_config', [
+            'redirect' => 'admin.center.index',
+        ])->name('admin.center.delete');
+
+        Route::post('/massdelete', [CenterController::class, 'massDelete'])->defaults('_config', [
+            'redirect' => 'admin.center.index',
+        ])->name('admin.center.mass-delete');
+    });
 
     Route::prefix('blog')->group(function () {
         Route::prefix('category')->group(function () {

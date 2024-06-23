@@ -40,7 +40,20 @@ return [
             'sort'       => 2,
             'icon-class' => 'temp-icon',
         ],
-
+        [
+            'key'        => 'settings.center',
+            'name'       => 'admin.center.title',
+            'route'      => 'admin.center.index',
+            'sort'       => 2,
+            'icon-class' => 'temp-icon',
+        ],
+        [
+            'key'        => 'customers.contact_request',
+            'name'       => 'admin.contactus.title',
+            'route'      => 'admin.contact-request.index',
+            'sort'       => 2,
+            'icon-class' => 'temp-icon',
+        ],
     ],
 
     'customer' => [

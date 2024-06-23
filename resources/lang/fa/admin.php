@@ -37,6 +37,19 @@ return [
         ]
 
     ],
+    'center'     => [
+        'title'            => 'مرکز',
+        'titles'            => 'مراکز',
+        'add-title'        => 'اضافه کردن',
+        'create-btn-title' => 'ایجاد مرکز',
+        'edit-title'       => 'ویرایش مرکز',
+        'edit-btn-title'   => 'ویرایش مرکز',
+        'link'              => 'لینک',
+        'phone'              => 'تلفن',
+        'address'           => 'آدرس',
+        'delete-success'   => 'حذف آیتم با موفقیت انجام شد.',
+        'delete-failur'    => 'خطا در حذف آیتم.',
+    ],
     'catalog'       => [
         'categories' => [
             'color'       => 'رنگ پس‌زمینه نوار نقاله',
@@ -157,5 +170,17 @@ return [
             'sms-settings'     => 'تنظیمات پیامک',
         ]
     ],
+    'contactus' => [
+        'title' => 'درخواست‌های تماس با ما',
+        'view' => 'مشاهده درخواست',
+        'subject' => 'موضوع',
+        'message' => 'پیام',
+        'first_name' => 'نام',
+        'last_name' => 'نام خانوادگی',
+        'email' => 'ایمیل',
+        'phone' => 'تلفن',
+        'delete-success'   => 'حذف درخواست با موفقیت انجام شد.',
+        'delete-failur'    => 'خطا در حذف درخواست.',
+    ]
 
 ];

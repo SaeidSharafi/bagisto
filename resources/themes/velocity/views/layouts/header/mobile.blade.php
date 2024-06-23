@@ -69,6 +69,14 @@
             <li>
                 <a
                     class="unset"
+                    href="{{ route('shop.contactus') }}"
+                    target="_self"
+                >تماس با ما</a
+                >
+            </li>
+            <li>
+                <a
+                    class="unset"
                     href="{{ config('app.blog_url') }}"
                     target="_blank"
                     >بلاگ</a

@@ -34,5 +34,10 @@ return [
     'reviews' =>[
         'empty' =>'هیچ نظری یافت نشد'
     ],
-    'laravel_logo' => 'Laravel Logo'
+    'laravel_logo' => 'Laravel Logo',
+    'contactus' => [
+        'subject' => 'موضوع',
+        'message' => 'پیام',
+        'store' => 'درخواست شما با موفقیت ثبت شد. همکاران ما در اسرع وقت با شما تماس خواهند گرفت'
+    ]
 ];
