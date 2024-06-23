@@ -12,6 +12,7 @@ return [
         'instagram_url' => 'آدرس اینستاگرام',
         'aparat_url'    => 'آدرس آپارات',
         'bale_url'      => 'آدرس بله',
+        'map_iframe'    => 'کد iframe نقشه',
     ],
     'carousel'      => [
         'title'    => 'نوار نقاله',
