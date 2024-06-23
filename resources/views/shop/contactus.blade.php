@@ -41,8 +41,7 @@
                 </h3>
             </div>
             <div class="map-section w-100">
-                <iframe src="https://balad.ir/embed?p=4p98t93p6hUnOX" title="مشاهده «مرکز آموزش شماره ۱ جهاد دانشگاهی» روی نقشه بلد" width="600" height="450" frameborder="0"
-                        style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                {!! $velocityMetaData->map_iframe !!}
             </div>
         </section>
         <section class="w-100">

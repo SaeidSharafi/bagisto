@@ -102,7 +102,17 @@
                             value="{{ $metaData ? $metaData->sidebar_category_count : '10' }}" />
                     </div>
 
-                    <div class="control-group header-count">
+                    <div class="control-group">
+                        <label style="width:100%;">
+                            {{ __('admin.meta-data.map_iframe') }}
+                        </label>
+                        <textarea
+                            style="direction: ltr;"
+                            class="control"
+                            id="map_iframe"
+                            name="map_iframe">{{ $metaData ? $metaData->map_iframe : null }}</textarea>
+                    </div>
+                    <div class="control-group header-count" style="display: none;">
                         <label style="width:100%;">
                             {{ __('velocity::app.admin.meta-data.header_content_count') }}
                             <span class="locale">[{{ $channel }} - {{ $locale }}]</span>
@@ -134,7 +144,7 @@
                         </textarea>
                     </div>
 
-                    <div class="control-group product-policy">
+                    <div class="control-group product-policy" style="display: none;">
                         <label style="width:100%;">
                             {{ __('velocity::app.admin.meta-data.product-policy') }}
                             <span class="locale">[{{ $channel }} - {{ $locale }}]</span>
@@ -305,6 +315,7 @@
 
             <accordian :title="'{{ __('velocity::app.admin.meta-data.footer') }}'" class="footer" :active="false">
                 <div slot="body">
+
                     <div class="control-group">
                         <label style="width:100%;">
                             {{ __('admin.meta-data.telegram_url') }}
