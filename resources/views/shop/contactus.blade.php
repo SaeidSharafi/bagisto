@@ -83,7 +83,7 @@
                         </ul>
                     </div>
                 @endif
-               <form action="{{route('shop.contactus')}}" method="post" @submit.prevent="onSubmit">
+               <form action="{{route('shop.contactus.store')}}" method="post" @submit.prevent="onSubmit">
                    {{ csrf_field() }}
                    <div class="row">
                        <div class="col-12 col-md-6 mb-3">

@@ -52,9 +52,9 @@ Route::group(
             Route::view('/about-us', 'shop.aboutus')
                 ->name('shop.aboutus');
             Route::get('/contact-us', [\App\Http\Controllers\Shop\ContactusController::class,'view'])
-                ->name('shop.contactus');
+                ->name('shop.contactus.view');
             Route::post('/contact-us', [\App\Http\Controllers\Shop\ContactusController::class,'store'])
-                ->name('shop.contactus');
+                ->name('shop.contactus.store');
             /**
              * Customer routes.
              */

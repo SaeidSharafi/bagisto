@@ -69,7 +69,7 @@
             <li>
                 <a
                     class="unset"
-                    href="{{ route('shop.contactus') }}"
+                    href="{{ route('shop.contactus.view') }}"
                     target="_self"
                 >تماس با ما</a
                 >
