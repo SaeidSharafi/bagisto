@@ -108,8 +108,9 @@
 
         @if ($productCarousels)
             @foreach($productCarousels as $category)
-
-                @include('shop::home.carousel-products')
+                <div class="w-100 mb-4">
+                    @include('shop::home.carousel-products')
+                </div>
             @endforeach
         @elseif ($velocityMetaData)
             {!! DbView::make($velocityMetaData)->field('home_page_content')->render() !!}
