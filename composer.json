@@ -49,6 +49,7 @@
         "paypal/paypal-checkout-sdk": "1.0.1",
         "prettus/l5-repository": "^2.6",
         "pusher/pusher-php-server": "^7.0",
+        "spatie/laravel-backup": "^8.2",
         "spatie/laravel-ignition": "^1.0"
     },
     "require-dev": {

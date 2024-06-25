@@ -13,3 +13,38 @@
     display: flex;
     align-items: center;
 }
+
+.login-icon {
+    background-image: url("../../images/icons/login.svg");
+    width: 24px;
+    height: 24px;
+}
+
+.password-icon {
+    background-image: url("../../images/icons/password.svg");
+    width: 24px;
+    height: 24px;
+}
+
+.carousel-icon {
+    background-image: url("../../images/icons/carousel.svg");
+    width: 48px;
+    height: 48px;
+}
+
+.tick-double-icon {
+    background-image: url("../../images/icons/tick-double.svg");
+    width: 24px;
+    height: 24px;
+}
+.tick-double-blue-icon {
+    background-image: url("../../images/icons/tick-double-blue.svg");
+    width: 24px;
+    height: 24px;
+}
+.fill-green{
+    fill: #42C066;
+}
+.fill-blue{
+    fill: #2d9cdb;
+}

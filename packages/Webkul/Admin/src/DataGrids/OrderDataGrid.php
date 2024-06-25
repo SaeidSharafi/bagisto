@@ -300,17 +300,21 @@ class OrderDataGrid extends DataGrid
             'route'  => 'admin.sales.orders.complete',
             'icon'   => 'icon completed-icon'
         ]);
-        $this->addAction([
-            'title'  => trans('admin.datagrid.sync-ims'),
-            'method' => 'GET',
-            'route'  => 'admin.sales.orders.sync-ims',
-            'icon'   => 'icon processing-icon'
-        ]);
+
+        if (config('app.ims.api_key')){
+            $this->addAction([
+                'title'  => trans('admin.datagrid.sync-ims'),
+                'method' => 'GET',
+                'route'  => 'admin.sales.orders.sync-ims',
+                'icon'   => 'icon tick-double-icon'
+            ]);
+        }
+
         $this->addAction([
             'title'  => trans('admin.datagrid.sync-rouyesh'),
             'method' => 'GET',
             'route'  => 'admin.sales.orders.sync-rouyesh',
-            'icon'   => 'icon processing-icon green'
+            'icon'   => 'icon tick-double-blue-icon'
         ]);
     }
 }

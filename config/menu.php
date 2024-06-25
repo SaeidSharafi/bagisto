@@ -22,7 +22,7 @@ return [
             'name'       => 'admin.carousel.category.title',
             'route'      => 'admin.carousel.category.index',
             'sort'       => 5,
-            'icon-class' => 'catalog-icon',
+            'icon-class' => 'carousel-icon',
 
         ],
         [
