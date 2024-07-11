@@ -17,7 +17,7 @@
                     <i class="fa fa-map-marker-alt"></i>
                     <div>
                         <span class="font-weight-bold">آدرس مرکز دو: </span>
-                        قزوین، سه راه خیام، جنب پاساژ علوی
+                        قزوین، خیابان دانشگاه، بلوار شهید بابایی، کوچه خاکعلی، پ ۱۵
                     </div>
                 </div>
             </li>
@@ -37,7 +37,7 @@
                     <i class="fa fa-phone"></i>
                     <div>
                         <span class="font-weight-bold">تلفن مرکز دو:</span><br>
-                        <a href="tel:02833242624">33667001(028)</a>
+                        <a href="tel:02833667001">33667001(028)</a>
                     </div>
                 </div>
             </li>
