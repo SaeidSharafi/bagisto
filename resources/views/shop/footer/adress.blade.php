@@ -37,7 +37,7 @@
                     <i class="fa fa-phone"></i>
                     <div>
                         <span class="font-weight-bold">تلفن مرکز دو:</span><br>
-                        <a href="tel:02833242624">33242624(028)</a>
+                        <a href="tel:02833242624">33667001(028)</a>
                     </div>
                 </div>
             </li>
