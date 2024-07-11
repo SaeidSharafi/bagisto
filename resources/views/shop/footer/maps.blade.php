@@ -14,7 +14,7 @@
         </div>
         <div class="col-md-6 second-map">
             <span class="d-block text-center font-weight-bold mb-2" style="font-size: 1.6rem;">مرکز دو</span>
-            <p class="text-center" style="font-size: 1.4rem;">قزوین، سه راه خیام، جنب پاساژ علوی</p>
+            <p class="text-center" style="font-size: 1.4rem;">قزوین، خیابان دانشگاه، بلوار شهید بابایی، کوچه خاکعلی، پ ۱۵</p>
             <div class="map-responsive">
                 <img src="{{asset('images/shop/map1.jpg')}}" loading="lazy"
                      data-src="{{asset('images/shop/map1.jpg')}}" class="w-100 lazyload" data-width="890"
