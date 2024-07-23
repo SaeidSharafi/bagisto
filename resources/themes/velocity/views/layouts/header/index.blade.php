@@ -1,5 +1,6 @@
 <header class="sticky-header border-bottom">
-
+    {{-- top nav which contains currency, locale and login header --}}
+    @include('shop::layouts.top-nav.index')
 
     <div class="right searchbar">
         <div class="row m-0">

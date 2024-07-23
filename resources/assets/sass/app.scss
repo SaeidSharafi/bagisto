@@ -215,8 +215,8 @@ nav#sidebar-level-0 {
 }
 
 nav .logo {
-    height: 50px;
-    padding-left: 10px;
+    height: 50px !important;
+    padding-left: 10px !important;
 }
 
 .topbar {
@@ -249,7 +249,7 @@ nav .logo {
 
 .main-container-wrapper .sticky-header {
     background: $main-bg;
-    height: 55px;
+    height: 110px;
 }
 
 .product-description {
@@ -591,7 +591,11 @@ img.cover {
     .category-item {
         padding: 0.5rem 0.9rem;
         max-width: 167px;
+        transition: transform 0.5s;
 
+        &:hover{
+            transform: scale(1.1);
+        }
         .category-text {
             color: #000000;
             font-size: 1.2rem;

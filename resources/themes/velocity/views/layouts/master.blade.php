@@ -61,8 +61,7 @@
         <div class="main-container-wrapper main-content-wrapper">
 
             @section('body-header')
-                {{-- top nav which contains currency, locale and login header --}}
-                @include('shop::layouts.top-nav.index')
+
 
                 {!! view_render_event('bagisto.shop.layout.header.before') !!}
 
