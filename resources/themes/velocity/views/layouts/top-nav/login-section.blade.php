@@ -12,7 +12,7 @@
     </div>
     <div class="dropdown-list">
         <div class="dropdown-label">
-            {{ auth()->guard('customer')->user()->first_name }}
+            {{ auth()->guard('customer')->user()->first_name }} {{ auth()->guard('customer')->user()->last_name }}
         </div>
 
         <div class="dropdown-container">
