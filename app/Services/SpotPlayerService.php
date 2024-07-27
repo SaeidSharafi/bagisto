@@ -16,14 +16,19 @@ class SpotPlayerService
 
     public static function generateLicense($order, $order_item)
     {
-        //$order->update(['status' => Order::STATUS_PROCESSING]);
+        $api_key = config('app.spot_player.api_key');
+        if (!$api_key) {
+            Log::error('please set SpotPlayer API key first');
+            return false;
+        }
+
         $license = SpotLicense::query()
             ->where('order_id', $order->id)
             ->where('product_id', $order_item->product_id)
             ->exists();
         if ($license && !config('app.spot_player.sandbox')) {
             Log::error('License Already Exit');
-            return;
+            return false;
         }
         $courses = $order->items->map(function ($item) {
             return $item->product->spot_id;
@@ -41,12 +46,6 @@ class SpotPlayerService
             ]
         ];
 
-        $api_key = config('app.spot_player.api_key');
-        if (!$api_key) {
-            Log::error('please set SpotPlayer API key first');
-            return;
-        }
-
         $response = Http::withBody(json_encode($data, JSON_THROW_ON_ERROR), 'application/json')
                 ->withHeaders([
                     '$API' => $api_key
@@ -60,9 +59,11 @@ class SpotPlayerService
 
         if ($order->spot_license === null) {
             $order->spot_license()->create($response);
-        } else {
-            $order->spot_license->update($response);
+            return $order->id;
         }
+
+        $order->spot_license->update($response);
+        return $order->id;
 
     }
 

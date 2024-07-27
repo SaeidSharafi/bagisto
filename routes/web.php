@@ -214,7 +214,8 @@ Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => conf
             ->name('admin.sales.orders.sync-ims');
             Route::get('sync-rouyesh/{id}', [OrderController::class, 'syncRouyesh'])
                 ->name('admin.sales.orders.sync-rouyesh');
-
+            Route::get('create-spot/{id}', [OrderController::class, 'createSpot'])
+                ->name('admin.sales.orders.create-spot');
             Route::get('/upload', [\App\Http\Controllers\Admin\OrderController::class, 'index'])
                 ->name('admin.sales.order.bulk.index');
             Route::post('/upload', [\App\Http\Controllers\Admin\OrderController::class, 'uploadCSV'])

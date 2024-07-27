@@ -74,7 +74,13 @@ return [
         'sync-rouyesh-customer-incomplete' => 'اطلاعات فراگیر کامل نمی باشد',
         'sync-rouyesh-course-notfound' => 'اطلاعات دوره در سامانه رویش یافت نشد',
 
-
+        'spot-exist' => 'لایسنس Spot ایجاد شده است.',
+        'create-spot-success' => 'لایسنس با موفقیت ایجاد شد.',
+        'create-spot-fail' => 'خطا در ایجاد لایسنس',
+        'create-spot-api-key' => 'کلید API سامانه Spot وجود ندارد',
+        'create-spot-unauthorized' => 'دسترسی غیرمجاز به سامانه Spot',
+        'create-spot-porduct-number' => 'دوره از نوع Spot نمیباشد.',
+        'create-spot-customer-incomplete' => 'اطلاعات فراگیر کامل نمی باشد',
 
         'complete-success' => 'ثبت نام با موفقیت تایید شد',
         'too-many-attemps' => 'تعداد درخواست بیش از حد مجاز میباشد. لطفا چند دقیقه صبر کرده و مجددا تلاش فرمایید'

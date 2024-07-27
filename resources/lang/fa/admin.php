@@ -89,6 +89,12 @@ return [
                 'synced'     => 'همگام سازی IMS',
                 'not_synced' => 'عدم همگام سازی IMS',
             ],
+            'spot'            => [
+                'column'     => 'وضعیت Spot',
+                'created'     => 'ایجاد شده',
+                'waiting'     => 'در انتظار',
+                'error' => 'خطا',
+            ],
             'rouyesh'        => [
                 'column'     => 'وضعیت همگام سازی',
                 'synced'     => 'همگام سازی رویش',

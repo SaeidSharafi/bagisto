@@ -2,8 +2,10 @@
 
 namespace Webkul\Admin\Http\Controllers\Sales;
 
+use App\Models\SpotLicense;
 use App\Services\HttpRequestService;
 use App\Services\RouyeshAPIService;
+use App\Services\SpotPlayerService;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Event;
 use Webkul\Admin\DataGrids\OrderDataGrid;
@@ -174,6 +176,40 @@ class OrderController extends Controller
             return redirect()->back();
         } catch(AuthenticationException $e) {
             session()->flash('error', trans('app.response.sync-rouyesh-unauthorized', ['name' => 'Order']));
+            return redirect()->back();
+        }
+
+    }
+
+    public function createSpot($id)
+    {
+        $order = $this->orderRepository->with('items')->find($id);
+        if (!config('app.spot_player.api_key')){
+            session()->flash('error', trans('app.response.create-spot-api-key', ['name' => 'Order']));
+            return redirect()->back();
+        }
+        $license = SpotLicense::query()
+            ->where('order_id', $order->id)
+            ->where('product_id', $order->items->first()->product_id)
+            ->exists();
+        if ($license){
+            session()->flash('warning', trans('app.response.spot-exist', ['name' => 'Order']));
+            return redirect()->back();
+        }
+        try {
+            $response = SpotPlayerService::generateLicense($order, $order->items->first());
+
+            if($response) {
+                session()->flash('success', trans('app.response.create-spot-success', ['name' => 'Order']));
+                return redirect()->back();
+            }
+            session()->flash('error', trans('app.response.create-spot-fail', ['name' => 'Order']));
+            return redirect()->back();
+        } catch(\InvalidArgumentException $e) {
+            session()->flash('error', $e->getMessage());
+            return redirect()->back();
+        } catch(AuthenticationException $e) {
+            session()->flash('error', trans('app.response.create-spot-unauthorized', ['name' => 'Order']));
             return redirect()->back();
         }
 

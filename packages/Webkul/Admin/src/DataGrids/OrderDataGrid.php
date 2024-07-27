@@ -3,6 +3,7 @@
 namespace Webkul\Admin\DataGrids;
 
 use Carbon\Carbon;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 use Webkul\Ui\DataGrid\DataGrid;
 
@@ -43,6 +44,10 @@ class OrderDataGrid extends DataGrid
             ->leftJoin('product_categories', 'order_items.product_id', 'product_categories.product_id')
             ->leftJoin('product_flat', 'order_items.product_id', 'product_flat.product_id')
             ->leftJoin('category_translations', 'product_categories.category_id', 'category_translations.category_id')
+            ->leftJoin('spot_licenses', function (Builder $q) {
+                return $q->on('orders.id', 'spot_licenses.order_id')
+                    ->on('order_items.product_id', 'spot_licenses.product_id');
+            })
             ->groupBy('orders.id')
             ->addSelect(
                 'orders.id',
@@ -61,6 +66,8 @@ class OrderDataGrid extends DataGrid
                 'order_items.product_number',
                 'order_items.sku',
                 'product_flat.rouyesh_code',
+                'product_flat.spot_id',
+                'spot_licenses._id'
             )
             ->addSelect(DB::raw('CONCAT('.DB::getTablePrefix().'orders.customer_first_name, " ", '.DB::getTablePrefix()
                 .'orders.customer_last_name) as billed_to'))
@@ -259,6 +266,33 @@ class OrderDataGrid extends DataGrid
             },
         ]);
         $this->addColumn([
+            'index'      => 'spot_id',
+            'label'      => trans('admin.sales.orders.spot.column'),
+            'type'       => 'select',
+            'sortable'   => false,
+            'searchable' => false,
+            'filterable' => false,
+            'closure'    => function ($value) {
+                if ($value->order_status === 'processing') {
+                    return "<div class='badge badge-md badge-warning'>"
+                        .trans('admin.sales.orders.spot.waiting')."</div>";
+                }
+                if ($value->order_status !== 'completed') {
+                    return '';
+                }
+                if ($value->spot_id && $value->_id) {
+                    return "<div class='badge badge-md badge-success'>"
+                        .trans('admin.sales.orders.spot.created')."</div>";
+                }
+                if ($value->spot_id) {
+                    return "<div class='badge badge-md badge-danger'>"
+                        .trans('admin.sales.orders.spot.error')."</div>";
+                }
+
+                return '';
+            },
+        ]);
+        $this->addColumn([
             'index'      => 'billed_to',
             'label'      => trans('admin::app.datagrid.billed-to'),
             'type'       => 'string',
@@ -301,7 +335,7 @@ class OrderDataGrid extends DataGrid
             'icon'   => 'icon completed-icon'
         ]);
 
-        if (config('app.ims.api_key')){
+        if (config('app.ims.api_key')) {
             $this->addAction([
                 'title'  => trans('admin.datagrid.sync-ims'),
                 'method' => 'GET',
@@ -315,6 +349,12 @@ class OrderDataGrid extends DataGrid
             'method' => 'GET',
             'route'  => 'admin.sales.orders.sync-rouyesh',
             'icon'   => 'icon tick-double-blue-icon'
+        ]);
+        $this->addAction([
+            'title'  => trans('admin.datagrid.create-spot'),
+            'method' => 'GET',
+            'route'  => 'admin.sales.orders.create-spot',
+            'icon'   => 'icon spot-icon'
         ]);
     }
 }
