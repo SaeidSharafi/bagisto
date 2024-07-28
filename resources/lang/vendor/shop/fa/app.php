@@ -559,7 +559,7 @@ return [
             'amt-payable' => 'مبلغ قابل پرداخت',
             'got' => 'بدست آورد',
             'free' => 'رایگان',
-            'coupon-used' => 'کوپن مورد استفاده',
+            'coupon-used' => 'کد تخفیف مورد استفاده',
             'applied' => 'کاربردی',
             'back' => 'بازگشت',
             'cash-desc' => 'پرداخت نقدی هنگام تحویل',
@@ -569,7 +569,7 @@ return [
             'flat-desc' => 'این یک نرخ مسطح است',
             'password' => 'کلمه عبور',
             'login-exist-message' => 'شما قبلاً با ما حساب کاربری دارید ، وارد شوید یا به عنوان مهمان ادامه دهید',
-            'enter-coupon-code' => 'شماره کوپن را وارد کنید'
+            'enter-coupon-code' => 'شماره کد تخفیف را وارد کنید'
         ],
 
         'total' => [
@@ -582,13 +582,13 @@ return [
             'price' => 'قیمت',
             'disc-amount' => 'مقدار تخفیف',
             'new-grand-total' => 'کل بزرگ عالی',
-            'coupon' => 'کوپن',
-            'coupon-applied' => 'کوپن اعمال شده',
-            'remove-coupon' => 'کوپن را بردارید',
-            'cannot-apply-coupon' => 'کوپن قابل اعمال نیست',
-            'invalid-coupon' => 'کد کوپن نامعتبر است',
-            'success-coupon' => 'کد کوپن با موفقیت اعمال شد',
-            'coupon-apply-issue' => 'کد کوپن نمی تواند اعمال شود'
+            'coupon' => 'کد تخفیف',
+            'coupon-applied' => 'کد تخفیف اعمال شده',
+            'remove-coupon' => 'کد تخفیف را بردارید',
+            'cannot-apply-coupon' => 'کد تخفیف قابل اعمال نیست',
+            'invalid-coupon' => 'کد کد تخفیف نامعتبر است',
+            'success-coupon' => 'کد کد تخفیف با موفقیت اعمال شد',
+            'coupon-apply-issue' => 'کد کد تخفیف نمی تواند اعمال شود'
         ],
 
         'success' => [
