@@ -9,7 +9,7 @@
                     <a href="/{{$category->slug}}"
                        class="d-block">
                         <div class="category-item">
-                            <img src="{{$image_path}}" class="w-100">
+                            <img src="{{$image_path}}" class="w-100" alt="{{$category->name}}">
                             <p class="category-text d-block text-center">   {{$category->name}}</p>
 
                         </div>

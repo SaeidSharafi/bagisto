@@ -8,7 +8,7 @@
                             {{ (isCategory && !productTitle) ? categoryDetails.name : productTitle }}
                         </div>
                         <div class="category-image">
-                            <img :src="categoryImage" class="w-100 img-crisp" v-if="categoryImage">
+                            <img :src="categoryImage" class="w-100 img-crisp" v-if="categoryImage" :alt="(isCategory && !productTitle) ? categoryDetails.name : productTitle">
                             <img :src="`${this.baseUrl}/images/shop/carousel/free.png`" class="w-100 img-crisp" v-else>
                         </div>
                         <div class="category-link" v-if="isCategory">
