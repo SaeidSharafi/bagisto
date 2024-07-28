@@ -13,13 +13,6 @@
   <div class="container">
       <div id="checkout" class="checkout-process row">
           <h1 class="col-12">{{ __('velocity::app.checkout.checkout') }}</h1>
-          <div class="col-12">
-            <p class="foot-note pt-3 text-start font-weight-bold">
-                ثبت نام شما در این دوره به معنای پذیرش
-                <a href="/page/terms-conditions" class="">شرایط جهاد دانشگاهی قزوین</a>
-                است
-            </p>
-        </div>
           <div class="col-lg-7 col-md-12">
               <div
                   class="step-content review"
@@ -45,7 +38,13 @@
                   v-if="showCheckoutSection"
                   class="step-content checkout"
                   id="checkout-section">
-
+                  <div class="w-100">
+                    <h4 class="foot-note pt-3 text-start font-weight-bold">
+                        ثبت نام شما در این دوره به معنای پذیرش
+                        <a href="/page/terms-conditions" class="">قوانین و شرایط جهاد دانشگاهی قزوین</a>
+                        است
+                    </h4>
+                </div>
                   <checkout-section :key="checkoutComponentKey">
                       <div slot="place-order-btn">
                           <div class="mb20">
