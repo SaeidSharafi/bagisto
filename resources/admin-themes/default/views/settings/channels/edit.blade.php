@@ -1,7 +1,7 @@
 @extends('admin::layouts.content')
 
 @section('page_title')
-    {{ __('admin::app.settings.channels.edit-title') }}
+    {{ __('admin.settings.channels.edit-title') }}
 @stop
 
 @section('content')
@@ -14,7 +14,7 @@
                     <h1>
                         <i class="icon angle-left-icon back-link" onclick="window.location = '{{ route('admin.channels.index') }}'"></i>
 
-                        {{ __('admin::app.settings.channels.edit-title') }}
+                        {{ __('admin.settings.channels.edit-title') }}
                     </h1>
 
                     <div class="control-group">
@@ -32,7 +32,7 @@
 
                 <div class="page-action">
                     <button type="submit" class="btn btn-lg btn-primary">
-                        {{ __('admin::app.settings.channels.save-btn-title') }}
+                        {{ __('admin.settings.channels.save-btn-title') }}
                     </button>
                 </div>
             </div>
@@ -49,7 +49,7 @@
                     <accordian title="{{ __('admin::app.settings.channels.general') }}" :active="true">
                         <div slot="body">
 
-                            <div class="control-group" :class="[errors.has('code') ? 'has-error' : '']">
+                            <div class="control-group" :class="[errors.has('code') ? 'has-error' : '']" style="display: none;">
                                 <label for="code" class="required">{{ __('admin::app.settings.channels.code') }}</label>
                                 <input type="text" v-validate="'required'" class="control" id="code" name="code" data-vv-as="&quot;{{ __('admin::app.settings.channels.code') }}&quot;" value="{{ $channel->code }}" disabled="disabled"/>
                                 <input type="hidden" name="code" value="{{ $channel->code }}"/>
@@ -73,7 +73,8 @@
                                 <textarea class="control" id="description" name="{{$locale}}[description]">{{ old($locale)['description'] ?? ($channel->translate($locale)['description'] ?? $channel->description) }}</textarea>
                             </div>
 
-                            <div class="control-group" :class="[errors.has('inventory_sources[]') ? 'has-error' : '']">
+                            <div class="control-group" :class="[errors.has('inventory_sources[]') ? 'has-error' : '']"
+                                 style="display: <?php echo $channel->inventory_sources->pluck('id')->toArray() ? 'none' : 'block';?>">
                                 <label for="inventory_sources" class="required">{{ __('admin::app.settings.channels.inventory_sources') }}</label>
                                 <?php $selectedOptionIds = old('inventory_sources') ?: $channel->inventory_sources->pluck('id')->toArray() ?>
                                 <select v-validate="'required'" class="control" id="inventory_sources" name="inventory_sources[]" data-vv-as="&quot;{{ __('admin::app.settings.channels.inventory_sources') }}&quot;" multiple>
@@ -110,7 +111,7 @@
                     </accordian>
 
                     {{-- currencies and locales --}}
-                    <accordian title="{{ __('admin::app.settings.channels.currencies-and-locales') }}" :active="true">
+                    <accordian title="{{ __('admin::app.settings.channels.currencies-and-locales') }}" :active="false" style="display: <?php echo $channel->locales->pluck('id')->toArray() ? 'none' : 'block';?>">
                         <div slot="body">
 
                             <div class="control-group" :class="[errors.has('locales[]') ? 'has-error' : '']">
@@ -171,7 +172,7 @@
                     {{-- design --}}
                     <accordian title="{{ __('admin::app.settings.channels.design') }}" :active="true">
                         <div slot="body">
-                            <div class="control-group">
+                            <div class="control-group" style="display: <?php echo  $channel->theme === 'velocity' ? 'none' : 'block'?>;">
                                 <label for="theme">{{ __('admin::app.settings.channels.theme') }}</label>
 
                                 <?php $selectedOption = old('theme') ?: $channel->theme ?>
@@ -185,7 +186,7 @@
                                 </select>
                             </div>
 
-                            <div class="control-group">
+                            <div class="control-group" style="display: none">
                                 <label for="home_page_content">
                                     {{ __('admin::app.settings.channels.home_page_content') }}
                                     <span class="locale">[{{ $locale }}]</span>
@@ -193,7 +194,7 @@
                                 <textarea class="control" id="home_page_content" name="{{$locale}}[home_page_content]">{{ old($locale)['home_page_content'] ?? ($channel->translate($locale)['home_page_content'] ?? $channel->home_page_content) }}</textarea>
                             </div>
 
-                            <div class="control-group">
+                            <div class="control-group" style="display: none">
                                 <label for="footer_content">
                                     {{ __('admin::app.settings.channels.footer_content') }}
                                     <span class="locale">[{{ $locale }}]</span>
@@ -205,7 +206,7 @@
                                 <label>{{ __('admin::app.settings.channels.logo') }}</label>
 
                                 <image-wrapper button-label="{{ __('admin::app.catalog.products.add-image-btn-title') }}" input-name="logo" :multiple="false" :images='"{{ $channel->logo_url }}"'></image-wrapper>
-                            
+
                                 <span class="control-info mt-10">{{ __('admin::app.settings.channels.logo-size') }}</span>
                             </div>
 
@@ -213,8 +214,8 @@
                                 <label>{{ __('admin::app.settings.channels.favicon') }}</label>
 
                                 <image-wrapper button-label="{{ __('admin::app.catalog.products.add-image-btn-title') }}" input-name="favicon" :multiple="false" :images='"{{ $channel->favicon_url }}"'></image-wrapper>
-                                
-                                <span class="control-info mt-10">{{ __('admin::app.settings.channels.favicon-size') }}</span> 
+
+                                <span class="control-info mt-10">{{ __('admin::app.settings.channels.favicon-size') }}</span>
                             </div>
 
                         </div>

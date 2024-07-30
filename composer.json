@@ -20,7 +20,6 @@
         "astrotomic/laravel-translatable": "^11.0.0",
         "bagisto/legacy-api": "^1.0",
         "bagisto/rest-api": "dev-master",
-        "bagistobrasil/bagisto-product-social-share": "^0.1.2",
         "barryvdh/laravel-debugbar": "^3.1",
         "barryvdh/laravel-dompdf": "^1.0.0",
         "barryvdh/laravel-elfinder": "^0.5.1",

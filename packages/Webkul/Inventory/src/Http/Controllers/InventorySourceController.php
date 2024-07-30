@@ -52,11 +52,13 @@ class InventorySourceController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\View\View
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function create()
     {
-        return view($this->_config['view']);
+        return redirect()->back();
+        //return view($this->_config['view']);
     }
 
     /**

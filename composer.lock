@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "735f45f7c8bf3c2d9040ef35f34ba0f9",
+    "content-hash": "531fa8ea7572a9931e2e58b5b6f33957",
     "packages": [
         {
             "name": "astrotomic/laravel-translatable",
@@ -190,50 +190,6 @@
                 "source": "https://github.com/bagisto/rest-api/tree/master"
             },
             "time": "2022-04-07T09:23:21+00:00"
-        },
-        {
-            "name": "bagistobrasil/bagisto-product-social-share",
-            "version": "0.1.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/bagistobrasil/bagisto-product-social-share.git",
-                "reference": "ebc80456b68db409fe53a9adff74d00d72593797"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/bagistobrasil/bagisto-product-social-share/zipball/ebc80456b68db409fe53a9adff74d00d72593797",
-                "reference": "ebc80456b68db409fe53a9adff74d00d72593797",
-                "shasum": ""
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "BagistoBrasil\\ProductSocialShare\\Providers\\ProductSocialShareProvider"
-                    ],
-                    "aliases": []
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "BagistoBrasil\\ProductSocialShare\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Carlos Gartner",
-                    "email": "contato@carlosgartner.com.br"
-                }
-            ],
-            "support": {
-                "issues": "https://github.com/bagistobrasil/bagisto-product-social-share/issues",
-                "source": "https://github.com/bagistobrasil/bagisto-product-social-share/tree/0.1.3"
-            },
-            "time": "2021-02-10T11:42:52+00:00"
         },
         {
             "name": "barryvdh/elfinder-flysystem-driver",

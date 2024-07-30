@@ -8,55 +8,60 @@ return [
         'key'  => 'general',
         'name' => 'admin::app.admin.system.general',
         'sort' => 1,
-    ], [
-        'key'  => 'general.general',
-        'name' => 'admin::app.admin.system.general',
-        'sort' => 1,
-    ], [
-        'key'    => 'general.general.locale_options',
-        'name'   => 'admin::app.admin.system.locale-options',
-        'sort'   => 1,
-        'fields' => [
-            [
-                'name'          => 'weight_unit',
-                'title'         => 'admin::app.admin.system.weight-unit',
-                'type'          => 'select',
-                'options'       => [
-                    [
-                        'title' => 'lbs',
-                        'value' => 'lbs',
-                    ], [
-                        'title' => 'kgs',
-                        'value' => 'kgs',
-                    ],
-                ],
-                'channel_based' => true,
-            ],
-        ],
-    ], [
+    ],
+    //[
+    //    'key'  => 'general.general',
+    //    'name' => 'admin::app.admin.system.general',
+    //    'sort' => 1,
+    //],
+    //[
+    //    'key'    => 'general.general.locale_options',
+    //    'name'   => 'admin::app.admin.system.locale-options',
+    //    'sort'   => 1,
+    //    'fields' => [
+    //        [
+    //            'name'          => 'weight_unit',
+    //            'title'         => 'admin::app.admin.system.weight-unit',
+    //            'type'          => 'select',
+    //            'options'       => [
+    //                [
+    //                    'title' => 'lbs',
+    //                    'value' => 'lbs',
+    //                ], [
+    //                    'title' => 'kgs',
+    //                    'value' => 'kgs',
+    //                ],
+    //            ],
+    //            'channel_based' => true,
+    //        ],
+    //    ],
+    //],
+    [
         'key'  => 'general.content',
         'name' => 'admin::app.admin.system.content',
         'sort' => 2,
-    ], [
-        'key'    => 'general.content.footer',
-        'name'   => 'admin::app.admin.system.footer',
-        'sort'   => 1,
-        'fields' => [
-            [
-                'name'          => 'footer_content',
-                'title'         => 'admin::app.admin.system.footer-content',
-                'type'          => 'text',
-                'channel_based' => true,
-                'locale_based'  => true,
-            ], [
-                'name'          => 'footer_toggle',
-                'title'         => 'admin::app.admin.system.footer-toggle',
-                'type'          => 'boolean',
-                'locale_based'  => true,
-                'channel_based' => true,
-            ],
-        ],
-    ], [
+    ],
+    //[
+    //    'key'    => 'general.content.footer',
+    //    'name'   => 'admin::app.admin.system.footer',
+    //    'sort'   => 1,
+    //    'fields' => [
+    //        [
+    //            'name'          => 'footer_content',
+    //            'title'         => 'admin::app.admin.system.footer-content',
+    //            'type'          => 'text',
+    //            'channel_based' => true,
+    //            'locale_based'  => true,
+    //        ], [
+    //            'name'          => 'footer_toggle',
+    //            'title'         => 'admin::app.admin.system.footer-toggle',
+    //            'type'          => 'boolean',
+    //            'locale_based'  => true,
+    //            'channel_based' => true,
+    //        ],
+    //    ],
+    //],
+    [
         'key'    => 'general.content.custom_scripts',
         'name'   => 'admin::app.admin.system.custom-scripts',
         'sort'   => 1,
@@ -75,11 +80,13 @@ return [
                 'locale_based'  => false,
             ],
         ],
-    ], [
+    ],
+    [
         'key'  => 'general.design',
         'name' => 'admin::app.admin.system.design',
         'sort' => 3,
-    ], [
+    ],
+    [
         'key'    => 'general.design.admin_logo',
         'name'   => 'admin::app.admin.system.admin-logo',
         'sort'   => 1,
@@ -107,45 +114,49 @@ return [
         'key'  => 'catalog',
         'name' => 'admin::app.admin.system.catalog',
         'sort' => 2,
-    ], [
+    ],
+    [
         'key'  => 'catalog.products',
         'name' => 'admin::app.admin.system.products',
         'sort' => 2,
-    ], [
-        'key'    => 'catalog.products.guest-checkout',
-        'name'   => 'admin::app.admin.system.guest-checkout',
-        'sort'   => 1,
-        'fields' => [
-            [
-                'name'  => 'allow-guest-checkout',
-                'title' => 'admin::app.admin.system.allow-guest-checkout',
-                'type'  => 'boolean',
-            ],
-        ],
-    ], [
-        'key'    => 'catalog.products.homepage',
-        'name'   => 'admin::app.admin.system.homepage',
-        'sort'   => 2,
-        'fields' => [
-            [
-                'name'       => 'no_of_new_product_homepage',
-                'title'      => 'admin::app.admin.system.allow-no-of-new-product-homepage',
-                'type'       => 'number',
-                'validation' => 'min:0',
-            ],
-            [
-                'name'       => 'no_of_featured_product_homepage',
-                'title'      => 'admin::app.admin.system.allow-no-of-featured-product-homepage',
-                'type'       => 'number',
-                'validation' => 'min:0',
-            ],
-            [
-                'name'  => 'out_of_stock_items',
-                'title' => 'admin::app.admin.system.allow-out-of-stock-items',
-                'type'  => 'boolean',
-            ],
-        ],
-    ], [
+    ],
+    //[
+    //    'key'    => 'catalog.products.guest-checkout',
+    //    'name'   => 'admin::app.admin.system.guest-checkout',
+    //    'sort'   => 1,
+    //    'fields' => [
+    //        [
+    //            'name'  => 'allow-guest-checkout',
+    //            'title' => 'admin::app.admin.system.allow-guest-checkout',
+    //            'type'  => 'boolean',
+    //        ],
+    //    ],
+    //],
+    //[
+    //    'key'    => 'catalog.products.homepage',
+    //    'name'   => 'admin::app.admin.system.homepage',
+    //    'sort'   => 2,
+    //    'fields' => [
+    //        [
+    //            'name'       => 'no_of_new_product_homepage',
+    //            'title'      => 'admin::app.admin.system.allow-no-of-new-product-homepage',
+    //            'type'       => 'number',
+    //            'validation' => 'min:0',
+    //        ],
+    //        [
+    //            'name'       => 'no_of_featured_product_homepage',
+    //            'title'      => 'admin::app.admin.system.allow-no-of-featured-product-homepage',
+    //            'type'       => 'number',
+    //            'validation' => 'min:0',
+    //        ],
+    //        [
+    //            'name'  => 'out_of_stock_items',
+    //            'title' => 'admin::app.admin.system.allow-out-of-stock-items',
+    //            'type'  => 'boolean',
+    //        ],
+    //    ],
+    //],
+    [
         'key'    => 'catalog.products.storefront',
         'name'   => 'admin::app.admin.system.storefront',
         'sort'   => 3,
@@ -276,27 +287,31 @@ return [
                 'type'  => 'text',
             ],
         ],
-    ], [
-        'key'  => 'catalog.inventory',
-        'name' => 'admin::app.admin.system.inventory',
-        'sort' => 1,
-    ], [
-        'key'    => 'catalog.inventory.stock_options',
-        'name'   => 'admin::app.admin.system.stock-options',
-        'sort'   => 1,
-        'fields' => [
-            [
-                'name'          => 'backorders',
-                'title'         => 'admin::app.admin.system.allow-backorders',
-                'type'          => 'boolean',
-                'channel_based' => true,
-            ],
-        ],
-    ], [
+    ],
+    //[
+    //    'key'  => 'catalog.inventory',
+    //    'name' => 'admin::app.admin.system.inventory',
+    //    'sort' => 1,
+    //],
+    //[
+    //    'key'    => 'catalog.inventory.stock_options',
+    //    'name'   => 'admin::app.admin.system.stock-options',
+    //    'sort'   => 1,
+    //    'fields' => [
+    //        [
+    //            'name'          => 'backorders',
+    //            'title'         => 'admin::app.admin.system.allow-backorders',
+    //            'type'          => 'boolean',
+    //            'channel_based' => true,
+    //        ],
+    //    ],
+    //],
+    [
         'key'  => 'catalog.rich_snippets',
         'name' => 'admin::app.admin.system.rich-snippets',
         'sort' => 3,
-    ], [
+    ],
+    [
         'key'    => 'catalog.rich_snippets.products',
         'name'   => 'admin::app.admin.system.products',
         'sort'   => 1,
@@ -309,11 +324,13 @@ return [
                 'name'  => 'show_sku',
                 'title' => 'admin::app.admin.system.show-sku',
                 'type'  => 'boolean',
-            ], [
-                'name'  => 'show_weight',
-                'title' => 'admin::app.admin.system.show-weight',
-                'type'  => 'boolean',
-            ], [
+            ],
+            //[
+            //    'name'  => 'show_weight',
+            //    'title' => 'admin::app.admin.system.show-weight',
+            //    'type'  => 'boolean',
+            //],
+            [
                 'name'  => 'show_categories',
                 'title' => 'admin::app.admin.system.show-categories',
                 'type'  => 'boolean',

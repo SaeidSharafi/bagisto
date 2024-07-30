@@ -54,14 +54,18 @@ class Install extends Command
         $this->info($result);
 
         // running `php artisan vendor:publish --all`
-        $this->warn('Step: Publishing assets and configurations...');
-        $result = $this->call('vendor:publish', ['--all' => true, '--force' => false]);
-        $this->info($result);
+        if ($this->confirm('publish all assets and configurations?')) {
+            $this->warn('Step: Publishing assets and configurations...');
+            $result = $this->call('vendor:publish', ['--all' => true, '--force' => false]);
+            $this->info($result);
+        }
 
-        // running `php artisan storage:link`
-        $this->warn('Step: Linking storage directory...');
-        $result = $this->call('storage:link');
-        $this->info($result);
+        if ($this->confirm('link storage directory?')) {
+            // running `php artisan storage:link`
+            $this->warn('Step: Linking storage directory...');
+            $result = $this->call('storage:link');
+            $this->info($result);
+        }
 
         // optimizing stuffs
         $this->warn('Step: Optimizing...');
@@ -86,22 +90,22 @@ class Install extends Command
         $this->info('-----------------------------');
         $this->info('Congratulations!');
         $this->info('The installation has been finished and you can now use Bagisto.');
-        $this->info('Go to '. url(config('app.admin_url')) .' and authenticate with:');
+        $this->info('Go to '.url(config('app.admin_url')).' and authenticate with:');
         $this->info('Email: admin@example.com');
         $this->info('Password: admin123');
         $this->info('Cheers!');
     }
 
     /**
-    *  Checking .env file and if not found then create .env file.
-    *  Then ask for database name, password & username to set
-    *  On .env file so that we can easily migrate to our db.
-    */
+     *  Checking .env file and if not found then create .env file.
+     *  Then ask for database name, password & username to set
+     *  On .env file so that we can easily migrate to our db.
+     */
     protected function checkForEnvFile()
     {
-        $envExists = File::exists(base_path() . '/.env');
+        $envExists = File::exists(base_path().'/.env');
 
-        if (! $envExists) {
+        if (!$envExists) {
             $this->info('Creating the environment configuration file.');
             $this->createEnvFile();
         } else {
@@ -119,15 +123,16 @@ class Install extends Command
         try {
             File::copy('.env.example', '.env');
 
-            $default_app_url =  'http://localhost:8000';
+            $default_app_url = 'http://localhost:8000';
             $input_app_url = $this->ask('Please Enter the APP URL : ');
-            $this->envUpdate('APP_URL=', $input_app_url ? $input_app_url : $default_app_url );
+            $this->envUpdate('APP_URL=', $input_app_url ? $input_app_url : $default_app_url);
 
-            $default_admin_url =  'admin';
+            $default_admin_url = 'admin';
             $input_admin_url = $this->ask('Please Enter the Admin URL : ');
             $this->envUpdate('APP_ADMIN_URL=', $input_admin_url ?: $default_admin_url);
 
-            $locale = $this->choice('Please select the default locale or press enter to continue', ['ar', 'en', 'es', 'fa', 'nl', 'pt_BR'], 1);
+            $locale = $this->choice('Please select the default locale or press enter to continue',
+                ['ar', 'en', 'es', 'fa', 'nl', 'pt_BR'], 1);
             $this->envUpdate('APP_LOCALE=', $locale);
 
             $TimeZones = timezone_identifiers_list();
@@ -182,7 +187,7 @@ class Install extends Command
      */
     protected static function getEnvAtRuntime($key)
     {
-        $path = base_path() . '/.env';
+        $path = base_path().'/.env';
         $data = file($path);
 
         if ($data) {
@@ -206,7 +211,7 @@ class Install extends Command
      */
     protected static function envUpdate($key, $value)
     {
-        $path = base_path() . '/.env';
+        $path = base_path().'/.env';
         $data = file($path);
         $keyValueData = $changedData = [];
 
@@ -226,7 +231,7 @@ class Install extends Command
         }
 
         foreach ($keyValueData as $key => $value) {
-            $changedData[] = $key . '=' . $value;
+            $changedData[] = $key.'='.$value;
         }
 
         $changedData = implode(PHP_EOL, $changedData);

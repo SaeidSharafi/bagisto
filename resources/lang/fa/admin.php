@@ -133,7 +133,8 @@ return [
         ]
     ],
     'layouts'       => [
-        'visit-moodle' => 'سامانه آموزش مجازی'
+        'visit-moodle' => 'سامانه آموزش مجازی',
+        'channels' => 'هویت سایت',
     ],
     'cms'           => [
         'categories' => [
@@ -188,6 +189,14 @@ return [
         'phone' => 'تلفن',
         'delete-success'   => 'حذف درخواست با موفقیت انجام شد.',
         'delete-failur'    => 'خطا در حذف درخواست.',
-    ]
+    ],
+    'settings' => [
+        'channels' => [
+            'title' => 'هویت سایت',
+            'edit-title' => 'ویرایش هویت سایت',
+            'save-btn-title' => 'ذخیره'
+        ],
+    ],
+
 
 ];

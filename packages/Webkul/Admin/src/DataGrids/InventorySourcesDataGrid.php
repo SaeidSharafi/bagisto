@@ -102,6 +102,7 @@ class InventorySourcesDataGrid extends DataGrid
      */
     public function prepareActions()
     {
+
         $this->addAction([
             'title'  => trans('admin::app.datagrid.edit'),
             'method' => 'GET',

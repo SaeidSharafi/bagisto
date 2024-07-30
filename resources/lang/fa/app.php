@@ -1,5 +1,10 @@
 <?php
 return [
+    'admin' => [
+        'system' => [
+            'buy-now-button-display' => 'اجازه خرید مستقیم',
+        ]
+    ],
     'sms-timer' => 'ارسال مجدد کد تا {} دیگر',
     'customer'  => [
         'account' => [

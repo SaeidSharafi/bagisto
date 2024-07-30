@@ -19,13 +19,15 @@ return [
         'route'      => 'admin.sales.orders.index',
         'sort'       => 1,
         'icon-class' => '',
-    ], [
-        'key'        => 'sales.shipments',
-        'name'       => 'admin::app.layouts.shipments',
-        'route'      => 'admin.sales.shipments.index',
-        'sort'       => 2,
-        'icon-class' => '',
-    ], [
+    ],
+    //[
+    //    'key'        => 'sales.shipments',
+    //    'name'       => 'admin::app.layouts.shipments',
+    //    'route'      => 'admin.sales.shipments.index',
+    //    'sort'       => 2,
+    //    'icon-class' => '',
+    //],
+    [
         'key'        => 'sales.invoices',
         'name'       => 'admin::app.layouts.invoices',
         'route'      => 'admin.sales.invoices.index',
@@ -121,13 +123,15 @@ return [
         'route'      => 'admin.currencies.index',
         'sort'       => 2,
         'icon-class' => '',
-    ], [
-        'key'        => 'settings.exchange_rates',
-        'name'       => 'admin::app.layouts.exchange-rates',
-        'route'      => 'admin.exchange_rates.index',
-        'sort'       => 3,
-        'icon-class' => '',
-    ], [
+    ],
+    //[
+    //    'key'        => 'settings.exchange_rates',
+    //    'name'       => 'admin::app.layouts.exchange-rates',
+    //    'route'      => 'admin.exchange_rates.index',
+    //    'sort'       => 3,
+    //    'icon-class' => '',
+    //],
+    [
         'key'        => 'settings.inventory_sources',
         'name'       => 'admin::app.layouts.inventory-sources',
         'route'      => 'admin.inventory_sources.index',
@@ -135,7 +139,7 @@ return [
         'icon-class' => '',
     ], [
         'key'        => 'settings.channels',
-        'name'       => 'admin::app.layouts.channels',
+        'name'       => 'admin.layouts.channels',
         'route'      => 'admin.channels.index',
         'sort'       => 5,
         'icon-class' => '',
@@ -163,25 +167,28 @@ return [
         'route'      => 'admin.sliders.index',
         'sort'       => 7,
         'icon-class' => '',
-    ], [
-        'key'        => 'settings.taxes',
-        'name'       => 'admin::app.layouts.taxes',
-        'route'      => 'admin.tax-categories.index',
-        'sort'       => 8,
-        'icon-class' => '',
-    ], [
-        'key'        => 'settings.taxes.tax-categories',
-        'name'       => 'admin::app.layouts.tax-categories',
-        'route'      => 'admin.tax-categories.index',
-        'sort'       => 1,
-        'icon-class' => '',
-    ], [
-        'key'        => 'settings.taxes.tax-rates',
-        'name'       => 'admin::app.layouts.tax-rates',
-        'route'      => 'admin.tax-rates.index',
-        'sort'       => 2,
-        'icon-class' => '',
-    ], [
+    ],
+    //[
+    //    'key'        => 'settings.taxes',
+    //    'name'       => 'admin::app.layouts.taxes',
+    //    'route'      => 'admin.tax-categories.index',
+    //    'sort'       => 8,
+    //    'icon-class' => '',
+    //],
+    // [
+    //    'key'        => 'settings.taxes.tax-categories',
+    //    'name'       => 'admin::app.layouts.tax-categories',
+    //    'route'      => 'admin.tax-categories.index',
+    //    'sort'       => 1,
+    //    'icon-class' => '',
+    //], [
+    //    'key'        => 'settings.taxes.tax-rates',
+    //    'name'       => 'admin::app.layouts.tax-rates',
+    //    'route'      => 'admin.tax-rates.index',
+    //    'sort'       => 2,
+    //    'icon-class' => '',
+    //],
+    [
         'key'        => 'marketing',
         'name'       => 'admin::app.layouts.marketing',
         'route'      => 'admin.catalog-rules.index',
@@ -193,49 +200,53 @@ return [
         'route'      => 'admin.catalog-rules.index',
         'sort'       => 1,
         'icon-class' => '',
-    ], [
+    ],
+    [
         'key'        => 'marketing.promotions.catalog-rules',
         'name'       => 'admin::app.promotions.catalog-rules.title',
         'route'      => 'admin.catalog-rules.index',
         'sort'       => 1,
         'icon-class' => '',
-    ], [
+    ],
+    [
         'key'        => 'marketing.promotions.cart-rules',
         'name'       => 'admin::app.promotions.cart-rules.title',
         'route'      => 'admin.cart-rules.index',
         'sort'       => 2,
         'icon-class' => '',
-    ], [
-        'key'        => 'marketing.email-marketing',
-        'name'       => 'admin::app.layouts.email-marketing',
-        'route'      => 'admin.email-templates.index',
-        'sort'       => 2,
-        'icon-class' => '',
-    ], [
-        'key'        => 'marketing.email-marketing.email-templates',
-        'name'       => 'admin::app.layouts.email-templates',
-        'route'      => 'admin.email-templates.index',
-        'sort'       => 1,
-        'icon-class' => '',
-    ], [
-        'key'        => 'marketing.email-marketing.events',
-        'name'       => 'admin::app.layouts.events',
-        'route'      => 'admin.events.index',
-        'sort'       => 2,
-        'icon-class' => '',
-    ], [
-        'key'        => 'marketing.email-marketing.campaigns',
-        'name'       => 'admin::app.layouts.campaigns',
-        'route'      => 'admin.campaigns.index',
-        'sort'       => 2,
-        'icon-class' => '',
-    ], [
-        'key'        => 'marketing.email-marketing.subscribers',
-        'name'       => 'admin::app.layouts.newsletter-subscriptions',
-        'route'      => 'admin.customers.subscribers.index',
-        'sort'       => 3,
-        'icon-class' => '',
-    ], [
+    ],
+    //[
+    //    'key'        => 'marketing.email-marketing',
+    //    'name'       => 'admin::app.layouts.email-marketing',
+    //    'route'      => 'admin.email-templates.index',
+    //    'sort'       => 2,
+    //    'icon-class' => '',
+    //], [
+    //    'key'        => 'marketing.email-marketing.email-templates',
+    //    'name'       => 'admin::app.layouts.email-templates',
+    //    'route'      => 'admin.email-templates.index',
+    //    'sort'       => 1,
+    //    'icon-class' => '',
+    //], [
+    //    'key'        => 'marketing.email-marketing.events',
+    //    'name'       => 'admin::app.layouts.events',
+    //    'route'      => 'admin.events.index',
+    //    'sort'       => 2,
+    //    'icon-class' => '',
+    //], [
+    //    'key'        => 'marketing.email-marketing.campaigns',
+    //    'name'       => 'admin::app.layouts.campaigns',
+    //    'route'      => 'admin.campaigns.index',
+    //    'sort'       => 2,
+    //    'icon-class' => '',
+    //], [
+    //    'key'        => 'marketing.email-marketing.subscribers',
+    //    'name'       => 'admin::app.layouts.newsletter-subscriptions',
+    //    'route'      => 'admin.customers.subscribers.index',
+    //    'sort'       => 3,
+    //    'icon-class' => '',
+    //],
+    [
         'key'        => 'cms',
         'name'       => 'admin::app.layouts.cms',
         'route'      => 'admin.cms.index',

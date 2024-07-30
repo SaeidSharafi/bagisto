@@ -55,50 +55,29 @@ class ChannelDataGrid extends DataGrid
             })
             ->addSelect('channels.id', 'channels.code', 'channel_translations.locale', 'channel_translations.name as translated_name', 'channels.hostname');
 
-        $this->addFilter('id', 'channels.id');
-        $this->addFilter('code', 'channels.code');
-        $this->addFilter('hostname', 'channels.hostname');
-        $this->addFilter('translated_name', 'channel_translations.name');
 
         $this->setQueryBuilder($queryBuilder);
     }
 
     public function addColumns()
     {
-        $this->addColumn([
-            'index'      => 'id',
-            'label'      => trans('admin::app.datagrid.id'),
-            'type'       => 'number',
-            'searchable' => false,
-            'sortable'   => true,
-            'filterable' => true,
-        ]);
-
-        $this->addColumn([
-            'index'      => 'code',
-            'label'      => trans('admin::app.datagrid.code'),
-            'type'       => 'string',
-            'searchable' => true,
-            'sortable'   => true,
-            'filterable' => true,
-        ]);
 
         $this->addColumn([
             'index'      => 'translated_name',
             'label'      => trans('admin::app.datagrid.name'),
             'type'       => 'string',
-            'searchable' => true,
-            'sortable'   => true,
-            'filterable' => true,
+            'searchable' => false,
+            'sortable'   => false,
+            'filterable' => false,
         ]);
 
         $this->addColumn([
             'index'      => 'hostname',
             'label'      => trans('admin::app.datagrid.hostname'),
             'type'       => 'string',
-            'sortable'   => true,
-            'searchable' => true,
-            'filterable' => true,
+            'sortable'   => false,
+            'searchable' => false,
+            'filterable' => false,
         ]);
     }
 
@@ -109,14 +88,6 @@ class ChannelDataGrid extends DataGrid
             'method' => 'GET',
             'route'  => 'admin.channels.edit',
             'icon'   => 'icon pencil-lg-icon',
-        ]);
-
-        $this->addAction([
-            'title'        => trans('admin::app.datagrid.delete'),
-            'method'       => 'POST',
-            'route'        => 'admin.channels.delete',
-            'confirm_text' => trans('ui::app.datagrid.massaction.delete', ['resource' => 'product']),
-            'icon'         => 'icon trash-icon',
         ]);
     }
 }
