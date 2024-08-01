@@ -110,7 +110,7 @@
     @endisset
 @endsection
 
-@section('content-wrapper')
+@section('full-width-content-bot')
     <div class="about-us position-relative">
         <div class="about-us-wrapper">
             <div class="about-us-content">
@@ -128,5 +128,6 @@
                 </div>
             </div>
         </div>
+        <div class="about-us-bottom"></div>
     </div>
 @endsection

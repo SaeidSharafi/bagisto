@@ -34,41 +34,46 @@
 @endpush
 @section('full-width-content-bot')
     <div class="container py-5">
-        <section class="w-100">
-            <div class="section-title pt-5 pb-2">
-                <h3 class="title border-bottom text-center font-weight-bold pt-2 pb-4">
-                    تماس با ما
-                </h3>
-            </div>
-            <div class="map-section w-100">
-                {!! $velocityMetaData->map_iframe !!}
-            </div>
-        </section>
-        <section class="w-100">
-            <div class="section-title pt-5 pb-2">
-                <h3 class="title border-bottom text-center font-weight-bold pt-2 pb-4">
-                    دیگر مراکز {{$channel->name}}
-                </h3>
-            </div>
-            <div class="map-section w-100" style="direction: rtl;">
-                @foreach($centers as $center)
-                    <div class="row" style="font-size: 1.7rem">
-                        <div class="col-md-12 col-lg-9">
-                            <span class="localtion-title font-weight-bold">{{$center->title}}</span>:
-                            <span class="location-address">{{$center->address}}</span>
-                            <span class="location-phone font-weight-bold pr-3">تلفن: </span>
-                            <span class="location-phone">{{$center->phone}}</span>
-                        </div>
-                        <div class="col-md-12 col-lg-3 d-flex justify-content-center">
-                            <a href="{{$center->link}}" class="btn btn-info w-100" style="max-width: 230px;">
-                                نقشه راهنما
-                            </a>
-                        </div>
+        @if ($velocityMetaData->map_iframe)
+            <section class="w-100">
+                <div class="section-title pt-5 pb-2">
+                    <h3 class="title border-bottom text-center font-weight-bold pt-2 pb-4">
+                        تماس با ما
+                    </h3>
+                </div>
+                <div class="map-section w-100">
+                    {!! $velocityMetaData->map_iframe !!}
+                </div>
+            </section>
+        @endif
+        @if ($centers->isNotEmpty())
+                <section class="w-100">
+                    <div class="section-title pt-5 pb-2">
+                        <h3 class="title border-bottom text-center font-weight-bold pt-2 pb-4">
+                            دیگر مراکز {{$channel->name}}
+                        </h3>
                     </div>
-                @endforeach
+                    <div class="map-section w-100" style="direction: rtl;">
+                        @foreach($centers as $center)
+                            <div class="row" style="font-size: 1.7rem">
+                                <div class="col-md-12 col-lg-9">
+                                    <span class="localtion-title font-weight-bold">{{$center->title}}</span>:
+                                    <span class="location-address">{{$center->address}}</span>
+                                    <span class="location-phone font-weight-bold pr-3">تلفن: </span>
+                                    <span class="location-phone">{{$center->phone}}</span>
+                                </div>
+                                <div class="col-md-12 col-lg-3 d-flex justify-content-center">
+                                    <a href="{{$center->link}}" class="btn btn-info w-100" style="max-width: 230px;">
+                                        نقشه راهنما
+                                    </a>
+                                </div>
+                            </div>
+                        @endforeach
 
-            </div>
-        </section>
+                    </div>
+                </section>
+        @endif
+
         <section class="w-100">
             <div class="section-title pt-5 pb-2">
                 <h3 class="title border-bottom text-center font-weight-bold pt-2 pb-4">
