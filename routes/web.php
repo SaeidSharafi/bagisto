@@ -49,8 +49,11 @@ Route::group(
 
         Route::group(['middleware' => ['cart.merger']], function () {
 
-            Route::view('/about-us', 'shop.aboutus')
-                ->name('shop.aboutus');
+            Route::get('/about-us',function (){
+                $page = \Webkul\CMS\Models\CmsPage::whereTranslation('url_key', 'about-us')->first();
+                return view('shop.aboutus',['page' => $page]);
+            })->name('shop.aboutus');
+
             Route::get('/contact-us', [\App\Http\Controllers\Shop\ContactusController::class,'view'])
                 ->name('shop.contactus.view');
             Route::post('/contact-us', [\App\Http\Controllers\Shop\ContactusController::class,'store'])
