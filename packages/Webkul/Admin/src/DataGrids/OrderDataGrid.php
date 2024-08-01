@@ -5,6 +5,7 @@ namespace Webkul\Admin\DataGrids;
 use Carbon\Carbon;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
+use Webkul\Sales\Models\Order;
 use Webkul\Ui\DataGrid\DataGrid;
 
 class OrderDataGrid extends DataGrid
@@ -340,7 +341,10 @@ class OrderDataGrid extends DataGrid
                 'title'  => trans('admin.datagrid.sync-ims'),
                 'method' => 'GET',
                 'route'  => 'admin.sales.orders.sync-ims',
-                'icon'   => 'icon tick-double-icon'
+                'icon'   => 'icon tick-double-icon',
+                'condition' => function ($value) {
+                    return $value->order_status === Order::STATUS_COMPLETED && $value->product_number && !$value->ims_synced_at;
+                },
             ]);
         }
 
@@ -348,13 +352,19 @@ class OrderDataGrid extends DataGrid
             'title'  => trans('admin.datagrid.sync-rouyesh'),
             'method' => 'GET',
             'route'  => 'admin.sales.orders.sync-rouyesh',
-            'icon'   => 'icon tick-double-blue-icon'
+            'icon'   => 'icon tick-double-blue-icon',
+            'condition' => function ($value) {
+                return $value->order_status === Order::STATUS_COMPLETED && $value->rouyesh_code && !$value->rouyesh_synced_at;
+            },
         ]);
         $this->addAction([
             'title'  => trans('admin.datagrid.create-spot'),
             'method' => 'GET',
             'route'  => 'admin.sales.orders.create-spot',
-            'icon'   => 'icon spot-icon'
+            'icon'   => 'icon spot-icon',
+            'condition' => function ($value) {
+                return $value->order_status === Order::STATUS_COMPLETED && $value->spot_id && !$value->_id;
+            },
         ]);
     }
 }
