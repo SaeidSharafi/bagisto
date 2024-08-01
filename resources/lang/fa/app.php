@@ -43,7 +43,7 @@ return [
             ]
         ],
         'auth-form'      => [
-            'authenticate-submit' => 'ورود',
+            'authenticate-submit' => 'ورود | ثبت‌نام',
             'phone'               => 'شماره موبایل'
         ],
         'otp-form'       => [
