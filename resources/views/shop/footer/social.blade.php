@@ -1,4 +1,4 @@
-<div class="block">
+<div class="block py-3">
     <div class="block-content d-flex" style="gap: 10px">
        @if($velocityMetaData->telegram_url)
            <a href="{{$velocityMetaData->telegram_url}}" class="h-100"><i class="fab fa-telegram fa-2x"></i></a>

@@ -128,6 +128,6 @@
                 </div>
             </div>
         </div>
-        <div class="about-us-bottom"></div>
+        <div class="about-us-bottom w-100"></div>
     </div>
 @endsection
