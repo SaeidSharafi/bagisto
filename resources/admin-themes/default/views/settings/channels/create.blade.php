@@ -165,11 +165,19 @@
                             </div>
 
                             <div class="control-group">
+                                <label>{{ __('admin::app.settings.channels.second_logo') }}</label>
+
+                                <image-wrapper button-label="{{ __('admin::app.catalog.products.add-image-btn-title') }}" input-name="second_logo" :multiple="false"></image-wrapper>
+
+                                <span class="control-info mt-10">{{ __('admin.settings.channels.logo-size') }}</span>
+                            </div>
+
+                            <div class="control-group">
                                 <label>{{ __('admin::app.settings.channels.logo') }}</label>
 
                                 <image-wrapper button-label="{{ __('admin::app.catalog.products.add-image-btn-title') }}" input-name="logo" :multiple="false"></image-wrapper>
-                                
-                                <span class="control-info mt-10">{{ __('admin::app.settings.channels.logo-size') }}</span>  
+
+                                <span class="control-info mt-10">{{ __('admin::app.settings.channels.logo-size') }}</span>
                             </div>
 
                             <div class="control-group">
@@ -177,7 +185,7 @@
 
                                 <image-wrapper button-label="{{ __('admin::app.catalog.products.add-image-btn-title') }}" input-name="logo" :multiple="false"></image-wrapper>
 
-                                <span class="control-info mt-10">{{ __('admin::app.settings.channels.favicon-size') }}</span>     
+                                <span class="control-info mt-10">{{ __('admin::app.settings.channels.favicon-size') }}</span>
                             </div>
 
                         </div>

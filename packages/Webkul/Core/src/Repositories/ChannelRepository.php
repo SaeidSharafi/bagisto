@@ -51,6 +51,8 @@ class ChannelRepository extends Repository
 
         $this->uploadImages($data, $channel);
 
+        $this->uploadImages($data, $channel,'second_logo');
+
         $this->uploadImages($data, $channel, 'favicon');
 
         Event::dispatch('core.channel.create.after', $channel);
@@ -81,6 +83,8 @@ class ChannelRepository extends Repository
         $channel->inventory_sources()->sync($data['inventory_sources']);
 
         $this->uploadImages($data, $channel);
+
+        $this->uploadImages($data, $channel,'second_logo');
 
         $this->uploadImages($data, $channel, 'favicon');
 

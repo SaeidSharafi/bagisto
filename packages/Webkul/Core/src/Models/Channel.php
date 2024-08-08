@@ -103,6 +103,15 @@ class Channel extends TranslatableModel implements ChannelContract
         return Storage::url($this->logo);
     }
 
+    public function second_logo_url()
+    {
+        if (! $this->second_logo) {
+            return;
+        }
+
+        return Storage::url($this->second_logo);
+    }
+
     /**
      * Get logo image url.
      */
@@ -111,6 +120,10 @@ class Channel extends TranslatableModel implements ChannelContract
         return $this->logo_url();
     }
 
+    public function getSecondLogoUrlAttribute()
+    {
+        return $this->second_logo_url();
+    }
     /**
      * Get favicon image url.
      */

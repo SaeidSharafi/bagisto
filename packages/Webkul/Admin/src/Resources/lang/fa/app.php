@@ -854,7 +854,7 @@ return [
             'default-locale'         => 'منطقه پیش فرض',
             'currencies'             => 'ارز ها',
             'base-currency'          => 'ارز پایه',
-            'root-category'          => 'ارز ریشه',
+            'root-category'          => 'طبقه ریشه',
             'inventory_sources'      => 'منابع موجودی',
             'design'                 => 'طراحی',
             'theme'                  => 'پوسته',
