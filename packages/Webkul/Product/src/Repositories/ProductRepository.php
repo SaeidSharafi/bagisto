@@ -449,7 +449,7 @@ class ProductRepository extends Repository
      * @param  string  $term
      * @return \Illuminate\Support\Collection
      */
-    public function searchProductByAttribute($term)
+    public function searchProductByAttribute($term, $noVariant = false)
     {
         $channel = core()->getRequestedChannelCode();
 
@@ -487,12 +487,13 @@ class ProductRepository extends Repository
                 ->orderBy('product_id', 'desc')
                 ->paginate(16);
         } else {
-            $results = app(ProductFlatRepository::class)->scopeQuery(function ($query) use ($term, $channel, $locale) {
+            $results = app(ProductFlatRepository::class)->scopeQuery(function ($query) use ($term, $channel, $locale,$noVariant) {
 
                 $query = $query->distinct()
                     ->addSelect('product_flat.*')
                     ->where('product_flat.channel', $channel)
                     ->where('product_flat.locale', $locale)
+                    ->when($noVariant, fn($q) => $q->whereNull('parent_id'))
                     ->whereNotNull('product_flat.url_key');
 
                 if (! core()->getConfigData('catalog.products.homepage.out_of_stock_items')) {
@@ -506,6 +507,7 @@ class ProductRepository extends Repository
 
                         foreach (array_map('trim', $queries) as $value) {
                             $subQuery->orWhere('product_flat.name', 'like', '%' . urldecode($value) . '%')
+                                ->orWhere('product_flat.sku', 'like', '%' . urldecode($value) . '%')
                                 ->orWhere('product_flat.short_description', 'like', '%' . urldecode($value) . '%');
                         }
                     })

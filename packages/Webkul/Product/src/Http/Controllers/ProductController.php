@@ -508,7 +508,7 @@ class ProductController extends Controller
         if (request()->ajax()) {
             $results = [];
 
-            foreach ($this->productRepository->searchProductByAttribute(request()->input('query')) as $row) {
+            foreach ($this->productRepository->searchProductByAttribute(request()->input('query'), noVariant:  true) as $row) {
                 $results[] = [
                     'id'   => $row->product_id,
                     'sku'  => $row->sku,

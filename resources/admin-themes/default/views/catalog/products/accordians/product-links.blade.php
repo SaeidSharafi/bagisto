@@ -31,7 +31,7 @@
             <div class="linked-product-search-result">
                 <ul>
                     <li v-for='(product, index) in products[key]' v-if='products[key].length' @click="addProduct(product, key)">
-                        @{{ product.name }}
+                        @{{ product.name }} [@{{ product.sku }}]
                     </li>
 
                     <li v-if='! products[key].length && search_term[key].length && ! is_searching[key]'>
