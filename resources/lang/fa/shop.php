@@ -6,6 +6,9 @@ return [
         'register_course' => 'ثبت‌نام دوره',
         'submit'=> 'ارسال'
     ],
+    'currency' => [
+        'toman' => 'تومان',
+    ],
     'attributes' => [
         'course_details' => 'مشخصات دوره'
     ],

@@ -24,3 +24,13 @@ if (! function_exists('productvideo')) {
         return app()->make(ProductVideo::class);
     }
 }
+
+if (! function_exists('rial_to_toman')) {
+    function rial_to_toman($price)
+    {
+        if ($price > 0) {
+            $price = floor($price / 10);
+        }
+        return $price;
+    }
+}

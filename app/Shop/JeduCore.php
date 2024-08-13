@@ -44,6 +44,7 @@ class JeduCore extends \Webkul\Core\Core
      */
     public function formatPrice($price, $currencyCode = null)
     {
+
         if (is_null($price))
             $price = 0;
 
@@ -53,6 +54,9 @@ class JeduCore extends \Webkul\Core\Core
         }
         if (!$currencyCode){
             $formatter->setPattern("#,##0");
+        }
+        if ($currencyCode === 'IRR'){
+            return number_format(rial_to_toman($price)) . ' ' . __('shop.currency.toman');
         }
         return $formatter->formatCurrency($price, $currencyCode);
     }
