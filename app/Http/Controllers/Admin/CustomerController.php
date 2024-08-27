@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\Admin\CustomerImportRequest;
 use App\Imports\CustomersImport;
 use App\Models\Shop\JeduCustomer;
+use App\Services\ImportCSVService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Webkul\Customer\Repositories\CustomerRepository;
 
 class CustomerController extends \App\Http\Controllers\Controller
@@ -13,13 +16,18 @@ class CustomerController extends \App\Http\Controllers\Controller
 
     public function __construct(
         protected CustomerRepository $customerRepository,
+        protected ImportCSVService $importCSVService
     ) {
 
     }
 
     public function index(Request $request)
     {
-        return view('admin::customers.bulk')->with('data', null);
+        return view('admin::customers.bulk', [
+            'data'      => null,
+            'validated' => null,
+            'file_name' => null,
+        ]);
     }
 
     public function impersonate(JeduCustomer $customer)
@@ -28,47 +36,41 @@ class CustomerController extends \App\Http\Controllers\Controller
         return redirect()->route('customer.my-course.index');
     }
 
-    public function uploadCSV(Request $request)
+    public function uploadCSV(CustomerImportRequest $request)
     {
-        $request->validate([
-            'uploaded_file' => 'required|file|mimes:xls,xlsx,csv',
+        $validatedData = $request->validated();
+        $confirmed = data_get($validatedData, 'validated', false);
+
+        $import = new CustomersImport($confirmed);
+        $file = null;
+        if ($uploaded_file = data_get($validatedData, 'uploaded_file')) {
+            Storage::deleteDirectory('temp'.DIRECTORY_SEPARATOR.'cutsomercsv'.DIRECTORY_SEPARATOR.auth('admin')->user()->id);
+            $file = $uploaded_file->store('temp'.DIRECTORY_SEPARATOR.'cutsomercsv'.DIRECTORY_SEPARATOR
+                .auth('admin')->user()->id);
+        }
+
+        if (!$file) {
+            $file = data_get($validatedData, 'file_path');
+        }
+
+        if (!$file) {
+            abort(404);
+        }
+
+        $data = $this->importCSVService->import(
+            $import,
+            $file,
+            $confirmed,
+        );
+        if (null === $data) {
+            session()->flash('success', "import successful");
+            return redirect()->route('admin.customer.index');
+        }
+        return view('admin::customers.bulk', [
+            'file_name' => $file,
+            'data'      => collect($data),
+            'validated' => ($data && $import->failures()->isEmpty()),
         ]);
-        $import = new CustomersImport();
-
-        $file = $request->file('uploaded_file')->store('temp');
-        $import->import($file);
-
-        $collection = $import->toCollection($file)->first()->filter(function ($value) {
-            return !empty($value['national_code']);
-        });
-
-        $errors = null;
-        $data = null;
-        foreach ($import->failures() as $failure) {
-            $errors[$failure->row()][$failure->attribute()] = $failure->errors();
-        }
-        foreach ($collection as $row) {
-            $index = $row['row'];
-
-            if (isset($row['date_of_birth'])) {
-                $row['date_of_birth'] = Carbon::make($row['date_of_birth'])->jdate("Y-m-d");
-            }
-            $data[$index]['values'] = $row;
-            $data[$index]['errors'] = [];
-            if ($errors) {
-                if (array_key_exists($index, $errors)) {
-                    $data[$index]['errors'] = $errors[$index];
-                }
-            }
-        }
-        $keys = $collection->first()->keys()->toArray();
-        $error_keys = array_keys(collect($errors)->first());
-
-        session()->flash('success', "import successful");
-        return view('admin::customers.bulk')
-            ->with('failures', collect($errors))
-            ->with('data', collect($data))
-            ->with('extra_errors', array_diff($error_keys, $keys));
 
     }
 }

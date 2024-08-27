@@ -18,7 +18,7 @@ return [
         'title'    => 'نوار نقاله',
         'category' => [
             'title'            => 'نوار نقاله',
-            'titles'            => 'نوارهای نقاله',
+            'titles'           => 'نوارهای نقاله',
             'add-title'        => 'اضافه کردن',
             'create-btn-title' => 'ایجاد نوار نقاله',
             'edit-title'       => 'ویرایش نوار نقاله',
@@ -26,7 +26,7 @@ return [
         ],
         'item'     => [
             'title'            => 'آیتم نوار نقاله',
-            'titles'            => 'آیتم‌های نوار نقاله',
+            'titles'           => 'آیتم‌های نوار نقاله',
             'add-title'        => 'اضافه کردن',
             'create-btn-title' => 'ایجاد آیتم نوار نقاله',
             'edit-title'       => 'ویرایش آیتم نوار نقاله',
@@ -38,16 +38,16 @@ return [
         ]
 
     ],
-    'center'     => [
+    'center'        => [
         'title'            => 'مرکز',
-        'titles'            => 'مراکز',
+        'titles'           => 'مراکز',
         'add-title'        => 'اضافه کردن',
         'create-btn-title' => 'ایجاد مرکز',
         'edit-title'       => 'ویرایش مرکز',
         'edit-btn-title'   => 'ویرایش مرکز',
-        'link'              => 'لینک',
-        'phone'              => 'تلفن',
-        'address'           => 'آدرس',
+        'link'             => 'لینک',
+        'phone'            => 'تلفن',
+        'address'          => 'آدرس',
         'delete-success'   => 'حذف آیتم با موفقیت انجام شد.',
         'delete-failur'    => 'خطا در حذف آیتم.',
     ],
@@ -72,11 +72,12 @@ return [
     ],
     'customers'     => [
         'customers'   => [
-            'bulk-title'      => 'وارد کردن',
-            'bulk-page-title' => 'وارد کردن فراگیران',
-            'is_moodle_user'  => 'کاربر مودل',
-            'bulk-btn-title'  => 'وارد کردن',
-            'is_foriegn'      => 'اتباع خارجی'
+            'bulk-title'           => 'وارد کردن',
+            'bulk-page-title'      => 'وارد کردن فراگیران',
+            'is_moodle_user'       => 'کاربر مودل',
+            'bulk-btn-title'       => 'وارد کردن',
+            'bulk-check-btn-title' => 'بررسی کردن',
+            'is_foriegn'           => 'اتباع خارجی'
         ],
         'impersonate' => 'ورود در قالب فراگیر',
     ],
@@ -89,11 +90,11 @@ return [
                 'synced'     => 'همگام سازی IMS',
                 'not_synced' => 'عدم همگام سازی IMS',
             ],
-            'spot'            => [
-                'column'     => 'وضعیت Spot',
-                'created'     => 'ایجاد شده',
-                'waiting'     => 'در انتظار',
-                'error' => 'خطا',
+            'spot'           => [
+                'column'  => 'وضعیت Spot',
+                'created' => 'ایجاد شده',
+                'waiting' => 'در انتظار',
+                'error'   => 'خطا',
             ],
             'rouyesh'        => [
                 'column'     => 'وضعیت همگام سازی',
@@ -135,7 +136,7 @@ return [
     ],
     'layouts'       => [
         'visit-moodle' => 'سامانه آموزش مجازی',
-        'channels' => 'هویت سایت',
+        'channels'     => 'هویت سایت',
     ],
     'cms'           => [
         'categories' => [
@@ -179,25 +180,24 @@ return [
             'sms-settings'     => 'تنظیمات پیامک',
         ]
     ],
-    'contactus' => [
-        'title' => 'درخواست‌های تماس با ما',
-        'view' => 'مشاهده درخواست',
-        'subject' => 'موضوع',
-        'message' => 'پیام',
-        'first_name' => 'نام',
-        'last_name' => 'نام خانوادگی',
-        'email' => 'ایمیل',
-        'phone' => 'تلفن',
-        'delete-success'   => 'حذف درخواست با موفقیت انجام شد.',
-        'delete-failur'    => 'خطا در حذف درخواست.',
+    'contactus'     => [
+        'title'          => 'درخواست‌های تماس با ما',
+        'view'           => 'مشاهده درخواست',
+        'subject'        => 'موضوع',
+        'message'        => 'پیام',
+        'first_name'     => 'نام',
+        'last_name'      => 'نام خانوادگی',
+        'email'          => 'ایمیل',
+        'phone'          => 'تلفن',
+        'delete-success' => 'حذف درخواست با موفقیت انجام شد.',
+        'delete-failur'  => 'خطا در حذف درخواست.',
     ],
-    'settings' => [
+    'settings'      => [
         'channels' => [
-            'title' => 'هویت سایت',
-            'edit-title' => 'ویرایش هویت سایت',
+            'title'          => 'هویت سایت',
+            'edit-title'     => 'ویرایش هویت سایت',
             'save-btn-title' => 'ذخیره'
         ],
     ],
-
 
 ];

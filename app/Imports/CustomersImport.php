@@ -5,32 +5,75 @@ namespace App\Imports;
 use \App\Models\Shop\JeduCustomer;
 use App\Rules\Nationalcode;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\RemembersRowNumber;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
+use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
+use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithLimit;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
-class CustomersImport implements ToModel, WithHeadingRow, WithChunkReading, WithValidation, SkipsOnFailure
+class CustomersImport implements
+    ToCollection,
+    WithHeadingRow,
+    WithValidation,
+    SkipsOnFailure,
+    SkipsEmptyRows,
+    SkipsOnError,
+    WithLimit
 {
 
-    use Importable, SkipsFailures, RemembersRowNumber;
+    use Importable;
+    use RemembersRowNumber;
+    use SkipsErrors;
+    use SkipsFailures;
 
-    /**
-     * @param  array  $row
-     *
-     * @return JeduCustomer
-     */
-    public function model(array $row)
+    private bool $write;
+
+    public function __construct(bool $write = false)
     {
-        return new JeduCustomer([
+        $this->write = $write;
+    }
+
+    public function collection(Collection $collection)
+    {
+        if ($this->write) {
+            $customers = $collection->map(fn($item) => $this->createCustomer($item));
+            DB::table('customers')->upsert($customers->toArray(), ['national_code', 'phone'], [
+                'first_name',
+                'last_name',
+                'gender',
+                'date_of_birth',
+                'national_code',
+                'email',
+                'api_token',
+                'token',
+                'phone',
+                'password',
+                'customer_group_id',
+                'is_verified',
+                'father_name',
+                'education_field',
+                'status',
+                'is_moodle_user',
+                'moodle_synch',
+            ]);
+        }
+    }
+
+    private function createCustomer($row)
+    {
+        return [
             'first_name'        => $row['first_name'],
             'last_name'         => $row['last_name'],
             'gender'            => $row['gender'],
@@ -48,12 +91,7 @@ class CustomersImport implements ToModel, WithHeadingRow, WithChunkReading, With
             'status'            => 1,
             'is_moodle_user'    => $row['is_moodle_user'],
             'moodle_synch'      => 0,
-        ]);
-    }
-
-    public function chunkSize(): int
-    {
-        return 1000;
+        ];
     }
 
     public function rules(): array
@@ -70,7 +108,7 @@ class CustomersImport implements ToModel, WithHeadingRow, WithChunkReading, With
                 Rule::when(function ($input) {
                     $data = collect($input->getAttributes())->first();
                     return !isset($data['is_foreign']);
-                }, new Nationalcode)
+                }, [new Nationalcode])
             ],
             'father_name'     => 'nullable',
             'education_field' => 'nullable',
@@ -93,9 +131,12 @@ class CustomersImport implements ToModel, WithHeadingRow, WithChunkReading, With
 
     public function prepareForValidation($data, $index)
     {
-        if (!$data || !array_key_exists('national_code',$data)){
-            Log::error('No National COde Field exist',$data);
+        if (!$data || !array_key_exists('national_code', $data)) {
+            Log::error('No National COde Field exist', $data);
             return $data;
+        }
+        if ($data['phone'] && !Str::startsWith($data['phone'], '0')){
+            $data['phone'] =   '0'.$data['phone'];
         }
         $data['email'] = $data['email'] ?? $data['national_code']."@jedu.ir";
         $data['father_name'] = $data['father_name'] ?? null;
@@ -112,5 +153,10 @@ class CustomersImport implements ToModel, WithHeadingRow, WithChunkReading, With
         }
 
         return $data;
+    }
+
+    public function limit(): int
+    {
+        return 200;
     }
 }

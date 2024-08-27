@@ -12,14 +12,17 @@
         .bg-success {
             background-color: #c9ffb1;
         }
-.form-container{
-    padding: 25px;
-}
-.control-error{
-    padding: 10px 5px;
-    display: block;
-    color: red;
-}
+
+        .form-container {
+            padding: 25px;
+        }
+
+        .control-error {
+            padding: 10px 5px;
+            display: block;
+            color: red;
+        }
+
         label {
             background-color: indigo;
             color: white;
@@ -55,7 +58,12 @@
 
                 <div class="page-action">
                     <button type="submit" class="btn btn-lg btn-primary">
-                        {{ __('admin.customers.customers.bulk-btn-title') }}
+                        @if ($validated)
+                            {{ __('admin.customers.customers.bulk-btn-title') }}
+
+                        @else
+                            {{ __('admin.customers.customers.bulk-check-btn-title') }}
+                        @endif
                     </button>
                 </div>
             </div>
@@ -65,6 +73,9 @@
                     @csrf()
                     <div class="form-control">
                         <!-- actual upload which is hidden -->
+                        @if($file_name)
+                            <input type="hidden" value="{{  $file_name}}" name="file_path">
+                        @endif
                         <input name="uploaded_file" type="file" id="actual-btn"
                                accept=".xls,.xlsx,.csv"
                                onchange="setname()" hidden/>
@@ -77,6 +88,9 @@
                             <span class="control-error" v-text="'{{$errors->first('uploaded_file')}}'"></span>
 
                         @endif
+
+
+                        <input type="hidden" value="{{$validated}}" name="validated">
                     </div>
 
                     <br>
@@ -84,15 +98,6 @@
                 </div>
                 @if ($data && $data->count())
                     <div class="table table-responsive">
-                        @if ($extra_errors)
-                            <ul style="list-style: circle;padding-right: 15px;margin-bottom: 10px">
-                                @foreach($extra_errors as $error)
-                                    @foreach($data->first()['errors'][$error] as $item)
-                                        <li><span>{{$item}}</span></li>
-                                    @endforeach
-                                @endforeach
-                            </ul>
-                        @endif
 
                         <table class="table">
                             <thead>
@@ -106,9 +111,9 @@
                             <tbody>
 
                             @foreach($data as $index => $row)
-                                <tr class="{{isset($row['errors']) ? 'bg-fail' : 'bg-succes'}}">
+                                <tr class="{{isset($row['errors']) && $row['errors'] ? 'bg-fail' : 'bg-succes'}}">
                                     <td>
-                                        @if (isset($row['errors']))
+                                        @if (isset($row['errors']) && $row['errors'] )
                                             <i class="icon canceled-icon"></i>
                                         @else
                                             <i class="icon completed-icon"></i>
@@ -120,9 +125,9 @@
                                             <span style="display: block">
                                              {{$value}}
                                             </span>
-                                            @if (isset($row['errors']) && array_key_exists($field,$row['errors']))
+                                            @if (isset($row['errors']) && $row['errors']  && array_key_exists($field,$row['errors']))
                                                 @foreach($row['errors'][$field] as $error)
-                                                    <span style="display: block;font-size: 8px">{{$error}}</span>
+                                                    <span style="display: block;font-size: 10px;color: #d30000;">{{$error}}</span>
                                                 @endforeach
                                             @endif
 
@@ -149,5 +154,6 @@
             const fileChosen = document.getElementById('file-chosen');
             fileChosen.textContent = actualBtn.files[0].name
         }
+
     </script>
 @endpush
