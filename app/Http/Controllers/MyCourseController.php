@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\SpotLicense;
+use App\Services\ImsApiService;
 use App\Services\MoodleFormatService;
 use App\Services\MoodleService;
 use App\Services\ProductService;
 use App\Services\SpotPlayerService;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Webkul\Product\Repositories\ProductFlatRepository;
@@ -65,6 +67,8 @@ class MyCourseController extends Controller
             redirect()->back();
         }
 
+        //dd(ImsApiService::isTeacher('09359933642'));
+
         $orders = $this->orderRepository
             ->getModel()::query()
             ->with('items', function ($query) {
@@ -78,7 +82,6 @@ class MyCourseController extends Controller
         $order_items = $orders->pluck('items')
             ->flatten()
             ->pluck('product_id');
-
 
         $spots = $this->productFlatRepository
             ->getModel()::query()
@@ -105,7 +108,7 @@ class MyCourseController extends Controller
                 return empty($product->moodle_id) && empty($product->spot_id);
             });
 
-        $moodleProducts =$products
+        $moodleProducts = $products
             ->filter(function ($product) {
                 return !empty($product->moodle_id);
             });
@@ -115,9 +118,9 @@ class MyCourseController extends Controller
         $enrollments = MoodleService::getUserCourses($this->currentCustomer);
         $moodleCourses = [];
         if ($enrollments) {
-            $moodleCourses = MoodleFormatService::formatUserCourses($enrollments, $this->currentCustomer, $moodleProducts);
+            $moodleCourses = MoodleFormatService::formatUserCourses($enrollments, $this->currentCustomer,
+                $moodleProducts);
         }
-
 
         $spots = SpotPlayerService::formatProduct($spots, $this->currentCustomer);
 

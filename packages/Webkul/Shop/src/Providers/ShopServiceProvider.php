@@ -2,6 +2,7 @@
 
 namespace Webkul\Shop\Providers;
 
+use App\Services\ImsApiService;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
@@ -65,10 +66,18 @@ class ShopServiceProvider extends ServiceProvider
      */
     protected function composeView()
     {
+
         view()->composer('shop::customers.account.partials.sidemenu', function ($view) {
             $tree = Tree::create();
-
+            $isTeacher = false;
+            if (auth('customer')->check()){
+                $phone = auth('customer')->user()->phone;
+                $isTeacher = ImsApiService::isTeacher($phone);
+            }
             foreach (config('menu.customer') as $item) {
+                if ($item['key'] === 'account.ims' && !$isTeacher) {
+                    continue;
+                }
                 $tree->add($item, 'menu');
             }
 

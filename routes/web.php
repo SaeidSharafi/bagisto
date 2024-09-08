@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\CarouselCategoryController;
 use App\Http\Controllers\Admin\CarouselItemController;
 use App\Http\Controllers\Admin\ResetCustomerPasswordController;
+use App\Http\Controllers\ImsRedirectController;
 use App\Http\Controllers\MyCourseController;
 use App\Http\Controllers\Shop\API\JeduShopController;
 use App\Http\Controllers\Shop\Customer\JeduCustomerController;
@@ -182,6 +183,10 @@ Route::group(
                         ->defaults('_config', [
                             'view' => 'shop::customers.account.profile.index'
                         ])->name('customer.spot.player');
+
+                    //IMS Login
+                    Route::get('ims-redirect', ImsRedirectController::class)
+                        ->name('customer.ims.redirect');
 
                 });
 
