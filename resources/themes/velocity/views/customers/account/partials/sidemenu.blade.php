@@ -59,7 +59,7 @@
 
             @foreach ($subMenuCollection as $index => $subMenuItem)
                 <li class="{{ $menu->getActive($subMenuItem) }}" title="{{ trans($subMenuItem['name']) }}">
-                    <a class="unset fw6 full-width" href="{{ $subMenuItem['url'] }}">
+                    <a class="unset fw6 full-width" href="{{ $subMenuItem['url'] }}" target="{{$subMenuItem['url'] ?? '_self'}}">
                         <i class="{{ $subMenuItem['icon'] ?? 'icon '.$index }} text-down-3"></i>
                         <span>{{ trans($subMenuItem['name']) }}<span>
                         <i class="rango-arrow-right float-right text-down-3"></i>

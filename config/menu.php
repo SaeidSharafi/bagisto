@@ -57,12 +57,20 @@ return [
     ],
 
     'customer' => [
-         [
+        [
             'key'   => 'account.moodle',
             'name'  => 'app.customer.account.moodle.index.page-title',
-            'route' =>'customer.my-course.index',
+            'route' => 'customer.my-course.index',
             'sort'  => 8,
-            'icon' => 'fa fa-desktop pl-2',
-        ]
+            'icon'  => 'fa fa-desktop pl-2',
+        ],
+        [
+            'key'   => 'account.ims',
+            'name'  => 'app.customer.account.ims.title',
+            'route' => 'customer.ims.redirect',
+            'target' => '_blank',
+            'sort'  => 9,
+            'icon'  => 'fa fa-desktop pl-2',
+        ],
     ]
 ];

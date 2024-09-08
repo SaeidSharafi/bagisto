@@ -17,6 +17,9 @@ return [
                 'index'=>[
                 'page-title' => 'دوره های من'
                 ]
+            ],
+            'ims' => [
+                'title' => 'پنل اساتید'
             ]
         ],
         'reviews' => [
