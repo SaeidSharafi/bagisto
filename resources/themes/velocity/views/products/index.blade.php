@@ -78,14 +78,9 @@
 
 @push('scripts')
     <script type="text/x-template" id="category-template">
-        <section class="row velocity-divide-page category-page-wrapper">
+        <section class="row velocity-divide-page category-page-wrapper justify-content-center">
             {!! view_render_event('bagisto.shop.productOrCategory.index.before', ['category' => $category]) !!}
 
-            @if (in_array($category->display_mode, [null, 'products_only', 'products_and_description']))
-                <div class="d-none d-lg-block col-lg-3 col-xl-2">
-                @include ('shop::products.list.layered-navigation')
-                </div>
-            @endif
             <div class="col-12 {{in_array($category->display_mode, [null, 'products_only', 'products_and_description']) ? 'col-lg-10' : ''}}">
             <div class="category-container">
 
