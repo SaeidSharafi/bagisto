@@ -6,6 +6,7 @@ use App\Notifications\NewOrderNotification;
 use App\Notifications\OrderCancelNotification;
 use App\Notifications\OrderCommentNotification;
 use App\Notifications\OrderCompletedNotification;
+use App\Notifications\OrderPaymentCancelNotification;
 use App\Notifications\OrderRefundNotification;
 use Illuminate\Support\Facades\Notification;
 use Webkul\Sales\Models\Order;
@@ -93,6 +94,10 @@ trait Sms
                 case Order::STATUS_CANCELED:
                     $configKey = 'sms.general.notifications.cancel-order.pattern';
                     $notification = new OrderCancelNotification($order);
+                    break;
+                case Order::STATUS_PAYMENT_CANCELED:
+                    $configKey = 'sms.general.notifications.cancel-order.pattern';
+                    $notification = new OrderPaymentCancelNotification($order);
                     break;
             }
 

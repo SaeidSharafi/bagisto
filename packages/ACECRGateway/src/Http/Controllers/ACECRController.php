@@ -87,10 +87,7 @@ class ACECRController extends Controller
     public function callback()
     {
         \Log::info("request ", \request()->all());
-        //if (!Cart::getCart()) {
-        //
-        //    return redirect()->route('shop.checkout.cart.index');
-        //}
+
         $request = \request()->all();
 
         if ($request['ResCode'] != "0") {

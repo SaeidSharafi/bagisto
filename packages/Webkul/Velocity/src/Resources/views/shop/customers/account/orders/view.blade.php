@@ -209,7 +209,7 @@
                                             <span class="dash-icon">-</span>
                                         </td>
 
-                                        @if($order->status !== 'canceled')
+                                        @if($order->status !== 'canceled' || $order->status !== 'payment_canceled')
                                             <td>{{ core()->formatPrice($order->total_due, $order->order_currency_code) }}</td>
                                         @else
                                             <td>{{ core()->formatPrice(0.00, $order->order_currency_code) }}</td>

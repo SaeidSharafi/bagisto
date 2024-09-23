@@ -27,39 +27,43 @@ class Order extends Model implements OrderContract
     public const STATUS_COMPLETED = 'completed';
 
     public const STATUS_CANCELED = 'canceled';
+    public const STATUS_PAYMENT_CANCELED = 'payment_canceled';
 
     public const STATUS_CLOSED = 'closed';
 
     public const STATUS_FRAUD = 'fraud';
 
-    protected $guarded = [
-        'id',
-        'items',
-        'shipping_address',
-        'billing_address',
-        'customer',
-        'channel',
-        'payment',
-        'created_at',
-        'updated_at',
-    ];
+    protected $guarded
+        = [
+            'id',
+            'items',
+            'shipping_address',
+            'billing_address',
+            'customer',
+            'channel',
+            'payment',
+            'created_at',
+            'updated_at',
+        ];
 
-    protected $statusLabel = [
-        self::STATUS_PENDING         => 'Pending',
-        self::STATUS_PENDING_PAYMENT => 'Pending Payment',
-        self::STATUS_PROCESSING      => 'Processing',
-        self::STATUS_COMPLETED       => 'Completed',
-        self::STATUS_CANCELED        => 'Canceled',
-        self::STATUS_CLOSED          => 'Closed',
-        self::STATUS_FRAUD           => 'Fraud',
-    ];
+    protected $statusLabel
+        = [
+            self::STATUS_PENDING          => 'Pending',
+            self::STATUS_PENDING_PAYMENT  => 'Pending Payment',
+            self::STATUS_PROCESSING       => 'Processing',
+            self::STATUS_COMPLETED        => 'Completed',
+            self::STATUS_CANCELED         => 'Canceled',
+            self::STATUS_PAYMENT_CANCELED => 'Payment Canceled',
+            self::STATUS_CLOSED           => 'Closed',
+            self::STATUS_FRAUD            => 'Fraud',
+        ];
 
     /**
      * Get the order items record associated with the order.
      */
     public function getCustomerFullNameAttribute(): string
     {
-        return $this->customer_first_name . ' ' . $this->customer_last_name;
+        return $this->customer_first_name.' '.$this->customer_last_name;
     }
 
     /**
@@ -244,7 +248,8 @@ class Order extends Model implements OrderContract
     {
         foreach ($this->items as $item) {
             if ($item->getTypeInstance()
-                ->isStockable()) {
+                ->isStockable()
+            ) {
                 return true;
             }
         }
@@ -280,7 +285,8 @@ class Order extends Model implements OrderContract
     public function canComplete(): bool
     {
         if ($this->status === self::STATUS_FRAUD
-            || $this->status === self::STATUS_COMPLETED) {
+            || $this->status === self::STATUS_COMPLETED
+        ) {
             return false;
         }
 
@@ -338,11 +344,15 @@ class Order extends Model implements OrderContract
      */
     public function canCancel(): bool
     {
-        if ($this->payment->method == 'cashondelivery' && core()->getConfigData('sales.paymentmethods.cashondelivery.generate_invoice')) {
+        if ($this->payment->method == 'cashondelivery'
+            && core()->getConfigData('sales.paymentmethods.cashondelivery.generate_invoice')
+        ) {
             return false;
         }
 
-        if ($this->payment->method == 'moneytransfer' && core()->getConfigData('sales.paymentmethods.moneytransfer.generate_invoice')) {
+        if ($this->payment->method == 'moneytransfer'
+            && core()->getConfigData('sales.paymentmethods.moneytransfer.generate_invoice')
+        ) {
             return false;
         }
 
@@ -353,7 +363,7 @@ class Order extends Model implements OrderContract
         //$pendingInvoice = $this->invoices->where('state', 'pending')
         //    ->orWhere('grand_total',0)
         //    ->first();
-        $pendingInvoice = $this->invoices->filter(function ($value,$key){
+        $pendingInvoice = $this->invoices->filter(function ($value, $key) {
             return $value['state'] === 'pending' || $value['grand_total'] == 0;
         })->first();
         if ($pendingInvoice) {
@@ -383,7 +393,7 @@ class Order extends Model implements OrderContract
 
         //$pendingInvoice = $this->invoices->where('state', 'pending')
         //    ->first();
-        $pendingInvoice = $this->invoices->filter(function ($value,$key){
+        $pendingInvoice = $this->invoices->filter(function ($value, $key) {
             return $value['state'] === 'pending' || $value['grand_total'] == 0;
         })->first();
 
@@ -398,7 +408,8 @@ class Order extends Model implements OrderContract
         }
 
         if ($this->base_grand_total_invoiced - $this->base_grand_total_refunded - $this->refunds()
-                ->sum('base_adjustment_fee') > 0) {
+                ->sum('base_adjustment_fee') > 0
+        ) {
             return true;
         }
 
@@ -412,6 +423,6 @@ class Order extends Model implements OrderContract
      */
     protected static function newFactory(): Factory
     {
-        return OrderFactory::new ();
+        return OrderFactory::new();
     }
 }

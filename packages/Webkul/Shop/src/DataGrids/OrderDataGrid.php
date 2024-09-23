@@ -29,10 +29,12 @@ class OrderDataGrid extends DataGrid
      */
     public function prepareQueryBuilder()
     {
+
         $queryBuilder = DB::table('orders as order')
             ->addSelect('order.id', 'order_items.name', 'order.increment_id', 'order.status', 'order.created_at', 'order.grand_total',
                 'order.order_currency_code')
             ->leftJoin('order_items', 'order_items.order_id', '=', 'order.id')
+            ->groupBy('order.id')
             ->where('customer_id', auth()->guard('customer')->user()->id);
 
         $this->addFilter('status', 'order.status');
@@ -64,6 +66,7 @@ class OrderDataGrid extends DataGrid
                     'processing'      => trans('shop::app.customer.account.order.index.processing'),
                     'completed'       => trans('shop::app.customer.account.order.index.completed'),
                     'canceled'        => trans('shop::app.customer.account.order.index.canceled'),
+                    'payment_canceled'        => trans('shop::app.customer.account.order.index.paymeny_canceled'),
                     'closed'          => trans('shop::app.customer.account.order.index.closed'),
                     'pending'         => trans('shop::app.customer.account.order.index.pending'),
                     'pending_payment' => trans('shop::app.customer.account.order.index.pending-payment'),
@@ -134,6 +137,7 @@ class OrderDataGrid extends DataGrid
                 'completed'       => trans('shop::app.customer.account.order.index.completed'),
                 'canceled'        => trans('shop::app.customer.account.order.index.canceled'),
                 'closed'          => trans('shop::app.customer.account.order.index.closed'),
+                'payment_canceled'        => trans('shop::app.customer.account.order.index.paymeny_canceled'),
                 'pending'         => trans('shop::app.customer.account.order.index.pending'),
                 'pending_payment' => trans('shop::app.customer.account.order.index.pending-payment'),
                 'fraud'           => trans('shop::app.customer.account.order.index.fraud'),
@@ -148,6 +152,9 @@ class OrderDataGrid extends DataGrid
                 } elseif ($value->status == 'canceled') {
                     return '<span class="badge badge-md badge-danger">'
                         .trans('shop::app.customer.account.order.index.canceled').'</span>';
+                } elseif ($value->status == 'payment_canceled') {
+                    return '<span class="badge badge-md badge-danger">'
+                        .trans('shop::app.customer.account.order.index.paymeny_canceled').'</span>';
                 } elseif ($value->status == 'closed') {
                     return '<span class="badge badge-md badge-info">'
                         .trans('shop::app.customer.account.order.index.closed').'</span>';

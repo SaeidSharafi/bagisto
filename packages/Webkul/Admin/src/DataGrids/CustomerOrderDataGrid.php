@@ -122,7 +122,9 @@ class CustomerOrderDataGrid extends DataGrid
                     return '<span class="badge badge-md badge-success">' . trans('admin::app.sales.orders.order-status-success') . '</span>';
                 } elseif ($value->status == 'canceled') {
                     return '<span class="badge badge-md badge-danger">' . trans('admin::app.sales.orders.order-status-canceled') . '</span>';
-                } elseif ($value->status == 'closed') {
+                } elseif ($value->status == 'payment_canceled') {
+                    return '<span class="badge badge-md badge-danger">' . trans('admin::app.sales.orders.order-status-payment-canceled') . '</span>';
+                }elseif ($value->status == 'closed') {
                     return '<span class="badge badge-md badge-info">' . trans('admin::app.sales.orders.order-status-closed') . '</span>';
                 } elseif ($value->status == 'pending') {
                     return '<span class="badge badge-md badge-warning">' . trans('admin::app.sales.orders.order-status-pending') . '</span>';

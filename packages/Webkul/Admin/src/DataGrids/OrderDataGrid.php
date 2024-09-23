@@ -104,13 +104,14 @@ class OrderDataGrid extends DataGrid
             'itemsPerPage'      => $this->itemsPerPage,
             'extraFilters'      => array_merge($this->getExtraFilters(), [
                 'status' => [
-                    'processing'      => trans('shop::app.customer.account.order.index.processing'),
-                    'completed'       => trans('shop::app.customer.account.order.index.completed'),
-                    'canceled'        => trans('shop::app.customer.account.order.index.canceled'),
-                    'closed'          => trans('shop::app.customer.account.order.index.closed'),
-                    'pending'         => trans('shop::app.customer.account.order.index.pending'),
-                    'pending_payment' => trans('shop::app.customer.account.order.index.pending-payment'),
-                    'fraud'           => trans('shop::app.customer.account.order.index.fraud'),
+                    'processing'       => trans('shop::app.customer.account.order.index.processing'),
+                    'completed'        => trans('shop::app.customer.account.order.index.completed'),
+                    'canceled'         => trans('shop::app.customer.account.order.index.canceled'),
+                    'payment_canceled' => trans('shop::app.customer.account.order.index.payment_canceled'),
+                    'closed'           => trans('shop::app.customer.account.order.index.closed'),
+                    'pending'          => trans('shop::app.customer.account.order.index.pending'),
+                    'pending_payment'  => trans('shop::app.customer.account.order.index.pending-payment'),
+                    'fraud'            => trans('shop::app.customer.account.order.index.fraud'),
                 ]
             ]),
             'translations'      => $this->getTranslations(),
@@ -214,6 +215,10 @@ class OrderDataGrid extends DataGrid
                 if ($value->status == 'canceled') {
                     return '<span class="badge badge-md badge-danger">'
                         .trans('admin::app.sales.orders.order-status-canceled').'</span>';
+                }
+                if ($value->status == 'payment_canceled') {
+                    return '<span class="badge badge-md badge-danger">'
+                        .trans('admin::app.sales.orders.order-status-payment-canceled').'</span>';
                 }
                 if ($value->status == 'closed') {
                     return '<span class="badge badge-md badge-info">'
@@ -338,30 +343,32 @@ class OrderDataGrid extends DataGrid
 
         if (config('app.ims.api_key')) {
             $this->addAction([
-                'title'  => trans('admin.datagrid.sync-ims'),
-                'method' => 'GET',
-                'route'  => 'admin.sales.orders.sync-ims',
-                'icon'   => 'icon tick-double-icon',
+                'title'     => trans('admin.datagrid.sync-ims'),
+                'method'    => 'GET',
+                'route'     => 'admin.sales.orders.sync-ims',
+                'icon'      => 'icon tick-double-icon',
                 'condition' => function ($value) {
-                    return $value->order_status === Order::STATUS_COMPLETED && $value->product_number && !$value->ims_synced_at;
+                    return $value->order_status === Order::STATUS_COMPLETED && $value->product_number
+                        && !$value->ims_synced_at;
                 },
             ]);
         }
 
         $this->addAction([
-            'title'  => trans('admin.datagrid.sync-rouyesh'),
-            'method' => 'GET',
-            'route'  => 'admin.sales.orders.sync-rouyesh',
-            'icon'   => 'icon tick-double-blue-icon',
+            'title'     => trans('admin.datagrid.sync-rouyesh'),
+            'method'    => 'GET',
+            'route'     => 'admin.sales.orders.sync-rouyesh',
+            'icon'      => 'icon tick-double-blue-icon',
             'condition' => function ($value) {
-                return $value->order_status === Order::STATUS_COMPLETED && $value->rouyesh_code && !$value->rouyesh_synced_at;
+                return $value->order_status === Order::STATUS_COMPLETED && $value->rouyesh_code
+                    && !$value->rouyesh_synced_at;
             },
         ]);
         $this->addAction([
-            'title'  => trans('admin.datagrid.create-spot'),
-            'method' => 'GET',
-            'route'  => 'admin.sales.orders.create-spot',
-            'icon'   => 'icon spot-icon',
+            'title'     => trans('admin.datagrid.create-spot'),
+            'method'    => 'GET',
+            'route'     => 'admin.sales.orders.create-spot',
+            'icon'      => 'icon spot-icon',
             'condition' => function ($value) {
                 return $value->order_status === Order::STATUS_COMPLETED && $value->spot_id && !$value->_id;
             },

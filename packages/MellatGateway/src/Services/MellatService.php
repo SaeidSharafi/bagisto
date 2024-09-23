@@ -202,7 +202,7 @@ class MellatService
         try {
             Log::info("Verifing Order, ID:".$this->post['SaleOrderId'], []);
             $this->order = $this->orderRepository->find($this->post['SaleOrderId']);
-            if ($this->order->status === 'canceled' || $this->order->status === 'closed') {
+            if ($this->order->status === 'canceled' || $this->order->status === 'payment_canceled' || $this->order->status === 'closed') {
                 throw new VerifyException('Order status is canceled or Closed');
             }
             $this->verify();

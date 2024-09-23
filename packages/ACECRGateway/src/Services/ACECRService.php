@@ -98,7 +98,6 @@ class ACECRService
         $this->orderTransactionRepository = $orderTransactionRepository;
     }
 
-
     /**
      * Return form field array.
      *
@@ -115,12 +114,12 @@ class ACECRService
         $endpoint = $this->endPoint;
         $terminalID = $this->acecr->getConfigData('terminal_id');
         $data = [
-            'orderId' => $this->orderId."",
-            'price' => (int) $this->order->grand_total,
-            "description" => '',
+            'orderId'        => $this->orderId."",
+            'price'          => (int) $this->order->grand_total,
+            "description"    => '',
             'additionalData' => '',
-            'returnurl' => route('acecr.callback'),
-            'merchantID' => "Integrated:{$terminalID}",
+            'returnurl'      => route('acecr.callback'),
+            'merchantID'     => "Integrated:{$terminalID}",
         ];
         Log::info('data to send for gateway', $data);
 
@@ -135,9 +134,10 @@ class ACECRService
                 return $params['response'];
             }
 
-            $this->orderRepository->cancel($this->order->id);
+            $this->orderRepository->cancel($this->order->id, true);
 
-            throw new SendException('خطا در اتصال به درگاه بانک ملت، مشکلی در اطلاعات ارسالی وجود دارد.'.'\n'.$send['response']);
+            throw new SendException('خطا در اتصال به درگاه بانک ملت، مشکلی در اطلاعات ارسالی وجود دارد.'.'\n'
+                .$send['response']);
         }
         $this->orderRepository->cancel($this->order->id);
         throw new SendException('خطا در ارسال اطلاعات به درگاه بانتک ملت. لطفا از برقرار بودن اینترنت و در دسترس بودن بانک ملت اطمینان حاصل کنید');
@@ -162,7 +162,7 @@ class ACECRService
             return $this->order;
         } catch (VerifyException|SettleException|SendException $e) {
             if ($this->order) {
-                $this->orderRepository->cancel($this->order->id);
+                $this->orderRepository->cancel($this->order->id, true);
 
                 $e->orderId = $this->order->id;
             }
@@ -186,7 +186,7 @@ class ACECRService
         try {
             Log::info("Verifing Order, ID:".$this->post['SaleOrderId'], []);
             $this->order = $this->orderRepository->find($this->post['SaleOrderId']);
-            if ($this->order->status === 'canceled' || $this->order->status === 'closed') {
+            if ($this->order->status === 'canceled' || $this->order->status === 'payment_canceled' || $this->order->status === 'closed') {
                 throw new VerifyException('Order status is canceled or Closed');
             }
             $this->verify();
@@ -199,7 +199,7 @@ class ACECRService
             Log::info($e->getMessage()." : ".$e->getCode());
             if ($this->order) {
 
-                $this->orderRepository->cancel($this->order->id);
+                $this->orderRepository->cancel($this->order->id, true);
                 $e->orderId = $this->order->id;
             }
 
@@ -249,7 +249,7 @@ class ACECRService
         }
         if ($this->response['status'] === Request::CANCEL || $this->response['status'] === Request::FAIL) {
             Log::info("set status canceled:");
-            $this->orderRepository->cancel($this->order->id);
+            $this->orderRepository->cancel($this->order->id, true);
             //$this->order = $this->orderRepository->update(['status' => 'canceled'],
             //    $this->order->id);
         }
@@ -280,19 +280,19 @@ class ACECRService
     protected function prepareTransactionData($invoice, $cancel = false)
     {
         return [
-            'order_id' => $this->order->id,
+            'order_id'       => $this->order->id,
             'transaction_id' => $this->order->id,
-            'status' => $cancel ? "ناموفق" : "موفق",
+            'status'         => $cancel ? "ناموفق" : "موفق",
             'payment_method' => "acecr",
-            'invoice_id' => $invoice->id,
-            'data' => json_encode(
+            'invoice_id'     => $invoice->id,
+            'data'           => json_encode(
                 [
-                    'transaction_id' => $this->post['RefId'] ?? '',
+                    'transaction_id'  => $this->post['RefId'] ?? '',
                     'SaleReferenceId' => $this->post['SaleReferenceId'] ?? '',
-                    'CardHolderPan' => $this->post['CardHolderPan'] ?? '',
-                    'CardHolderInfo' => $this->post['CardHolderInfo'] ?? ''
+                    'CardHolderPan'   => $this->post['CardHolderPan'] ?? '',
+                    'CardHolderInfo'  => $this->post['CardHolderInfo'] ?? ''
                 ]),
-            'amount' => $this->order->grand_total,
+            'amount'         => $this->order->grand_total,
         ];
     }
 
@@ -307,10 +307,10 @@ class ACECRService
         $endpoint = $this->endPoint;
 
         $data = [
-            'orderId' => $this->order->id,
-            'saleOrderId' => $this->post['SaleOrderId'],
+            'orderId'         => $this->order->id,
+            'saleOrderId'     => $this->post['SaleOrderId'],
             'saleReferenceId' => $this->post['SaleReferenceId'],
-            'resCode' => $this->post['ResCode'],
+            'resCode'         => $this->post['ResCode'],
         ];
 
         $response = Request::verify($endpoint.'/TrasnactionisValid', $data);
@@ -321,7 +321,8 @@ class ACECRService
                 $this->response['status'] = Request::SUCCESS;
                 return;
             }
-            throw new VerifyException('Verification failed, check response code for more detail'.'\n'.$response['response']);
+            throw new VerifyException('Verification failed, check response code for more detail'.'\n'
+                .$response['response']);
         }
 
         throw new SendException('خطا در ارسال اطلاعات به درگاه بانتک ملت. لطفا از برقرار بودن اینترنت و در دسترس بودن بانک ملت اطمینان حاصل کنید');
@@ -338,10 +339,10 @@ class ACECRService
         $endpoint = $this->endPoint;
 
         $data = [
-            'orderId' => $this->order->id,
-            'saleOrderId' => $this->post['SaleOrderId'],
+            'orderId'         => $this->order->id,
+            'saleOrderId'     => $this->post['SaleOrderId'],
             'saleReferenceId' => $this->post['SaleReferenceId'],
-            'resCode' => $this->post['ResCode'],
+            'resCode'         => $this->post['ResCode'],
         ];
 
         $response = Request::settle($endpoint.'/PayElectronically', $data);

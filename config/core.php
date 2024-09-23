@@ -193,6 +193,17 @@ return [
                 'title' => 'admin.admin.sms.notifications.pattern',
                 'type'  => 'text',
             ],
+            [
+                'name'  => 'cancel-payment-order.status',
+                'title' => 'admin.admin.sms.notifications.cancel-payment-order',
+                'type'  => 'boolean',
+            ],
+            [
+                'name'  => 'cancel-payment-order.pattern',
+                'title' => 'admin.admin.sms.notifications.pattern',
+                'type'  => 'text',
+            ],
+
         ],
     ],
 ];

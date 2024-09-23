@@ -306,6 +306,7 @@ class DashboardController extends Controller
             ->where('orders.created_at', '<=', $this->endDate)
             ->where('orders.status', '<>', 'closed')
             ->where('orders.status', '<>', 'canceled')
+            ->where('orders.status', '<>', 'payment_canceled')
             ->groupBy('customer_email')
             ->orderBy('total_base_grand_total', 'DESC')
             ->limit(5)

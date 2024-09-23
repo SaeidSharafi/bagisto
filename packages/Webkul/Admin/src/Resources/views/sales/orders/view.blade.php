@@ -154,7 +154,7 @@
                                             {!! view_render_event('sales.order.customer_group.after', ['order' => $order]) !!}
                                         </div>
                                     </div>
-                                </div>                               
+                                </div>
 
                             </div>
                         </accordian>
@@ -190,7 +190,7 @@
                                                 </div>
                                             </div>
                                         @endif
-                                    </div>                                   
+                                    </div>
                                 </div>
                             </accordian>
                         @endif
@@ -274,7 +274,7 @@
                                             </div>
                                         </div>
                                     @endif
-                                </div>                               
+                                </div>
                             </div>
                         </accordian>
 
@@ -362,7 +362,7 @@
                                         </table>
                                     </div>
                                 </div>
-                               
+
 
                                 <div class="summary-comment-container">
                                     <div class="comment-container">
@@ -463,7 +463,7 @@
 
                                             <td>-</td>
 
-                                            @if($order->status !== 'canceled')
+                                            @if($order->status !== 'canceled' || $order->status !== 'payment_canceled')
                                                 <td>{{ core()->formatBasePrice($order->base_total_due) }}</td>
                                             @else
                                                 <td id="due-amount-on-cancelled">{{ core()->formatBasePrice(0.00) }}</td>

@@ -172,6 +172,7 @@ return [
                 'new-shipment'                                     => 'ارسال پیامک بعد از ارسال محصول',
                 'new-inventory-source'                             => 'ارسال پیامک به مدیر بعد از ایجاد inventory جدید',
                 'cancel-order'                                     => 'ارسال پیامک بعد از لغو سفارش',
+                'cancel-payment-order'                             => 'ارسال پیامک بعد از لغو پرداخت',
             ],
         ],
         'system' => [

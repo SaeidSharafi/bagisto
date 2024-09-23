@@ -153,7 +153,7 @@ class OrderRepository extends Repository
      * @param  \Webkul\Sales\Models\Order|int  $orderOrId
      * @return \Webkul\Sales\Contracts\Order
      */
-    public function cancel($orderOrId)
+    public function cancel($orderOrId, $byCustomer = false)
     {
         /* order */
         $order = $this->resolveOrderInstance($orderOrId);
@@ -202,7 +202,7 @@ class OrderRepository extends Repository
             $this->downloadableLinkPurchasedRepository->updateStatus($item, 'expired');
         }
 
-        $this->updateOrderStatus($order);
+        $this->updateOrderStatus($order,null,$byCustomer);
 
         Event::dispatch('sales.order.cancel.after', $order);
 
@@ -306,7 +306,7 @@ class OrderRepository extends Repository
      * @param  string $orderState
      * @return void
      */
-    public function updateOrderStatus($order, $orderState = null)
+    public function updateOrderStatus($order, $orderState = null, $byCustomer = false)
     {
         Event::dispatch('sales.order.update-status.before', $order);
 
@@ -318,9 +318,8 @@ class OrderRepository extends Repository
             if ($this->isInCompletedState($order)) {
                 $status = 'completed';
             }
-
             if ($this->isInCanceledState($order)) {
-                $status = 'canceled';
+                $status = $byCustomer ? 'payment_canceled' : 'canceled';
             } elseif ($this->isInClosedState($order)) {
                 $status = 'closed';
             }
