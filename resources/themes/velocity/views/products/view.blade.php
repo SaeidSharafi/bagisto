@@ -274,9 +274,9 @@ $course_extra = collect($customAttributeValues)->filter( function ($value,$key){
                             <div class="col-md-2 col-3">
                                 <div class="teacher-image rounded-circle overflow-hidden">
                                     @if ($teacher['teacher_image'])
-                                        <img src="/storage/{{$teacher['teacher_image']}}" class="w-100">
+                                        <img alt="{{$teacher['teacher_name']}}" src="/storage/{{$teacher['teacher_image']}}" class="w-100">
                                     @else
-                                        <img src="/images/teacher-sample.jpg" class="w-100">
+                                        <img alt="{{$teacher['teacher_name']}}" src="/images/teacher-sample.jpg" class="w-100">
                                     @endif
                                 </div>
                             </div>

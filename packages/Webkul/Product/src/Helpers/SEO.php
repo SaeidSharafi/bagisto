@@ -10,28 +10,89 @@ class SEO
      * Returns product json ld data for product
      *
      * @param  \Webkul\Product\Contracts\Product|\Webkul\Product\Contracts\ProductFlat  $product
+     *
      * @return array
      */
     public function getProductJsonLd($product)
     {
+        $productViewHelper = app()->make(View::class);
+        $customAttributeValues = $productViewHelper->getAdditionalData($product);
+        $isOnline = false;
+        $course_mode = 'Onsite';
+        $location='Course Location';
+        $workLoad = 'PT0S';
+        $isOnline = collect($customAttributeValues)->each(function ($value, $key) use (&$workLoad, &$course_mode, &$location) {
+            if ($value['code'] == "course_type"){
+                $isOnline = ($value['value'] === "مجازی");
+                $course_mode = $isOnline ?
+                    'Online' : 'Onsite';
+            }
+            if ($value['code'] == "class_length"){
+
+                $numbers = preg_replace('/\D/', '', $value['value']);;
+
+                $workLoad = "PT{$numbers}H";
+            }
+            if ($value['code'] == "location"){
+                $location = [
+                    "@type" => "Place",
+                    "name" => $location ?? 'Course Location',
+                    "address" => $location ?? 'Course Address'
+                ];
+            }
+
+        })->first();
+
+        $teacher = collect($customAttributeValues)->filter(function ($value, $key) {
+            return $value['group'] == "teacher_detail";
+        })->pluck('value', 'code');
+
         $data = [
             '@context'    => 'https://schema.org/',
-            '@type'       => 'Product',
+            '@type'       => 'Course',
             'name'        => $product->name,
-            'description' => $product->description,
+            'description' => $product->meta_description,
             'url'         => route('shop.productOrCategory.index', $product->url_key),
+            "provider"    => [
+                "@type"       => "Person",
+                "name"        => $teacher['teacher_name'],
+                "description" => $teacher['teacher_bio'],
+                "image"       => $teacher['teacher_image'] ? Storage::url($teacher['teacher_image']) : config('app.url') . "/images/teacher-sample.jpg"
+            ],
+            "offers"      => [
+                "@type"         => "Offer",
+                "url"           => route('shop.productOrCategory.index', $product->url_key),
+                'category'      => "Paid",
+                "priceCurrency" => core()->getCurrency()->code,
+                "availability"  => "http://schema.org/InStock",
+                "price"         => $product->getTypeInstance()->getMaximamPrice(),
+
+            ],
+            "courseMode" => $course_mode,
+            "coursePrerequisites" => "None",
+            "hasCourseInstance" => [
+                "@type" => "CourseInstance",
+                "courseMode" => $course_mode,
+                "courseWorkload" => $workLoad,
+                "instructor" => [
+                    "@type" => "Person",
+                    "name" => $teacher['teacher_name'] ?? '',
+                ],
+
+                "location" => $isOnline ? null : $location
+            ],
+            "audience"    => [
+                "@type"        => "Audience",
+                "audienceType" => "Students"
+            ]
         ];
 
         if (core()->getConfigData('catalog.rich_snippets.products.show_sku')) {
             $data['sku'] = $product->sku;
         }
 
-        if (core()->getConfigData('catalog.rich_snippets.products.show_weight')) {
-            $data['image'] = $product->weight;
-        }
-
         if (core()->getConfigData('catalog.rich_snippets.products.show_categories')) {
-            $data['categories'] = $this->getProductCategories($product);
+            $data['category'] = $this->getProductCategories($product);
         }
 
         if (core()->getConfigData('catalog.rich_snippets.products.show_images')) {
@@ -57,6 +118,7 @@ class SEO
      * Returns product categories
      *
      * @param  \Webkul\Product\Contracts\Product|\Webkul\Product\Contracts\ProductFlat  $product
+     *
      * @return string
      */
     public function getProductCategories($product)
@@ -80,6 +142,7 @@ class SEO
      * Returns product images
      *
      * @param  \Webkul\Product\Contracts\Product|\Webkul\Product\Contracts\ProductFlat  $product
+     *
      * @return array
      */
     public function getProductImages($product)
@@ -87,7 +150,7 @@ class SEO
         $images = [];
 
         foreach ($product->images as $image) {
-            if (! Storage::has($image->path)) {
+            if (!Storage::has($image->path)) {
                 continue;
             }
 
@@ -101,6 +164,7 @@ class SEO
      * Returns product reviews
      *
      * @param  \Webkul\Product\Contracts\Product|\Webkul\Product\Contracts\ProductFlat  $product
+     *
      * @return array
      */
     public function getProductReviews($product)
@@ -129,6 +193,7 @@ class SEO
      * Returns product average ratings
      *
      * @param  \Webkul\Product\Contracts\Product|\Webkul\Product\Contracts\ProductFlat  $product
+     *
      * @return array
      */
     public function getProductAggregateRating($product)
@@ -146,15 +211,16 @@ class SEO
      * Returns product average ratings
      *
      * @param  \Webkul\Product\Contracts\Product|\Webkul\Product\Contracts\ProductFlat  $product
+     *
      * @return array
      */
     public function getProductOffers($product)
     {
         return [
-            '@type'           => 'Offer',
-            'priceCurrency'   => core()->getCurrentCurrencyCode(),
-            'price'           => $product->getTypeInstance()->getMinimalPrice(),
-            'availability'    => 'https://schema.org/InStock',
+            '@type'         => 'Offer',
+            'priceCurrency' => core()->getCurrentCurrencyCode(),
+            'price'         => $product->getTypeInstance()->getMinimalPrice(),
+            'availability'  => 'https://schema.org/InStock',
         ];
     }
 
@@ -162,6 +228,7 @@ class SEO
      * Returns product json ld data for category
      *
      * @param  \Webkul\Category\Contracts\Category  $category
+     *
      * @return array
      */
     public function getCategoryJsonLd($category)
@@ -175,7 +242,7 @@ class SEO
         if (core()->getConfigData('catalog.rich_snippets.categories.show_search_input_field')) {
             $data['potentialAction'] = [
                 '@type'       => 'SearchAction',
-                'target'      => config('app.url') . '/search/?term={search_term_string}',
+                'target'      => config('app.url').'/search/?term={search_term_string}',
                 'query-input' => 'required name=search_term_string',
             ];
         }
