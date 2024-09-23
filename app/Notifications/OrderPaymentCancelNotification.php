@@ -17,7 +17,7 @@ class OrderPaymentCancelNotification extends Notification implements ShouldQueue
 
     protected $pattern;
 
-    protected $enabled_status = [ 'canceled'];
+    protected $enabled_status = [ 'payment_canceled'];
 
     /**
      * Create a new notification instance.
