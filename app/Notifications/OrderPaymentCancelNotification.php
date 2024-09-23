@@ -66,7 +66,7 @@ class OrderPaymentCancelNotification extends Notification implements ShouldQueue
             ?: config('sms.gateway.rangine.password');
 
         $pattern = $this->pattern
-            ?: core()->getConfigData('sms.general.notifications.cancel-order.pattern');
+            ?: core()->getConfigData('sms.general.notifications.cancel-payment-order.pattern');
 
         \Log::info("Sending Sms for canceling order");
         \Log::info("order status is -> {$this->order->status}");
@@ -83,7 +83,7 @@ class OrderPaymentCancelNotification extends Notification implements ShouldQueue
             ->username($username)
             ->password($password)
             ->to([$to])
-            ->pattern($pattern ?: "z8n4qzn8fqjctqn")
+            ->pattern($pattern ?: "w7yheqhirexqfe4")
             ->parameters($parameters)
             ->initGateway(core()->getConfigData('sms.configure.sms_settings.gateway'));
     }
