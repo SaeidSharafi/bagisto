@@ -53,6 +53,7 @@
                         <source :src="image.large_image_url" type="video/mp4">
                     </video>
                     <img loading="lazy" v-else
+                         :alt="image.image_alt"
                          :src="image.large_image_url">
                 </div>
             </slick-carousel>
