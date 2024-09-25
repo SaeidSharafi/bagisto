@@ -55,7 +55,7 @@
                         </label>
 
                             <input value="{{ old('national_code')}}" name="national_code" type="text"
-                                   class="control" v-validate="'required|numeric|min:10|max:10'" data-vv-as="&quot;{{ __('app.customer.account.profile.national_code') }}&quot;" />
+                                   class="control" v-validate="'required|numeric|min:8|max:20'" data-vv-as="&quot;{{ __('app.customer.account.profile.national_code') }}&quot;" />
                             <span class="control-error" v-if="errors.has('national_code')" v-text="errors.first('national_code')"></span>
                     </div>
                     <div class="control-group">

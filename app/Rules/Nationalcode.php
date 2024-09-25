@@ -26,14 +26,18 @@ class Nationalcode implements Rule
      */
     public function passes($attribute, $value)
     {
-        if (!preg_match('/^\d{10}$/', $value)) {
+        if (!preg_match('/^\d{8}$|^\d{10}$|^\d{12}$|^\d{14}$/', $value)) {
             return false;
         }
         for ($i = 0; $i < 10; $i++) {
-            if (preg_match('/^'.$i.'{10}$/', $value)) {
+            if (preg_match('/^'.$i.'{8}$|^'.$i.'{10}$|^'.$i.'{12}$|^'.$i.'{14}$/', $value)) {
                 return false;
             }
         }
+        if (mb_strlen($value) > 10 || 8 === mb_strlen($value)) {
+            return true;
+        }
+
         for ($i = 0, $sum = 0; $i < 9; $i++) {
             $sum += ((10 - $i) * (int) substr($value, $i, 1));
         }
