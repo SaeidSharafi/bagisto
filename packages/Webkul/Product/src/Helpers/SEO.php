@@ -21,11 +21,10 @@ class SEO
         $course_mode = 'Onsite';
         $location = 'Course Location';
         $workLoad = 'PT0S';
-        $isOnline = collect($customAttributeValues)->each(function ($value, $key) use (
+        collect($customAttributeValues)->each(function ($value, $key) use (
             &$workLoad,
             &$course_mode,
-            &
-            $location
+            &$location
         ) {
             if ($value['code'] == "course_type") {
                 $isOnline = ($value['value'] === "مجازی");
@@ -46,7 +45,7 @@ class SEO
                 ];
             }
 
-        })->first();
+        });
 
         $teacher = collect($customAttributeValues)->filter(function ($value, $key) {
             return $value['group'] == "teacher_detail";
