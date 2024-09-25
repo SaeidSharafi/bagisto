@@ -119,11 +119,8 @@ class SEO
         return json_encode($data);
     }
 
-    public function getPageJsonLd($name = null, $url = null, $description = null)
+    public function getPageJsonLd()
     {
-        $channel = core()->getCurrentChannel();
-        $homeSEO = json_decode($channel->home_seo);
-
         $homePageSchema = [
             "@context"        => "https://schema.org",
             "@type"           => "WebSite",

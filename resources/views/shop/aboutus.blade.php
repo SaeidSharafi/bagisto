@@ -21,7 +21,7 @@
     <meta name="description" content="{{$metaDescription}}"/>
     <meta name="keywords" content="{{$metaKeywords}}"/>
     <script type="application/ld+json">
-        {!! app('Webkul\Product\Helpers\SEO')->getPageJsonLd(name: "درباره ما",url: route('shop.aboutus')) !!}
+        {!! app('Webkul\Product\Helpers\SEO')->getPageJsonLd() !!}
     </script>
 @endsection
 @push('css')

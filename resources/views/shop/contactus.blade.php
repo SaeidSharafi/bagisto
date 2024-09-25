@@ -21,7 +21,7 @@
     <meta name="description" content="{{$metaDescription}}"/>
     <meta name="keywords" content="{{$metaKeywords}}"/>
     <script type="application/ld+json">
-        {!! app('Webkul\Product\Helpers\SEO')->getPageJsonLd(name: "تماس با ما",url: route('shop.contactus.view')) !!}
+        {!! app('Webkul\Product\Helpers\SEO')->getPageJsonLd() !!}
     </script>
 @endsection
 
