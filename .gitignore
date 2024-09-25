@@ -33,3 +33,4 @@ _ide_helper_models.php
 /storage/framework/laravel-excel/
 resources/themes/jedu
 storage/installed
+/public/sitemap.xml
