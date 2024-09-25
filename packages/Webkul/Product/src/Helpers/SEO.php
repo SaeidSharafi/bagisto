@@ -173,13 +173,9 @@ class SEO
             ],
             "mainEntity"      => [
                 "@type" => "ItemList",
+                "itemListElement" => $this->getCategoryItems(),
             ],
         ];
-
-        $homePageSchema = array_merge(
-            $homePageSchema,
-            $this->getCategoryItems()
-        );
 
         return json_encode($homePageSchema);
     }
@@ -194,7 +190,7 @@ class SEO
             if (!$category->status) {
                 continue;
             }
-            $categorySnippet = [
+            $homePageSchema[] = [
                 "@type"    => "ListItem",
                 "position" => $key + 1,
                 "name"     => $category->name,
@@ -202,15 +198,15 @@ class SEO
             ];
             if ($category->children->count()) {
                 foreach ($category->children as $subKey => $subCategory) {
-                    $categorySnippet['itemListElement'][] = [
+                    $homePageSchema[] = [
                         "@type"    => "ListItem",
                         "position" => $subKey + 1,
-                        "name"     => $subCategory->name,
+                        "name"     => $category->name . ' ' . $subCategory->name,
                         "url"      => url('/'.$subCategory->url_key),
                     ];
                 }
             }
-            $homePageSchema['mainEntity']['itemListElement'][] = $categorySnippet;
+
         }
         return $homePageSchema;
     }
