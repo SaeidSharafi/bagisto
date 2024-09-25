@@ -126,10 +126,8 @@ class SEO
 
         $homePageSchema = [
             "@context"        => "https://schema.org",
-            "@type"           => "WebPage",
-            "name"            => $name ?? $homeSEO->meta_title,
-            "url"             => $url ?? url('/'),
-            "description"     => $description ?? $homeSEO->meta_description,
+            "@type"           => "WebSite",
+            "url"             => config('app.url'),
             "inLanguage"      => "fa",
             "potentialAction" => [
                 "@type"       => "SearchAction",
@@ -172,7 +170,7 @@ class SEO
                 ]
             ],
             "mainEntity"      => [
-                "@type" => "ItemList",
+                "@type"           => "ItemList",
                 "itemListElement" => $this->getCategoryItems(),
             ],
         ];
@@ -201,7 +199,7 @@ class SEO
                     $homePageSchema[] = [
                         "@type"    => "ListItem",
                         "position" => $subKey + 1,
-                        "name"     => $category->name . ' ' . $subCategory->name,
+                        "name"     => $category->name.' '.$subCategory->name,
                         "url"      => url('/'.$subCategory->url_key),
                     ];
                 }
