@@ -129,8 +129,7 @@ class SEO
             "@type"           => "WebPage",
             "name"            => $name ?? $homeSEO->meta_title,
             "url"             => $url ?? url('/'),
-            "description"     => $description ??
-                "Jedu offers a variety of online and offline courses in multiple fields such as engineering, computer science, architecture, arts, and more.",
+            "description"     => $description ?? $homeSEO->meta_description,
             "inLanguage"      => "fa",
             "potentialAction" => [
                 "@type"       => "SearchAction",
