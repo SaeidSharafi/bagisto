@@ -108,6 +108,9 @@
     @isset($page->meta_keywords)
         <meta name="keywords" content="{{ $page->meta_keywords }}" />
     @endisset
+    <script type="application/ld+json">
+        {!! app('Webkul\Product\Helpers\SEO')->getPageJsonLd(name:$page->meta_title,url: route('shop.cms.page', $page->url_key)) !!}
+    </script>
 @endsection
 
 @section('full-width-content-bot')

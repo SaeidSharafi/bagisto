@@ -37,7 +37,11 @@
         @endisset
     @endif
 @endsection
-
+@section('seo')
+    <script type="application/ld+json">
+        {!! app('Webkul\Product\Helpers\SEO')->getPageJsonLd() !!}
+    </script>
+@endsection
 @push('css')
     @if (! empty($sliderData))
         <link rel="preload" as="image" href="{{ asset('/storage/' . $sliderData[0]['path']) }}">

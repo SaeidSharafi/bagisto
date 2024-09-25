@@ -19,24 +19,29 @@ class SEO
         $customAttributeValues = $productViewHelper->getAdditionalData($product);
         $isOnline = false;
         $course_mode = 'Onsite';
-        $location='Course Location';
+        $location = 'Course Location';
         $workLoad = 'PT0S';
-        $isOnline = collect($customAttributeValues)->each(function ($value, $key) use (&$workLoad, &$course_mode, &$location) {
-            if ($value['code'] == "course_type"){
+        $isOnline = collect($customAttributeValues)->each(function ($value, $key) use (
+            &$workLoad,
+            &$course_mode,
+            &
+            $location
+        ) {
+            if ($value['code'] == "course_type") {
                 $isOnline = ($value['value'] === "مجازی");
                 $course_mode = $isOnline ?
                     'Online' : 'Onsite';
             }
-            if ($value['code'] == "class_length"){
+            if ($value['code'] == "class_length") {
 
                 $numbers = preg_replace('/\D/', '', $value['value']);;
 
                 $workLoad = "PT{$numbers}H";
             }
-            if ($value['code'] == "location"){
+            if ($value['code'] == "location") {
                 $location = [
-                    "@type" => "Place",
-                    "name" => $location ?? 'Course Location',
+                    "@type"   => "Place",
+                    "name"    => $location ?? 'Course Location',
                     "address" => $location ?? 'Course Address'
                 ];
             }
@@ -48,18 +53,19 @@ class SEO
         })->pluck('value', 'code');
 
         $data = [
-            '@context'    => 'https://schema.org/',
-            '@type'       => 'Course',
-            'name'        => $product->name,
-            'description' => $product->meta_description,
-            'url'         => route('shop.productOrCategory.index', $product->url_key),
-            "provider"    => [
+            '@context'            => 'https://schema.org/',
+            '@type'               => 'Course',
+            'name'                => $product->name,
+            'description'         => $product->meta_description,
+            'url'                 => route('shop.productOrCategory.index', $product->url_key),
+            "provider"            => [
                 "@type"       => "Person",
                 "name"        => $teacher['teacher_name'],
                 "description" => $teacher['teacher_bio'],
-                "image"       => $teacher['teacher_image'] ? Storage::url($teacher['teacher_image']) : config('app.url') . "/images/teacher-sample.jpg"
+                "image"       => $teacher['teacher_image'] ? Storage::url($teacher['teacher_image'])
+                    : config('app.url')."/images/teacher-sample.jpg"
             ],
-            "offers"      => [
+            "offers"              => [
                 "@type"         => "Offer",
                 "url"           => route('shop.productOrCategory.index', $product->url_key),
                 'category'      => "Paid",
@@ -68,20 +74,20 @@ class SEO
                 "price"         => $product->getTypeInstance()->getMaximamPrice(),
 
             ],
-            "courseMode" => $course_mode,
+            "courseMode"          => $course_mode,
             "coursePrerequisites" => "None",
-            "hasCourseInstance" => [
-                "@type" => "CourseInstance",
-                "courseMode" => $course_mode,
+            "hasCourseInstance"   => [
+                "@type"          => "CourseInstance",
+                "courseMode"     => $course_mode,
                 "courseWorkload" => $workLoad,
-                "instructor" => [
+                "instructor"     => [
                     "@type" => "Person",
-                    "name" => $teacher['teacher_name'] ?? '',
+                    "name"  => $teacher['teacher_name'] ?? '',
                 ],
 
                 "location" => $isOnline ? null : $location
             ],
-            "audience"    => [
+            "audience"            => [
                 "@type"        => "Audience",
                 "audienceType" => "Students"
             ]
@@ -112,6 +118,103 @@ class SEO
         }
 
         return json_encode($data);
+    }
+
+    public function getPageJsonLd($name = null, $url = null, $description = null)
+    {
+        $channel = core()->getCurrentChannel();
+        $homeSEO = json_decode($channel->home_seo);
+
+        $homePageSchema = [
+            "@context"        => "https://schema.org",
+            "@type"           => "WebPage",
+            "name"            => $name ?? $homeSEO->meta_title,
+            "url"             => $url ?? url('/'),
+            "description"     => $description ??
+                "Jedu offers a variety of online and offline courses in multiple fields such as engineering, computer science, architecture, arts, and more.",
+            "inLanguage"      => "fa",
+            "potentialAction" => [
+                "@type"       => "SearchAction",
+                "target"      => config('app.url')."/categorysearch?term={search_term_string}",
+                "query-input" => "required name=search_term_string",
+            ],
+            "breadcrumb"      => [
+                "@type"           => "BreadcrumbList",
+                "itemListElement" => [
+                    [
+                        "@type"    => "ListItem",
+                        "position" => 1,
+                        "name"     => "خانه",
+                        "item"     => "https://jedu.ir"
+                    ],
+                    [
+                        "@type"    => "ListItem",
+                        "position" => 2,
+                        "name"     => "درباره ما",
+                        "item"     => "https://jedu.ir/about-us"
+                    ],
+                    [
+                        "@type"    => "ListItem",
+                        "position" => 3,
+                        "name"     => "تماس با ما",
+                        "item"     => "https://jedu.ir/contact-us"
+                    ],
+                    [
+                        "@type"    => "ListItem",
+                        "position" => 4,
+                        "name"     => "بلاگ",
+                        "item"     => "https://blog.jedu.ir"
+                    ],
+                    [
+                        "@type"    => "ListItem",
+                        "position" => 5,
+                        "name"     => "ورود / ثبت‌نام",
+                        "item"     => "https://jedu.ir/customer/login-register"
+                    ]
+                ]
+            ],
+            "mainEntity"      => [
+                "@type" => "ItemList",
+            ],
+        ];
+
+        $homePageSchema = array_merge(
+            $homePageSchema,
+            $this->getCategoryItems()
+        );
+
+        return json_encode($homePageSchema);
+    }
+
+    public function getCategoryItems()
+    {
+        $categoryRepository = app(\Webkul\Category\Repositories\CategoryRepository::class);
+        $categories = $categoryRepository->getCategoryTree();
+        $homePageSchema = [];
+        foreach ($categories->first()->children as $key => $category) {
+
+            if (!$category->status) {
+                continue;
+            }
+            $categorySnippet = [
+                "@type"    => "ListItem",
+                "position" => $key + 1,
+                "name"     => $category->name,
+                "url"      => url('/'.$category->url_key),
+            ];
+            if ($category->children->count()) {
+                foreach ($category->children as $subKey => $subCategory) {
+                    $categorySnippet['itemListElement'][] = [
+                        "@type"    => "ListItem",
+                        "position" => $subKey + 1,
+                        "name"     => $subCategory->name,
+                        "url"      => url('/'.$subCategory->url_key),
+                    ];
+                }
+            }
+            $homePageSchema['mainEntity']['itemListElement'][] = $categorySnippet;
+        }
+        return $homePageSchema;
     }
 
     /**
