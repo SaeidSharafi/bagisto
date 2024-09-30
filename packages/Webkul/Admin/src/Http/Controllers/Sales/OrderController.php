@@ -7,9 +7,12 @@ use App\Services\HttpRequestService;
 use App\Services\RouyeshAPIService;
 use App\Services\SpotPlayerService;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Webkul\Admin\DataGrids\OrderDataGrid;
 use Webkul\Admin\Http\Controllers\Controller;
+use Webkul\Sales\Models\OrderItem;
+use Webkul\Sales\Repositories\OrderItemRepository;
 use Webkul\Sales\Repositories\OrderRepository;
 use \Webkul\Sales\Repositories\OrderCommentRepository;
 
@@ -30,6 +33,13 @@ class OrderController extends Controller
     protected $orderRepository;
 
     /**
+     * OrderRepository object
+     *
+     * @var \Webkul\Sales\Repositories\OrderItemRepository
+     */
+    protected $orderItemRepository;
+
+    /**
      * OrderCommentRepository object
      *
      * @var \Webkul\Sales\Repositories\OrderCommentRepository
@@ -46,7 +56,8 @@ class OrderController extends Controller
      */
     public function __construct(
         OrderRepository $orderRepository,
-        OrderCommentRepository $orderCommentRepository
+        OrderCommentRepository $orderCommentRepository,
+        OrderItemRepository $orderItemRepository,
     ) {
         $this->middleware('admin');
 
@@ -55,6 +66,7 @@ class OrderController extends Controller
         $this->orderRepository = $orderRepository;
 
         $this->orderCommentRepository = $orderCommentRepository;
+        $this->orderItemRepository = $orderItemRepository;
     }
 
     /**
@@ -114,7 +126,10 @@ class OrderController extends Controller
      */
     public function complete($id)
     {
-        $order = $this->orderRepository->find($id);
+        $order = $this->orderRepository
+            ->with('items')
+            ->find($id);
+
         if (!$order) {
             session()->flash('error', trans('admin.response.complete-error', ['name' => 'Order']));
 
@@ -125,7 +140,19 @@ class OrderController extends Controller
             return redirect()->back();
         }
 
+        DB::beginTransaction();
+        foreach ($order->items as $item) {
+            $this->orderItemRepository->update(
+                [
+                    'product_number' => $item->product->product_number,
+                    'rouyesh_code'   => $item->product->rouyesh_code,
+                ],
+                $item->id
+            );
+
+        }
         $this->orderRepository->updateOrderStatus($order, 'completed');
+        DB::commit();
         session()->flash('success', trans('app.response.complete-success', ['name' => 'Order']));
         return redirect()->back();
 
@@ -144,37 +171,38 @@ class OrderController extends Controller
         try {
             $request = new HttpRequestService($order, HttpRequestService::OP_UPDATE_REGISTERATION);
             $response = $request->build();
-            if($response) {
+            if ($response) {
                 session()->flash('success', trans('app.response.sync-ims-success', ['name' => 'Order']));
                 return redirect()->back();
             }
             session()->flash('error', trans('app.response.sync-ims-fail', ['name' => 'Order']));
             return redirect()->back();
-        } catch(\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             session()->flash('error', $e->getMessage());
             return redirect()->back();
-        } catch(AuthenticationException $e) {
+        } catch (AuthenticationException $e) {
             session()->flash('error', trans('app.response.sync-ims-unauthorized', ['name' => 'Order']));
             return redirect()->back();
         }
 
     }
+
     public function syncRouyesh($id)
     {
         $order = $this->orderRepository->find($id);
         try {
             $request = new RouyeshAPIService($order, HttpRequestService::OP_UPDATE_REGISTERATION);
             $response = $request->build();
-            if($response) {
+            if ($response) {
                 session()->flash('success', trans('app.response.sync-rouyesh-success', ['name' => 'Order']));
                 return redirect()->back();
             }
             session()->flash('error', trans('app.response.sync-rouyesh-fail', ['name' => 'Order']));
             return redirect()->back();
-        } catch(\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             session()->flash('error', $e->getMessage());
             return redirect()->back();
-        } catch(AuthenticationException $e) {
+        } catch (AuthenticationException $e) {
             session()->flash('error', trans('app.response.sync-rouyesh-unauthorized', ['name' => 'Order']));
             return redirect()->back();
         }
@@ -184,7 +212,7 @@ class OrderController extends Controller
     public function createSpot($id)
     {
         $order = $this->orderRepository->with('items')->find($id);
-        if (!config('app.spot_player.api_key')){
+        if (!config('app.spot_player.api_key')) {
             session()->flash('error', trans('app.response.create-spot-api-key', ['name' => 'Order']));
             return redirect()->back();
         }
@@ -192,28 +220,29 @@ class OrderController extends Controller
             ->where('order_id', $order->id)
             ->where('product_id', $order->items->first()->product_id)
             ->exists();
-        if ($license){
+        if ($license) {
             session()->flash('warning', trans('app.response.spot-exist', ['name' => 'Order']));
             return redirect()->back();
         }
         try {
             $response = SpotPlayerService::generateLicense($order, $order->items->first());
 
-            if($response) {
+            if ($response) {
                 session()->flash('success', trans('app.response.create-spot-success', ['name' => 'Order']));
                 return redirect()->back();
             }
             session()->flash('error', trans('app.response.create-spot-fail', ['name' => 'Order']));
             return redirect()->back();
-        } catch(\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             session()->flash('error', $e->getMessage());
             return redirect()->back();
-        } catch(AuthenticationException $e) {
+        } catch (AuthenticationException $e) {
             session()->flash('error', trans('app.response.create-spot-unauthorized', ['name' => 'Order']));
             return redirect()->back();
         }
 
     }
+
     /**
      * Add comment to the order
      *
