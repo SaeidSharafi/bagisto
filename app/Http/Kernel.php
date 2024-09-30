@@ -19,6 +19,7 @@ class Kernel extends HttpKernel
         \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
         \Illuminate\Session\Middleware\StartSession::class,
         \App\Http\Middleware\SecureHeaders::class,
+        TrimStrings::class,
     ];
 
     /**
