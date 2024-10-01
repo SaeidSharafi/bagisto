@@ -28,31 +28,34 @@ class ProductImageService extends \Webkul\Product\ProductImage
         }
 
         $images = [];
-
+        $alts = explode(PHP_EOL, $product->image_alts);
+        $index = 0;
         foreach ($product->images as $image) {
             if (!Storage::has($image->path)) {
                 continue;
             }
 
             $images[] = [
-                'image_alt' => $product->name,
+                'image_alt'          => isset($alts[$index]) && $alts[$index] ? $alts[$index] : $product->name,
                 'small_image_url'    => url('cache/small/'.$image->path),
                 'medium_image_url'   => url('cache/medium/'.$image->path),
                 'large_image_url'    => url('cache/large/'.$image->path),
                 'original_image_url' => url('cache/original/'.$image->path),
             ];
+            $index++;
         }
-
+        $index = 0;
         if (!$product->parent_id && !count($images)
             && !count($product->videos)
         ) {
             $images[] = [
-                'image_alt' => $product->name,
+                'image_alt'          => isset($alts[$index]) && $alts[$index] ? $alts[$index] : $product->name,
                 'small_image_url'    => asset('images/shop/product/small-product-placeholder.jpg'),
                 'medium_image_url'   => asset('images/shop/product/meduim-product-placeholder.jpg'),
                 'large_image_url'    => asset('images/shop/product/large-product-placeholder.jpg'),
                 'original_image_url' => asset('images/shop/product/large-product-placeholder.jpg'),
             ];
+            $index++;
         }
 
         /*
