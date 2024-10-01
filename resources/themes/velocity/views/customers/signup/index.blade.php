@@ -31,9 +31,9 @@
 
                         <div class="control-group" :class="[errors.has('first_name') ? 'has-error' : '']">
                             <input
-                                type="text"
+                                type="number"
                                 class="form-style"
-                                name="phone"
+                                inputmode="numeric"
                                 v-validate="'required|regex:^09([0-9]{9})'"
                                 value="{{ old('phone') }}"
                                 data-vv-as="&quot;{{ __('shop::app.customer.signup-form.phone') }}&quot;"

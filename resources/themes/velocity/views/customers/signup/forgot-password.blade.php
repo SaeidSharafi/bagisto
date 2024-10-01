@@ -32,7 +32,8 @@
                         <div class="control-group" :class="[errors.has('first_name') ? 'has-error' : '']">
 
                             <input
-                                type="text"
+                                type="number"
+                                inputmode="numeric"
                                 class="form-style rounded"
                                 name="phone"
                                 v-validate="'required|regex:^09([0-9]{9})'"

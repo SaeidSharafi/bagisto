@@ -36,7 +36,8 @@
 
                                 <input
                                     id="phone"
-                                    type="text"
+                                    type="number"
+                                    inputmode="numeric"
                                     name="phone"
                                     class="form-style"
                                     value="{{ old('phone') }}"
