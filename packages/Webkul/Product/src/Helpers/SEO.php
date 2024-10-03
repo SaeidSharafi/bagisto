@@ -11,7 +11,7 @@ class SEO
      *
      * @param  \Webkul\Product\Contracts\Product|\Webkul\Product\Contracts\ProductFlat  $product
      *
-     * @return array
+     * @return string
      */
     public function getProductJsonLd($product)
     {
@@ -33,15 +33,15 @@ class SEO
             }
             if ($value['code'] == "class_length") {
 
-                $numbers = preg_replace('/\D/', '', $value['value']);;
+            $numbers = preg_replace('/\D/', '', $value['value']) ?: 12;
 
                 $workLoad = "PT{$numbers}H";
             }
             if ($value['code'] == "location") {
                 $location = [
                     "@type"   => "Place",
-                    "name"    => $location ?? 'Course Location',
-                    "address" => $location ?? 'Course Address'
+                    "name"    => $value['value'] ?: 'Course Location',
+                    "address" => $value['value'] ?: 'Course Address'
                 ];
             }
 
@@ -50,20 +50,27 @@ class SEO
         $teacher = collect($customAttributeValues)->filter(function ($value, $key) {
             return $value['group'] == "teacher_detail";
         })->pluck('value', 'code');
-
-        $data = [
-            '@context'            => 'https://schema.org/',
-            '@type'               => 'Course',
-            'name'                => $product->name,
-            'description'         => $product->meta_description,
-            'url'                 => route('shop.productOrCategory.index', $product->url_key),
-            "provider"            => [
+        $provider = [
+            "@type"       => "Organization",
+            "name"        => core()->getCurrentChannel()->name,
+            'url'         => config('app.url'),
+        ];
+        if ($teacher && $teacher['teacher_name']) {
+            $provider = [
                 "@type"       => "Person",
                 "name"        => $teacher['teacher_name'],
                 "description" => $teacher['teacher_bio'],
                 "image"       => $teacher['teacher_image'] ? Storage::url($teacher['teacher_image'])
                     : config('app.url')."/images/teacher-sample.jpg"
-            ],
+            ];
+        }
+        $data = [
+            '@context'            => 'https://schema.org/',
+            '@type'               => 'Course',
+            'name'                => $product->name,
+            'description'         => $product->meta_description ?: $product->short_description,
+            'url'                 => route('shop.productOrCategory.index', $product->url_key),
+            "provider"            => $provider,
             "offers"              => [
                 "@type"         => "Offer",
                 "url"           => route('shop.productOrCategory.index', $product->url_key),
@@ -81,7 +88,7 @@ class SEO
                 "courseWorkload" => $workLoad,
                 "instructor"     => [
                     "@type" => "Person",
-                    "name"  => $teacher['teacher_name'] ?? '',
+                    "name"  => $teacher['teacher_name'] ?: 'استاد گرامی',
                 ],
 
                 "location" => $isOnline ? null : $location
@@ -116,7 +123,7 @@ class SEO
             $data['offers'] = $this->getProductOffers($product);
         }
 
-        return json_encode($data);
+        return json_encode($data, JSON_UNESCAPED_UNICODE);
     }
 
     public function getPageJsonLd()
@@ -172,7 +179,7 @@ class SEO
             ],
         ];
 
-        return json_encode($homePageSchema);
+        return json_encode($homePageSchema, JSON_UNESCAPED_UNICODE);
     }
 
     public function getCategoryItems()
@@ -339,6 +346,6 @@ class SEO
             ];
         }
 
-        return json_encode($data);
+        return json_encode($data, JSON_UNESCAPED_UNICODE);
     }
 }
