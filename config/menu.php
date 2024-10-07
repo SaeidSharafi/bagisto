@@ -64,13 +64,13 @@ return [
             'sort'  => 8,
             'icon'  => 'fa fa-desktop pl-2',
         ],
-        //[
-        //    'key'   => 'account.ims',
-        //    'name'  => 'app.customer.account.ims.title',
-        //    'route' => 'customer.ims.redirect',
-        //    'target' => '_blank',
-        //    'sort'  => 9,
-        //    'icon'  => 'fa fa-desktop pl-2',
-        //],
+        [
+            'key'   => 'account.ims',
+            'name'  => 'app.customer.account.ims.title',
+            'route' => 'customer.ims.redirect',
+            'target' => '_blank',
+            'sort'  => 9,
+            'icon'  => 'fa fa-graduation-cap pl-2',
+        ],
     ]
 ];

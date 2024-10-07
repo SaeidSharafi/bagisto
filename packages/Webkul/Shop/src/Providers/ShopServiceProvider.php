@@ -5,6 +5,8 @@ namespace Webkul\Shop\Providers;
 use App\Services\ImsApiService;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 use Webkul\Core\Tree;
 use Webkul\Shop\Http\Middleware\Currency;
@@ -73,6 +75,9 @@ class ShopServiceProvider extends ServiceProvider
             if (auth('customer')->check()){
                 $phone = auth('customer')->user()->phone;
                 $isTeacher = ImsApiService::isTeacher($phone);
+                Session::put('isteacher', true);
+                Cookie::queue(Cookie::make('isteacher', true, minutes: 180));
+
             }
             foreach (config('menu.customer') as $item) {
                 if ($item['key'] === 'account.ims' && !$isTeacher) {

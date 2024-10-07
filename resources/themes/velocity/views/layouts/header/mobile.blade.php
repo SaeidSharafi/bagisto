@@ -154,6 +154,21 @@
                     }}</span>
                 </a>
             </li>
+            @if (session('isteacher'))
+                <li>
+                    <a href="{{ route('customer.ims.redirect') }}" class="unset">
+                        <i
+                            class="fa fa-graduation-cap text-down-3 px-2"
+                            style="font-size: 1.4rem"
+                        ></i>
+                        <span>{{
+                        __('app.customer.account.ims.title')
+                    }}</span>
+                    </a>
+                </li>
+            @endif
+
+
         </ul>
         @endauth
     </template>
