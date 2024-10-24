@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Webkul\Sales\Models\Order;
 
 class HttpRequestService
@@ -119,6 +120,9 @@ class HttpRequestService
 
         if ($respons->ok()) {
             $enrolment = $respons->json('enrolment');
+            if ($enrolment->phone_miss_match){
+                Log::warning("Customer {$customer->id} phone ({$customer->phone}) does not match with IMS data");
+            }
             if (!$this->order->ims_synced_at) {
                 Order::where('id', $this->order->id)->update([
                     'ims_synced_at'    => $enrolment['created_at'],
