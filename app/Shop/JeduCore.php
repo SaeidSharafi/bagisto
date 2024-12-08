@@ -58,6 +58,9 @@ class JeduCore extends \Webkul\Core\Core
         if ($currencyCode === 'IRR'){
             return number_format(rial_to_toman($price)) . ' ' . __('shop.currency.toman');
         }
+        if (core()->getCurrentLocale()->code == 'fa') {
+            return number_format(rial_to_toman($price));
+        }
         return $formatter->formatCurrency($price, $currencyCode);
     }
 
