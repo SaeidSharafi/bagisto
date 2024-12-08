@@ -131,11 +131,21 @@ class OrderController extends Controller
             ->find($id);
 
         if (!$order) {
+            if (request()->ajax()) {
+                return response()->json([
+                    'message' => trans('admin.response.complete-error', ['name' => 'Order']),
+                ])->setStatusCode(417);
+            }
             session()->flash('error', trans('admin.response.complete-error', ['name' => 'Order']));
 
             return redirect()->back();
         }
         if (!$order->canComplete()) {
+            if (request()->ajax()) {
+                return response()->json([
+                    'message' => trans('admin.response.complete-error', ['name' => 'Order']),
+                ])->setStatusCode(417);
+            }
             session()->flash('error', trans('admin.response.complete-error', ['name' => 'Order']));
             return redirect()->back();
         }
@@ -153,6 +163,11 @@ class OrderController extends Controller
         }
         $this->orderRepository->updateOrderStatus($order, 'completed');
         DB::commit();
+        if (request()->ajax()) {
+            return response()->json([
+                'message' => trans('app.response.complete-success', ['name' => 'Order'])
+            ])->setStatusCode(200);
+        }
         session()->flash('success', trans('app.response.complete-success', ['name' => 'Order']));
         return redirect()->back();
 

@@ -336,8 +336,9 @@ class OrderDataGrid extends DataGrid
         }
         $this->addAction([
             'title'  => trans('admin.datagrid.complete'),
-            'method' => 'GET',
+            'method' => 'POST',
             'route'  => 'admin.sales.orders.complete',
+            'confirm_text' => trans('ui::app.datagrid.massaction.delete', ['resource' => 'Exchange Rate']),
             'icon'   => 'icon completed-icon'
         ]);
 

@@ -216,7 +216,7 @@ Route::group(
 Route::group(['middleware' => ['web', 'admin', 'admin_locale'], 'prefix' => config('app.admin_url')], function () {
     Route::prefix('sales')->group(function () {
         Route::prefix('orders')->group(function () {
-            Route::get('complete/{id}', [OrderController::class, 'complete'])
+            Route::post('complete/{id}', [OrderController::class, 'complete'])
                 ->name('admin.sales.orders.complete');
             Route::get('sync-ims/{id}', [OrderController::class, 'syncIms'])
             ->name('admin.sales.orders.sync-ims');
