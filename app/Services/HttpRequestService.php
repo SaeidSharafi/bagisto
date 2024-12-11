@@ -120,7 +120,7 @@ class HttpRequestService
 
         if ($respons->ok()) {
             $enrolment = $respons->json('enrolment');
-            if ($enrolment->phone_miss_match){
+            if (isset($enrolment->phone_miss_match) && $enrolment->phone_miss_match){
                 Log::warning("Customer {$customer->id} phone ({$customer->phone}) does not match with IMS data");
             }
             if (!$this->order->ims_synced_at) {
