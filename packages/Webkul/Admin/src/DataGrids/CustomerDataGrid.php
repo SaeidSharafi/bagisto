@@ -39,6 +39,7 @@ class CustomerDataGrid extends DataGrid
             ->leftJoin('customer_groups', 'customers.customer_group_id', '=', 'customer_groups.id')
             ->addSelect(
                 'customers.id as customer_id',
+                'customers.national_code',
                 'customers.email',
                 'customers.phone',
                 'customers.gender',
@@ -84,7 +85,14 @@ class CustomerDataGrid extends DataGrid
             'sortable'   => true,
             'filterable' => true,
         ]);
-
+        $this->addColumn([
+            'index'      => 'national_code',
+            'label'      => trans('app.customer.account.profile.national_code'),
+            'type'       => 'string',
+            'searchable' => true,
+            'sortable'   => true,
+            'filterable' => true,
+        ]);
         $this->addColumn([
             'index'      => 'email',
             'label'      => trans('admin::app.datagrid.email'),
