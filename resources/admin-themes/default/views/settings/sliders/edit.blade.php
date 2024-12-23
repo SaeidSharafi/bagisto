@@ -102,7 +102,7 @@
                         </span>
                     </div>
                     <div class="control-group">
-                        <label for="status">{{ __('dmin::app.settings.sliders.show_content') }}</label>
+                        <label for="status">{{ __('velocity::app.admin.meta-data.show_content') }}</label>
                         <input type="hidden" id="show_content" name="show_content" value="0">
                         <label class="switch">
                             <input type="checkbox" id="show_content" name="show_content" value="1" {{ $slider->show_content ? 'checked' : '' }}>
@@ -119,7 +119,7 @@
                         <span class="control-error" v-if="errors.has('content')">@{{ errors.first('content') }}</span>
                     </div>
                     <div class="control-group">
-                        <label for="sort_order">{{ __('admin::app.settings.sliders.button') }}</label>
+                        <label for="sort_order">{{ __('velocity::app.admin.meta-data.button') }}</label>
                         <input type="text" class="control" id="button" name="button" value="{{ $slider->button ?? old('button') }}"/>
                         <span class="control-error" v-if="errors.has('button')">@{{ errors.first('button') }}</span>
                     </div>
