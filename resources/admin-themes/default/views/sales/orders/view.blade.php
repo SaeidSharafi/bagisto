@@ -44,9 +44,12 @@
                 @endif
 
                 @if ($order->canComplete())
-                    <a href="{{ route('admin.sales.orders.complete', $order->id) }}" class="btn btn-lg btn-primary">
-                        {{ __('admin.sales.orders.complete') }}
-                    </a>
+                    <form action="{{ route('admin.sales.orders.complete', $order->id) }}" method="POST" style="display: inline;">
+                        @csrf
+                        <button type="submit" class="btn btn-lg btn-primary">
+                            {{ __('admin.sales.orders.complete') }}
+                        </button>
+                    </form>
                 @endif
 
                 {!! view_render_event('sales.order.page_action.after', ['order' => $order]) !!}
