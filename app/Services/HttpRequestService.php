@@ -119,9 +119,18 @@ class HttpRequestService
             ->post($url, $data);
 
         if ($respons->ok()) {
+            $data = $respons->json();
             $enrolment = $respons->json('enrolment');
-            if (isset($enrolment->phone_miss_match) && $enrolment->phone_miss_match){
+
+            if (isset($data['phone_miss_match']) && $data['phone_miss_match']){
                 Log::warning("Customer {$customer->id} phone ({$customer->phone}) does not match with IMS data");
+            }
+
+            if (isset($data['data_miss_match']) && $data['data_miss_match']){
+                Order::where('id', $this->order->id)->update([
+                    'ims_sync_error'    => $data['message'],
+                ]);
+                return false;
             }
             if (!$this->order->ims_synced_at) {
                 Order::where('id', $this->order->id)->update([

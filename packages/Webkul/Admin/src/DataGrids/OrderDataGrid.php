@@ -53,6 +53,7 @@ class OrderDataGrid extends DataGrid
             ->addSelect(
                 'orders.id',
                 'orders.ims_synced_at',
+                'orders.ims_sync_error',
                 'orders.ims_enrolment_id',
                 'orders.rouyesh_synced_at',
                 'orders.customer_phone',
@@ -250,7 +251,9 @@ class OrderDataGrid extends DataGrid
                 $response = '';
                 $margin = $value->rouyesh_code && $value->product_number ? 'mb-10' : '';
                 if ($value->order_status == 'completed' && $value->product_number) {
-                    if ($value->ims_synced_at) {
+                    if ($value->ims_sync_error){
+                        $response = "<div class='badge badge-md badge-danger {$margin}'>{$value->ims_sync_error}</div>";
+                    } elseif ($value->ims_synced_at) {
                         $response = "<div class='badge badge-md badge-success {$margin}'>"
                             .trans('admin.sales.orders.ims.synced')."</div>";
                     } else {
