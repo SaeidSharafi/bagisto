@@ -68,15 +68,16 @@ class ShopServiceProvider extends ServiceProvider
      */
     protected function composeView()
     {
-
         view()->composer('shop::customers.account.partials.sidemenu', function ($view) {
             $tree = Tree::create();
             $isTeacher = false;
+
             if (auth('customer')->check()){
                 $phone = auth('customer')->user()->phone;
                 $isTeacher = ImsApiService::isTeacher($phone);
-                Session::put('isteacher', true);
-                Cookie::queue(Cookie::make('isteacher', true, minutes: 180));
+
+                Session::put('isteacher', $isTeacher);
+                Cookie::queue(Cookie::make('isteacher', $isTeacher, minutes: 180));
 
             }
             foreach (config('menu.customer') as $item) {
