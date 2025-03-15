@@ -21,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
         include_once __DIR__ . '/../Helpers/jdf.php';
+        include_once __DIR__ . '/../Helpers/helpers.php';
 
         Carbon::macro('jdate', function ($format="", $tr_num = 'fa') {
             if (app()->getLocale() ==="fa"){
