@@ -79,6 +79,13 @@ return [
                 'channel_based' => true,
                 'locale_based'  => false,
             ],
+            [
+                'name'          => 'google_analytics',
+                'title'         => 'admin::app.admin.system.google_analytics',
+                'type'          => 'text',
+                'channel_based' => true,
+                'locale_based'  => false,
+            ],
         ],
     ],
     [

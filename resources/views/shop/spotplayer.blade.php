@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
     <head>
-        <script
-            async
-            src="https://www.googletagmanager.com/gtag/js?id=G-KFQ1CRSG4Y"
-        ></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
+        @if (core()->getConfigData('general.content.custom_scripts.google_analytics'))
+            <script
+                    async
+                    src="https://www.googletagmanager.com/gtag/js?id={{ core()->getConfigData('general.content.custom_scripts.google_analytics') }}"
+            ></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
 
-            function gtag() {
-                dataLayer.push(arguments);
-            }
+                function gtag() {
+                    dataLayer.push(arguments);
+                }
 
-            gtag('js', new Date());
+                gtag('js', new Date());
 
-            gtag('config', 'G-KFQ1CRSG4Y');
-        </script>
+                gtag('config', '{{ core()->getConfigData('general.content.custom_scripts.google_analytics') }}');
+            </script>
+        @endif
+
 
         {{-- title --}}
         <title>جهاد دانشگاهی استان قزوین - آموزش مجازی</title>
