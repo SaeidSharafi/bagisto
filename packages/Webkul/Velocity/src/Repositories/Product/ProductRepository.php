@@ -110,7 +110,7 @@ class ProductRepository extends Repository
     {
         $term = $params['term'] ?? '';
         $categoryId = $params['category'] ?? '';
-
+        $perPage = explode(',',core()->getConfigData('catalog.products.storefront.products_per_page'))[0] ?:  20;
         $results = app(ProductFlatRepository::class)->scopeQuery(function($query) use($term, $categoryId, $params) {
             $channel = core()->getRequestedChannelCode();
 
@@ -193,7 +193,7 @@ class ProductRepository extends Repository
             });
 
             return $query->groupBy('product_flat.id');
-        })->paginate(isset($params['limit']) ? $params['limit'] : 9);
+        })->paginate($params['limit'] ?? $perPage);
 
         return $results;
     }
