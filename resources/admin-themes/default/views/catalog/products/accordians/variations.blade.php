@@ -163,7 +163,8 @@
 
             <td>
                 <div
-                    :class="['control-group', errors.has(variantInputName + '[product_number]') ? 'has-error' : '']">
+                    :class="['control-group', errors.has(variantInputName + '[product_number]') ? 'has-error' : '']"
+                    style="max-width: 220px;">
                     <input
                         class="control"
                         type="text"
@@ -183,7 +184,7 @@
                     </span>
                 </div>
 
-                <div class="item-options" style="margin-top: 10px">
+                <div class="item-options" style="margin-top: 10px;">
                     <div v-for='(attribute, index) in superAttributes'>
                         <b>@{{ attribute.admin_name }} : </b>@{{ optionName(variant[attribute.code]) }}
 
@@ -266,7 +267,8 @@
             </td>
 
             <td>
-                <div :class="['control-group', errors.has(variantInputName + '[price]') ? 'has-error' : '']">
+                <div :class="['control-group', errors.has(variantInputName + '[price]') ? 'has-error' : '']"
+                     style="min-width: 220px;">
                     <input
                         class="control"
                         type="number"
