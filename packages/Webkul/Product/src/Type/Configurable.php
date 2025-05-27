@@ -184,8 +184,10 @@ class Configurable extends AbstractType
                         }
 
                         $variant = $this->createVariant($product, $permutation, $variantData);
-
-                        $this->productImageRepository->upload($variant, $variantData['images'] ?? null, 'images');
+                        if (!$variant){
+                            dd($variant, $product, $permutation, $variantData);
+                        }
+                        $this->productImageRepository->upload($variantData['images'] ?? null, $variant, 'images');
                     } else {
                         if (is_numeric($index = $previousVariantIds->search($variantId))) {
                             $previousVariantIds->forget($index);
