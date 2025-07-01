@@ -36,6 +36,12 @@ class ExportController extends Controller
 
         $records = $gridInstance->export();
 
+        if (auth()->guard('admin')->user()?->role_id !== 1  && auth()->guard('admin')->user()?->role_id !== 2) {
+            session()->flash('warning', 'دسترسی شما برای صادر کردن اطلاعات کافی نیست');
+
+            return redirect()->back();
+        }
+
         if (! count($records)) {
             session()->flash('warning', trans('admin::app.export.no-records'));
 
