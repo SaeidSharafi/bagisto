@@ -61,11 +61,9 @@
                             {{ __('app.velocity.auth-form.authenticate-submit') }}
                         </button>
                     </form>
-                    <p class="foot-note pt-3 text-center">
+                    <p class="foot-note pt-3 text-center rules">
                         ورود شما به معنای پذیرش
                         <a href="/page/terms-conditions" class="text-nowrap">شرایط جهاد دانشگاهی قزوین</a>
-                        و
-                        <a href="/page/privacy-policy" class="text-nowrap">قوانین حریم‌خصوصی</a>
                         است
                     </p>
                     {!! view_render_event('bagisto.shop.customers.signup.after') !!}
@@ -79,4 +77,16 @@
 
 {!! Captcha::renderJS() !!}
 
+@endpush
+
+@push('css')
+    <style>
+        .rules > a{
+            color: #007bff;
+        }
+        .rules > a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+    </style>
 @endpush
