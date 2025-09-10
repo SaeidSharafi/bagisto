@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\SpotLicense;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -46,13 +47,18 @@ class SpotPlayerService
             ]
         ];
 
-        $response = Http::withBody(json_encode($data, JSON_THROW_ON_ERROR), 'application/json')
+        try {
+            $response = Http::withBody(json_encode($data, JSON_THROW_ON_ERROR), 'application/json')
                 ->withHeaders([
                     '$API' => $api_key
                 ])
                 ->post(self::API_ENDPOINT)
                 ->throw()
                 ->json();
+        }catch (RequestException $exception){
+            Log::error('Spot Player Error: '.$exception->getMessage(), $exception->response?->json() ?? []);
+            return false;
+        }
         Log::info('Spot Response:',$response);
         $response['order_id'] = $order->id;
         $response['product_id'] = $order_item->product_id;
