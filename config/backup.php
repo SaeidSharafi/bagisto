@@ -151,9 +151,9 @@ return [
     'notifications' => [
 
         'notifications' => [
-            \Spatie\Backup\Notifications\Notifications\BackupHasFailedNotification::class => ['slack'],
-            \Spatie\Backup\Notifications\Notifications\UnhealthyBackupWasFoundNotification::class => ['slack'],
-            \Spatie\Backup\Notifications\Notifications\CleanupHasFailedNotification::class => ['slack'],
+            \Spatie\Backup\Notifications\Notifications\BackupHasFailedNotification::class => [],
+            \Spatie\Backup\Notifications\Notifications\UnhealthyBackupWasFoundNotification::class => [],
+            \Spatie\Backup\Notifications\Notifications\CleanupHasFailedNotification::class => [],
             \Spatie\Backup\Notifications\Notifications\BackupWasSuccessfulNotification::class => [],
             \Spatie\Backup\Notifications\Notifications\HealthyBackupWasFoundNotification::class => [],
             \Spatie\Backup\Notifications\Notifications\CleanupWasSuccessfulNotification::class => [],
