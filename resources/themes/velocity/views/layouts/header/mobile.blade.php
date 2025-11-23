@@ -74,14 +74,6 @@
                 >تماس با ما</a
                 >
             </li>
-            <li>
-                <a
-                    class="unset"
-                    href="{{ config('app.blog_url') }}"
-                    target="_blank"
-                    >بلاگ</a
-                >
-            </li>
         </ul>
     </template>
     <template v-slot:greetings>
