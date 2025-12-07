@@ -28,11 +28,17 @@ class ImsApiService
 
             $url = config('app.ims.base_url').'/api/v1/teachers/is-teacher';
 
-            $response = Http::withToken($apiKey)
-                ->asForm()
-                ->post($url, [
-                    'username' => $phone
-                ]);
+            try {
+                $response = Http::withToken($apiKey)
+                    ->asForm()
+                    ->post($url, [
+                        'username' => $phone
+                    ]);
+            }catch (\Exception $e){
+                Log::error('IMS connection failed: \n'.$e->getMessage());
+                return false;
+            }
+
 
             if ($response->ok()) {
                 return  $response->json('is_teacher');
