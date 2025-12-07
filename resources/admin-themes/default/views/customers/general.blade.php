@@ -169,6 +169,7 @@
                                        max-date="{{now()->subDay()}}"
                                        initial-value="{{  old('date_of_birth') ?? $customer->date_of_birth}}"
                                        v-validate=""
+                                       clearable
                                        data-vv-as="&quot;{{ __('admin::app.customers.customers.date_of_birth') }}&quot;"
                                        placeholder="{{ __('admin::app.customers.customers.date_of_birth') }}"></p-date-picker>
 

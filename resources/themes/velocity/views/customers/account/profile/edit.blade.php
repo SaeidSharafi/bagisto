@@ -186,6 +186,7 @@
                     <p-datepicker name="date_of_birth"
                                   id="date_of_birth"
                                   max-date="{{now()->subDay()}}"
+                                  clearable
                                   initial-value="{{  old('date_of_birth') ?? $customer->date_of_birth}}"
                                   placeholder="{{ trans('shop::app.customer.account.profile.dob') }}"></p-datepicker>
 
