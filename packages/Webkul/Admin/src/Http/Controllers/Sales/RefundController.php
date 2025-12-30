@@ -2,11 +2,15 @@
 
 namespace Webkul\Admin\Http\Controllers\Sales;
 
+use Illuminate\Support\Facades\DB;
 use Webkul\Admin\DataGrids\OrderRefundDataGrid;
 use Webkul\Admin\Http\Controllers\Controller;
 use Webkul\Sales\Repositories\OrderItemRepository;
 use Webkul\Sales\Repositories\OrderRepository;
 use Webkul\Sales\Repositories\RefundRepository;
+use DigipayGateway\Services\DeliveryRefundService;
+use DigipayGateway\Exceptions\RefundException;
+use Illuminate\Support\Facades\Log;
 
 class RefundController extends Controller
 {
@@ -143,11 +147,62 @@ class RefundController extends Controller
             return redirect()->back();
         }
 
+        DB::beginTransaction();
         $this->refundRepository->create(array_merge($data, ['order_id' => $orderId]));
+
+        // Check if Digipay refund is requested
+        if (request()->has('digipay_refund') && request()->get('digipay_refund') == '1') {
+            $this->processDigipayRefund($order, (int) $refundAmount);
+        }
+        DB::commit();
 
         session()->flash('success', trans('admin::app.response.create-success', ['name' => 'Refund']));
 
         return redirect()->route($this->_config['redirect'], $orderId);
+    }
+
+    /**
+     * Process Digipay refund for an order.
+     *
+     * @param  \Webkul\Sales\Models\Order  $order
+     * @param  int  $amount
+     * @return void
+     */
+    protected function processDigipayRefund($order, int $amount): void
+    {
+        // Check if this is a Digipay order
+        if (!$order->payment || $order->payment->method !== 'digipay') {
+            return;
+        }
+
+        try {
+            $deliveryRefundService = app(DeliveryRefundService::class);
+            $response = $deliveryRefundService->refund($order, $amount);
+
+            Log::channel('digipay')->info('[Digipay] Refund via admin panel successful', [
+                'order_id' => $order->id,
+                'amount' => $amount,
+                'tracking_code' => $response->getTrackingCode(),
+            ]);
+
+            session()->flash('success', 'بازگشت وجه از دیجی‌پی با موفقیت انجام شد. کد پیگیری: ' . $response->getTrackingCode());
+        } catch (RefundException $e) {
+            Log::channel('digipay')->error('[Digipay] Refund via admin panel failed', [
+                'order_id' => $order->id,
+                'amount' => $amount,
+                'error' => $e->getMessage(),
+            ]);
+
+            session()->flash('warning', 'ریفاند ثبت شد اما بازگشت وجه از دیجی‌پی با خطا مواجه شد: ' . $e->getUserMessage());
+        } catch (\Throwable $e) {
+            Log::channel('digipay')->error('[Digipay] Refund via admin panel unexpected error', [
+                'order_id' => $order->id,
+                'amount' => $amount,
+                'error' => $e->getMessage(),
+            ]);
+
+            session()->flash('warning', 'ریفاند ثبت شد اما خطای غیرمنتظره در بازگشت وجه از دیجی‌پی: ' . $e->getMessage());
+        }
     }
 
     /**

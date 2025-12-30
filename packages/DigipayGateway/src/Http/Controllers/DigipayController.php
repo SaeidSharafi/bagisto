@@ -37,7 +37,7 @@ class DigipayController extends Controller
                 'order_id' => $result['order_id'],
             ]);
         } catch (DigipayException $e) {
-            Log::error('[Digipay] Redirect failed', [
+            Log::channel(config('digipay.logging.channel', 'stack'))->error('[Digipay] Redirect failed', [
                 'error' => $e->getMessage(),
                 'code' => $e->getErrorCode(),
                 'context' => $e->getContext(),
@@ -47,7 +47,7 @@ class DigipayController extends Controller
 
             return redirect()->route('shop.checkout.cart.index');
         } catch (\Exception $e) {
-            Log::error('[Digipay] Unexpected error during redirect', [
+            Log::channel(config('digipay.logging.channel', 'stack'))->error('[Digipay] Unexpected error during redirect', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
@@ -66,7 +66,7 @@ class DigipayController extends Controller
      */
     public function callback(Request $request): RedirectResponse
     {
-        Log::info('[Digipay] Callback received', $request->all());
+        Log::channel(config('digipay.logging.channel', 'stack'))->info('[Digipay] Callback received', $request->all());
 
         try {
             $payload = CallbackPayload::fromRequest($request->all());
@@ -89,7 +89,7 @@ class DigipayController extends Controller
 
             return redirect()->route('customer.orders.view', $result['order_id']);
         } catch (DigipayException $e) {
-            Log::error('[Digipay] Callback processing failed', [
+            Log::channel(config('digipay.logging.channel', 'stack'))->error('[Digipay] Callback processing failed', [
                 'error' => $e->getMessage(),
                 'code' => $e->getErrorCode(),
                 'context' => $e->getContext(),
@@ -99,7 +99,7 @@ class DigipayController extends Controller
 
             return redirect()->route('shop.checkout.cart.index');
         } catch (\Exception $e) {
-            Log::error('[Digipay] Unexpected error during callback', [
+            Log::channel(config('digipay.logging.channel', 'stack'))->error('[Digipay] Unexpected error during callback', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);

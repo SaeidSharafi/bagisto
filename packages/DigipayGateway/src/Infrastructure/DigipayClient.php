@@ -12,9 +12,16 @@ use DigipayGateway\DataTransferObjects\VerifyRequest;
 use DigipayGateway\DataTransferObjects\VerifyResponse;
 use DigipayGateway\DataTransferObjects\ReverseRequest;
 use DigipayGateway\DataTransferObjects\ReverseResponse;
+use DigipayGateway\DataTransferObjects\DeliverRequest;
+use DigipayGateway\DataTransferObjects\DeliverResponse;
+use DigipayGateway\DataTransferObjects\RefundRequest;
+use DigipayGateway\DataTransferObjects\RefundResponse;
+use DigipayGateway\DataTransferObjects\RefundInquiryResponse;
 use DigipayGateway\Exceptions\TokenException;
 use DigipayGateway\Exceptions\VerificationException;
 use DigipayGateway\Exceptions\ReverseException;
+use DigipayGateway\Exceptions\DeliverException;
+use DigipayGateway\Exceptions\RefundException;
 use DigipayGateway\Exceptions\NetworkException;
 use DigipayGateway\Enums\PaymentStatus;
 
@@ -161,6 +168,113 @@ class DigipayClient implements PaymentGatewayInterface
                 0,
                 $e->getMessage(),
                 $request->getPurchaseTrackingCode()
+            );
+        }
+    }
+
+    /**
+     * Confirm delivery of order (only for CREDIT and BNPL payments).
+     *
+     * @param DeliverRequest $request
+     * @return DeliverResponse
+     * @throws DeliverException
+     */
+    public function deliver(DeliverRequest $request): DeliverResponse
+    {
+        $this->prepareClient();
+
+        $endpoint = config('digipay.paths.deliver') . '?type=' . $request->getType();
+
+        try {
+            $response = $this->httpClient->post($endpoint, $request->toArray());
+
+            $deliverResponse = DeliverResponse::fromResponse($response);
+
+            if (!$deliverResponse->isSuccessful()) {
+                throw DeliverException::failed(
+                    $deliverResponse->getStatusCode(),
+                    $deliverResponse->getMessage(),
+                    $request->getTrackingCode()
+                );
+            }
+
+            return $deliverResponse;
+        } catch (NetworkException $e) {
+            throw DeliverException::failed(
+                0,
+                $e->getMessage(),
+                $request->getTrackingCode()
+            );
+        }
+    }
+
+    /**
+     * Refund a payment.
+     *
+     * @param RefundRequest $request
+     * @return RefundResponse
+     * @throws RefundException
+     */
+    public function refund(RefundRequest $request): RefundResponse
+    {
+        $this->prepareClient();
+
+        $endpoint = config('digipay.paths.refund') . '?type=' . $request->getType();
+
+        try {
+            $response = $this->httpClient->post($endpoint, $request->toArray());
+
+            $refundResponse = RefundResponse::fromResponse($response);
+
+            if (!$refundResponse->isSuccessful()) {
+                throw RefundException::failed(
+                    $refundResponse->getStatusCode(),
+                    $refundResponse->getMessage(),
+                    $request->getSaleTrackingCode()
+                );
+            }
+
+            return $refundResponse;
+        } catch (NetworkException $e) {
+            throw RefundException::failed(
+                0,
+                $e->getMessage(),
+                $request->getSaleTrackingCode()
+            );
+        }
+    }
+
+    /**
+     * Inquire about a refund status.
+     *
+     * @param string $refundProviderId The providerId used when creating the refund
+     * @param int $type Payment type
+     * @return RefundInquiryResponse
+     * @throws RefundException
+     */
+    public function inquireRefund(string $refundProviderId, int $type): RefundInquiryResponse
+    {
+        $this->prepareClient();
+
+        $endpoint = config('digipay.paths.refund') . '/' . $refundProviderId . '?type=' . $type;
+
+        try {
+            $response = $this->httpClient->post($endpoint, []);
+
+            $inquiryResponse = RefundInquiryResponse::fromResponse($response);
+
+            if (!$inquiryResponse->isSuccessful()) {
+                throw RefundException::inquiryFailed(
+                    $refundProviderId,
+                    $inquiryResponse->getMessage()
+                );
+            }
+
+            return $inquiryResponse;
+        } catch (NetworkException $e) {
+            throw RefundException::inquiryFailed(
+                $refundProviderId,
+                $e->getMessage()
             );
         }
     }

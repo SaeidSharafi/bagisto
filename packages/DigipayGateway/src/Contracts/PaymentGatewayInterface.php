@@ -10,6 +10,11 @@ use DigipayGateway\DataTransferObjects\VerifyRequest;
 use DigipayGateway\DataTransferObjects\VerifyResponse;
 use DigipayGateway\DataTransferObjects\ReverseRequest;
 use DigipayGateway\DataTransferObjects\ReverseResponse;
+use DigipayGateway\DataTransferObjects\DeliverRequest;
+use DigipayGateway\DataTransferObjects\DeliverResponse;
+use DigipayGateway\DataTransferObjects\RefundRequest;
+use DigipayGateway\DataTransferObjects\RefundResponse;
+use DigipayGateway\DataTransferObjects\RefundInquiryResponse;
 use DigipayGateway\Exceptions\DigipayException;
 
 interface PaymentGatewayInterface
@@ -40,6 +45,34 @@ interface PaymentGatewayInterface
      * @throws DigipayException
      */
     public function reverse(ReverseRequest $request): ReverseResponse;
+
+    /**
+     * Confirm delivery of order (only for CREDIT and BNPL payments).
+     *
+     * @param DeliverRequest $request
+     * @return DeliverResponse
+     * @throws DigipayException
+     */
+    public function deliver(DeliverRequest $request): DeliverResponse;
+
+    /**
+     * Refund a payment.
+     *
+     * @param RefundRequest $request
+     * @return RefundResponse
+     * @throws DigipayException
+     */
+    public function refund(RefundRequest $request): RefundResponse;
+
+    /**
+     * Inquire about a refund status.
+     *
+     * @param string $refundProviderId The providerId used when creating the refund
+     * @param int $type Payment type
+     * @return RefundInquiryResponse
+     * @throws DigipayException
+     */
+    public function inquireRefund(string $refundProviderId, int $type): RefundInquiryResponse;
 
     /**
      * Check if sandbox mode is enabled.

@@ -6,6 +6,8 @@ use App\Models\SpotLicense;
 use App\Services\HttpRequestService;
 use App\Services\RouyeshAPIService;
 use App\Services\SpotPlayerService;
+use DigipayGateway\Services\DeliveryRefundService;
+use DigipayGateway\Exceptions\DeliverException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
@@ -161,6 +163,28 @@ class OrderController extends Controller
             );
 
         }
+
+        // Check if Digipay delivery confirmation is required
+        try {
+            $deliveryService = app(DeliveryRefundService::class);
+            if ($deliveryService->isDigipayOrder($order) && $deliveryService->requiresDeliveryConfirmation($order)) {
+                $paymentData = $deliveryService->getDigipayPaymentData($order);
+                if (!isset($paymentData['delivery_confirmed']) || !$paymentData['delivery_confirmed']) {
+                    $deliveryService->confirmDelivery($order);
+                }
+            }
+        } catch (DeliverException $e) {
+            DB::rollBack();
+            $errorMessage = 'خطا در اعلام تحویل به دیجی‌پی: ' . $e->getMessage();
+            if (request()->ajax()) {
+                return response()->json([
+                    'message' => $errorMessage,
+                ])->setStatusCode(417);
+            }
+            session()->flash('error', $errorMessage);
+            return redirect()->back();
+        }
+
         $this->orderRepository->updateOrderStatus($order, 'completed');
         DB::commit();
         if (request()->ajax()) {

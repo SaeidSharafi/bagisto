@@ -27,6 +27,7 @@ return [
         'ticket'        => '/digipay/api/tickets/business',
         'verify'        => '/digipay/api/purchases/verify',
         'reverse'       => '/digipay/api/reverse',
+        'deliver'       => '/digipay/api/purchases/deliver',
         'refund'        => '/digipay/api/refunds',
     ],
 
@@ -72,7 +73,7 @@ return [
     */
     'logging' => [
         'enabled'          => env('DIGIPAY_LOGGING', true),
-        'channel'          => env('DIGIPAY_LOG_CHANNEL', 'stack'),
+        'channel'          => env('DIGIPAY_LOG_CHANNEL', 'digipay'),
         'sensitive_fields' => ['client_secret', 'password', 'access_token', 'refresh_token'],
     ],
 

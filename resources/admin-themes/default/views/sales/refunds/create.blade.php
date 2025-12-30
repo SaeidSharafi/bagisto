@@ -6,8 +6,9 @@
 
 @section('content-wrapper')
     <div class="content full-page">
-        <form method="POST" action="{{ route('admin.sales.refunds.store', $order->id) }}" @submit.prevent="onSubmit">
+        <form method="POST" action="{{ route('admin.sales.refunds.store', $order->id) }}" @submit.prevent="onSubmit" id="refund-form">
             @csrf()
+            <input type="hidden" name="digipay_refund" id="digipay_refund_flag" value="0">
 
             <div class="page-header">
                 <div class="page-title">
@@ -19,9 +20,15 @@
                 </div>
 
                 <div class="page-action">
-                    <button type="submit" class="btn btn-lg btn-primary">
+                    <button type="submit" class="btn btn-lg btn-primary" id="refund-submit-btn">
                         {{ __('admin::app.sales.refunds.save-btn-title') }}
                     </button>
+
+                    @if($order->payment && $order->payment->method === 'digipay')
+                        <button type="button" class="btn btn-lg btn-warning" id="digipay-refund-btn" style="background-color: #f39c12; border-color: #f39c12; margin-right: 10px;">
+                            {{ __('admin::app.sales.refunds.save-btn-title') }} + بازگشت وجه دیجی‌پی
+                        </button>
+                    @endif
                 </div>
             </div>
 
@@ -438,6 +445,30 @@
                         })
                         .catch(function (error) {})
                 }
+            }
+        });
+
+        // ensure DOM ready before binding buttons; Bagisto pages can defer scripts
+        window.addEventListener('load', function () {
+            var digipayBtn = document.getElementById('digipay-refund-btn');
+            var refundForm = document.getElementById('refund-form');
+            var digipayFlag = document.getElementById('digipay_refund_flag');
+            var normalSubmitBtn = document.getElementById('refund-submit-btn');
+
+            if (normalSubmitBtn) {
+                normalSubmitBtn.addEventListener('click', function () {
+                    if (digipayFlag) {
+                        digipayFlag.value = '0';
+                    }
+                });
+            }
+
+            if (digipayBtn && refundForm && digipayFlag) {
+                digipayBtn.addEventListener('click', function () {
+                    digipayFlag.value = '1';
+                    // Use native submit to ensure button name/value is sent and skip Vue's prevent
+                    refundForm.submit();
+                });
             }
         });
     </script>

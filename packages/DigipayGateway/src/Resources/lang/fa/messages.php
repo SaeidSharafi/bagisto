@@ -20,6 +20,26 @@ return [
     'amount_mismatch' => 'مبلغ پرداخت با مبلغ سفارش مطابقت ندارد.',
     'unexpected_error' => 'خطای غیرمنتظره رخ داد. لطفاً دوباره تلاش کنید.',
 
+    // Delivery messages
+    'delivery_confirmed' => 'تحویل خرید با موفقیت به دیجی‌پی اعلام شد.',
+    'delivery_failed' => 'اعلام تحویل خرید به دیجی‌پی ناموفق بود.',
+    'delivery_not_supported' => 'اعلام تحویل برای این نوع پرداخت پشتیبانی نمی‌شود.',
+    'invalid_order_status_for_delivery' => 'وضعیت سفارش برای اعلام تحویل معتبر نیست.',
+
+    // Refund messages
+    'refund_successful' => 'بازگشت وجه با موفقیت انجام شد.',
+    'refund_failed' => 'بازگشت وجه ناموفق بود.',
+    'refund_inquiry_failed' => 'بررسی وضعیت بازگشت وجه ناموفق بود.',
+    'already_refunded' => 'این سفارش قبلاً بازگشت وجه شده است.',
+    'refund_amount_exceeds_total' => 'مبلغ بازگشت وجه از مبلغ کل سفارش بیشتر است.',
+    'invalid_order_status_for_refund' => 'وضعیت سفارش برای بازگشت وجه معتبر نیست.',
+
+    // General messages
+    'order_not_found' => 'سفارش یافت نشد.',
+    'not_digipay_order' => 'این سفارش از طریق دیجی‌پی پرداخت نشده است.',
+    'missing_digipay_data' => 'اطلاعات پرداخت دیجی‌پی برای این سفارش یافت نشد.',
+    'missing_refund_provider_id' => 'شناسه بازگشت وجه الزامی است.',
+
     // Admin panel
     'admin' => [
         'title' => 'درگاه دیجی‌پی',

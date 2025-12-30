@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DigipayGateway\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Event;
 use DigipayGateway\Contracts\PaymentGatewayInterface;
 use DigipayGateway\Contracts\AuthenticatorInterface;
 use DigipayGateway\Infrastructure\DigipayClient;
@@ -13,6 +14,9 @@ use DigipayGateway\Infrastructure\ConfigRepository;
 use DigipayGateway\Infrastructure\DigipayAuthenticator;
 use DigipayGateway\Services\PaymentOrchestrator;
 use DigipayGateway\Services\OrderProcessor;
+use DigipayGateway\Services\DeliveryRefundService;
+use DigipayGateway\Listeners\OrderStatusListener;
+use DigipayGateway\Listeners\RefundListener;
 
 class DigipayServiceProvider extends ServiceProvider
 {
@@ -28,6 +32,7 @@ class DigipayServiceProvider extends ServiceProvider
         $this->loadTranslations();
         $this->registerConfigurations();
         $this->publishAssets();
+        $this->registerEventListeners();
     }
 
     /**
@@ -147,6 +152,15 @@ class DigipayServiceProvider extends ServiceProvider
                 $app->make(OrderProcessor::class)
             );
         });
+
+        // Bind DeliveryRefundService
+        $this->app->bind(DeliveryRefundService::class, function ($app) {
+            return new DeliveryRefundService(
+                $app->make(PaymentGatewayInterface::class),
+                $app->make(\Webkul\Sales\Repositories\OrderRepository::class),
+                $app->make(\Webkul\Sales\Repositories\OrderTransactionRepository::class)
+            );
+        });
     }
 
     /**
@@ -167,5 +181,20 @@ class DigipayServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../Resources/lang' => resource_path('lang/vendor/digipay'),
         ], 'digipay-lang');
+    }
+
+    /**
+     * Register event listeners for order-related events.
+     *
+     * @return void
+     */
+    protected function registerEventListeners(): void
+    {
+        // Note: Delivery confirmation is handled directly in OrderController::complete()
+        // This prevents the order from completing if Digipay delivery call fails.
+
+        // Note: Refund is now handled manually via the "Refund via Digipay" button
+        // in the admin order page (resources/admin-themes/default/views/sales/orders/view.blade.php)
+        // via @include('digipay::admin.orders.digipay-actions')
     }
 }
