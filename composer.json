@@ -11,6 +11,10 @@
         {
             "type": "path",
             "url": "packages/Kuro/LaravelSms"
+        },
+        {
+            "type": "path",
+            "url": "packages/DigipayGateway"
         }
     ],
     "require": {
@@ -122,6 +126,7 @@
             "PayIr\\": "packages/PayIr/src",
             "MellatGateway\\": "packages/MellatGateway/src",
             "ACECRGateway\\": "packages/ACECRGateway/src",
+            "DigipayGateway\\": "packages/DigipayGateway/src",
             "Kuro\\LaravelSms\\": "packages/Kuro/LaravelSms/src",
             "Webkul\\Notification\\": "packages/Webkul/Notification/src",
             "Ridhima\\MediaManager\\": "packages/Ridhima/MediaManager/src"

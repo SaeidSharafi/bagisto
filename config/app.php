@@ -300,6 +300,7 @@ return [
         PayIr\Providers\PayIrServiceProvider::class,
         MellatGateway\Providers\MellatServiceProvider::class,
         ACECRGateway\Providers\ACECRServiceProvider::class,
+        DigipayGateway\Providers\DigipayServiceProvider::class,
 
         //Media Manager
         Ridhima\MediaManager\Providers\MediaManagerServiceProvider::class,
