@@ -77,7 +77,7 @@
                     <input value="{{old('first_name') ?? $customer->first_name }}" name="first_name" type="text" v-validate="'required'"
                            data-vv-as="&quot;{{ __('shop::app.customer.account.profile.fname') }}&quot;"/>
                     <span class="control-error" v-if="errors.has('first_name')" v-text="errors.first('first_name')"></span>
-                    <span class="control-error" v-if="{{ $errors->has('first_name') }}" v-text="'{{$errors->first('first_name')}}'"></span>
+                    <span class="control-error" v-if="{{ $errors->has('first_name') }}">{{$errors->first('first_name')}}</span>
 
                 </div>
             </div>
@@ -93,7 +93,7 @@
                     <input value="{{old('last_name') ??  $customer->last_name }}" name="last_name" type="text" v-validate="'required'"
                            data-vv-as="&quot;{{ __('shop::app.customer.account.profile.lname') }}&quot;"/>
                     <span class="control-error" v-if="errors.has('last_name')" v-text="errors.first('last_name')"></span>
-                    <span class="control-error" v-if="{{ $errors->has('last_name') }}" v-text="'{{$errors->first('last_name')}}'"></span>
+                    <span class="control-error" v-if="{{ $errors->has('last_name') }}">{{$errors->first('last_name')}}</span>
                 </div>
             </div>
 
@@ -109,6 +109,7 @@
                         <input value="{{ old('national_code') ?? $customer->national_code }}" name="national_code" type="text" v-validate="'required|min:10|max:10'"
                                data-vv-as="&quot;{{ __('app.customer.account.profile.national_code') }}&quot;"/>
                         <span class="control-error" v-if="errors.has('national_code')" v-text="errors.first('national_code')"></span>
+                        <span class="control-error" v-if="{{$errors->has('national_code')}}">{{$errors->first('national_code')}}</span>
                     @endif
 
 
@@ -172,11 +173,12 @@
                     </div>
 
                     <span class="control-error" v-if="errors.has('gender')" v-text="errors.first('gender')"></span>
+                    <span class="control-error" v-if="{{$errors->has('gender')}}">{{$errors->first('gender')}}</span>
+
                 </div>
             </div>
 
             {!! view_render_event('bagisto.shop.customers.account.profile.edit.gender.after', ['customer' => $customer]) !!}
-
             <div :class="`w-100 mb-2 ${errors.has('date_of_birth') ? 'has-error' : ''}`">
                 <label class="w-100 mb-2">
                     {{ __('shop::app.customer.account.profile.dob') }}
@@ -192,6 +194,7 @@
 
                     <span class="control-error" v-if="errors.has('date_of_birth')" v-text="errors.first('date_of_birth')"></span>
                 </div>
+                <span class="control-error" v-if="{{$errors->has('date_of_birth')}}">{{$errors->first('date_of_birth')}}</span>
             </div>
 
             {!! view_render_event('bagisto.shop.customers.account.profile.edit.date_of_birth.after', ['customer' => $customer]) !!}
@@ -204,7 +207,7 @@
                 <div class="w-100 mb-3">
                     <input value="{{ $customer->email }}" name="email" type="text"/>
                     <span class="control-error" v-if="errors.has('email')" v-text="errors.first('email')"></span>
-                    <span class="control-error" v-if="{{$errors->has('email')}}" v-text="'{{$errors->first('email')}}'"></span>
+                    <span class="control-error" v-if="{{$errors->has('email')}}">{{$errors->first('email')}}</span>
                 </div>
             </div>
 
@@ -231,7 +234,7 @@
                     <input value="{{ $customer->father_name }}" name="father_name" type="text"
                            data-vv-as="&quot;{{ __('app.customer.account.profile.father_name') }}&quot;"/>
                     <span class="control-error" v-if="errors.has('father_name')" v-text="errors.first('father_name')"></span>
-                    <span class="control-error" v-if="{{ $errors->has('father_name') }}" v-text="'{{$errors->first('father_name')}}'"></span>
+                    <span class="control-error" v-if="{{ $errors->has('father_name') }}">{{$errors->first('father_name')}}</span>
                 </div>
             </div>
 
@@ -244,7 +247,7 @@
                     <input value="{{ $customer->education_field }}" name="education_field" type="text"
                            data-vv-as="&quot;{{ __('app.customer.account.profile.education_field') }}&quot;"/>
                     <span class="control-error" v-if="errors.has('education_field')" v-text="errors.first('education_field')"></span>
-                    <span class="control-error" v-if="{{ $errors->has('education_field') }}" v-text="'{{$errors->first('education_field')}}'"></span>
+                    <span class="control-error" v-if="{{ $errors->has('education_field') }}">{{$errors->first('education_field')}}</span>
                 </div>
             </div>
 
@@ -298,7 +301,7 @@
                         v-validate="'min:6'"/>
 
                     <span class="control-error" v-if="errors.has('password')" v-text="errors.first('password')"></span>
-                    <span class="control-error" v-if="{{ $errors->has('password') }}" v-text="'{{$errors->first('password')}}'"></span>
+                    <span class="control-error" v-if="{{ $errors->has('password') }}">{{$errors->first('password')}}</span>
                 </div>
             </div>
 
@@ -314,7 +317,7 @@
                            v-validate="'min:6|confirmed:password'" data-vv-as="confirm password"/>
 
                     <span class="control-error" v-if="errors.has('password_confirmation')" v-text="errors.first('password_confirmation')"></span>
-                    <span class="control-error" v-if="{{ $errors->has('password_confirmation') }}" v-text="'{{$errors->first('password_confirmation')}}'"></span>
+                    <span class="control-error" v-if="{{ $errors->has('password_confirmation') }}">{{$errors->first('password_confirmation')}}</span>
                 </div>
             </div>
 

@@ -31,7 +31,7 @@ class CustomerProfileUpdateRequest extends FormRequest
             'first_name'            => 'required',
             'last_name'             => 'required',
             'gender'                => 'required|in:Other,Male,Female',
-            'date_of_birth'         => 'date|before:today',
+            'date_of_birth'         => ['required', 'date', 'before:today', 'after:'.'1924-03-21'],
             'email'                 => 'email|unique:customers,email,'.$id,
             'password'              => 'confirmed|min:6|required_with:oldpassword',
             'oldpassword'           => 'present',
@@ -62,6 +62,13 @@ class CustomerProfileUpdateRequest extends FormRequest
             'national_code'         => __('app.customer.account.profile.national_code'),
             'father_name'           => __('app.customer.account.profile.father_name'),
             'education_field'       => __('app.customer.account.profile.education_field') ,
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'date_of_birth.after' => 'تاریخ تولد باید تاریخ بعد از 1 فروردین 1305 باشد'
         ];
     }
 }

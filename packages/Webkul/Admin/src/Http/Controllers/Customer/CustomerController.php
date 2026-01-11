@@ -119,9 +119,9 @@ class CustomerController extends Controller
             'last_name'     => 'string|required',
             'gender'        => 'required',
             'email'         => 'required|unique:customers,email',
-            'date_of_birth' => 'date|before:today',
-            'phone' => 'unique:customers',
-            'national_code' => ['unique:customers',new Nationalcode()]
+            'date_of_birth' => ['required','date','before:today', 'after:'.'1924-03-21'],
+            'phone'         => 'required|unique:customers',
+            'national_code' => ['required','unique:customers',new Nationalcode()]
         ];
 
         if (request()->get('is_foreign')){
@@ -188,9 +188,9 @@ class CustomerController extends Controller
             'last_name'     => 'string|required',
             'gender'        => 'required',
             'email'         => 'required|unique:customers,email,' . $id,
-            'date_of_birth' => 'date|before:today',
-            'phone' => 'unique:customers,phone,'.$id,
-            'national_code' => ['unique:customers,national_code,'.$id,new Nationalcode()]
+            'date_of_birth' => ['required','date','before:today', 'after:'.'1924-03-21'],
+            'phone' => 'required|unique:customers,phone,'.$id,
+            'national_code' => ['required','unique:customers,national_code,'.$id,new Nationalcode()]
         ]);
 
         $data = request()->all();
