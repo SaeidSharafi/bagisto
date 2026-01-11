@@ -2,7 +2,6 @@
 <html>
     <head>
         <link rel="stylesheet" href="{{ asset('vendor/webkul/ui/assets/css/ui.css') }}">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,500">
 
         <style type="text/css">
             body{
