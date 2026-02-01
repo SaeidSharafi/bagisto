@@ -6,7 +6,7 @@
 
 <script type="text/javascript" src="{{ asset(mix('/js/components.js')) }}"></script>
 
-<script type="text/javascript" src="{{ asset(mix('/js/tween-max.js')) }}"></script>
+<script type="text/javascript" src="{{ asset('/js/tween-max.js') }}"></script>
 
 <script type="text/javascript" src="{{ asset(mix('/js/slider.js')) }}"></script>
 
