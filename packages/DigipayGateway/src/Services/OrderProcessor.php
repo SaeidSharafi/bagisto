@@ -84,7 +84,7 @@ class OrderProcessor
             'reason' => $reason,
         ]);
 
-        $this->orderRepository->cancel($order->id);
+        $this->orderRepository->cancel($order->id, true);
     }
 
     /**
