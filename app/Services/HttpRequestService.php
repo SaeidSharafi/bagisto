@@ -70,7 +70,7 @@ class HttpRequestService
             'national_code'      => $customer->national_code,
             'student'            => [
                 'national_code'  => $customer->national_code,
-                'created'        => $customer->created_at->format('Y-m-d h:i:s'),
+                'created'        => $customer->created_at?->format('Y-m-d h:i:s') ?: now()->format('Y-m-d h:i:s'),
                 'first_name'     => $customer->first_name,
                 'last_name'      => $customer->last_name,
                 'phone'          => $customer->phone,
