@@ -251,6 +251,20 @@ class OnepageController extends Controller
 
         $cart = Cart::getCart();
 
+
+        if ($cart->payment->method == 'digipay') {
+            $digiPayPayment = config('paymentmethods.digipay.class');
+            $digiPay= app($digiPayPayment);
+            if ($digiPay->isAvailable()
+            && $digiPay->minimumOrderAmount() > $cart->grand_total){
+                return response()->json([
+                    'success' => false,
+                    'redirect_url' => route('shop.checkout.cart.index'),
+                    'error' => trans('digipay::messages.validation.minimum_order_amount_message', ['amount' => core()->currency($digiPay->minimumOrderAmount())])
+
+                ]);
+            }
+        }
         if ($cart->grand_total != 0) {
             if ($redirectUrl = Payment::getRedirectUrl($cart)) {
                 return response()->json([
@@ -259,6 +273,7 @@ class OnepageController extends Controller
                 ]);
             }
         }
+
 
         $order = $this->orderRepository->create(Cart::prepareDataForOrder());
 

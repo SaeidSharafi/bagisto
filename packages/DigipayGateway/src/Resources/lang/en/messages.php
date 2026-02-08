@@ -56,6 +56,8 @@ return [
         'preferred_gateway_info' => 'Select the payment method to use',
         'gateway_ipg' => 'Bank Gateway (IPG)',
         'gateway_wallet' => 'Digipay Wallet',
+        'minimum_amount' => 'Minimum Amount',
+        'minimum_amount_info' => 'Minimum acceptable amount for payment (in Toman)',
     ],
 
     // Validation messages

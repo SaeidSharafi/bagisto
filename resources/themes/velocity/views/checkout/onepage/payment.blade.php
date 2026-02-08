@@ -14,7 +14,6 @@
                 @foreach ($paymentMethods as $payment)
 
                     {!! view_render_event('bagisto.shop.checkout.payment-method.before', ['payment' => $payment]) !!}
-
                     <div class="row col-12">
                         <div>
                             <label class="radio-container" style="position: absolute;">
@@ -40,7 +39,7 @@
                             </div>
 
                             <div class="row">
-                                <span class="method-summary">{{ __($payment['description']) }}</span>
+                                <span class="method-summary">{!! __($payment['description']) !!}</span>
                             </div>
 
                             <?php $additionalDetails = \Webkul\Payment\Payment::getAdditionalDetails($payment['method']); ?>

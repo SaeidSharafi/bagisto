@@ -331,11 +331,17 @@
                                       window.location.href = "{{ route('shop.checkout.success') }}";
                                   }
                               }
+                              if (!response.data.success) {
+                                    this.disable_button = false;
+                                    this.isPlaceOrderEnabled = true;
+                                    this.$root.hideLoader();
+                                    window.showAlert(`alert-danger`, this.__('shop.general.alert.danger'), response.data.error);
+                              }
                           })
                           .catch(error => {
-                              this.disable_button = true;
+                              this.disable_button = false;
+                              this.isPlaceOrderEnabled = true;
                               this.$root.hideLoader();
-
                               window.showAlert(`alert-danger`, this.__('shop.general.alert.danger'), "{{ __('shop::app.common.error') }}");
                           })
                   } else {

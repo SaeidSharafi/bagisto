@@ -94,6 +94,14 @@ return [
                 'type' => 'text',
                 'validation' => 'integer|min:0',
             ],
+            [
+                'name' => 'minimum_amount',
+                'title' => 'digipay::messages.admin.minimum_amount',
+                'type' => 'text',
+                'validation' => 'integer|min:0',
+                'channel_based' => true,
+                'locale_based' => false,
+            ]
         ],
     ],
 ];

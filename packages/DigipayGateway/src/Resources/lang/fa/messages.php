@@ -40,6 +40,8 @@ return [
     'missing_digipay_data' => 'اطلاعات پرداخت دیجی‌پی برای این سفارش یافت نشد.',
     'missing_refund_provider_id' => 'شناسه بازگشت وجه الزامی است.',
 
+    'minimum_order_amount' => 'حداقل مبلغ سفارش',
+
     // Admin panel
     'admin' => [
         'title' => 'درگاه دیجی‌پی',
@@ -56,6 +58,8 @@ return [
         'preferred_gateway_info' => 'روش پرداخت مورد نظر را انتخاب کنید',
         'gateway_ipg' => 'درگاه بانکی (IPG)',
         'gateway_wallet' => 'کیف پول دیجی‌پی',
+        'minimum_amount' => 'حداقل مبلغ',
+        'minimum_amount_info' => 'حداقل مبلغ قابل قبول برای پرداخت (ریال)',
     ],
 
     // Validation messages
@@ -64,5 +68,6 @@ return [
         'provider_id_required' => 'شناسه ارائه‌دهنده الزامی است',
         'tracking_code_required' => 'کد پیگیری الزامی است',
         'result_required' => 'نتیجه پرداخت الزامی است',
+        'minimum_order_amount_message' => 'حداقل مبلغ سفارش برای استفاده از این روش پرداخت :amount است',
     ],
 ];

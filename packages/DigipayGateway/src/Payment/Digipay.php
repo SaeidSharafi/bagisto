@@ -45,7 +45,10 @@ class Digipay extends Payment
      */
     public function getDescription(): string
     {
-        return $this->getConfigData('description') ?? __('digipay::messages.payment_description');
+        $description = $this->getConfigData('description') ?? __('digipay::messages.payment_description');
+        $description .= '<br>';
+        $description .= '<strong>' . __('digipay::messages.minimum_order_amount') . ':</strong> ' . core()->currency($this->minimumOrderAmount(), [], false);
+        return $description;
     }
 
     /**
@@ -77,5 +80,10 @@ class Digipay extends Payment
     public function getConfigData($field)
     {
         return core()->getConfigData('sales.paymentmethods.digipay.' . $field);
+    }
+
+    public function minimumOrderAmount()
+    {
+        return $this->getConfigData('minimum_amount');
     }
 }
