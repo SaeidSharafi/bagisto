@@ -546,28 +546,33 @@ class MoodleService
     public static function getUserCourses(JeduCustomer $customer)
     {
         $token = config('moodle.moodle_core_token');
-        $functionname = 'joomdle_my_courses';
+        $functionname = 'core_enrol_get_users_courses';
         $root = config('moodle.moodle_address');
 
         if (!$root) {
             \Log::error("MOODLE ADDRESS EMPTY");
-            return false;
+            return "MOODLE ADDRESS EMPTY";
         }
 
         if (!$token) {
             \Log::error("AUTH TOKEN EMPTY");
-            return false;
+            return "AUTH TOKEN EMPTY";
         }
 
         if ($customer->incomplete) {
             \Log::error("USER IS INCOMPLETE");
-            return false;
+            return "USER IS INCOMPLET";
+        }
+
+        $user = MoodleService::checkUser($customer);
+        if (!$user){
+            \Log::error("USER NOT FOUND");
+            return "USER NOT FOUND";
         }
 
         //$user1 = new stdClass();
         $data = [
-            'order_by_cat' => 1,
-            'username'     => $customer->national_code,
+            'userid'     => $user[0]['id'],
         ];
 
         $url = $root.'/webservice/rest/server.php'.'?wstoken='.$token.'&wsfunction='.$functionname

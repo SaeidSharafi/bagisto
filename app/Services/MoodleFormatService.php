@@ -22,8 +22,8 @@ class MoodleFormatService
             //    .'&wantsurl='.$base_url.'/course/view.php?id='.$item['id'];
             $item['url'] = route('customer.my-course.redirect', ['course_id'=>$item['id']]);
 
-            if (isset($item['summary_files'][0]['url'])) {
-                $item['image'] = $item['summary_files'][0]['url'];
+            if (isset($item['courseimage'])) {
+                $item['image'] = $item['courseimage'];
                 return $item;
             }
             $product = $filtered_products->firstWhere('moodle_id', $item['id']);
