@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Shop\JeduCustomer;
 use Illuminate\Support\Facades\Http;
+use PHPUnit\Exception;
 use Webkul\Customer\Contracts\Customer;
 use Webkul\Sales\Models\Order;
 use Webkul\User\Models\Admin;
@@ -504,6 +505,7 @@ class MoodleService
         }
         return null;
     }
+
     public static function getUserByEmail($email)
     {
         $token = config('moodle.moodle_core_token');
@@ -543,6 +545,7 @@ class MoodleService
         }
         return null;
     }
+
     public static function getUserCourses(JeduCustomer $customer)
     {
         $token = config('moodle.moodle_core_token');
@@ -551,28 +554,32 @@ class MoodleService
 
         if (!$root) {
             \Log::error("MOODLE ADDRESS EMPTY");
-            return "MOODLE ADDRESS EMPTY";
+            return null;
         }
 
         if (!$token) {
             \Log::error("AUTH TOKEN EMPTY");
-            return "AUTH TOKEN EMPTY";
+            return null;
         }
 
         if ($customer->incomplete) {
             \Log::error("USER IS INCOMPLETE");
-            return "USER IS INCOMPLET";
+            return null;
         }
 
         $user = MoodleService::checkUser($customer);
-        if (!$user){
+        if (isset($user['exception'])) {
+            \Log::error("Moodle Exception:", $user);
+            return null;
+        }
+        if (!$user) {
             \Log::error("USER NOT FOUND");
-            return "USER NOT FOUND";
+            return null;
         }
 
         //$user1 = new stdClass();
         $data = [
-            'userid'     => $user[0]['id'],
+            'userid' => $user[0]['id'],
         ];
 
         $url = $root.'/webservice/rest/server.php'.'?wstoken='.$token.'&wsfunction='.$functionname
@@ -615,8 +622,8 @@ class MoodleService
     {
 
         $user = self::getUserByUsername($customer->national_code);
-        if (! $user) {
-            $user =  self::getUserByEmail($customer->email);
+        if (!$user) {
+            $user = self::getUserByEmail($customer->email);
         }
         if ($user) {
             return $user;
